@@ -34,7 +34,7 @@
 - Flask + Jinja Template でSSRしたページを配信できるようになる
 - Flaskで静的ファイルを配信できるようになる
 - FlaskでREST APIを作成できるようになる
-- (延長戦)Azure App Service を使って作ったブログをデプロイする
+- (延長戦)Azure App Service を使って作ったWebアプリをデプロイする
 
 この勉強会では、以下の内容はできるようになることを想定されていません。
 
