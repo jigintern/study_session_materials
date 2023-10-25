@@ -24,6 +24,8 @@
       - [2.4.6. Flaskをインストールする](#246-flaskをインストールする)
   - [3. Flaskを始めよう](#3-flaskを始めよう)
     - [3.0. はじめの一歩](#30-はじめの一歩)
+    - [3.1 APIをつくろう](#31-apiをつくろう)
+    - [3.2 テンプレートエンジンを使おう](#32-テンプレートエンジンを使おう)
 
 </details>
 
@@ -288,10 +290,12 @@ pip install Flask
 
 ## 3. Flaskを始めよう
 
+環境構築お疲れ様でした。ようやくPython/Flaskを実行する環境が整いました。  
+ここではしりとりアプリを作ることを目標としてFlaskを使っていきましょう。
+
 ### 3.0. はじめの一歩
 
-ここまででPython/Flaskを実行する環境が整えました。  
-ではいよいよFlaskにHello,World!しましょう。以下のコードをリポジトリ直下に`main.py`を作成して書き込んでください。
+まずFlaskにHello,World!しましょう。以下のコードをリポジトリ直下に`main.py`を作成して書き込んでください。
 
 ```python=
 """
@@ -335,3 +339,238 @@ curl localhost:5000
 ![flask quickstart 動作確認](images/flask-quickstart-check.png)
 
 ↑のように `hello world!` が帰ってきていれば成功です。
+
+### 3.1 APIをつくろう
+
+APIとは「Application Programing Interface」の略で、あるソフトウェアの機能を呼び出したりデータを取り出したりするための規約・手順のことです。
+今後資料中でAPIと書いてある箇所は WebAPI を指します。
+WebAPIとは、APIの中で特にそのやり取りをHTTPの上で行うもののことです。
+
+ここでは以下のAPIを実装し、フロントエンドから利用できるようにします。
+
+- しりとりの対戦ルームに関するAPI `/room`
+  - しりとりに参加する
+    - POST でアクセスされる
+    - クライアントIDを受け取ってしりとりのルームIDを返す
+  - しりとりの相手ができたかを確認する
+    - GET でアクセスされる
+    - ルームIDを受け取って、ルームに2人揃ったかどうかとルームのメンバーを返す
+    - クライアントからはポーリングでアクセスする
+- しりとりの回答に関するAPI `/shiritori`
+  - 回答する
+    - POST でアクセスされる
+    - クライアントIDとルームIDと回答を受け取って、敗北か続行かを返す
+  - 相手の回答を取得する
+    - GET でアクセスされる
+    - クライアントIDとルームIDを受け取って、回答待ちか勝利かを返す
+    - クライアントからはポーリングでアクセスする
+
+以下に上記のAPIを実装したあと各所を穴あきにしたソースを示します。
+穴開きは ① ~ ⑮ まであります。
+⑧ まで説明しながら一緒に解きます。残りは自力でを埋めてみてください。
+
+<details>
+  <summary>app.py</summary>
+
+  ```python
+import uuid
+import json
+from flask import Flask, request
+
+app = Flask(__name__)
+
+rooms = {}
+
+# consts
+ROOM_KEY_PLAYERS = 'players'
+ROOM_KEY_SHIRITORI = 'shiritori'
+ROOM_KEY_STATUS = 'status'
+STATUS_MATCHING = 'matching'
+STATUS_PLAYING = 'playing'
+STATUS_FINISHED = 'finished'
+
+@app.route('/')
+def index() -> str:
+    """
+    '/'にアクセスされたときの処理を行う関数
+    """
+    return 'hello world!'
+
+@app.route('/api/room', methods=["POST", "GET"])
+def join() -> dict:
+    """
+    しりとりのルームに関する状態を取得するAPI
+
+    POSTならルームへの参加
+    GETならルーム状態の取得
+    """
+    if (request.method == "POST"):
+        # POSTのときの処理
+
+        # POSTリクエストのbodyにあるデータを取り出してデコード
+        # JSONとして解釈して辞書型的に使える形式にして data に代入
+        data = json.loads(request. ① .decode('utf-8'))
+        # 今あるルームのIDのリストを取得
+        roomids = list(rooms. ② ())
+
+        if (len(roomids) > 0\
+                ③ rooms[roomids[-1]][ROOM_KEY_STATUS] == STATUS_MATCHING):
+            # ルームが1以上あり、
+            # かつ最後のルームのプレイヤーが一人なら
+
+            # ルームに参加してステータスをプレイ中にする
+            ④[ROOM_KEY_PLAYERS].append(data['id'])
+            ④[ROOM_KEY_STATUS] = STATUS_PLAYING
+            # 入ったルームを返す
+            return {'roomId': ④}
+        
+        else:
+            # ルームが無い
+            # もしくは最後のルームのプレイヤーが一人でないなら
+
+            # ルームを新しく作成する
+            roomid = str(uuid.uuid4())
+            rooms[roomid] = {
+                ROOM_KEY_PLAYERS: [ ⑤ ],
+                ROOM_KEY_SHIRITORI: ['しりとり'],
+                ROOM_KEY_STATUS: STATUS_MATCHING
+            }
+            # 入ったルームを返す
+            return {'roomId': roomid}
+
+    ⑥ (request.method == "GET"):
+        # GETのときの処理
+
+        # クエリパラメータからルームIDを取得
+        params = request. ⑦
+        roomid = params['roomid']
+
+        # ルームのステータスが 'playing' ならTrueに
+        # そうでないならFalseになる
+        ready = len(rooms[roomid][ROOM_KEY_STATUS]) == STATUS_PLAYING
+        # ルームの準備状況とメンバーを返す
+        return {'ready': ⑧ , 'member': rooms[roomid][ROOM_KEY_PLAYERS]}
+
+@app.route('/api/shiritori/<roomid>', methods=["POST", "GET"])
+def shiritori(roomid) -> dict:
+    """
+    しりとりをやり取りするAPI
+
+    pathparamからルームIDを取得する
+
+    POSTならしりとりに回答する
+    GETなら現在の最後の回答を取得する
+    """
+    if ( ⑨ ):
+        # POSTのときの処理
+
+        # POSTリクエストのbodyにあるデータを取り出してデコード
+        # JSONとして解釈して辞書型的に使える形式にして data に代入
+        data = ⑩
+        # dataから回答を抜き出す
+        answer = data['answer']
+
+        # ルーム情報からしりとりの履歴を取得
+        shiritories = rooms[roomid][ROOM_KEY_SHIRITORI]
+        lastword = shiritories[-1]
+
+        # 最後のことばの最後の文字と回答の最初の文字が等しいかどうか
+        is_same_last_letter_and_firtst_lettar = lastword[⑪] == answer[0]
+        # 回答の最後の文字が ん であるかどうか
+        is_last_letter_NN = answer[ ⑫ ] == 'ん'
+        # 回答が既に使われたことばかどうか
+        is_appeared = answer ⑬ shiritories
+
+        # ルームの履歴に回答を追加する
+        rooms[roomid][ROOM_KEY_SHIRITORI]. ⑭ (answer)
+
+        if (not is_same_last_letter_and_firtst_lettar\
+                or is_last_letter_NN\
+                or is_appeared):
+            # しりとりのルールを守れていない回答なら
+
+            # ルームのステータスを 'finished' にする
+            rooms[roomid][ROOM_KEY_STATUS] = STATUS_FINISHED
+            # 敗北したことを返す
+            return {'result': 'defeat'}
+
+        else:
+            # しりとりのルールが守られている回答なら
+
+            # 回答が成功したことを返す
+            return {'result': 'collect'}
+
+    elif ( ⑮ ):
+        # GETのときの処理
+
+        # ルームのしりとり履歴を取得
+        shiritories = rooms[roomid][ROOM_KEY_SHIRITORI]
+
+        if (rooms[roomid][ROOM_KEY_STATUS] == STATUS_FINISHED):
+            # ルームのステータスが 'finished' なら
+
+            # 勝利したことを返す
+            return {'result': 'victory'}
+
+        elif ((rooms[roomid][ROOM_KEY_STATUS] == STATUS_PLAYING)):
+            # ルームのステータスがプレイ中なら
+
+            # 現在の最後の回答を返す
+            return {
+                'lastword': shiritories[-1],
+                'words': len(shiritories)
+            }
+
+if __name__ == '__main__':
+    app.run(
+        host='0.0.0.0',
+        port=5000,
+        debug=True,
+        load_dotenv=False
+    )
+  ```
+</details>
+
+- ① `data`
+  - <https://flask.palletsprojects.com/en/latest/api/#flask.Request.data>
+  - FlaskのRequestはdataというプロパティを持ち、ここにリクエストのbodyが格納されています
+- ② `keys`
+  - `rooms` は辞書型として定義されていて、そのキーをルームIDとして取り扱っています
+  - 辞書型のキーのみを取り出せる`keys()`メソッドでルームIDを取り出しています。
+- ③ `and`
+  - 「かつ」を意味する論理演算子です
+- ④ `rooms[roomids[-1]]`
+  - ルームの辞書の中から、取り出したルームIDのリストで一番うしろのキーを使い、最後のルームを取得します
+- ⑤ `data['id']`
+  - ① の行で辞書として解釈したため、`'id'`をキーとしてリクエストに含まれているデータを取り出せます
+- ⑥ `elif`
+  - `if` の条件を満たさなかったとき、次に評価される条件です
+- ⑦ `.args.to_dict()`
+  - リクエストからクエリパラメータを取得し、辞書型として解釈します
+- ⑧ `ready`
+  - 直前で定義した評価値を返却します
+
+<details>
+  <summary>⑨ ~ ⑮</sumamry>
+
+- ⑨
+  - `/room` の処理を参考に解きましょう
+- ⑩
+  - `/room` の処理を参考に解きましょう
+- ⑪
+  - pythonの文字列はリストのような方法でn個目の文字にアクセスできます
+- ⑫
+  - ⑪と同様です
+- ⑬
+  - shiritories の中に answer が含まれているかどうかを評価したいです
+- ⑭
+  - しりとりの履歴に回答を追加したいです
+- ⑮
+  - `/room` の処理を参考に解きましょう
+
+</details>
+
+### 3.2 テンプレートエンジンを使おう
+
+冒頭1.で紹介した通り、Flaskにはテンプレートエンジン [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) が搭載されています。これを利用してしりとりをするためのページを作成します。
+なお、制作の簡単のために `Alpine.js` というJavaScriptフレームワークを使用します。
