@@ -24,8 +24,13 @@
       - [2.4.6. Flaskをインストールする](#246-flaskをインストールする)
   - [3. Flaskを始めよう](#3-flaskを始めよう)
     - [3.0. はじめの一歩](#30-はじめの一歩)
-    - [3.1 APIをつくろう](#31-apiをつくろう)
-    - [3.2 テンプレートエンジンを使おう](#32-テンプレートエンジンを使おう)
+    - [3.1. APIをつくろう](#31-apiをつくろう)
+    - [3.2. テンプレートエンジンを使おう](#32-テンプレートエンジンを使おう)
+      - [3.2.1. テンプレートを利用したページをクライアントに返そう](#321-テンプレートを利用したページをクライアントに返そう)
+      - [3.2.2. テンプレートを継承しよう](#322-テンプレートを継承しよう)
+      - [3.2.3. 静的ファイルを利用しよう](#323-静的ファイルを利用しよう)
+      - [3.2.4. しりとりしよう](#324-しりとりしよう)
+  - [4. 終わりに](#4-終わりに)
 
 </details>
 
@@ -252,6 +257,8 @@ code ~/blog
   - 構文のサポート
 - autoDocstring <vscode:extension/njpwerner.autodocstring>
   - Docstring(JSDocのPython版)を書きやすくする
+- jinja Snippets <vscode:extension/noxiz.jinja-snippets>
+  - jinjaテンプレートを書くときに便利なスニペットを追加する
 
 #### 2.4.5. venvのセットアップ
 
@@ -340,7 +347,7 @@ curl localhost:5000
 
 ↑のように `hello world!` が帰ってきていれば成功です。
 
-### 3.1 APIをつくろう
+### 3.1. APIをつくろう
 
 APIとは「Application Programing Interface」の略で、あるソフトウェアの機能を呼び出したりデータを取り出したりするための規約・手順のことです。
 今後資料中でAPIと書いてある箇所は WebAPI を指します。
@@ -375,7 +382,7 @@ WebAPIとは、APIの中で特にそのやり取りをHTTPの上で行うもの�
   ```python
 import uuid
 import json
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -422,7 +429,7 @@ def join() -> dict:
             ④[ROOM_KEY_PLAYERS].append(data['id'])
             ④[ROOM_KEY_STATUS] = STATUS_PLAYING
             # 入ったルームを返す
-            return {'roomId': ④}
+            return jsonify({'roomId': ④})
         
         else:
             # ルームが無い
@@ -436,7 +443,7 @@ def join() -> dict:
                 ROOM_KEY_STATUS: STATUS_MATCHING
             }
             # 入ったルームを返す
-            return {'roomId': roomid}
+            return jsonify({'roomId': roomid})
 
     ⑥ (request.method == "GET"):
         # GETのときの処理
@@ -449,7 +456,7 @@ def join() -> dict:
         # そうでないならFalseになる
         ready = len(rooms[roomid][ROOM_KEY_STATUS]) == STATUS_PLAYING
         # ルームの準備状況とメンバーを返す
-        return {'ready': ⑧ , 'member': rooms[roomid][ROOM_KEY_PLAYERS]}
+        return jsonify({'ready': ⑧ , 'member': rooms[roomid][ROOM_KEY_PLAYERS]})
 
 @app.route('/api/shiritori/<roomid>', methods=["POST", "GET"])
 def shiritori(roomid) -> dict:
@@ -492,13 +499,13 @@ def shiritori(roomid) -> dict:
             # ルームのステータスを 'finished' にする
             rooms[roomid][ROOM_KEY_STATUS] = STATUS_FINISHED
             # 敗北したことを返す
-            return {'result': 'defeat'}
+            return jsonify({'result': 'defeat'})
 
         else:
             # しりとりのルールが守られている回答なら
 
             # 回答が成功したことを返す
-            return {'result': 'collect'}
+            return jsonify({'result': 'collect'})
 
     elif ( ⑮ ):
         # GETのときの処理
@@ -510,16 +517,16 @@ def shiritori(roomid) -> dict:
             # ルームのステータスが 'finished' なら
 
             # 勝利したことを返す
-            return {'result': 'victory'}
+            return jsonify({'result': 'victory'})
 
         elif ((rooms[roomid][ROOM_KEY_STATUS] == STATUS_PLAYING)):
             # ルームのステータスがプレイ中なら
 
             # 現在の最後の回答を返す
-            return {
+            return jsonify({
                 'lastword': shiritories[-1],
                 'words': len(shiritories)
-            }
+            })
 
 if __name__ == '__main__':
     app.run(
@@ -570,7 +577,422 @@ if __name__ == '__main__':
 
 </details>
 
-### 3.2 テンプレートエンジンを使おう
+無事出来上がれば、↓の一連の`curl`コマンドでターミナルからしりとりができるようになるはずです。
+
+```bash
+# 一人目がルームを作成して参加
+curl localhost:5000/api/room -H "Content-type: application/json" -X POST -d '{"id": 1}'
+# 二人目がルームに参加
+curl localhost:5000/api/room -H "Content-type: application/json" -X POST -d '{"id": 2}'
+# 帰ってきたルームIDを変数に入れておく
+id="<roomId>"
+
+# ポーリングでルームが準備完了か取り続ける
+# 今回は二人揃っているので {"member": [1, 2], "ready": true} が返ってくる
+curl "localhost:5000/api/room?roomid=$id"
+
+# しりとりの最後の単語と単語数を取ってくる
+curl "localhost:5000/api/shiritori/$id"
+# 単語がunicodeでエンコードされてくるのでデコードして確認してみる
+python -c "print(b'<lastword>'.decode('unicode-escape'))"
+
+# しりとりに回答する
+curl "localhost:5000/api/shiritori/$id" -X POST -H "Content-Type: application/json" -d '{"answer": "りんご"}'
+
+# 最後の単語が変わってることを確認
+curl "localhost:5000/api/shiritori/$id"
+python -c "print(b'<lastword>'.decode('unicode-escape'))"
+
+# しりとりを続ける
+curl "localhost:5000/api/shiritori/$id" -X POST -H "Content-Type: application/json" -d '{"answer": "ごじら"}'
+curl "localhost:5000/api/shiritori/$id" -X POST -H "Content-Type: application/json" -d '{"answer": "らっぱ"}'
+# 敗北条件を満たす回答をしたら {"result": "defeat"} が返ってくる
+curl "localhost:5000/api/shiritori/$id" -X POST -H "Content-Type: application/json" -d '{"answer": "ぱん"}'
+
+# ポーリングされるはずのGETを確認すると {"result": "victory"} が返ってくる
+curl "localhost:5000/api/shiritori/$id"
+```
+
+### 3.2. テンプレートエンジンを使おう
 
 冒頭1.で紹介した通り、Flaskにはテンプレートエンジン [Jinja](https://jinja.palletsprojects.com/en/3.1.x/) が搭載されています。これを利用してしりとりをするためのページを作成します。
 なお、制作の簡単のために `Alpine.js` というJavaScriptフレームワークを使用します。
+
+#### 3.2.1. テンプレートを利用したページをクライアントに返そう
+
+最初にページを返すルーティングを作ります。  
+今回はルームに参加するための `/home` と、しりとりをする `/game` を用意しましょう。  
+ついでに `/` へのアクセスも `/home` にリダイレクトするようにします。
+
+以下の内容を `app.py` に追記してください。
+
+```python
+# Flaskから追加でインポート
+from flask import Flask, request, jsonify, redirect, render_template
+
+# ~~~
+
+@app.route('/')
+def index() -> str:
+    """
+    '/'にアクセスされたときの処理を行う関数
+    """
+    return redirect('/home')
+
+@app.route('/home')
+def home() -> str:
+    return render_template("home.html.j2")
+
+@app.route('/game')
+def game() -> str:
+    return render_template("game.html.j2")
+
+# ~~~
+```
+
+ここで`redirect()`と`render_template()`という新しい関数が登場します。  
+これらはルートへのアクセスに対してレスポンスを生成するための関数です。
+
+`redirect()` は名のとおりリダイレクトレスポンスを返すもので、それをクライアントに返してリダイレクトさせています。
+
+`render_template()` は与えられたパスにあるテンプレートをレンダリングして返すものです。  
+このパスは`app.py`から見た相対パスではありません。`app.py`と同階層に`templates`ディレクトリがあるとして、その直下を起点とした相対パスになります。
+
+ではこれを踏まえて以下の構造になるようファイル・ディレクトリを作成してください
+
+```bash
+flask-shiritori/
+    ├── static/
+    │   └── style.css
+    ├── templates/
+    │   ├── base.html.j2
+    │   ├── home.html.j2
+    │   └── game.html.j2
+    └── app.py
+```
+
+この時点ではアクセスしても何も表示されません。
+
+#### 3.2.2. テンプレートを継承しよう
+
+Jinjaテンプレートには、テンプレートを継承するための `{% block %}`/`{% extends %}` という構文があります。
+今回はこれを利用して、`base.html.j2`を継承して`home.html.j2`、`game.html.j2`を実装します。
+
+試しに以下のソースを書き込んでブラウザから `localhost:5000` にアクセスしてみましょう。
+
+<details>
+  <summary>base.html.j2</summary>
+
+  ```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}Flaskしりとり</title>
+  </head>
+  <body>
+    <h1>Flaskしりとり</h1>
+  </body>
+</html>
+  ```
+
+</details>
+<details>
+  <summary>home.html.j2</summary>
+
+  ```html
+  {% extends "base.html.j2" %}
+  {% block title %}ホーム - {% endblock title %}
+  ```
+
+</details>
+<details>
+  <summary>game.html.j2</summary>
+
+  ```html
+  {% extends "base.html.j2" %}
+  {% block title %}ゲーム - {% endblock title %}
+  ```
+
+</details>
+
+`localhost:5000/home` と `localhost:5000/game` にアクセスしたときでタイトルが変わっているのがわかります。
+
+![home](images/jinja-template-extends-home.png)
+![game](images/jinja-template-extends-game.png)
+
+開発者ツールから`<head>`の内容を確認すると、`<title>`の中にそれぞれ`home.html.j2`、`game.html.j2`で`{% block title %}`の中に書いた「ホーム - 」「ゲーム - 」が展開されています。
+
+つまり、`{% block %}`/`{% extends %}`は以下のように利用できます。
+
+- 被継承ファイルでは `{% block xxx %}`~`{% endblock xxx %}` とすることで、継承ファイルから内容を流し込める
+- 継承は `{% extends "被継承ファイル名" %}` と書く
+- 継承ファイルから被継承ファイルで用意された `{% block xxx %}`~`{% endblock xxx %}` に内容を流し込むには、 `{% block xxx %}`~`{% endblock xxx %}` の内にソースを書けば良い
+
+#### 3.2.3. 静的ファイルを利用しよう
+
+CSSや画像の表示などで、テンプレートから静的ファイルにアクセスしたいことがあります。  
+こういった場合に利用できる記法を説明します。
+
+`style.css`と`base.html.j2`を以下のように編集してください。
+
+<details>
+  <summary>style.css</summary>
+
+  ```css
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  display: grid;
+  place-content: center;
+
+  > main {
+    display: grid;
+    place-content: center;
+  }
+}
+  ```
+
+</details>
+<details>
+  <summary>base.html.j2</summary>
+
+  ```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}Flaskしりとり</title>
+    <!-- 追加 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- 追加 -->
+  </head>
+  <body>
+    <h1>Flaskしりとり</h1>
+  </body>
+</html>
+  ```
+
+</details>
+
+注目するのは `base.html.j2` に追記した以下の行です。
+
+```html
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+```
+
+この `href` に設定されている `{{ }}` で囲んだ記法をマスタッシュ記法と呼びます。  
+この中の文はPythonで処理され、結果がその場に展開されます。
+
+今回はマスタッシュ記法の中で `url_for()`という関数が使われています。  
+その名の通り引数に渡したものへのURLを返す関数で、今回は第一引数に`'static'`を渡すことで、3.2.1.で用意してもらった`static`ディレクトリの中にある`filename`へのパスを生成させています。
+
+#### 3.2.4. しりとりしよう
+
+では以下のソースをそれぞれのファイルに貼り付けて作ったAPIとWebがうまく連携できるかを試しましょう。
+
+<details>
+  <summary>base.html.j2</summary>
+
+  ```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flaskしりとり{% endblock title %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="//unpkg.com/alpinejs" defer></script>
+    {% block script %}
+    {% endblock script %}
+  </head>
+  <body>
+    {% block main %}
+    {% endblock main %}
+  </body>
+</html>
+  ```
+
+</details>
+<details>
+  <summary>home.html.j2</summary>
+
+  ```html
+{% extends "base.html.j2" %}
+{% block title %}ホーム - Flaskしりとり{% endblock title %}
+{% block script %}
+<script>
+  const getIsRoomReady = async (roomId) => {
+    const response = await fetch(`/api/room?roomid=${roomId}`);
+    const result = JSON.parse(await response.text());
+    if (result.ready) {
+      window.localStorage.setItem(
+        'room',
+        JSON.stringify({
+          'id': roomId,
+          'member': result.member
+        })
+      );
+      window.location.href = '/game';
+    }
+  };
+
+  const homeControl = () => {
+    return {
+      isMatchingStarted: false,
+      async onJoinClicked () {
+        this.isMatchingStarted = true;
+        const myId = window.localStorage.getItem('myId') ?? self.crypto.randomUUID();
+        window.localStorage.setItem('myId', myId);
+        const response = await fetch('/api/room', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: myId
+          })
+        });
+        const result = await response.text();
+        const roomId = JSON.parse(result).roomId;
+
+        window.setInterval(() => getIsRoomReady(roomId), 1000);
+      }
+    }
+  };
+</script>
+{% endblock script %}
+{% block main %}
+<main x-data="homeControl()">
+  <h1>しりとり対戦</h1>
+  <button x-show="!isMatchingStarted" @click="onJoinClicked()">ルームに入る</button>
+  <p x-show="isMatchingStarted">マッチング中</p>
+</main>
+{% endblock main %}
+  ```
+
+</details>
+<details>
+  <summary>game.html.j2</summary>
+
+  ```html
+{% extends "base.html.j2" %}
+{% block title %}対戦 - Flaskしりとり{% endblock title %}
+{% block script %}
+<script>
+  const gameControl = () => {
+    return {
+      answer: '',
+      shiritories: [],
+      room: JSON.parse(window.localStorage.getItem('room')),
+      myId: window.localStorage.getItem('myId'),
+      lastword: '',
+      words: 0,
+      isFirstAttack: undefined,
+      pollingShiritori: undefined,
+      finished: false,
+      victory: false,
+
+      async init () {
+        await this.getShiritori();
+        this.isFirstAttack = this.room.member.indexOf(this.myId) === 0;
+
+        if (!this.isMyTurn()) {
+          const pollingFunc = async () => {
+            await this.getShiritori();
+            if (this.isMyTurn()) {
+              window.clearInterval(this.pollingShiritori);
+            }
+          };
+          this.pollingShiritori = window.setInterval(pollingFunc, 1000);
+        }
+      },
+
+      async getShiritori () {
+        const request = await fetch(`/api/shiritori/${this.room.id}`);
+        const result = JSON.parse(await request.text());
+        this.lastword = result?.lastword;
+        this.words = result?.words;
+        this.finished = result?.result === 'victory';
+        this.victory = result?.result === 'victory';
+      },
+
+      async postShiritori () {
+        const request = await fetch(
+          `/api/shiritori/${this.room.id}`, {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              'answer': this.answer
+            })
+          }
+        );
+        const result = JSON.parse(await request.text());
+        this.finished = result.result === 'defeat';
+        if (!this.finished) {
+          const pollingFunc = async () => {
+            await this.getShiritori();
+            if (this.isMyTurn() || this.finished) {
+              window.clearInterval(this.pollingShiritori);
+            }
+          };
+          this.pollingShiritori = window.setInterval(pollingFunc, 1000);
+          this.lastword = this.answer;
+          this.answer = '';
+          this.words++;
+        }
+      },
+
+      isMyTurn () {
+        return this.isFirstAttack
+                ? this.words % 2 === 1
+                : this.words % 2 === 0;
+      }
+    }
+  };
+</script>
+{% endblock script %}
+{% block main %}
+<main x-data="gameControl()">
+  <section>
+    <p><span x-text="isMyTurn() ? 'あなたの' : '相手の'"></span>ターンです。</p>
+    <p><span x-text="lastword"></span> → ?</p>
+  </section>
+  <input type="text" x-model="answer">
+  <button
+      @click="postShiritori()"
+      x-bind:disabled="!isMyTurn() || finished ? true : undefined">
+    回答する
+  </button>
+
+  <section x-show="finished">
+    <p><span x-text="victory ? 'あなた' : '相手'"></span>の勝利です</p>
+    <button @click="window.location.href = '/home'">トップに戻る</button>
+  </section>
+</main>
+{% endblock main %}
+  ```
+
+</details>
+
+ブラウザを通常とシークレットウィンドウで2つ使ってローカルで動作を確認してみてください。
+
+## 4. 終わりに
+
+今回はFlaskの勉強会ということで、環境構築からFlask+jinjaでページもAPIも配信するスタンドアロンなサーバーを実装してもらいました。
+
+今回の記事では使っていない機能もたくさんあるので、ぜひ色々調べて使ってみてもらえればいいなと思います。  
+
+> P.S. 3.で唐突に登場した `Alpine.js` について気になった人は [こちら](https://hackmd.io/@haruyuki16278/r1GutxjTo) も見てみてください。
