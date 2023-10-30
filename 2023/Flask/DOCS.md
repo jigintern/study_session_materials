@@ -303,7 +303,7 @@ pip install Flask
 
 ### 3.0. はじめの一歩
 
-まずFlaskにHello,World!しましょう。以下のコードをリポジトリ直下に`main.py`を作成して書き込んでください。
+まずFlaskにHello,World!しましょう。以下のコードをリポジトリ直下に`app.py`を作成して書き込んでください。
 
 ```python
 """
@@ -333,7 +333,7 @@ if __name__ == '__main__':
 以下のコマンドで↑のコードを実行します。
 
 ```bash
-python main.py
+python app.py
 ```
 
 ![flask quickstart](images/flask-tiny-quickstart.png)
