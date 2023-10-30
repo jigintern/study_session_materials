@@ -99,9 +99,8 @@ VSCodeでフォルダを開いてみると以下のようになっていると�
 
 <img src="./imgs/スクリーンショット01.png">
 
-# 立ち上げてみよう
 
-以下のコマンドを実行してみましょう。
+最後に、次のコマンドを実行してDeno Freshのプロジェクトを立ち上げてみましょう。
 
 ```sh
 $ deno task start
@@ -115,8 +114,112 @@ The manifest has been generated for 5 routes and 1 islands.
     Local: http://localhost:8000/
 ```
 
-`http://localhost:8000/`を見てみましょう。
+`http://localhost:8000/`を見てみて、この画面が表示されたらOKです！
 
 <img src="./imgs/スクリーンショット02.png" />
 
-この画面が表示されたらOKです！
+# フォルダのかるーい説明
+
+青の枠で書かれた部分がサーバー側のコードで、赤の枠で書かれた部分がクライアント側のコードになっています。
+
+<img src="./imgs/スクリーンショット03.png" />
+
+- クライアント側
+  - static/
+    - アイコンや画像などを置いておくフォルダ
+  - component/, islands/
+    - 画面に表示する部品(コンポーネント類)
+- サーバー側
+  - main.ts, dev.ts
+    - サーバーを立ち上げるときに実行されるファイルで、本番はmain.ts, 開発ではdev.tsを実行している
+  - routes
+    - アクセスされたURLに応じて、表示する画面や処理を行っている
+
+# 新しい画面を作成してみよう
+
+1. routes/に`hello.tsx`というファイルを作成してみよう。
+
+Deno Freshではクライアント側の処理で、[React](https://react.dev/)というwebフレームワークから派生した[Preact](https://preactjs.com/)をというものを採用しているので、拡張子が「`.tsx`」というものになります。
+
+`.ts`ファイルと`.tsx`ファイルの違いは、JSXという記法ができるかどうかになります。
+
+つまり、簡単にいうと`.ts`ファイル内でHTMLのようなコードを書けるようになったのが`.tsx`ファイルです。
+
+2. `hello.tsx`を作成したら以下のコードを打ち込んでみよう
+
+```ts
+export default function Hello() {
+  return (
+    <>
+        <h1>Hello</h1>
+    </>
+  );
+}
+```
+
+3. ブラウザのURLの`http://localhost:8000`に`/hello`を追記してみよう
+
+以下の画面が表示されれば問題なく新規の画面が追加できています。
+
+左上に小さく「Hello」の文字が表示されています。
+
+<img src="./imgs/スクリーンショット04.png" />
+
+まとめると、routes/にファイルを追加したら、`localhost:8000/ファイル名`でアクセスできるようになりました。
+
+# クライアント側でAPIリクエストを送ってみよう
+
+1. `hello.tsx`を以下のように改良してみよう
+
+```ts
+export default async function Hello() {
+  // APIリクエストを実行
+  const res = await fetch('http://localhost:8000/api/joke')
+  // レスポンスのテキストを取り出す
+  const joke = await res.text()
+
+  return (
+    <>
+        <h1>joke: { joke }</h1>
+    </>
+  );
+}
+```
+
+すると以下のようにジョークが表示されていると思います。
+
+<img src="./imgs//スクリーンショット05.png" />
+
+APIリクエスト先のhttp:\//localhost:8000/api/jokeの処理は`routes/api/joke.ts`に書かれています。
+
+```ts
+export const handler = (_req: Request, _ctx: HandlerContext): Response => {
+  // 配列のindexをランダム決める
+  const randomIndex = Math.floor(Math.random() * JOKES.length);
+  // 返すジョークを代入
+  const body = JOKES[randomIndex];
+  // レスポンスを返す
+  return new Response(body);
+};
+```
+
+# サーバー側でAPIリクエストを返してみよう
+
+1. `routes/api/joke.ts`を編集してみよう
+
+`JOKES`を日本語版にしてみよう
+
+```ts
+const JOKES = [
+  'トマトを食べるの　ちょっと待っとって',
+  'お金を取られた　おっかねー',
+  'スイカを積んだ　せんすいかん',
+  'トイレでバッタが　ふんばった',
+  'このアジ　とっても味がある',
+  '鯛の刺身が　食べたいな'
+];
+```
+
+再度アクセスしてみると日本語のジョークが返されていると思います。
+
+まとめると、APIリクエストの処理は`routes/api/`にファイルを追加していきましょう。
