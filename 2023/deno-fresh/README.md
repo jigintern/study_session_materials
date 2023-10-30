@@ -2,15 +2,16 @@
 # はじめに
 今回の勉強会では[Deno Fresh](https://fresh.deno.dev/)を用いて簡単なWebサイトを作成しようと思います！
 
-公式サイトより
-> Deno FreshはJavaScriptとTypeScriptの開発者向けのフルスタックのモダンなWebフレームワーク
+Deno Freshとは
+> Deno FreshはJavaScriptとTypeScriptの開発者向けのフルスタックのモダンなWebフレームワーク 
 
 フルスタックWebフレームワークとは、バックエンドもフロントエンドもこれ一つで作れるというものです。
 
 # 今回の目標
 
 1. Deno Freshのプロジェクトを作成できる
-2. Deno Freshの使い方がなんとなくわかる！
+2. 新規の画面を作ることができる
+3. ページからAPIリクエストを叩いて、サーバー側で返されたものをページに反映させることができる
 
 # Deno Freshのプロジェクトを作成 (準備編)
 
@@ -139,13 +140,13 @@ The manifest has been generated for 5 routes and 1 islands.
 
 1. routes/に`hello.tsx`というファイルを作成してみよう。
 
-Deno Freshではクライアント側の処理で、[React](https://react.dev/)というwebフレームワークから派生した[Preact](https://preactjs.com/)をというものを採用しているので、拡張子が「`.tsx`」というものになります。
+Deno Freshではクライアント側の処理で、[React](https://react.dev/)というwebフレームワークから派生した[Preact](https://preactjs.com/)をというものを採用しています。
 
-`.ts`ファイルと`.tsx`ファイルの違いは、JSXという記法ができるかどうかになります。
+拡張子が「`.tsx`」というもので、`.ts`ファイルと`.tsx`ファイルの違いは、JSXという記法ができるかどうかになります。
 
-つまり、簡単にいうと`.ts`ファイル内でHTMLのようなコードを書けるようになったのが`.tsx`ファイルです。
+簡単にいうと`.ts`ファイル内でHTMLのようなコードを書けるようになったのが`.tsx`ファイルです。
 
-2. `hello.tsx`を作成したら以下のコードを打ち込んでみよう
+2. `hello.tsx`を作成したらコードを書いてみましょう
 
 ```ts
 export default function Hello() {
@@ -157,11 +158,11 @@ export default function Hello() {
 }
 ```
 
-3. ブラウザのURLの`http://localhost:8000`に`/hello`を追記してみよう
+3. 保存したらブラウザのURLの`http://localhost:8000`に`/hello`を追記してアクセスしてみよう
 
 以下の画面が表示されれば問題なく新規の画面が追加できています。
 
-左上に小さく「Hello」の文字が表示されています。
+(左上に小さく「Hello」の文字が表示されています。)
 
 <img src="./imgs/スクリーンショット04.png" />
 
@@ -190,7 +191,7 @@ export default async function Hello() {
 
 <img src="./imgs//スクリーンショット05.png" />
 
-APIリクエスト先のhttp:\//localhost:8000/api/jokeの処理は`routes/api/joke.ts`に書かれています。
+APIリクエスト先の`http:\//localhost:8000/api/joke`の処理は`routes/api/joke.ts`に書かれています。
 
 ```ts
 export const handler = (_req: Request, _ctx: HandlerContext): Response => {
@@ -203,11 +204,13 @@ export const handler = (_req: Request, _ctx: HandlerContext): Response => {
 };
 ```
 
-# サーバー側でAPIリクエストを返してみよう
+JOKES配列の中にあるジョークからランダムに一つ取り出して、その文字列を返しています。
+
+# サーバー側のAPIリクエスト処理を編集してみよう
 
 1. `routes/api/joke.ts`を編集してみよう
 
-`JOKES`を日本語版にしてみよう
+ここでは`JOKES`を日本語版にしてみましょう
 
 ```ts
 const JOKES = [
@@ -220,6 +223,12 @@ const JOKES = [
 ];
 ```
 
-再度アクセスしてみると日本語のジョークが返されていると思います。
+ファイルを保存して、再度アクセスしてみると日本語のジョークが返されていると思います。
 
 まとめると、APIリクエストの処理は`routes/api/`にファイルを追加していきましょう。
+
+# まとめ
+
+Deno Freshのプロジェクトを立ち上げて、新規の画面を追加、ページからAPIリクエストを叩いて画面にレスポンスの値を反映させるところまで行うことができました。
+
+さらに理解を深めたい人は[公式Doc](https://fresh.deno.dev/docs/introduction)を覗いてみましょう
