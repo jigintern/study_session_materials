@@ -383,7 +383,7 @@ WebAPIとは、APIの中で特にそのやり取りをHTTPの上で行うもの�
   ```python
 import uuid
 import json
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect, render_template, Response
 
 app = Flask(__name__)
 
@@ -399,135 +399,140 @@ STATUS_FINISHED = 'finished'
 
 @app.route('/')
 def index() -> str:
-    """
+    '''
     '/'にアクセスされたときの処理を行う関数
-    """
-    return 'hello world!'
+    '''
+    return redirect('/home')
 
-@app.route('/api/room', methods=["POST", "GET"])
-def join() -> dict:
-    """
-    しりとりのルームに関する状態を取得するAPI
-
+@app.route('/api/room', methods=['POST'])
+def post_join() -> Response:
+    '''
+    しりとりのルームに関する状態を操作するAPI
     POSTならルームへの参加
+    '''
+    # POSTリクエストのbodyにあるデータを取り出してデコード
+    # JSONとして解釈して辞書型的に使える形式にして data に代入
+    data = json.loads(request. ① .decode('utf-8'))
+    # 今あるルームのIDのリストを取得
+    roomids = list(rooms. ② ())
+
+    if (len(roomids) > 0\
+            ③  rooms[roomids[-1]][ROOM_KEY_STATUS] == STATUS_MATCHING):
+        # ルームが1以上あり、
+        # かつ最後のルームのプレイヤーが一人なら
+
+        # ルームに参加してステータスをプレイ中にする
+        ④ [ROOM_KEY_PLAYERS].append(data['id'])
+        ④ [ROOM_KEY_STATUS] = STATUS_PLAYING
+        # 入ったルームを返す
+        return jsonify({'roomId': roomids[-1]})
+    
+    else:
+        # ルームが無い
+        # もしくは最後のルームのプレイヤーが一人でないなら
+
+        # ルームを新しく作成する
+        roomid = str(uuid.uuid4())
+        rooms[roomid] = {
+            ROOM_KEY_PLAYERS: [⑤],
+            ROOM_KEY_SHIRITORI: ['しりとり'],
+            ROOM_KEY_STATUS: STATUS_MATCHING
+        }
+        # 入ったルームを返す
+        return jsonify({'roomId': roomid})
+
+@app.route('/api/room', methods=['GET'])
+def get_join() -> Response:
+    '''
+    しりとりのルームに関する状態を操作するAPI
     GETならルーム状態の取得
-    """
-    if (request.method == "POST"):
-        # POSTのときの処理
+    '''
+    # クエリパラメータからルームIDを取得
+    params = request. ⑥
+    roomid = params['roomid']
 
-        # POSTリクエストのbodyにあるデータを取り出してデコード
-        # JSONとして解釈して辞書型的に使える形式にして data に代入
-        data = json.loads(request. ① .decode('utf-8'))
-        # 今あるルームのIDのリストを取得
-        roomids = list(rooms. ② ())
+    # ルームのステータスが 'playing' ならTrueに
+    # そうでないならFalseになる
+    ready = rooms[roomid][ROOM_KEY_STATUS] == STATUS_PLAYING
+    # ルームの準備状況とメンバーを返す
+    return jsonify({
+        'ready': ⑦,
+        'member': rooms[roomid][ROOM_KEY_PLAYERS]
+    })
 
-        if (len(roomids) > 0\
-                ③ rooms[roomids[-1]][ROOM_KEY_STATUS] == STATUS_MATCHING):
-            # ルームが1以上あり、
-            # かつ最後のルームのプレイヤーが一人なら
+@app.route('/api/shiritori/<roomid>', methods=[ ⑧ ])
+def post_shiritori(roomid) -> Response:
+    '''
+    しりとりをやり取りするAPI
 
-            # ルームに参加してステータスをプレイ中にする
-            ④[ROOM_KEY_PLAYERS].append(data['id'])
-            ④[ROOM_KEY_STATUS] = STATUS_PLAYING
-            # 入ったルームを返す
-            return jsonify({'roomId': ④})
-        
-        else:
-            # ルームが無い
-            # もしくは最後のルームのプレイヤーが一人でないなら
+    pathparamからルームIDを取得する
 
-            # ルームを新しく作成する
-            roomid = str(uuid.uuid4())
-            rooms[roomid] = {
-                ROOM_KEY_PLAYERS: [ ⑤ ],
-                ROOM_KEY_SHIRITORI: ['しりとり'],
-                ROOM_KEY_STATUS: STATUS_MATCHING
-            }
-            # 入ったルームを返す
-            return jsonify({'roomId': roomid})
+    POSTならしりとりに回答する
+    '''
+    # POSTリクエストのbodyにあるデータを取り出してデコード
+    # JSONとして解釈して辞書型的に使える形式にして data に代入
+    data = ⑨
+    # dataから回答を抜き出す
+    answer = data['answer']
 
-    ⑥ (request.method == "GET"):
-        # GETのときの処理
+    # ルーム情報からしりとりの履歴を取得
+    shiritories = rooms[roomid][ROOM_KEY_SHIRITORI]
+    lastword = shiritories[-1]
 
-        # クエリパラメータからルームIDを取得
-        params = request. ⑦
-        roomid = params['roomid']
+    # 最後のことばの最後の文字と回答の最初の文字が等しいかどうか
+    is_same_last_letter_and_firtst_lettar = lastword[ ⑩ ] == answer[0]
+    # 回答の最後の文字が ん であるかどうか
+    is_last_letter_NN = answer[⑪] == 'ん'
+    # 回答が既に使われたことばかどうか
+    is_appeared = answer ⑫ shiritories
 
-        # ルームのステータスが 'playing' ならTrueに
-        # そうでないならFalseになる
-        ready = len(rooms[roomid][ROOM_KEY_STATUS]) == STATUS_PLAYING
-        # ルームの準備状況とメンバーを返す
-        return jsonify({'ready': ⑧ , 'member': rooms[roomid][ROOM_KEY_PLAYERS]})
+    # ルームの履歴に回答を追加する
+    rooms[roomid][ROOM_KEY_SHIRITORI]. ⑬ (answer)
 
-@app.route('/api/shiritori/<roomid>', methods=["POST", "GET"])
-def shiritori(roomid) -> dict:
-    """
+    if (not is_same_last_letter_and_firtst_lettar\
+            or is_last_letter_NN\
+            or is_appeared):
+        # しりとりのルールを守れていない回答なら
+
+        # ルームのステータスを 'finished' にする
+        rooms[roomid][ROOM_KEY_STATUS] = STATUS_FINISHED
+        # 敗北したことを返す
+        return jsonify({'result': 'defeat'})
+
+    else:
+        # しりとりのルールが守られている回答なら
+
+        # 回答が成功したことを返す
+        return jsonify({'result': 'collect'})
+
+
+@app.route('/api/shiritori/<roomid>', ⑭ )
+def get_shiritori(roomid) -> Response:
+    '''
     しりとりをやり取りするAPI
 
     pathparamからルームIDを取得する
 
     POSTならしりとりに回答する
     GETなら現在の最後の回答を取得する
-    """
-    if ( ⑨ ):
-        # POSTのときの処理
+    '''
+    # ルームのしりとり履歴を取得
+    shiritories = rooms[roomid][ROOM_KEY_SHIRITORI]
 
-        # POSTリクエストのbodyにあるデータを取り出してデコード
-        # JSONとして解釈して辞書型的に使える形式にして data に代入
-        data = ⑩
-        # dataから回答を抜き出す
-        answer = data['answer']
+    if (rooms[roomid][ROOM_KEY_STATUS] == STATUS_FINISHED):
+        # ルームのステータスが 'finished' なら
 
-        # ルーム情報からしりとりの履歴を取得
-        shiritories = rooms[roomid][ROOM_KEY_SHIRITORI]
-        lastword = shiritories[-1]
+        # 勝利したことを返す
+        return jsonify({'result': 'victory'})
 
-        # 最後のことばの最後の文字と回答の最初の文字が等しいかどうか
-        is_same_last_letter_and_firtst_lettar = lastword[⑪] == answer[0]
-        # 回答の最後の文字が ん であるかどうか
-        is_last_letter_NN = answer[ ⑫ ] == 'ん'
-        # 回答が既に使われたことばかどうか
-        is_appeared = answer ⑬ shiritories
+    elif ((rooms[roomid][ROOM_KEY_STATUS] == STATUS_PLAYING)):
+        # ルームのステータスがプレイ中なら
 
-        # ルームの履歴に回答を追加する
-        rooms[roomid][ROOM_KEY_SHIRITORI]. ⑭ (answer)
-
-        if (not is_same_last_letter_and_firtst_lettar\
-                or is_last_letter_NN\
-                or is_appeared):
-            # しりとりのルールを守れていない回答なら
-
-            # ルームのステータスを 'finished' にする
-            rooms[roomid][ROOM_KEY_STATUS] = STATUS_FINISHED
-            # 敗北したことを返す
-            return jsonify({'result': 'defeat'})
-
-        else:
-            # しりとりのルールが守られている回答なら
-
-            # 回答が成功したことを返す
-            return jsonify({'result': 'collect'})
-
-    elif ( ⑮ ):
-        # GETのときの処理
-
-        # ルームのしりとり履歴を取得
-        shiritories = rooms[roomid][ROOM_KEY_SHIRITORI]
-
-        if (rooms[roomid][ROOM_KEY_STATUS] == STATUS_FINISHED):
-            # ルームのステータスが 'finished' なら
-
-            # 勝利したことを返す
-            return jsonify({'result': 'victory'})
-
-        elif ((rooms[roomid][ROOM_KEY_STATUS] == STATUS_PLAYING)):
-            # ルームのステータスがプレイ中なら
-
-            # 現在の最後の回答を返す
-            return jsonify({
-                'lastword': shiritories[-1],
-                'words': len(shiritories)
-            })
+        # 現在の最後の回答を返す
+        return jsonify({
+            'lastword': shiritories[-1],
+            'words': len(shiritories)
+        })
 
 if __name__ == '__main__':
     app.run(
@@ -551,29 +556,27 @@ if __name__ == '__main__':
   - ルームの辞書の中から、取り出したルームIDのリストで一番うしろのキーを使い、最後のルームを取得します
 - ⑤ `data['id']`
   - ① の行で辞書として解釈したため、`'id'`をキーとしてリクエストに含まれているデータを取り出せます
-- ⑥ `elif`
-  - `if` の条件を満たさなかったとき、次に評価される条件です
-- ⑦ `.args.to_dict()`
+- ⑥ `.args.to_dict()`
   - リクエストからクエリパラメータを取得し、辞書型として解釈します
-- ⑧ `ready`
+- ⑦ `ready`
   - 直前で定義した評価値を返却します
 
 <details>
-  <summary>⑨ ~ ⑮</sumamry>
+  <summary>⑧ ~ ⑭</sumamry>
 
+- ⑧
+  - `/room` の処理を参考に解きましょう
 - ⑨
   - `/room` の処理を参考に解きましょう
 - ⑩
-  - `/room` の処理を参考に解きましょう
-- ⑪
   - pythonの文字列はリストのような方法でn個目の文字にアクセスできます
-- ⑫
+- ⑪
   - ⑪と同様です
-- ⑬
+- ⑫
   - shiritories の中に answer が含まれているかどうかを評価したいです
-- ⑭
+- ⑬
   - しりとりの履歴に回答を追加したいです
-- ⑮
+- ⑭
   - `/room` の処理を参考に解きましょう
 
 </details>
