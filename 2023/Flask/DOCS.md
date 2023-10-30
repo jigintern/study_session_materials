@@ -31,15 +31,15 @@
       - [3.2.3. 静的ファイルを利用しよう](#323-静的ファイルを利用しよう)
       - [3.2.4. しりとりしよう](#324-しりとりしよう)
   - [4. 終わりに](#4-終わりに)
-  - [5.Azureを使ってデプロイしてみよう](#5azureを使ってデプロイしてみよう)
+  - [5. Azureを使ってデプロイしてみよう](#5-azureを使ってデプロイしてみよう)
 
 </details>
 
 ## 0. この勉強会でできるようになること・ならないこと
 
-この勉強会資料は、以下の内容ができるようになることを目標に作成されています。
+この勉強会では、以下の内容ができるようになることを目標に作成されています。
 
-- Flask + Jinja Template でSSR(Server Side Rendering)したページを配信できるようになる
+- Flask + Jinja Template でSSRしたページを配信できるようになる
 - Flaskで静的ファイルを配信できるようになる
 - FlaskでREST APIを作成できるようになる
 - (延長戦)Azure App Service を使って作ったWebアプリをデプロイする
@@ -303,9 +303,9 @@ pip install Flask
 
 ### 3.0. はじめの一歩
 
-まずFlaskにHello,World!しましょう。以下のコードをリポジトリ直下に`app.py`を作成して書き込んでください。
+まずFlaskにHello,World!しましょう。以下のコードをリポジトリ直下に`main.py`を作成して書き込んでください。
 
-```python
+```python=
 """
 Flaskをインポート
 """
@@ -333,7 +333,7 @@ if __name__ == '__main__':
 以下のコマンドで↑のコードを実行します。
 
 ```bash
-python app.py
+python main.py
 ```
 
 ![flask quickstart](images/flask-tiny-quickstart.png)
@@ -640,11 +640,11 @@ def index() -> str:
     """
     return redirect('/home')
 
-@app.route('/home')
+@app.route('/home', methods=['GET'])
 def home() -> str:
     return render_template("home.html.j2")
 
-@app.route('/game')
+@app.route('/game', methods=['GET'])
 def game() -> str:
     return render_template("game.html.j2")
 
@@ -1003,7 +1003,7 @@ body {
 <details>
   <summary>延長戦！</summary>
 
-  ## 5.Azureを使ってデプロイしてみよう
+  ## 5. Azureを使ってデプロイしてみよう
 
   せっかくなので、この資料で作ったしりとりアプリを[Microsoft Azure](https://azure.microsoft.com/ja-jp/)でデプロイしてみようとおもいます。
   ※ 有効なサブスクリプションのあるAzureアカウントが必要です。学校によってはMicrosoftの学校認証で無料クレジット付きサブスクリプションがあるかもしれないので、身近な先生に聞いてみるといいかもしれません。
