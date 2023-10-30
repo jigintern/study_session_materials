@@ -31,7 +31,7 @@
       - [3.2.3. 静的ファイルを利用しよう](#323-静的ファイルを利用しよう)
       - [3.2.4. しりとりしよう](#324-しりとりしよう)
   - [4. 終わりに](#4-終わりに)
-  - [4. Azureを使ってデプロイしてみよう](#4-azureを使ってデプロイしてみよう)
+  - [5.Azureを使ってデプロイしてみよう](#5azureを使ってデプロイしてみよう)
 
 </details>
 
@@ -1001,30 +1001,30 @@ body {
 > P.S. 3.で唐突に登場した `Alpine.js` について気になった人は [こちら](https://hackmd.io/@haruyuki16278/r1GutxjTo) も見てみてください。
 
 <details>
-  <summary>延長戦！<summary>
+  <summary>延長戦！</summary>
 
-## 4. Azureを使ってデプロイしてみよう
+  ## 5.Azureを使ってデプロイしてみよう
 
-せっかくなので、この資料で作ったしりとりアプリを[Microsoft Azure](https://azure.microsoft.com/ja-jp/)でデプロイしてみようとおもいます。
-※ 有効なサブスクリプションのあるAzureアカウントが必要です。学校によってはMicrosoftの学校認証で無料クレジット付きサブスクリプションがあるかもしれないので、身近な先生に聞いてみるといいかもしれません。
+  せっかくなので、この資料で作ったしりとりアプリを[Microsoft Azure](https://azure.microsoft.com/ja-jp/)でデプロイしてみようとおもいます。
+  ※ 有効なサブスクリプションのあるAzureアカウントが必要です。学校によってはMicrosoftの学校認証で無料クレジット付きサブスクリプションがあるかもしれないので、身近な先生に聞いてみるといいかもしれません。
 
-今回は[App Service](https://azure.microsoft.com/ja-jp/)を利用します。
+  今回は[App Service](https://azure.microsoft.com/ja-jp/)を利用します。
 
-VSCodeの[Azure Tools](vscode:extension/ms-vscode.vscode-node-azure-pack)をインストールしましょう。
+  VSCodeの[Azure Tools](vscode:extension/ms-vscode.vscode-node-azure-pack)をインストールしましょう。
 
-左のタブからAzureを選び、「Sign in to Azure」でサインインします。
+  左のタブからAzureを選び、「Sign in to Azure」でサインインします。
 
-RESOURCES の + から「Create App Service Web App」を選択し、指示に沿って進めていきます。
-途中価格プランを聞かれるので、一旦F1プランを選択しておくのがいいでしょう。
+  RESOURCES の + から「Create App Service Web App」を選択し、指示に沿って進めていきます。
+  途中価格プランを聞かれるので、一旦F1プランを選択しておくのがいいでしょう。
 
-拡張機能によって App Service がセットアップされると、右下に開いているプロジェクトをアップロードするか？と聞かれるので「Deploy」を押してデプロイしましょう。
+  拡張機能によって App Service がセットアップされると、右下に開いているプロジェクトをアップロードするか？と聞かれるので「Deploy」を押してデプロイしましょう。
 
-しばらく待つとデプロイされて、デプロイしたページを開くか？と聞かれるので開きましょう。
+  しばらく待つとデプロイされて、デプロイしたページを開くか？と聞かれるので開きましょう。
 
-うまくいっていれば↓のように開けます。
+  うまくいっていれば↓のように開けます。
 
-![azureにデプロイされたしりとり](images/azure-deployed.png)
+  ![azureにデプロイされたしりとり](images/azure-deployed.png)
 
-これで色んな人と遊べますね！
+  これで色んな人と遊べますね！
 
 </details>
