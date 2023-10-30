@@ -39,7 +39,7 @@
 
 この勉強会資料は、以下の内容ができるようになることを目標に作成されています。
 
-- Flask + Jinja Template でSSRしたページを配信できるようになる
+- Flask + Jinja Template でSSR(Server Side Rendering)したページを配信できるようになる
 - Flaskで静的ファイルを配信できるようになる
 - FlaskでREST APIを作成できるようになる
 - (延長戦)Azure App Service を使って作ったWebアプリをデプロイする
