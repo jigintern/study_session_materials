@@ -305,7 +305,7 @@ pip install Flask
 
 まずFlaskにHello,World!しましょう。以下のコードをリポジトリ直下に`main.py`を作成して書き込んでください。
 
-```python=
+```python
 """
 Flaskをインポート
 """
