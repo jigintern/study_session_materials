@@ -269,7 +269,7 @@ class _TodoListState extends State<TodoList> {
             ),
           ),
         ),
-        // ここから追加
+        // ゴミ箱のアイコンを追加
         IconButton(
           icon: const Icon(
             Icons.delete,
