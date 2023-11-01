@@ -13,9 +13,9 @@ DartPad → https://dartpad.dev
 - Container, Column, Row などのよく出てくる Widget の使い方がわかること
 - setState の使い方がわかること
 
-# 2. statelessWidget と statefulWidget
+# 2. StatelessWidget と StatefulWidget
 
-UI の作成方法について分かれば次は Widget についてもう少し詳しく説明します。[Widget とは？](./README.md##-4-1.-Widget-とは？)で説明したように状態（state）を必要とする StatefulWidget と 必要としない StatelessWidget があります。
+UI の作成方法について分かれば次は Widget についてもう少し詳しく説明します。[Widget とは？](./README.md#4-1-widget-とは)で説明したように状態（state）を必要とする StatefulWidget と 必要としない StatelessWidget があります。
 最初に動かした「Hello World」と出てくるだけのアプリでは、時間経過やユーザーの操作に応じて UI が変わることがありませんね。
 そういった一度構築したらその後は変化しないものについては、StatelessWidget を使用します。
 
@@ -269,6 +269,7 @@ class _TodoListState extends State<TodoList> {
             ),
           ),
         ),
+        // ここから追加
         IconButton(
           icon: const Icon(
             Icons.delete,
@@ -280,6 +281,7 @@ class _TodoListState extends State<TodoList> {
             });
           },
         ),
+        // ここまで
       ],
     ),
     // ...
@@ -307,6 +309,7 @@ class _TodoListState extends State<TodoList> {
       padding: const EdgeInsets.only(top: 16),
       itemBuilder: (context, index) {
         final todo = todoList[index];
+        // Dismissible Widget で Container Widget をラップする
         return Dismissible(
           background: Container(
             color: Colors.blue,
@@ -440,6 +443,9 @@ class _TodoListState extends State<TodoList> {
                               onChanged: (v) {
                                 // チェックマークを押したとき
                                 // 完了状態を変えるプログラムを書こう！
+                                setState(() {
+                                  todo['isFinish'] = v;
+                                });
                               },
                               side: const BorderSide(
                                 color: Colors.white,
@@ -484,6 +490,10 @@ class _TodoListState extends State<TodoList> {
                 onSubmitted: (String v) {
                   // 入力したテキストの送信時
                   // 入力された文字をtodoに登録するプログラムを書こう！
+                  setState(() {
+                    todoList.add({'content': v, 'isFinish': false});
+                    _controller.clear();
+                  });
                 },
                 decoration: InputDecoration(
                   labelText: 'やることを入力してください',
