@@ -2,18 +2,30 @@
 # はじめに
 今回の勉強会では[Deno Fresh](https://fresh.deno.dev/)を用いて簡単なWebサイトを作成しようと思います！
 
-Deno Freshとは
+Deno Freshとは公式サイトより
 > Deno FreshはJavaScriptとTypeScriptの開発者向けのフルスタックのモダンなWebフレームワーク 
 
-フルスタックWebフレームワークとは、バックエンドもフロントエンドもこれ一つで作れるというものです。
+VueやReact、Angularなどは主にクライアント側のコードを扱うフレームワークで、ExpressやNestJS、Fastifyなどは主にサーバー側のコードを扱うものでした。
+
+Deno Freshはサーバー側のコードとクライアント側のコードのその両方を扱えるフルスタックwebフレームワークであるということです。
+
+以前インターンでdenoを用いてアプリを作ったと思いますが、その時は何もフレームワークというものは導入せずに、ほとんど1から作成したと思います。
+
+Deno Freshというフレームワークを導入することで、
+1. 最初の環境構築をしなくて済む
+2. クライアント側のコードもTypeScriptでかける (JavaScriptにコンパイルしてくれる)
+3. パフォーマンス性の高いページを作成可能
+4. Deno Deployにてデプロイがめっちゃ楽 (すぐ公開できる)
 
 # 今回の目標
 
 1. Deno Freshのプロジェクトを作成できる
 2. 新規の画面を作ることができる
-3. ページからAPIリクエストを叩いて、サーバー側で返されたものをページに反映させることができる
+3. サーバー側の書き方が少しわかる
 
-# Deno Freshのプロジェクトを作成 (準備編)
+# Deno Freshのプロジェクトを作成
+
+## 準備
 
 まずDenoが入っていることを確かめましょう。
 
@@ -51,7 +63,7 @@ denoが入っていない人は[こちら](https://docs.deno.com/runtime/manual/
 
 準備ができたら、新規にフォルダを作成してもよいところにカレントディレクトリを移動しましょう。
 
-# Deno Freshのプロジェクトを作成
+## Deno Freshプロジェクトを作成する
 
 以下のコマンドを実行してDeno Freshのプロジェクトを作成しましょう。
 
@@ -136,20 +148,65 @@ The manifest has been generated for 5 routes and 1 islands.
   - routes
     - アクセスされたURLに応じて、表示する画面や処理を行っている
 
-# 新しい画面を作成してみよう
+# クライアント側のコードに関して
 
-1. routes/に`hello.tsx`というファイルを作成してみよう。
+## routes/index.tsxを覗いてみる
+
+表示されている画面には
+
+> Try updating this message in the./routes/index.tsx file, and refresh.
+
+と書かれているのでトップ画面に該当するファイルは`./routes/index.tsx`ファイルのようなので、`./routes/index.tsx`ファイルを覗いてみましょう。
+
+```ts
+export default function Home() {
+  return (
+    // HTML見たいなコード
+  )
+}
+```
+
+のようにHTMLみたいなコードを返している関数が置かれているのがわかります。
 
 Deno Freshではクライアント側の処理で、[React](https://react.dev/)というwebフレームワークから派生した[Preact](https://preactjs.com/)をというものを採用しています。
 
 拡張子が「`.tsx`」というもので、`.ts`ファイルと`.tsx`ファイルの違いは、JSXという記法ができるかどうかになります。
 
-簡単にいうと`.ts`ファイル内でHTMLのようなコードを書けるようになったのが`.tsx`ファイルです。
+簡単にいうと、JSX(拡張子が`.tsx`)ファイル内ではHTMLのコードを書くことができます。
+
+またhtml内のclassの文字列は[Tailwind](https://tailwindcss.com/)というCSSフレームワークのものです。
+
+このJSX記法やPreactやTailwindに関しては今回の勉強会では省略します。
+
+## routes/フォルダの仕組み
+
+ここでDeno Freshの特徴的な機能の一つのファイルシステムベースのルーティングについて説明します。
+
+Deno Freshは`routes/`の階層(パス)がそのままAPIリクエストのpathに対応しています。
+
+つまりAPIリクエストのpathが
+- `/`の時は`routes/index.tsx`をみにいく
+- `/hello`の時は`routes/hello.tsx`をみにいく
+- `/api/joke`の時は`routes/joke.ts`をみにいく
+- `/greet/:name`の時は`/routes/greet/[name].tsx`をみに行く
+
+ようになっています。
+ルーティングがファイル構造とマッチしていることでわかりやすいですね。
+
+詳しくは[こちら](https://fresh.deno.dev/docs/concepts/routing)
+
+
+## 新しい画面を作成してみよう
+
+上のセクションのファイルシステムベースのルーティングを考慮して新規の画面を作成してみましょう。
+
+1. routes/に`hello.tsx`というファイルを作成してみよう。
 
 2. `hello.tsx`を作成したらコードを書いてみましょう
 
 ```ts
 export default function Hello() {
+  // htmlのコードをtypescriptのコードの中に入れることができる
   return (
     <>
         <h1>Hello</h1>
@@ -165,8 +222,6 @@ export default function Hello() {
 (左上に小さく「Hello」の文字が表示されています。)
 
 <img src="./imgs/スクリーンショット04.png" />
-
-まとめると、routes/にファイルを追加したら、`localhost:8000/ファイル名`でアクセスできるようになりました。
 
 # クライアント側でAPIリクエストを送ってみよう
 
@@ -206,29 +261,65 @@ export const handler = (_req: Request, _ctx: HandlerContext): Response => {
 
 JOKES配列の中にあるジョークからランダムに一つ取り出して、その文字列を返しています。
 
-# サーバー側のAPIリクエスト処理を編集してみよう
+# サーバー側のコードに関して
 
-1. `routes/api/joke.ts`を編集してみよう
+## サーバー側のAPIリクエスト処理を追加してみよう
 
-ここでは`JOKES`を日本語版にしてみましょう
+ファイルシステムベースのルーティングを考慮して新規のAPIリクエスト処理を作成してみましょう。
+
+今回は「jig.jpの勉強会へようこそ」という文言を返すような処理を書いてみましょう。
+
+`routes/api/wellcome.ts`というファイルを作成しましょう。
+
+APIリクエストを処理してレスポンスを返す処理は以下のようなものになります。
 
 ```ts
-const JOKES = [
-  'トマトを食べるの　ちょっと待っとって',
-  'お金を取られた　おっかねー',
-  'スイカを積んだ　せんすいかん',
-  'トイレでバッタが　ふんばった',
-  'このアジ　とっても味がある',
-  '鯛の刺身が　食べたいな'
-];
+export const handler = (_req: Request, _ctx: HandlerContext): Response => {
+  const body = /** クライアント側に返したいもの */
+  return new Response(body);
+};
 ```
 
-ファイルを保存して、再度アクセスしてみると日本語のジョークが返されていると思います。
+よって
 
-まとめると、APIリクエストの処理は`routes/api/`にファイルを追加していきましょう。
+```ts
+export const handler = (_req: Request, _ctx: HandlerContext): Response => {
+  const body = 'jig.jpの勉強会へようこそ'
+  return new Response(body);
+};
+```
+
+のように書いて保存してみましょう。
+
+最後に`routes/hello.tsx`内のAPIリクエストのurlを`http://localhost:8000/api/wellcome`に変更して文言等も以下のように調整して、保存します。
+
+```ts
+export default async function Hello() {
+  const res = await fetch('http://localhost:8000/api/wellcome')
+  const wellcomeMeg = await res.text()
+
+  return (
+    <>
+        <h1>{ wellcomeMeg }</h1>
+    </>
+  );
+}
+```
+
+画面に「jig.jpの勉強会へようこそ」が表示されたらOKです！
 
 # まとめ
 
-Deno Freshのプロジェクトを立ち上げて、新規の画面を追加、ページからAPIリクエストを叩いて画面にレスポンスの値を反映させるところまで行うことができました。
+今回の勉強会では
+- Deno Freshのプロジェクトを立ち上げる
+- 新規の画面を追加する
+- ページからAPIリクエストを叩いて画面にレスポンスの値を反映させる
+- 新規のAPIを作成してみる
+
+ところまでやりました。
+
+Deno Freshには他にも重要な機能が備わっています。
+- `component/`, `islands/`フォルダについて(アイランドアーキテクチャについて)
+- 表示するファイルとAPIリクエストを行うファイルが全部`routes/`にあることについて (SSR、サーバーサイドレンダリングについて)
 
 さらに理解を深めたい人は[公式Doc](https://fresh.deno.dev/docs/introduction)を覗いてみましょう
