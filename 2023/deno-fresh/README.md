@@ -14,7 +14,7 @@ Deno Freshはサーバー側のコードとクライアント側のコードの�
 
 サーバーサイドレンダリング(SSR)という技術を採用しています。
 
-サイトにアクセスされコンテンツのGETリクエスト来た時に、描画の際に必要なAPI通信, データベースへのアクセス等々をサーバー側で行ってしまい、それをDOMに反映させた状態のHTMLをクライアント側に返すようになっています。
+サイトにアクセスされコンテンツのGETリクエスト来た時に、描画の際に必要なAPI通信, データベースへのアクセス等々をサーバー側で行い、それを反映させた状態のHTMLをクライアント側に返すようになっています。
 
 つまり、サーバーから返されるのHTML, CSS, JavaScriptのみです。
 
@@ -160,9 +160,9 @@ The manifest has been generated for 5 routes and 1 islands.
 
 `component/`と`island/`という2つのフォルダについて説明します。
 
-Deno Freshがアイランドアーキテクチャを採用しています。
+Deno Freshはアイランドアーキテクチャを採用しています。
 
-先ほど
+[はじめに](#はじめに)で以下のように述べました。
 
 > つまり、サーバーから返されるのはHTML, CSS, JavaScriptのみです。
 
@@ -180,8 +180,7 @@ Deno Freshがアイランドアーキテクチャを採用しています。
 
 > Try updating this message in the./routes/index.tsx file, and refresh.
 
-と書かれています。  
-この文章をプロジェクト内で検索してみると、トップ画面に該当するファイルは`./routes/index.tsx`であるとわかります。  
+と書かれています。    
 では、`./routes/index.tsx`ファイルを覗いてみましょう。
 
 ```ts
@@ -223,7 +222,7 @@ Deno Freshではクライアント側の処理で、[React](https://react.dev/)�
 
 ここでDeno Freshの特徴的な機能の一つである、ファイルシステムベースのルーティングについて説明します。
 
-Deno Freshは`routes/`の階層(パス)がそのままAPIリクエストのパスに対応しています。
+Deno Freshは`routes/`の階層(パス)がそのままリクエストのパスに対応しています。
 
 つまりAPIリクエストのパスが
 - `/`の時は`routes/index.tsx`を見に行く
@@ -274,9 +273,7 @@ export default function Page(ctx: PageProps<ExampleType>) {
   // クライアント側で行いたい処理 (APIリクエスト)
 
   return (
-    <>
-      // DOM
-    </>
+    // DOM
   )
 }
 ```
@@ -330,7 +327,7 @@ export default function Hello() {
 ```ts
 export default async function Hello() {
   // APIリクエストを実行
-  const res = await fetch('/api/joke')
+  const res = await fetch('http://localhost:8000/api/joke')
   // レスポンスのテキストを取り出す
   const joke = await res.text()
 
@@ -406,7 +403,7 @@ APIリクエストを`handler`内で実行しても同等の処理になりま�
 
 今回は「jig.jpの勉強会へようこそ」という文言を返すような処理を書いてみましょう。
 
-`routes/api/wellcome.ts`というファイルを作成しましょう。
+`routes/api/welcome.ts`というファイルを作成しましょう。
 
 APIリクエストを処理してレスポンスを返す処理は以下のようなものになります。
 
@@ -428,16 +425,16 @@ export const handler = (_req: Request, _ctx: HandlerContext): Response => {
 
 のように書いて保存してみましょう。
 
-最後に`routes/hello.tsx`内のAPIリクエストのurlを`http:\//localhost:8000/api/wellcome`に変更して文言等も以下のように調整して、保存します。
+最後に`routes/hello.tsx`内のAPIリクエストのurlを`http:\//localhost:8000/api/welcome`に変更して文言等も以下のように調整して、保存します。
 
 ```ts
 export default async function Hello() {
-  const res = await fetch('/api/wellcome')
-  const wellcomeMeg = await res.text()
+  const res = await fetch('http://localhost:8000/api/welcome')
+  const welcomeMsg = await res.text()
 
   return (
     <>
-        <h1>{ wellcomeMeg }</h1>
+        <h1>{ welcomeMsg }</h1>
     </>
   );
 }
