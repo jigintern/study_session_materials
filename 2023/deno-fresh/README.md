@@ -1,6 +1,5 @@
-
 ## はじめに
-今回の勉強会では[Deno Fresh](https://fresh.deno.dev/)を用いて簡単なWebサイトを作成しようと思います！
+今回の勉強会では[Deno Fresh](https://fresh.deno.dev/)とその使い方について勉強したいと思います！
 
 Deno Freshとは
 > Deno FreshはJavaScriptとTypeScriptの開発者向けのフルスタックのモダンなWebフレームワーク  
@@ -10,29 +9,104 @@ Deno Freshとは
 
 VueやReact、Angularなどは主にクライアント側のコードを扱うフレームワークで、ExpressやNestJS、Fastifyなどは主にサーバー側のコードを扱うものでした。
 
-Deno Freshはサーバー側のコードとクライアント側のコードのその両方を扱えるフルスタックWebフレームワークです。
+一方、Deno Freshはクライアント側のコードもサーバー側のコードも両方扱うことができます。
 
-サーバーサイドレンダリング(SSR)という技術を採用しています。
+Deno Freshで作成したwebアプリは高いパフォーマンスを発揮することが期待できます。
 
-サイトにアクセスされコンテンツのGETリクエスト来た時に、描画の際に必要なAPI通信, データベースへのアクセス等々をサーバー側で行い、それを反映させた状態のHTMLをクライアント側に返すようになっています。
-
-つまり、サーバーから返されるのHTML, CSS, JavaScriptのみです。
-
-しかも、描画に必要なAPIリクエスト等は既に済んでいるため、JavaScriptに含まれる処理はユーザー操作に対応するもののみとなり、サイズが小さくなり初期描画速度が高速になります。
-
-Deno Freshというフレームワークを導入することで、以下のような利点があります。
-1. プロジェクトの作成が簡単
-2. クライアント側のコードもTypeScript(Preact)でかける
-3. パフォーマンス性の高いページを作成可能
+Deno Freshというフレームワークを導入することで、開発者目線では以下のような利点があります。
+1. 環境構築が簡単 (ゼロコンフィグレーション)
+2. クライアント側のコードもサーバー側のコードもTypeScriptで記述できる
+3. ビルド過程がない
 4. Deno Deployにてデプロイが簡単にできる
 
-## 今回の目標
+## 今回の勉強会での目標
 
-1. Deno Freshのプロジェクトを作成できる
-2. Deno Freshプロジェクトのファイル構造がわかる
-3. Deno Freshでの開発の仕方が少しわかる
+1. Deno Freshで採用されている技術が少しわかる
+2. Deno Freshのプロジェクトを作成できる
+3. Deno Freshプロジェクトのファイル構造がわかる
+4. Deno Freshでの開発の仕方が少しわかる
+
+## Deno Freshで採用されている技術
+
+Deno Freshはさまざまな技術が採用されています。
+
+1. Just-in-timeレンダリング
+2. サーバーサイドレンダリング (SSR)
+3. アイランドアーキテクチャ
+4. クライアントサイドのフレームワークとしてPreact
+
+一つずつ解説していきます。
+
+### Just-in-timeレンダリング
+
+通常、VueやReact, Angularといったクライアント側のフレームワークを用いたwebアプリでは、そのままの状態ではデプロイできません。
+
+クライアント側のコードをデプロイする前に、HTML, CSS, JavaScriptにするビルドという過程が発生します。
+
+Deno Freshのプロジェクトはこのビルドという過程が存在しません。
+
+Deno FreshプロジェクトをDeno Deployにデプロイした後に、
+ユーザーがwebアプリにアクセスしたタイミングでコードからHTMLを生成して返します。これを「Just-in-timeレンダリング」と呼びます。
+
+Deno DeployはDenoをCDNのエッジロケーションで提供することから「エッジでのJust-in-timeレンダリング」と表現されることもあります。
+
+### サーバーサイドレンダリング (SSR)
+
+Deno FreshはJust-in-timeレンダリングをサーバーサイドレンダリング(SSR)で実現しています。
+
+サーバーサイドレンダリング(SSR)はリクエストが来たタイミングでHTMLを生成してクライアント側へ返す技術です。
+
+Deno FreshはデフォルトではサーバーサイドレンダリングによってHTMLとCSSのみをクライアント側へ返します。
+
+JavaScriptを含まないため、クライアント側でオーバヘッドが発生せず初期描画が高速です。
+
+とはいえ、クライアント側で動的な処理をしたい時もあると思います。
+
+Deno Freshはクライアント側で動的な処理も行えるように、つまりはクライアント側でJavaScriptを実行できるようにアイランドアーキテクチャを採用しています。
+
+### アイランドアーキテクチャ
+
+アイランドアーキテクチャとは、JavaScriptを必要とするコンポーネントのことを島(island)と考えて、JavaScriptを必要としないコンポーネント(海)と混ぜた状態でクライアントに返すようにした技術です。
+
+後に触れますが、Deno Freshのプロジェクトを作成すると`islands/`というフォルダが作成されます。
+
+Deno Freshはこの`islands/`下に作成されたコンポーネントは動的な処理を含むJavaScriptが必要なコンポーネントであると認識します。
+
+それ以外の動的な処理を含まないコンポーネントは`component/`に作成します。
+
+### クライアントサイドのフレームワークとしてPreact
+
+Deno Freshはクライアント側のフレームワークとして[React](https://react.dev/)というwebフレームワークから派生した[Preact](https://preactjs.com/)をというものを採用しており、TSXの構文を用いて記述します。
+
+TypeScriptやJavaScriptファイル内にHTMLのようなコードを記述できるようにTypeScriptやJavaScriptの構文を拡張したものをTSX（TypeScript XML）やJSX（JavaScript XML）と言います。
+
+以下のような形でTypeScriptコードの中にHTMLのコードを記述しています。
+```ts
+// 変数は{}で囲んで埋め込める
+const message = 'jig.jp勉強会'
+const messageEl = <div>{message}</div>
+
+// クリック処理
+const btnEl = <button onClick={() => console.log('クリックしました')}>Submit</button>
+
+const hogehoge = (
+  <div>
+    <h1>Hello World</h1>
+    {messageEl}
+    {btnEl}
+  </div>
+)
+```
+
+拡張子はTSXの場合は「`.tsx`」、JSXの場合は「`.jsx`」になります。
+
+Deno FreshではCSSフレームワークとして[Tailwind](https://tailwindcss.com/)を採用しています。
+
+このTSX記法やPreactやTailwindに関しては今回の勉強会では省略します。
 
 ## Deno Freshのプロジェクトを作成
+
+では早速Deno Freshプロジェクトを作成していきましょう。
 
 ### 準備
 
@@ -135,13 +209,13 @@ The manifest has been generated for 5 routes and 1 islands.
     Local: http://localhost:8000/
 ```
 
-`http:\//localhost:8000/`を見てみて、この画面が表示されたらOKです！
+http:\//localhost:8000/を見てみて、この画面が表示されたらOKです！
 
 <img src="./imgs/スクリーンショット02.png" />
 
 ## フォルダのかるーい説明
 
-青の枠で書かれた部分がサーバー側のコードで、赤の枠で書かれた部分がクライアント側のコードになっています。
+簡単に分類すると、青の枠で書かれた部分がサーバー側のコードで、赤の枠で書かれた部分がクライアント側のコードになっています。
 
 <img src="./imgs/スクリーンショット03.png" />
 
@@ -158,21 +232,22 @@ The manifest has been generated for 5 routes and 1 islands.
   - routes
     - アクセスされたURLに応じて、表示する画面やAPI処理を行っている
 
-`component/`と`island/`という2つのフォルダについて説明します。
+## routes/フォルダの仕組み
 
-Deno Freshはアイランドアーキテクチャを採用しています。
+ここでDeno Freshの特徴的な機能の一つである、ファイルシステムベースのルーティングについて説明します。
 
-[はじめに](#はじめに)で以下のように述べました。
+Deno Freshは`routes/`の階層(パス)がそのままリクエストのパスに対応しています。
 
-> つまり、サーバーから返されるのはHTML, CSS, JavaScriptのみです。
+つまりAPIリクエストのパスが
+- `/`の時は`routes/index.tsx`を見に行く
+- `/hello`の時は`routes/hello.tsx`見に行く
+- `/api/joke`の時は`routes/joke.ts`を見に行く
+- `/greet/:name`の時は`/routes/greet/[name].tsx`を見に行く
 
-クライアント側にJavaScriptファイルを返す必要があるコンポーネントかどうかは、そのコンポーネントが`island/`フォルダ下にあるか否かで判断しています。
+ようになっています。
+ルーティングがファイル構造とマッチしていることで、パスと対応するファイルの関係がわかりやすいですね。
 
-よって、購入ボタンやカルーセルなどの動的な処理があるコンポーネントは、`island/`フォルダに入れる必要があります。
-
-逆に`component/`には動的な処理が必要のないコンポーネントが入ります。
-
-逆に`component/`には動的な処理が必要のないコンポーネントを入れていくと良さそうです。
+詳しくは[こちら](https://fresh.deno.dev/docs/concepts/routing)
 
 ## routes/index.tsxを覗いてみる
 
@@ -206,36 +281,9 @@ export default function Home() {
 }
 ```
 
-`Home`関数の返り値を見てみるとHTMLのようなコードが返っていることがわかると思います。
+[クライアントサイドのフレームワークとしてPreact](#deno-freshで採用されている技術)の項目でも解説しましたが、`.tsx`ファイルではHTMLのコードをTypeScriptファイル内で記述することができます。
 
-TypeScriptやJavaScriptファイル内にHTMLのようなコードを記述できるようにTypeScriptやJavaScriptの構文を拡張したものをTSX（TypeScript XML）やJSX（JavaScript XML）と言います。
-
-拡張子はTSXの場合は「`.tsx`」、JSXの場合は「`.jsx`」になります。
-
-Deno Freshではクライアント側の処理で、[React](https://react.dev/)というwebフレームワークから派生した[Preact](https://preactjs.com/)をというものを採用しており、TSXの構文を用いて記述します。
-
-またHTML内のClassの文字列は[Tailwind](https://tailwindcss.com/)というCSSフレームワークのものです。
-
-このTSX記法やPreactやTailwindに関しては今回の勉強会では省略します。
-
-## routes/フォルダの仕組み
-
-ここでDeno Freshの特徴的な機能の一つである、ファイルシステムベースのルーティングについて説明します。
-
-Deno Freshは`routes/`の階層(パス)がそのままリクエストのパスに対応しています。
-
-つまりAPIリクエストのパスが
-- `/`の時は`routes/index.tsx`を見に行く
-- `/hello`の時は`routes/hello.tsx`見に行く
-- `/api/joke`の時は`routes/joke.ts`を見に行く
-- `/greet/:name`の時は`/routes/greet/[name].tsx`を見に行く
-
-ようになっています。
-ルーティングがファイル構造とマッチしていることで、パスと対応するファイルの関係がわかりやすいですね。
-
-詳しくは[こちら](https://fresh.deno.dev/docs/concepts/routing)
-
-## .tsxファイル内の基本的な書き方
+## Deno Freshでの.tsxファイル内の基本的な書き方
 
 Deno Freshはサーバーサイドレンダリングを採用しているので、書き方が特殊です。
 
@@ -265,15 +313,17 @@ export const handler: Handlers<ExampleType> = {
   },
 };
 
-/** コンポーネント */
+/**
+ * コンポーネントを返す
+ * コンポーネントを返す場合は`export default`指定をつけることに注意してください。
+ */
 export default function Page(ctx: PageProps<ExampleType>) {
   // handlerから渡されたデータを取り出す。
   const { data } = ctx;
 
-  // クライアント側で行いたい処理 (APIリクエスト)
-
   return (
-    // DOM
+    // handlerから渡されたデータを描画 (1例です)
+    <div>{ data }</div>
   )
 }
 ```
@@ -310,7 +360,7 @@ export default function Hello() {
 }
 ```
 
-3. ブラウザで`http:\//localhost:8000/hello`にアクセスしよう
+3. ブラウザでhttp:\//localhost:8000/helloにアクセスしよう
 
 以下の画面が表示されれば問題なく新規の画面が追加できています。
 
@@ -343,7 +393,7 @@ export default async function Hello() {
 
 <img src="./imgs//スクリーンショット05.png" />
 
-APIリクエスト先の`http:\//localhost:8000/api/joke`の処理は`routes/api/joke.ts`に書かれています。
+APIリクエスト先のhttp:\//localhost:8000/api/jokeの処理は`routes/api/joke.ts`に書かれています。
 
 ```ts
 export const handler = (_req: Request, _ctx: HandlerContext): Response => {
@@ -357,6 +407,10 @@ export const handler = (_req: Request, _ctx: HandlerContext): Response => {
 ```
 
 JOKES配列の中にあるジョークからランダムに一つ取り出して、その文字列を返しています。
+
+[サーバーサイドレンダリング](#サーバーサイドレンダリング-ssr)の項目でも説明しましたが、Deno Freshはリクエストが来たタイミングでHTMLファイルをサーバー側で作成するため、実際に`/api/joke`へのAPIリクエストを行っているのはクライアント側ではなく、サーバー側です。
+
+`/api/joke`へのAPIリクエストの結果を反映したHTMLをクライアント側で返しています。
 
 ここでクライアント側からサーバー側にAPIが叩かれていないことを確認するためにChromeのDevToolsを開いて「ネットワーク」タブが表示できたら画面をリロードして、`/api/joke`へのアクセスがないことを確認しましょう。
 
@@ -425,7 +479,7 @@ export const handler = (_req: Request, _ctx: HandlerContext): Response => {
 
 のように書いて保存してみましょう。
 
-最後に`routes/hello.tsx`内のAPIリクエストのurlを`http:\//localhost:8000/api/welcome`に変更して文言等も以下のように調整して、保存します。
+最後に`routes/hello.tsx`内のAPIリクエストのurlをhttp:\//localhost:8000/api/welcomeに変更して文言等も以下のように調整して、保存します。
 
 ```ts
 export default async function Hello() {
