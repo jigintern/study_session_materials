@@ -31,6 +31,7 @@ Denoの環境がPCにある前提で進めます。
 
 VSCodeからリポジトリを開き、プロジェクトの準備をしましょう。
 先程作成したリポジトリをCloneします。
+GitHubDesktopなら、GitHubのページの`Open with GitHubDesktop`からでも開けます。
 プロジェクトを開き、以下の手順でプロジェクトを準備します。
 
 1. VSCodeのコマンドパレットを開く
@@ -60,7 +61,7 @@ JavaScriptが動的型付き言語として動作することを見ていきま�
 
 まずは、存在しないプロパティにアクセスするとどうなるか見てみましょう。
 
-`req.method`の`method`を、わざとうち間違えてみてください。
+`req.method`の`method`を、わざと打ち間違えてみてください。
 そして、保存してサーバを更新します。
 実行してみると、サーバのレスポンスがなくなり、ブラウザには`Not Found`と表示されます。
 
@@ -75,6 +76,8 @@ JavaScriptが動的型付き言語として動作することを見ていきま�
 - 静的型付き言語は、コードをコンパイルするタイミング
 
 つまり、静的型付き言語は**実行前に**存在しないプロパティへアクセスしていることが分かるのです。
+
+わざと打ち間違えた`method`を元に戻しておきましょう。
 
 ### 型がないメソッドを実装
 
@@ -109,7 +112,7 @@ VSCodeに戻って、メソッド`sum`にカーソルを合わせてみましょ
 続けて、プロパティ`req.method`にカーソルを合わせてみましょう。
 こちらは、`(property) Request.method: string`と表示されます。
 
-`sum`は型が「any」となっていて、`req.method`は「string」となっていることが確認できます。
+それぞれ返り値の型について、`sum`は「any」、`req.method`は「string」となっていることが確認できます。
 「any」はどんな型にもなれる型です。
 Deno拡張機能が自動で型推論してくれるため、JavaScriptのコードでも型が表示されています。
 
@@ -135,7 +138,7 @@ JavaScriptで書いたコードを、TypeScriptに書き直していきます。
 さっそく、`server.deno.js`から`server.deno.ts`に拡張子を変更しましょう。
 これで、サーバのコードがTypeScriptとして認識されるようになりました。
 
-TypeScriptにすると、`sum`メソッドと`Response`でエラーになります。
+TypeScriptにすると、`sum`メソッドでエラーになります。
 これが、コードの実行前にエラーが分かるということです。
 ではエラーを解決していきましょう。
 
@@ -168,7 +171,7 @@ function sum(a: number, b: number): number {
 ### 補完を使って型を合わせる
 
 メソッドのエラーは解決できましたね。
-もう一つエラーがあるので解決しましょう。
+変更すると、`Response`でエラーになるので解決しましょう。
 
 Responseでは以下のエラーになっています。
 
@@ -190,6 +193,13 @@ Argument of type 'number' is not assignable to parameter of type 'BodyInit | nul
 
 ```js
 return new Response(sum(234, 110).toString());
+```
+
+これでエラーが全て解決できました！
+実行中のサーバを中断し、実行するファイルを`server.deno.ts`にして実行してみましょう。
+
+```shell
+deno run -A --watch server.deno.ts
 ```
 
 実行して、JavaScriptだったコードと同じように344が表示されることを確認しましょう。
@@ -257,6 +267,7 @@ return serveDirWithTs(req, {
 ```
 
 これで、サーバの準備は完了です。
+`deno run -A --watch server.deno.ts`を実行して動くことを確認しましょう。
 次はクライアントの準備をします。
 
 ### クライアントの準備
@@ -266,6 +277,12 @@ return serveDirWithTs(req, {
 
 `public/index.js`ファイルを作成します。
 `index.js`には、scriptタグのコードをコピーします。
+
+```js
+const message = await fetch("/welcome-message")
+document.querySelector("body").innerHTML = `<h1>${await message.text()}</h1>`
+```
+
 scriptタグは、`index.js`を読み込むよう変更します。
 
 ```html
@@ -282,7 +299,7 @@ const message = await fetch("/welcome-message");
 document.querySelector("body").innerHTML = `<h1>${await message.text()}</h1>`;
 ```
 
-一行目に追記したコメントによって、間違ったエラー表示がなくなります。
+一行目に追記したコメント`/// <reference lib="dom"/>`によって、間違ったエラー表示がなくなります。
 サーバを更新して、変わらず`index.html`の内容が表示されることを確認しましょう。
 
 これで、サーバ・クライアントすべての準備が完了しました。
@@ -292,6 +309,7 @@ document.querySelector("body").innerHTML = `<h1>${await message.text()}</h1>`;
 
 サーバと同様に、JavaScriptファイルをTypeScriptファイルに置き換えましょう。
 `index.js`から`index.ts`に拡張子を変更します。
+`index.html`でインポートするファイル名も`index.ts`に変更しましょう。
 これで、クライアントのコードがTypeScriptとして認識されるようになりました。
 
 TypeScriptにすると、`querySelector`でエラーになります。
@@ -316,6 +334,8 @@ if (element !== null) {
 ```
 
 これでエラーが解決できました。
+if文の前の`element`にカーソルを合わせた場合と、if文の後の`element`にカーソルを合わせた場合で、表示される型が変わっています。
+
 仮に"body"を打ち間違えても、実行したタイミングでエラーが出なくなりました。
 
 ### クライアントで別ファイルのTypeScriptを使う
@@ -367,6 +387,7 @@ type User = {
 ```
 
 自作の型でもパラメータが違ったり、型が違うとエラーになることを確認しましょう。
+`sum`関数を`User`の年齢を足し算する関数に変えてみましょう。
 
 ## コラム
 
