@@ -78,6 +78,8 @@ Deno Freshはこの`islands/`下に作成されたコンポーネントは動的
 
 Deno Freshはクライアント側のフレームワークとして[React](https://react.dev/)というwebフレームワークから派生した[Preact](https://preactjs.com/)をというものを採用しており、TSXの構文を用いて記述します。
 
+PreactはReactから主要なAPIを切り出したより軽量なライブラリです。
+
 TypeScriptやJavaScriptファイル内にHTMLのようなコードを記述できるようにTypeScriptやJavaScriptの構文を拡張したものをTSX（TypeScript XML）やJSX（JavaScript XML）と言います。
 
 以下のような形でTypeScriptコードの中にHTMLのコードを記述しています。
@@ -251,7 +253,7 @@ Deno Freshは`routes/`の階層(パス)がそのままリクエストのパス�
 
 ## routes/index.tsxを覗いてみる
 
-表示されている画面には
+[準備](#準備)の最後で表示された画面には
 
 > Try updating this message in the./routes/index.tsx file, and refresh.
 
@@ -285,7 +287,7 @@ export default function Home() {
 
 ## Deno Freshでの.tsxファイル内の基本的な書き方
 
-Deno Freshはサーバーサイドレンダリングを採用しているので、書き方が特殊です。
+Deno Freshはサーバーサイドレンダリングを採用しているので、一般的なReact等で使うJSX,TSXと書き方が少し異なります。
 
 基本的には、以下のようになっています。
 ```ts
