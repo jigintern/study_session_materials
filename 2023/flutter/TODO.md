@@ -15,7 +15,7 @@ DartPad → https://dartpad.dev
 
 # 2. StatelessWidget と StatefulWidget
 
-UI の作成方法について分かれば次は Widget についてもう少し詳しく説明します。[Widget とは？](./README.md#4-1-widget-とは)で説明したように状態（state）を必要とする StatefulWidget と 必要としない StatelessWidget があります。
+UI の作成方法について分かれば次は Widget についてもう少し詳しく説明します。[Widget とは？](./national_flag.md#3-3-widget-とは)で説明したように状態（state）を必要とする StatefulWidget と 必要としない StatelessWidget があります。
 最初に動かした「Hello World」と出てくるだけのアプリでは、時間経過やユーザーの操作に応じて UI が変わることがありませんね。
 そういった一度構築したらその後は変化しないものについては、StatelessWidget を使用します。
 

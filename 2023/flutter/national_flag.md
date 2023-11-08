@@ -53,9 +53,25 @@ DartPad を開いて、下記の通りに操作してみましょう。
 
 ![flutter初期画面](imgs/dartpad_flutter_default.png)
 
-# 3. Flutter のついて理解しよう
+# 3. Flutter について理解しよう
 
-## 3-1. Widget とは？
+## 3-1. テンプレートプロジェクトで遊んでみよう
+
+DartPad 右上の Samples から、Counter を選択して実行してみましょう。
+
+![Flutter Template プロジェクト](imgs/flutter_template_project.png)
+
+このアプリは、右下の＋ボタンをタップした回数をカウントするアプリで、Flutter の新規プロジェクトを作成すると、このプログラムが入っています。
+実際に右下のボタンをタップ(今回は PC なのでクリック)すると中央の数値が更新されるのを確認してみてください。
+
+## 3-2. ラベルを日本語に変えてみる
+
+プログラムの中から、「You have pushed the button this many times:」を表示している Text Widget を探して、「右下のボタンが押された回数:」に変えてみましょう。
+DartPad にはホットリロードは搭載されていないので、変えたら Run ボタンで再度実行します。
+
+![Flutterでテキストラベルを変更する](imgs/flutter_template_label.png)
+
+## 3-3. Widget とは
 
 Widget は、Flutter の UI を構築するためのパーツのことです。
 さまざまな Widget を組み合わせていくことで、UI を作っていきます。
@@ -82,22 +98,6 @@ Widget は、アプリの状態を表示するための設計図とも捉えら�
 <center><a href="https://docs.flutter.dev/development/data-and-backend/state-mgmt/declarative" >公式ドキュメント</a></center>
 
 ![ui=f(state)](imgs/ui_f_state.png)
-
-## 3-2. テンプレートプロジェクトで遊んでみよう
-
-DartPad 右上の Samples から、Counter を選択して実行してみましょう。
-
-![Flutter Template プロジェクト](imgs/flutter_template_project.png)
-
-このアプリは、右下の＋ボタンをタップした回数をカウントするアプリで、Flutter の新規プロジェクトを作成すると、このプログラムが入っています。
-実際に右下のボタンをタップ(今回は PC なのでクリック)すると中央の数値が更新されるのを確認してみてください。
-
-## 3-3. ラベルを日本語に変えてみる
-
-プログラムの中から、「You have pushed the button this many times:」を表示している Text Widget を探して、「右下のボタンが押された回数:」に変えてみましょう。
-DartPad にはホットリロードは搭載されていないので、変えたら Run ボタンで再度実行します。
-
-![Flutterでテキストラベルを変更する](imgs/flutter_template_label.png)
 
 ## 3-4. カスタム Widget で遊んでみよう
 
