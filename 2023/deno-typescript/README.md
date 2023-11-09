@@ -38,12 +38,24 @@ GitHubDesktopなら、GitHubのページの`Open with GitHubDesktop`からでも
 2. **Deno: Initialize Workspace Configuration**を実行
 3. 設定のダイアログはすべてYesを選択
 
+Denoを最新のバージョンにアップグレードしておきましょう。
+ターミナルを開き、`deno upgrade`を実行します。
+
+Denoのバージョンは`deno --version`を実行して確認できます。
+記事作成時点では以下のバージョンです。
+
+```shell
+deno 1.38.0 (release, aarch64-apple-darwin)
+v8 12.0.267.1
+typescript 5.2.2
+```
+
 これで準備完了です。
 次に、プロジェクトが動作することを確認しましょう。
 以下の手順で動作を確認します。
 
-1. ターミナルを開き、`deno run -A --watch server.deno.js`を実行
-2. ブラウザを開き、`localhost:8000`にアクセス
+2. ターミナルを開き、`deno run -A --watch server.deno.js`を実行
+3. ブラウザを開き、`localhost:8000`にアクセス
 
 ブラウザでは、`index.html`の内容が表示されることを確認しましょう。
 サーバでは、エラーになっていないことを確認しましょう。
