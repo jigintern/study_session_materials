@@ -2,7 +2,7 @@
 
 今回の勉強会では、DartPad という公式のオンライン IDE を使って、TODO アプリを作っていきます。
 
-※先に [国旗作り](./README.md) をやることを推奨します。
+※先に [国旗作り](./national_flag.md) をやることを推奨します。
 
 DartPad → https://dartpad.dev
 
