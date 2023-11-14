@@ -268,8 +268,8 @@ class FlagJp extends StatelessWidget {
               style:　Theme.of(context).textTheme.headlineMedium,
             ),
             const GreenContainer(),
-            const SizedBox(height: 10),
-            const FlagJp(),
+            const SizedBox(height: 10), // これは余白です、お好みで
+            const FlagJp(),  // 追加
           ],
         ),
 ```
@@ -289,11 +289,48 @@ FlagJp Widget の Container に色々追加して日の丸を作ってみまし�
 
 以下は実装のヒントです。
 
-- Container の中に描画する Widget は child に指定します
-- Container を丸くさせるには BoxDecoration() の shape パラメータに BoxShape.circle を指定します
-- 紅色は Color(0xffc22047) で指定することができます
-  - ff は不透明度の hex です( 100% )
-- Container の alignment に Alignment.center を指定すると子要素が中央に配置できます
+**① Container の中に配置する Widget は child に指定します**
+
+今回だと、日の丸部分を作るContainerを、  
+国旗の枠組みのContainer()の child に指定します
+
+**② Container を丸くさせるには BoxDecoration() の shape パラメータに BoxShape.circle を指定します**
+
+```dart
+// 色々省略
+Container(
+  decoration: BoxDecoration(
+    shape: BoxShape.circle,
+  ),
+),
+```
+
+**③ 紅色は Color(0xffc22047) で指定することができます**
+
+ff は不透明度の hex です( 100% )
+
+```dart
+// 色々省略
+Container(
+  decoration: BoxDecoration(
+    shape: BoxShape.circle,
+    color: Color(0xffc22047), // 追加
+  ),
+),
+```
+
+**④ Container の alignment に Alignment.center を指定すると子要素が中央に配置できます**
+
+```dart
+// 色々省略
+Container(
+  alignment: Alignment.center, // 追加
+  decoration: BoxDecoration(
+    shape: BoxShape.circle,
+    color: Color(0xffc22047),
+  ),
+),
+```
 
 <details>
 <summary>答え</summary>
@@ -318,7 +355,7 @@ class FlagJp extends StatelessWidget {
         width: 120,
         height: 120,
         decoration: const BoxDecoration(
-          color: Colors.red,
+          color: Color(0xffc22047),
           shape: BoxShape.circle,
         ),
       ),
@@ -340,12 +377,64 @@ class FlagJp extends StatelessWidget {
 
 以下は実装のヒントです。
 
-- 日本国旗と同じく FlagDe Widget を作成する形で作ってみよう
-- 日本国旗と同じく、ベースとして枠を作ってその中に実装していくのがオススメです。まず枠を作って表示するところから始めてみよう！
-- 横が 300 なら縦 & それぞれの色の高さはいくつになるか考えてみよう
-- 実はすでに使われていますが、要素を縦に並べるときは Column Widget を使用します。
-  - 使い方の一例を以下に示します
-  - 以下のコードでは、赤い 100px の Container と青い 60px の Container が縦に並びます
+**① 日本国旗と同じく FlagDe Widget を作成、枠を作って表示するところから始めよう！**
+
+今回は、日本国旗と同じ横幅にしたいので、横幅300だけ指定しました。
+
+```dart
+class FlagDe extends StatelessWidget {
+  const FlagDe({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 300,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.grey),
+      ),
+    );
+  }
+}
+```
+
+**② 横が 300 ならそれぞれの色の高さはいくつになるか考えてみよう**
+
+縦横比3:5、横が300pxということは...？
+
+**③ 実はすでに使われていますが、要素を縦に並べるときは Column Widget を使用します。**
+
+Container の中に表示したいものは、child に指定するので、以下のようになります。  
+このコードでは、Container() を3つ、縦に並べています。
+
+★ あとは、それぞれの Container の色と高さを指定すれば完成！
+
+```dart
+class FlagDe extends StatelessWidget {
+  const FlagDe({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 300,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.grey),
+      ),
+      // 以下を追加
+      child: Column(
+        children: [
+          // 並べたいものをここに追加していく
+          Container(),
+          Container(),
+          Container(),
+        ],
+      ),
+      // ここまでが追加分
+    );
+  }
+}
+```
 
 <details>
 <summary>答え</summary>
@@ -356,15 +445,31 @@ class FlagDe extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: 300,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.grey),
+      ),
+      // 以下を追加
       child: Column(
         children: [
-          Container(height: 60, color: Colors.black),
-          Container(height: 60, color: const Color(0xffed1a3d)),
-          Container(height: 60, color: const Color(0xffffd700)),
+          // 並べたいものをここに追加していく
+          Container(
+            height: 60,
+            color: const Color(0xff000000),
+          ),
+          Container(
+            height: 60,
+            color: const Color(0xffed1a3d),
+          ),
+          Container(
+            height: 60,
+            color: const Color(0xffffd700),
+          ),
         ],
       ),
+      // ここまでが追加分
     );
   }
 }
@@ -378,8 +483,9 @@ class FlagDe extends StatelessWidget {
 仕様は下記の通りです。
 
 - 縦横比は 2:3
-- 横は日本国旗と合わせて 300 とする
-- 青: #002395、赤: #ED2939
+- **横は 302 とする**
+  - 枠線 1px * 2(左右に1本ずつあるので) + 要素 300px
+- 青: `Color(0xff002395)` 、白: `Colors.white` 、赤: `Color(0xffED2939)`
 
 以下は実装のヒントです。
 
@@ -392,6 +498,72 @@ class FlagDe extends StatelessWidget {
   - 書き方は Column とほぼ一緒です
   - 以下のコードでは、赤い 100px の Container と青い 60px の Container が横に並びます
 
+**① 日本国旗と同じく FlagFr Widget を作成、枠を作って表示するところから始めよう！**
+
+**今回は横幅を302としますが、中身の要素の大きさは300pxです**    
+両端に1pxの枠線があるため、計算しやすいように2px増やします。
+
+★ 縦横比から高さを計算しよう！  
+縦横比 2:3、横幅300なので......？
+
+```dart
+class FlagFr extends StatelessWidget {
+  const FlagFr({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 302,
+      height: 〇〇, // 高さを指定しよう！
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.grey),
+      ),
+    );
+  }
+}
+```
+
+**② 縦の大きさ、それぞれの色の横幅はいくつになるか考えてみよう**
+
+
+**③ 要素を縦に並べるときは Row Widget を使用します。**
+
+使い方は、Column Widget に似ています。
+
+Container の中に表示したいものは、child に指定するので、以下のようになります。  
+このコードでは、Container() を3つ、横に並べています。
+
+★ あとは、それぞれの Container の色と横幅、全体の高さを指定すれば完成！
+
+```dart
+class FlagFr extends StatelessWidget {
+  const FlagFr({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 302,
+      height: 〇〇, // 高さを指定しよう！
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.grey),
+      ),
+      // 以下を追加
+      child: Row(
+        children: [
+          // 並べたいものをここに追加していく
+          Container(),
+          Container(),
+          Container(),
+        ],
+      ),
+      // ここまでが追加分
+    );
+  }
+}
+```
+
 <details>
 <summary>答え</summary>
 
@@ -401,16 +573,32 @@ class FlagFr extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
+    return Container(
+      width: 302,
       height: 200,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.grey),
+      ),
+      // 以下を追加
       child: Row(
         children: [
-          Container(width: 100, color: const Color(0xff002395)),
-          Container(width: 100, color: Colors.white),
-          Container(width: 100, color: const Color(0xffED2939)),
+          // 並べたいものをここに追加していく
+          Container(
+            width: 100,
+            color: const Color(0xff002395),
+          ),
+          Container(
+            width: 100,
+            color: Colors.white,
+          ),
+          Container(
+            width: 100,
+            color: const Color(0xffED2939),
+          ),
         ],
       ),
+      // ここまでが追加分
     );
   }
 }
@@ -426,7 +614,8 @@ gist は github のサービスの一つで、断片的なソースコードを�
 Github Gist -> https://gist.github.com
 
 下記のリンクで実際に今日の勉強会で使用したコードを Gist にアップロードしています。  
-https://gist.github.com/takerucam/45c9195855022af5bc44fff84261ae33
+
+https://gist.github.com/nabe1005/a7aaafa4165cb59ee42ab2de6f49f0ad
 
 DartPad では、DartPad 上から簡単にコードを共有できるようになっているので、実際に共有してみましょう。  
 まず、右上の Github アイコンをクリックすると出てくるメニューから、「Login to Github」を選択してログインします。  
@@ -444,6 +633,6 @@ DartPad では、DartPad 上から簡単にコードを共有できるように�
 <details>
 <summary>答え</summary>
 
-https://gist.github.com/takerucam/a3daeb4def5ba1627dbaf8dcc52221d2
+https://gist.github.com/nabe1005/8318e46b73f2efcc2a861bc496008ada
 
 </details>
