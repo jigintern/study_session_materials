@@ -293,9 +293,56 @@ title.addEventListener("mouseover", function () {
 });
 ```
 
+# 課題：カウンターアプリを作ろう
+
+これまで学んだことを活かしてカウンターアプリを作ってみましょう。
+
+```html
+<!DOCTYPE html>
+<html lang="ja">
+  <body>
+    <h1>カウンターアプリ</h1>
+    <p id="count">0</p>
+    <button id="increase">+1</button>
+    <button id="decrease">-1</button>
+    <button id="reset">リセット</button>
+  </body>
+</html>
+```
+
+<details><summary>回答</summary>
+
+```js
+"use strict";
+
+const countDisplay = document.getElementById("count");
+let count = 0;
+
+document.getElementById("increase").addEventListener("click", function () {
+  count++;
+  countDisplay.textContent = count;
+});
+
+document.getElementById("decrease").addEventListener("click", function () {
+  count--;
+  countDisplay.textContent = count;
+});
+
+document.getElementById("reset").addEventListener("click", function () {
+  count = 0;
+  countDisplay.textContent = count;
+});
+```
+
+</details>
+
 # おわりに
 
 いかがでしたか？
 JS の基本文法、DOM の取得・変更、イベントリスナーなど、Web アプリでよく使われる機能の実装方法を学びました。
 
 さらに、非同期処理 や ライブラリ・フレームワーク を活用すれば、よりモダンなアプリケーションを作ることができます。ぜひチャレンジしてみてください！✨
+
+```
+
+```
