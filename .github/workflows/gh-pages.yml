@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - add/flutter-2024
 
 permissions:
   contents: read
