@@ -25,7 +25,7 @@ jobs:
       matrix:
         include:
           - slide: 2024/flutter
-            output_name: flutter-2024-slide
+            output_name: flutter-2024
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -46,13 +46,13 @@ jobs:
       - name: Build Marp PDF
         run: marp ${{ matrix.slide }}/slide.md
           --pdf
-          -o ./dest/${{ matrix.output_name }}.pdf
+          -o ./dest/slide.pdf
           --allow-local-files
 
       - name: Build Marp HTML
         run: marp ${{ matrix.slide }}/slide.md
           --html
-          -o ./dest/${{ matrix.output_name }}.html
+          -o ./dest/slide.html
           --allow-local-files
 
       - name: Upload Artifact
