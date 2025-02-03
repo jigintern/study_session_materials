@@ -24,12 +24,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - slide: git
-            output_name: github-desktop-slide
-          - slide: design
-            output_name: basic-design-slide
-          - slide: about-webapp
-            output_name: about-webapp-slide
+          - slide: 2024/flutter
+            output_name: flutter-2024-slide
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
