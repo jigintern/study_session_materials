@@ -12,6 +12,8 @@
   - [2. GitHub](#2-github)
     - [2.1. アカウント作成](#21-アカウント作成)
     - [2.2. READMEリポジトリの作成](#22-readmeリポジトリの作成)
+      - [2.2.1　. プロフィールを充実させるには](#221-プロフィールを充実させるには)
+      - [2.2.2 リポジトリを作成する](#222-リポジトリを作成する)
     - [2.3. GitHub Pagesについて](#23-github-pagesについて)
   - [3. Google Chrome](#3-google-chrome)
     - [3.1. インストール](#31-インストール)
@@ -56,15 +58,70 @@
 
 ## 1. Visual Studio Code
 
+[Visual Studio Code](https://code.visualstudio.com/) (以下 VSCode)は、近年のWeb開発においてもっとも利用されているコードエディターです。  
+最近では[GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot)との統合の話題で耳にしたことがあるかもしれません。
+
+今回の一連の開発では、コードエディターとしてこのVSCodeを利用します。
+
 ### 1.1. インストール
+
+以下のリンクから、使用中のマシンのOSに合ったインストーラーをダウンロードし、実行してVSCodeをインストールしてください。
+
+<https://code.visualstudio.com/Download>
 
 ### 1.2. 必要な拡張機能のインストール
 
+今回の開発では、VSCodeの拡張機能を活用して作業を進めていきます。  
+以下の拡張機能をそれぞれインストールしてください。
+
+* [Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)
+  * VSCodeを日本語化する拡張機能
+* [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
+  * VSCodeのエクスプローラーのアイコンを変更する拡張機能
+  * 特定の名前がついたディレクトリもアイコンが変更されて便利
+* [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
+  * HTMLファイルを開いているときに開発用サーバーを起動できるようになる拡張機能
+* [es6-string-html](https://marketplace.visualstudio.com/items?itemName=Tobermory.es6-string-html)
+  * JavaScriptファイル内にテンプレートリテラルでHTMLやCSSを記述するときにシンタックスハイライトが効くようにする拡張機能
+* [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
+  * Markdownと呼ばれるマークアップ言語を書きやすくなる拡張機能
+
+<details>
+  <summary>コマンドラインからインストールする</summary>
+
+以下のコマンドでも拡張機能をインストールすることができます。
+
+```sh
+code --install-extension MS-CEINTL.vscode-language-pack-ja
+code --install-extension vscode-icons-team.vscode-icons
+code --install-extension ritwickdey.LiveServer
+code --install-extension Tobermory.es6-string-html
+code --install-extension yzhang.markdown-all-in-one
+```
+
+</details>
+
 ## 2. GitHub
+
+[GitHub](https://github.com) は現在では最もメジャーなソースコードの共有サービスです。
 
 ### 2.1. アカウント作成
 
+以下のリンクからアカウント作成ページを開けます。  
+ページの指示に従って、必要事項を入力してアカウントを作成してください。
+
+<https://github.com/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F&source=header-home>
+
 ### 2.2. READMEリポジトリの作成
+
+※ この資料では、GitHub上で特別な取り扱いとなる、ユーザー名と同じ名前のリポジトリのことを READMEリポジトリ と呼称することとします。
+
+#### 2.2.1　. プロフィールを充実させるには
+
+アカウントを作成してログインしたら。まずは左上のアバターアイコンから `Your Profile` を選んで自身のプロフィールを確認しましょう。  
+このページは自身のユーザー名と同じ名前のリポジトリを作成し、直下に `README.md` というMarkdownファイルを配置して編集することで、プロフィール情報を充実させることが可能です。
+
+#### 2.2.2 リポジトリを作成する
 
 ### 2.3. GitHub Pagesについて
 
