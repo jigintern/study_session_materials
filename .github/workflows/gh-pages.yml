@@ -24,8 +24,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - slide: 2024/flutter
-            output_name: flutter-2024
+          - slide: 2024/flutter-intro
+            output_name: flutter-intro-2024
+          - slide: 2024/flutter-memo
+            output_name: flutter-memo-2024
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
