@@ -9,12 +9,8 @@
 
 開発イベントに向けて、事前勉強会という形で基礎的な知識や開発環境の準備を行います。
 
-資料は [/basic-web-development/README.md](basic-web-development/README.md) にあります。
+資料は [./basic-web-development/README.md](basic-web-development/README.md) にあります。
 
-### 1Dayイベント
+### イベント本番
 
-🚧 準備中 🚧
-
-### 2Dayイベント
-
-🚧 準備中 🚧
+開発イベント本番で使用する資料は [./DOCS.md](DOCS.md) にあります。
