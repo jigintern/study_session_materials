@@ -1200,6 +1200,129 @@ export class ClassListPage extends HTMLElement {
 * テンプレートリテラル中で繰り返し処理をする
 -->
 
+科目を一覧で確認するための機能を作成します。  
+しかし、この一覧画面はそれぞれの行をクリックしたときにその科目を編集する画面に遷移したいので、専用の処理を書きやすいようカスタム要素に切り出して作成します。  
+まずは`components/class-list-item.mjs`を作成して、以下の内容を記述してください。
+
+```javascript
+import { basicStyle } from "../shared/style.mjs";
+
+export class ClassListItemComponent extends HTMLElement {
+  /** @type {ShadowRoot | undefined} */
+  shadowRoot = undefined;
+
+  static observedAttributes = ["class-data"];
+  /**
+   * @type {import("../types.mjs").ClassData}
+   */
+  get classData() {
+    return JSON.parse(this.getAttribute("class-data"));
+  }
+
+  css = () => /* css */ `
+    ${basicStyle}
+
+    :host .class-list-item {
+      height: 32px;
+      width: 100%;
+      padding: 0 16px
+      display: flex;
+      align-items: center;
+
+      & span.arrow {
+        margin-left: auto;
+      }
+    }
+  `;
+
+  html = () => /* html */ `
+    <style>${this.css()}</style>
+    <div class="class-list-item">
+      <span>${this.classData.name}</span>
+      <span class="arrow">➡️</span>
+    </div>
+  `;
+
+  constructor() {
+    super();
+    this.shadowRoot = this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = this.html();
+
+    this.addEventListener("click", this.moveToEdit);
+  }
+
+  moveToEdit() {
+    const url = new URL(location.href);
+    url.hash = "#class-edit";
+    url.search = new URLSearchParams({ classId: this.classData.id }).toString();
+    location.href = url.href;
+  }
+}
+```
+
+このカスタム要素を`register.mjs`でインポートして登録します。  
+この要素を利用して各科目のデータを表示、科目のデータを編集する画面へ遷移できるように、データベースから登録済みの科目一覧を取得します。
+
+データの取り扱いのため、`class-list.mjs`のclass内上部で`classDatas`プロパティを宣言しておきましょう。
+
+```javascript
+  /** @type {import("../types.mjs").ClassData[]} */
+  classDatas = [];
+```
+
+次に、`render`関数の中でこのデータが利用可能でなければならないので、`connectedCallback`関数の`this.render()`より上で`classDatas`プロパティにデータを代入します。  
+ここで、`DB.getAll()`関数を使用するので、`connectedCallback`関数には`async`キーワードをつけて非同期関数として実行されるように変更しましょう。
+
+```javascript
+  async connectedCallback() {
+    this.classDatas = await DB.getAll(CLASS_STORE_NAME);
+
+    this.render();
+  }
+```
+
+これでデータが取得できるようになったはずです。  
+では、`html`を編集しましょう。データを利用して、配列の繰り返し処理でHTMLを生成します。
+
+```html
+      <div class="list">
+        ${this.classDatas
+          .map(
+            (classData) => /* html */ `
+            <class-list-item class-data='${JSON.stringify(classData)}'></class-list-item>
+          `
+          )
+          .join("")}
+      </div>
+```
+
+`css`も合わせて変更しておきます。
+
+```css
+      & > .list {
+        height: 100%;
+        width: 100%;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        
+        & > class-list-item {
+          margin-bottom: 8px;
+        }
+      }
+```
+
+ここまでできたら各ファイルを保存し直して、ブラウザで確認しましょう。  
+うまくかけていればヘッダーボタンの遷移と同様にリストの行からも編集画面に遷移できるようになっているはずです。
+
+![リスト表示](imgs/7-3-list.png)
 
 ## 8. 時間割表を表示できるようにしよう
 
