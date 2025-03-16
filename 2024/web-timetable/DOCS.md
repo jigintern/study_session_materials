@@ -169,9 +169,10 @@ Webアプリはこの要素と後述するCSSセレクターがあれば作成�
 }
 
 html,body {
-  width: 100svw;
-  height: 100svh;
+  width: 100dvw;
+  height: 100dvh;
   overflow: hidden;
+  touch-action: manipulation;
 }
 ```
 
@@ -245,10 +246,67 @@ JavaScriptはWebブラウザを始め、サーバー環境などでも利用さ�
 
 #### 1.2.1. ボタンで表示を変えてみよう
 
+<!--
 * button要素
-* onClick
 * querySelector
-* innerHTML
+* textContent
+* addEventListener
+* onClick
+-->
+
+まずはボタン要素を`div.counter-container`の中に作成して、CSSで`grid-area`に`plus`、`minus`のそれぞれを指定してレイアウトを整えましょう。
+
+```html
+        <button class="plus">+</button>
+        <button class="minus">-</button>
+```
+
+```css
+    & > button.plus {
+      grid-area: plus;
+    }
+    & > button.minus {
+      grid-area: minus;
+    }
+```
+
+これで以下の画像のような表示になるはずです。
+
+![ボタンを追加した見た目](imgs/1-2-add-buttons.png)
+
+次に、それぞれのボタンから要素を操作できるようにしましょう。  
+以下の内容を`main.mjs`に記述してください。
+
+```javascript
+// ページに表示するカウントを管理するための変数
+let count = 0;
+
+function onClickPlus() {
+  count += 1;
+  // カウントを表示する要素を取得
+  const countElem = document.querySelector("span.count");
+  // 要素の内容を現在のカウントで書き換え
+  countElem.textContent = count;
+}
+
+function onClickMinus() {
+  count -= 1;
+  // カウントを表示する要素を取得
+  const countElem = document.querySelector("span.count");
+  // 要素の内容を現在のカウントで書き換え
+  countElem.textContent = count;
+}
+
+// それぞれのボタン要素を取得して、それぞれにあった関数がボタンクリックで実行されるように設定
+// 要素はクリックされた時に"click"という「イベント」を発生させるので、そのイベントを監視する
+document.querySelector("button.plus").addEventListener("click", onClickPlus);
+document.querySelector("button.minus").addEventListener("click", onClickMinus);
+```
+
+これでカウンターアプリ完成です！  
+以下の画像のように、自由に値を増減できていればOKです。
+
+![カウンターアプリのデモ](imgs/1-2-coutner-demo.gif)
 
 ## 2. 時間割アプリのデザインを考えよう
 
