@@ -23,7 +23,7 @@
   - [4. ページを用意しよう](#4-ページを用意しよう)
     - [4.1. ルーティングを自作しよう](#41-ルーティングを自作しよう)
     - [4.2. ひとつめのページを用意しよう](#42-ひとつめのページを用意しよう)
-    - [4.3. ふたつめのページを用意しよう](#43-ふたつめのページを用意しよう)
+    - [4.3. ふたつめとみっつめのページを用意しよう](#43-ふたつめとみっつめのページを用意しよう)
   - [5. データを保存しよう](#5-データを保存しよう)
     - [5.1. IndexedDBを使ってみよう](#51-indexeddbを使ってみよう)
     - [5.2. 使いやすいよう、ラッパーを用意しよう](#52-使いやすいようラッパーを用意しよう)
@@ -637,17 +637,92 @@ customElements.define("counter-component", CounterComponent);
 
 ### 4.1. ルーティングを自作しよう
 
+<!--
 * ルーティングとは
 * URL hash (フラグメント識別子)
 * hashChangeEvent
 * ページの内容を書き換えよう
+-->
+
+ルーティングとは、特定のURLが開かれたときにそのURLによって処理を切り替えることです。  
+今回のようなWebアプリの場合には、要するにURLに合わせて表示するページを切り替える機能のことです。
+
+通常静的ウェブサイトではURLのパスがそのままホスティングするディレクトリ以下のファイルパスになっていることが多いですが、それだとHTMLファイルをページ分用意することになり、面倒です。  
+かわりに、このルーティングの仕組みを自作すればHTMLファイルは一つで、JavaScriptによる処理でページを分岐させることができます。  
+他にも、`<head>`要素内のメタデータの設定を防げたり、いいこともあるので今回はこの方法でページを用意します。
+
+具体的には、URLの末尾につく「hash」と呼ばれる値を利用します。  
+フラグメント識別子と呼ばれることもあり、ページ内で特定の要素にフォーカスした状態のリンクを作成する用途で使われるのをよく見かけるでしょう。
+
+まずは`index.html`に[1.1.1.](#111-基本的なhtml要素を知ろう)を参考にしながら、最低限必要なHTMLを書きましょう。`main.mjs`、`style.css`の読み込みも忘れないでください。  
+`<body>`要素の内容は`<app-root></app-root>`としてください。
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>時間割</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="main.mjs"></script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>
+```
+
+ルーティングはURLと処理を紐づける処理のため、今回の場合ではhashとページの対応を示すデータをおいておく必要があります。  
+このデータを配置するファイルを `src/routes.mjs`というファイル内に配置して、外部から呼び出せるように`export`します。  
+以下の内容を`src/routes.mjs`を作成して書いてください。
+
+```javascript
+export const routes = {
+  "#home": "<home-page></home-page",
+}
+```
+
+次に、`main.mjs`にルーティング処理を書きます。  
+URLのhashは変更されたときに`hashchange`というイベントを発生させるので、このイベントを監視してルーティング処理を実行させるのがいいでしょう。  
+`routes.mjs`に書いたhashとページの対応は`import`という命令で読み込んでおき、処理中に呼び出せるようにします。
+
+```javascript
+import { routes } from "./src/routes.mjs";
+
+async function onHashChange() {
+  const hash = window.location.hash;
+  console.log(hash);
+  if (hash === "") {
+    window.location.hash = "#home";
+  }
+  const page = routes[hash];
+  if (!page) {
+    console.warn("unknown route");
+    return;
+  }
+
+  const appRoot = document.querySelector("app-root");
+  appRoot.innerHTML = page;
+}
+
+window.addEventListener("hashchange", onHashChange);
+onHashChange();
+```
+
+一番最後の行で一度`onHashChange()`関数を呼び出しているのは、アクセス時に一度実行してページ内容を変更する必要があるからです。
+
+ここまでできたら一度保存し、`index.html`を開いて「Live Server」を起動してブラウザで確認しましょう。  
+問題なく実装できていれば以下のような表示になるはずです。開発者ツールを開いて確認してください。
+
+![ルーターがログに出力を行っている](imgs/4-1-router-warn.png)
 
 ### 4.2. ひとつめのページを用意しよう
 
 * カスタム要素でページを作る
 * ルーティングに登録
 
-### 4.3. ふたつめのページを用意しよう
+### 4.3. ふたつめとみっつめのページを用意しよう
 
 * ひとつめと同様
 
