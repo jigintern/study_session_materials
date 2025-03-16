@@ -777,6 +777,33 @@ home pageと表示されていればOKです！
 
 ### 4.3. ふたつめとみっつめのページを用意しよう
 
+この調子で残り必要な２つのページも作成してしまいましょう。
+`routes.mjs`の`routes`オブジェクトに以下の２つの対応を追加してください。
+
+```javascript
+  "#class-list": "<class-list-page></class-list-page>",
+  "#class-edit": "<class-edit-page></class-edit-page>",
+```
+
+`src/pages/class-list.mjs`、`src/pages/class-edit.mjs`を作成して、`home.mjs`の内容をコピーして改変しながら、それぞれのページであることを確認できるよう`html`の内容を適宜書き換えてください。
+
+`register.mjs`の内容もアップデートしましょう。各カスタム要素を登録してください。
+
+```javascript
+import { ClassEditPage } from "./pages/class-edit.mjs";
+import { ClassListPage } from "./pages/class-list.mjs";
+import { HomePage } from "./pages/home.mjs";
+
+customElements.define("home-page", HomePage);
+customElements.define("class-list-page", ClassListPage);
+customElements.define("class-edit-page", ClassEditPage);
+```
+
+ここまでできたら変更したファイルを保存し直して、ブラウザの表示を確認してみましょう。  
+URLバーから直接hashを書き換えて意図したページが表示されていることを確認します。
+
+![各ページが表示できていることを確認する](imgs/4-3-add-pages.png)
+
 ## 5. データを保存しよう
 
 入力したデータを保存して、利用できるようにしよう。
