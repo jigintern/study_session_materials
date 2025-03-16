@@ -527,23 +527,113 @@ JavaScriptにも定数や変数のようにユーザーが定義できる値が�
 
 ### 3.4. カスタム要素を作ってみよう
 
+<!--
 * customElements.define()
 * ライフサイクルコールバック
   * connectedCallback()
   * attributeChangedCallback()
 * テンプレートリテラル
   * es6-string-html 拡張機能
+-->
+
+JavaScriptやCSSには「決まった値を宣言しておいて、必要なときに呼び出す」ための機能があることがわかりました。これらはコードを可能な限り再利用するための仕組みです。  
+実は、HTMLにもコードを再利用可能にするための仕組みがあります。それが「カスタム要素」です。
+
+カスタム要素は、`HTMLElement`を継承したクラスを宣言して、そのクラスを`customeElements.define()`を利用して登録することで利用可能になります。
+
+カウンターをカスタム要素を用いて置き換えてみると、以下のリポジトリのようになります。
+
+<https://github.com/haruyuki-16278/counter>
+
+`main.mjs`の内容は以下のようになります。
+
+```javascript
+class CounterComponent extends HTMLElement {
+  /** @type {ShadowRoot | undefined} */
+  shadowRoot = undefined;
+
+  count = 0;
+
+  css = () => /*css*/ `
+    省略
+  `;
+
+  html = () => /*html*/ `
+    省略
+  `;
+
+  constructor() {
+    super();
+    this.shadowRoot = this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = this.html();
+
+    this.shadowRoot.querySelector("button.plus").addEventListener("click", () => {
+      this.count += 1;
+      this.render();
+    });
+    this.shadowRoot.querySelector("button.minus").addEventListener("click", () => {
+      this.count -= 1;
+      this.render();
+    });
+  }
+}
+
+customElements.define("counter-component", CounterComponent);
+```
+
+1行目からがクラスの宣言で、最後の行はカスタムコンポーネントの登録の命令になります。
+
+クラス中にある`constructor()`は特別な関数で、クラスの実態を作成するときに呼び出される関数です。  
+`extends <継承元クラス>`という構文でクラスを継承して作成されたクラスは、このコンストラクタ関数の中で必ず`super()という関数を呼び出す必要があります。
+
+もう一つ、カスタム要素ゆえの特別な関数があります。それが`connectedCallback()`です。  
+この関数は文書中にカスタム要素が追加されたときに必ず呼び出される関数で、要素の内容への変更はこの関数内で処理することが推奨されています。  
+この関数を含めて、カスタム要素には「ライフサイクルコールバック」と呼ばれる関数が4つあります。  
+目的に応じて都度宣言して利用するようにしましょう。
 
 ### 3.5. 見やすいディレクトリ構成を考えよう
 
+<!--
 * JavaScriptは別ファイルから値を読み込める
 * 説明的な命名
 * Web開発で頻出する名称
 * 今回の基本構成
+-->
+
+最後に、開発の上で混乱を生みづらいリポジトリのディレクトリ構成について説明します。  
+関数や変数もそうですが、プログラム中で利用するものの名前は「説明的」であると混乱を招きづらいです。  
+
+今回は以下の構成で開発を行っていきます。
+
+```txt
+.
+├── src/
+│   ├── pages/
+│   ├── components/
+│   └── shared/
+├── index.html
+├── style.css
+└── main.mjs
+```
+
+`pages`は各ページとして利用するカスタム要素を配置するディレクトリ。  
+`components`はページ内のパーツとして利用するコンポーネントとなるカスタム要素を配置するディレクトリ。  
+`shared`は各JSファイル中での記述を共通化した内容を入りするディレクトリです。
+
+[GitHub](https://github.com/)を開いて新規リポジトリを作成してクローンしましょう。  
+リポジトリ名は「timetable」とし、VSCodeでクローンしたリポジトリを開いてください。
 
 ## 4. ページを用意しよう
 
-アプリの各画面を作るため、それぞれの画面のためにページを作りましょう
+いよいよ時間割アプリを本格的に開発していきます。
+アプリの各画面を作るため、それぞれの画面のためにページを作りましょう。
 
 ### 4.1. ルーティングを自作しよう
 
