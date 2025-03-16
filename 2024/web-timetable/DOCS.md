@@ -377,12 +377,57 @@ document.querySelector("button.minus").addEventListener("click", onClickMinus);
 
 ### 3.1. VSCodeの設定を調整しよう
 
+<!--
 * Editor: Tab size
 * Editor: Word wrap
 * Editor: Render Whitespace
 * Editor: Format on save
 * Editor: Default Formatter
 * Prettier: Print width
+-->
+
+まずはVSCodeを使いやすくするための設定を追加しましょう。  
+コマンドパレットを開いて「user settings json」と入力して出てくる項目を選択してください。
+
+![設定](imgs/3-1-pallet.png)
+
+すると、`settings.json`というファイルが開きます。
+そこに以下の内容を入力しましょう。
+
+```json
+{
+  "workbench.iconTheme": "vscode-icons",
+  "editor.wordWrap": "on",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.renderWhitespace": "all",
+  "editor.tabSize": 2,
+  "prettier.printWidth": 100
+}
+```
+
+それぞれ意味を説明します。
+
+* `editor.wordWrap`
+  * エディタの端でテキストを折り返すかどうか
+* `editor.defaultFormatter`
+  * エディタのフォーマッターに何を利用するか
+* `editor.formatOnSave`
+  * ファイルを保存するときにフォーマットするかどうか
+* `editor.renderWhitespace`
+  * 空白文字をエディタに表示するか（`・`で空白が表現される）
+* `editor.tabSize`
+  * インデントに利用するタブの大きさ
+* `prettier.printWidth`
+  * フォーマッターでテキスト幅何文字までOKとするか
+
+特に、ファイル保存時にフォーマットを行う設定は、フォーマッターを設定しておけばコードの見た目が近い状態で管理できるので、コードの読みやすさ（可読性と呼びます）を確保するのに便利な設定です。
+
+この設定はインストールしたVSCodeを利用するならいつでも適用される設定になります。
+現在開いているフォルダやリポジトリでのみ有効にしたいような場合には、「ワークスペース設定」を利用するようしましょう。
+
+今回は簡単のため、JSONファイルを直接編集してもらいましたが、GUIで設定することも可能です。  
+時間があれば設定を眺めて、より便利になる項目を探してみるのも良いでしょう。
 
 ### 3.2. JSDocを書いてみよう
 
