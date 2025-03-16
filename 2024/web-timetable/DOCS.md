@@ -31,7 +31,6 @@
     - [6.1. 科目の情報の型を考えよう](#61-科目の情報の型を考えよう)
     - [6.2. 必要な情報を入力できるようにしよう](#62-必要な情報を入力できるようにしよう)
     - [6.3. 科目の情報を保存しよう](#63-科目の情報を保存しよう)
-    - [6.4. 開発者モードから登録した内容を確認しよう](#64-開発者モードから登録した内容を確認しよう)
   - [7. 科目を一覧・管理できるようにしよう](#7-科目を一覧管理できるようにしよう)
     - [7.1. 登録した科目を一覧で表示しよう](#71-登録した科目を一覧で表示しよう)
     - [7.2. 繰り返しを使って表示を作ろう](#72-繰り返しを使って表示を作ろう)
@@ -831,7 +830,8 @@ Webアプリでデータを管理する方法の一つとして、ブラウザ�
 試しにラッパーを通して値を保存してみましょう。試すだけなので、このあと書いた処理は削除します。  
 後で作業を戻しやすいようにここまでの変更がコミットされていることを確認しておきましょう。
 
-`main.mjs`の末尾に以下の処理を追加して保存しましょう。できたらブラウザの開発者ツールでコンソールタブを確認し、エラーが無ければアプリケーションタブを開いてください。
+`main.mjs`の末尾に以下の処理を追加して保存しましょう。できたらブラウザの開発者ツールでコンソールタブを確認し、エラーが無ければアプリケーションタブを開いてください。  
+必要な値は適宜インポートしてください。
 
 ```javascript
 DB.set(CLASS_STORE_NAME, { id: "test", name: "情報処理I" });
@@ -850,22 +850,165 @@ DB.set(CLASS_STORE_NAME, { id: "test", name: "情報処理I" });
 
 ### 6.1. 科目の情報の型を考えよう
 
+<!--
 * デザインから必要なデータを考える
 * データを取り扱うために必要なデータを追加する
+-->
+
+ここで、[2.2.](#22-デザインを考えよう)で考えた時間割アプリのデザインを思い出してください。  
+最終的に時間割に科目を表示するわけですが、そのために必要な情報は何があるでしょうか？
+
+今回は科目は最低限以下のデータを持つものとして開発します。
+
+* ID
+  * 科目を管理する & データベースに保存するため
+* 科目名
+  * なんの授業かを最低限判別するため
+
+これを満たす型をJSDocを用いて宣言しておきましょう。  
+`src/types.mjs` を作成して以下の内容を記述してください。
+
+```javascript
+/**
+ * @typedef ClassData
+ * @property {string} id
+ * @property {string} name
+ */
+```
+
+この型をもとに科目を登録していきます。
 
 ### 6.2. 必要な情報を入力できるようにしよう
 
-* ひとつめのページの内容を修正する
+<!--
+* class-edit.mjsの内容を修正する
 * input
 * レイアウトする
+-->
+
+では、実際に必要な情報を入力できるように`class-edit.mjs`の内容を編集していきましょう。
+まずは`html`の内容を以下のように書き換えてください。
+
+```javascript
+  html = () => /* html */ `
+    <div class="class-edit">
+      <div class="header">
+        <button class="move-list">⬅️</button>
+        <span>class edit page</span>
+        <button class="save">💾</button>
+      </div>
+      <div class="input-container">
+        <span>科目名</span>
+        <input type="text" id="class-name"/>
+      </div>
+    </div>
+  `;
+```
+
+保存してブラウザで確認すると以下の画像のような表示になると思います。
+
+![入力欄が表示されている](imgs/6-2-edit-html.png)
+
+ここで要素タブから科目登録ページ内の要素を確認してほしいのですが、`style.css`で当てているはずのスタイルが適用されていません。  
+これはカスタム要素を作成するときに利用している「ShadowDOM」による影響です。  
+「ShadowDOM」内の要素はその親から隔離されていて、全体に適用されるはずの`<head>`内で読み込んでいるスタイルが適用されないことになっています。
+
+これに対応するため、カスタム要素内に`<style>`要素を用意してそこで必要なスタイルを適用しましょう。  
+`src/shared/style.mjs`を作成して以下の内容を記述してください。
+
+```javascript
+export const basicStyle = /*css*/ `
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+`;
+```
+
+次に、`class-edit.mjs`に`css`を作成する関数を書きましょう。  
+`html`より上に書くようにしてください。`basicStyle`のインポートも忘れずに書きましょう。
+
+```javascript
+  css = () => /* css */`
+    ${basicStyle}
+  `
+```
+
+これをHTMLに含めるようにします。
+
+```javascript
+  html = () => /* html */ `
+    <style>${this.css()}</style>
+    <div class="class-edit">
+```
+
+これで`<style>`要素によってスタイルが適用されます。  
+開発者ツールから確認してみましょう。
+
+![CSSが適用されている](imgs/6-2-apply-style.png)
+
+では、それっぽい見た目になるように`css`の記述を以下の内容に書き換えてください。
+
+```javascript
+  css = () => /* css */ `
+    ${basicStyle}
+
+    :host .class-edit {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: scroll;
+
+      & > .header {
+        height: 32px;
+        width: 100%;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        
+        & > button {
+          height: 32px;
+          width: 32px;
+          border: none;
+          background-color: transparent;
+          font-size: 24px;
+          text-align: center;
+        }
+
+        & > span {
+          width: 100%;
+          font-size: 24px;
+          font-weight: bold;
+          text-align: center;
+        }
+      }
+
+      & > .input-container {
+        height: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        grid-template-rows: repeat(1, 32px)
+        gap: 8px;
+
+        & input {
+          height: 32px;
+          padding: 0 16px;
+          border-radius: 100vh;
+        }
+      }
+    }
+  `;
+```
+
+![それっぽい見た目のスタイル](imgs/6-2-applike-style.png)
 
 ### 6.3. 科目の情報を保存しよう
 
 * valueを取得する
 * IndexedDBにデータを保存する
-
-### 6.4. 開発者モードから登録した内容を確認しよう
-
 * アプリケーションタブ → IndexedDB
 
 ## 7. 科目を一覧・管理できるようにしよう
