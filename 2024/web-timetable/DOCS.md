@@ -6,7 +6,7 @@
 - [はじめの一歩は時間割](#はじめの一歩は時間割)
   - [1. 初めてのWebアプリを作ろう](#1-初めてのwebアプリを作ろう)
     - [1.1. HTML/CSSを始めよう](#11-htmlcssを始めよう)
-      - [1.1.1. よく使うHTML要素を知ろう](#111-よく使うhtml要素を知ろう)
+      - [1.1.1. 基本的なHTML要素を知ろう](#111-基本的なhtml要素を知ろう)
       - [1.1.2. CSSボックスモデルを知ろう](#112-cssボックスモデルを知ろう)
       - [1.1.3. フレックスボックス、グリッドレイアウトを使ってみよう](#113-フレックスボックスグリッドレイアウトを使ってみよう)
     - [1.2. JavaScriptを組み合わせよう](#12-javascriptを組み合わせよう)
@@ -47,20 +47,111 @@
 
 ![作るカウンターアプリのイメージ](imgs/counter-app.gif)
 
-[GitHub](https://github.com/) に「vanilla-counter」という名前でリポジトリを用意してください。
-`git clone <URL>` として手元にcloneしましょう。
+[GitHub](https://github.com/) に「vanilla-counter」という名前でリポジトリを用意してください。  
+`git clone <URL>` として手元にcloneして、VSCodeでcloneしたリポジトリを開いてください。
+
+VSCodeのエクスプローラーから「index.html」「style.css」「main.mjs」の名前でファイルを作成してください。
+
+![各ファイルを作成した状態](imgs/1-create-files.png)
 
 ### 1.1. HTML/CSSを始めよう
 
-初歩的なWebページを作成するために、最低限必要な知識を学習しましょう。
+初歩的なWebページを作成するために、最低限必要な知識を学習しましょう。  
+作成した「index.html」を開いてください。
 
-#### 1.1.1. よく使うHTML要素を知ろう
+#### 1.1.1. 基本的なHTML要素を知ろう
 
+<!-- 
 * DOCTYPE宣言
 * html, head, body
 * meta-charset, meta-viewport, link-stylesheet, script
 * div
 * span
+-->
+
+まずはDOCTYPE宣言を書きましょう。
+
+```html
+<!DOCTYPE html>
+```
+
+この宣言には、ブラウザがHTMLを解釈するときのモードを指定する役割があります。  
+書かないと表示が意図しないものになるので、必ず書くようにしてください。
+
+次にHTMLを追加していきます。
+
+```html
+<html>
+  <head>
+
+  </head>
+  <body>
+
+  </body>
+</html>
+```
+
+それぞれ「htmlタグ」「headタグ」「bodyタグ」のように呼び、以下のような意味があります。
+
+| タグ | 意味 |
+| :---: | --- |
+| `<html>` | HTML文書が書かれていることを示す。 |
+| `<head>` | 文書に関するメタデータが書かれていることを示す。この要素の内容は文書中には表示されない。 |
+| `<body>` | 文書の内容が書かれていることを示す。 |
+
+headタグ内にメタデータを追記しましょう。
+
+```html
+<meta charset="UTF=8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>カウンター</title>
+<link rel="stylesheet" href="style.css" />
+<script type="module" src="main.mjs"></script>
+```
+
+HTMLには上記の`<meta>`や`<link>`のように閉じタグを持たない要素があります。  
+このような要素を「self-closing tag」と呼ぶこともあります。
+
+ここで出てきた各要素の意味も説明しましょう。
+
+| タグ | 意味 |
+| :---: | --- |
+| `<meta charset="<文字エンコード>" />` | 文書の文字コードを指定する。 |
+| `<meta name="viewport" content="width=device-width, initial-scale=1.0" />` | ブラウザで表示する領域の大きさを指定する。 |
+| `<title>` | 文書のタイトルを示す。 |
+| `<link rel="stylesheet" href="<CSSファイルへのパス>">` | 文書に適用するスタイルシートの置き場を示す。 |
+| `<script type="module">` | JavaScriptが書かれていることを示す。src属性を指定したときは実行するJavaScriptファイルの置き場を示す。 |
+
+その他にもメタデータとして`<head>`内に記述する要素はありますが、最低限以上の内容を記述しておけばよいでしょう。
+
+では、最後に`<body>`内にページの内容を記述しましょう。  
+
+```html
+    <div>
+      <span>カウンター</span>
+      <div class="counter-container">
+        <span class="count">0</span>
+      </div>
+    </div>
+```
+
+ここまでかけたら変更を保存して、`Ctrl+Shift+P`でコマンドパレットを開いて「Live Server」と検索します。  
+「Live Server: Open with Live Server」を選択して実行しましょう。起動メッセージが表示されたあと、ブラウザで「http://127.0.0.1:5500/index.html」が開くはずです。
+
+![コマンドパレットの表示](imgs/1-1-1-live-server.png)
+
+![ブラウザの表示](imgs/1-1-1-browser.png)
+
+最後に登場した2つのHTML要素についても説明しましょう。
+
+| タグ | 意味 |
+| :---: | --- |
+| `<div>` | フローコンテンツの汎用ブロックコンテナー。要素を囲んでCSSで修飾したいときに利用する。 |
+| `<span>` | 記述コンテンツ汎用インラインコンテナー。文字列を囲んでCSSで修飾したいときに利用する。 |
+
+Webアプリはこの要素と後述するCSSセレクターがあれば作成できるでしょう。  
+しかし、本来であればHTML要素は記述内容の目的に合わせて適切に利用される必要があるため、この2つのみではなくより多くのタグを利用することになります。  
+今回の開発では簡単のためこの2つの要素を主に利用します。
 
 #### 1.1.2. CSSボックスモデルを知ろう
 
