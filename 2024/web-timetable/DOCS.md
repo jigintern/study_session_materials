@@ -431,13 +431,99 @@ document.querySelector("button.minus").addEventListener("click", onClickMinus);
 
 ### 3.2. JSDocを書いてみよう
 
+<!--
 * @type
 * @typedef
+-->
+
+ここで、JSDocというJavaScriptのエディタ支援を紹介しましょう。  
+JSDocは動的型付け言語であるJavaScriptに対して、型を指定できる特殊なコメントです。  
+`/** ~ */`で囲んである記述で、様々な構文が用意されています。
+
+ここでは `@type` と `@typedef` を説明します。
+
+[1.](#1-初めてのwebアプリを作ろう)で作成したカウンターアプリのJavaScriptに型情報を追記してみると以下のようになります。
+
+```javascript
+/** @type {number} */
+let count = 0;
+
+function onClickPlus() {
+  count += 1;
+  const countElem = /** @type {HTMLSpanElement} */ (document.querySelector("span.count"));
+  countElem.textContent = count.toString();
+}
+
+function onClickMinus() {
+  count -= 1;
+  const countElem = /** @type {HTMLSpanElement} */ (document.querySelector("span.count"));
+  countElem.textContent = count.toString();
+}
+
+document.querySelector("button.plus").addEventListener("click", onClickPlus);
+document.querySelector("button.minus").addEventListener("click", onClickMinus);
+```
+
+ここで登場したのは`@type`の記述です。
+1行目のように、宣言の上の行に書くことで変数の型を指定できる他、`/** @type {} */ (値)`とすることで値の型を指定することもできます。
+
+もう一つ、`@typedef`についても説明しましょう。  
+この記述はユーザーが独自で型を宣言できるものです。  
+例えば、科目を登録するときに必要な情報を型として持っておいて、実際にデータベースに保存したり読み込んだりするとき型を上の`@type`で当ててあげることで、その後の開発ではエディタの補完機能が強力に動作し開発効率を上げることができるでしょう。
 
 ### 3.3. CSSカスタムプロパティを使ってみよう
 
+<!--
 * カラートークン
 * 要素の大きさの固定
+-->
+
+JavaScriptにも定数や変数のようにユーザーが定義できる値が存在しますが、CSSにも同様なものが存在します。  
+それが「CSSカスタムプロパティ」です。
+
+例えば、ページ中で使用する色のカラーコードやヘッダーの高さなどを保持することで、カスタムプロパティの変更のみで見た目を簡単に変更できたり、ダークモード/ライトモード対応がしやすくなったりします。  
+
+以下のようにしてCSSカスタムプロパティを作成できます。  
+
+```css
+:root {
+  --color-primary: #b4e9ff;
+  --color-secondary: #dee7a2;
+
+  --height-header: 32px;
+}
+```
+
+宣言したCSSカスタムプロパティを利用して先程のカウンターアプリの見た目を調整してみましょう。  
+ボタン配置用のスタイル郡を以下のCSSで置き換えてください。
+
+```css
+    & > button {
+      width: 32px;
+      height: 32px;
+      border-radius: 100vh;
+      border: none;
+      background-color: var(--color-primary);
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--color-secondary);
+      }
+
+      &.plus {
+        grid-area: plus;
+        margin-right: auto;
+      }
+      &.minus {
+        grid-area: minus;
+        margin-left: auto;
+      }
+    }
+```
+
+![カスタムプロパティで表示を調整したカウンター](imgs/3-3-custom-counter.png)
+
+このように、`--`で始まるプロパティがカスタムプロパティとして取り扱われ、`var(--カスタムプロパティ名)`とすることで値を呼び出すことができます。
 
 ### 3.4. カスタム要素を作ってみよう
 
