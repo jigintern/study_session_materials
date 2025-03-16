@@ -127,7 +127,7 @@ HTMLには上記の`<meta>`や`<link>`のように閉じタグを持たない要
 では、最後に`<body>`内にページの内容を記述しましょう。  
 
 ```html
-    <div>
+    <div class="app">
       <span>カウンター</span>
       <div class="counter-container">
         <span class="count">0</span>
@@ -153,15 +153,91 @@ Webアプリはこの要素と後述するCSSセレクターがあれば作成�
 しかし、本来であればHTML要素は記述内容の目的に合わせて適切に利用される必要があるため、この2つのみではなくより多くのタグを利用することになります。  
 今回の開発では簡単のためこの2つの要素を主に利用します。
 
-#### 1.1.2. CSSボックスモデルを知ろう
+#### 1.1.2. [CSSボックスモデルを知ろう](https://github.com/jigintern/intern-dev-tutorial/blob/main/html-css/DOCS.md#3-2-%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E3%83%A2%E3%83%87%E3%83%AB%E3%81%A8box-sizing)
 
-* margin, border, padding, content
-* box-sizing
+この単元は別資料を参照します。
+
+<https://github.com/jigintern/intern-dev-tutorial/blob/main/html-css/DOCS.md#3-2-%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%E3%83%A2%E3%83%87%E3%83%AB%E3%81%A8box-sizing>
+
+以下の内容を `style.css` に記述しましょう。
+
+```css
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,body {
+  width: 100svw;
+  height: 100svh;
+  overflow: hidden;
+}
+```
+
+ここで`*`のようにその後に`{}`で囲まれたブロックを持つ部分を「セレクタ」と呼びます。  
+セレクタはその後のブロックに記述されたCSSをどこに適用するのかを示すもので、今回利用している`*`は「全称セレクタ」というものです。  
+適用しているCSSはそれぞれ、ボックスモデルを指定する`box-sizing`と、それぞれの要素に最初から設定されている事がある`margin`と`padding`を0にして取り扱いやすくするスタイルです。
 
 #### 1.1.3. フレックスボックス、グリッドレイアウトを使ってみよう
 
+<!--
 * flex
 * grid
+-->
+
+フレックスボックス、グリッドレイアウトはそれぞれ、CSSの`display`プロパティに`flex`、`grid`を指定することで利用できるレイアウト方法です。  
+フレックスボックスは1次元的、グリッドレイアウトは2次元的なレイアウトが可能になります。
+
+[1.1.1.](#111-基本的なhtml要素を知ろう)で作成したページにレイアウトをつけてみましょう。  
+イメージは以下のとおりです。
+
+* 「カウンター」というタイトルは画面上部に固定
+* タイトルとカウンター本体は直線上に縦に並ぶ
+* タイトルとカウンターは左右中央揃えになる
+* カウンター本体はカウントと後でボタンを追加する
+* カウンターはタイトル以外の画面を
+
+これからCSSを考えると以下のようになります。
+
+```css
+.app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > span {
+    height: 32px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  & > div.counter-container {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template: ". count ." 32px
+                   "minus . plus" 32px
+                  / 1fr 100px 1fr;
+    gap: 8px;
+    place-content: center;
+
+    & > span.count {
+      width: 100%;
+      grid-area: count;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+}
+```
+
+保存してブラウザで確認すると以下のように表示が変わっているはずです。
+
+![CSSが適用された画面の様子](imgs/1-1-3-attach-css.png)
+
+では次の章でボタンを追加して、カウントを変化させられるようにしましょう。
 
 ### 1.2. JavaScriptを組み合わせよう
 
