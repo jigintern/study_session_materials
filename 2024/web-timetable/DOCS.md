@@ -1007,9 +1007,65 @@ export const basicStyle = /*css*/ `
 
 ### 6.3. 科目の情報を保存しよう
 
+<!--
 * valueを取得する
 * IndexedDBにデータを保存する
 * アプリケーションタブ → IndexedDB
+-->
+
+ここまででページの外観は出来上がったので、機能の方を実装していきましょう。  
+まずは情報の保存です。
+
+`render`関数内で要素を取得してクリックイベントを監視、保存ボタンがクリックされたときに科目名を取得して[6.1.](#61-科目の情報の型を考えよう)で作成した型に合わせてデータを作成し、`DB.mjs`ラッパーを利用して保存します。
+
+```javascript
+  render() {
+    this.shadowRoot.innerHTML = this.html();
+
+    const saveButton = this.shadowRoot.querySelector("button.save");
+    saveButton.addEventListener("click", async () => {
+      const className = /** @type {HTMLInputElement} */ (
+        this.shadowRoot.getElementById("class-name")
+      ).value;
+      const classId = crypto.randomUUID();
+
+      /** @type {import("../types.mjs").ClassData} */
+      const data = {
+        id: classId,
+        name: className,
+      };
+      await DB.set(CLASS_STORE_NAME, data);
+    });
+  }
+```
+
+ここまでできたら変更したファイルを保存し直してブラウザで確認しましょう。  
+科目名の入力欄に適当に入力し、保存ボタンをクリックします。  
+実装がうまく行っていれば、アプリケーションタブのIndexedDBにデータが追加されているはずです。
+
+![アプリケーションタブから保存されたデータを確認する](imgs/6-3-indexeddb-save-success.png)
+
+最後に、科目の編集・登録ページからは科目一覧ページに遷移できる必要があるので、その機能を実装しておきましょう。  
+`render`関数の`await DB.set()`の後ろにページ遷移を追加しつつ、遷移用ボタンにもイベントの監視を追加します。
+
+```javascript
+      await DB.set(CLASS_STORE_NAME, data);
+
+      this.moveToList();
+    });
+
+    const moveToListButton = this.shadowRoot.querySelector("button.move-list");
+    moveToListButton.addEventListener("click", this.moveToList);
+  }
+
+  moveToList() {
+    const url = new URL(location.href);
+    url.hash = "#class-list";
+    location.href = url.href;
+  }
+```
+
+![動作の様子](imgs/6-3-add-class-demo.gif)
 
 ## 7. 科目を一覧・管理できるようにしよう
 
