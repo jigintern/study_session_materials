@@ -33,7 +33,8 @@
     - [6.3. 科目の情報を保存しよう](#63-科目の情報を保存しよう)
   - [7. 科目を一覧・管理できるようにしよう](#7-科目を一覧管理できるようにしよう)
     - [7.1. 科目一覧ページを準備しよう](#71-科目一覧ページを準備しよう)
-    - [7.2. 繰り返しを使って表示を作ろう](#72-繰り返しを使って表示を作ろう)
+    - [7.2. 画面遷移を追加しよう](#72-画面遷移を追加しよう)
+    - [7.3. 繰り返しを使って表示を作ろう](#73-繰り返しを使って表示を作ろう)
   - [8. 時間割表を表示できるようにしよう](#8-時間割表を表示できるようにしよう)
     - [8.1. 表の見た目を作ろう](#81-表の見た目を作ろう)
     - [8.2. 表に科目を設定できるようにしよう](#82-表に科目を設定できるようにしよう)
@@ -1163,9 +1164,42 @@ export class ClassListPage extends HTMLElement {
 
 ![class-list.mjsの内容を置き換えた状態](imgs/7-1-replace-class-list.png)
 
-### 7.2. 繰り返しを使って表示を作ろう
+### 7.2. 画面遷移を追加しよう
 
+科目一覧ページからは時間割表ページと科目登録ページにそれぞれ遷移できる必要があります。  
+科目登録のときと同様に`render`関数内でボタンのクリックイベントを監視して実行されるように設定しましょう。
+
+```javascript
+  render() {
+    this.shadowRoot.innerHTML = this.html();
+
+    const addClassButton = this.shadowRoot.querySelector("button.add");
+    addClassButton.addEventListener("click", this.moveToEdit);
+    const moveToHomeButton = this.shadowRoot.querySelector("button.move-home");
+    moveToHomeButton.addEventListener("click", this.moveToHome);
+  }
+
+  moveToEdit() {
+    const url = new URL(location.href);
+    url.hash = "#class-edit";
+    location.href = url.href;
+  }
+
+  moveToHome() {
+    const url = new URL(location.href);
+    url.hash = "#home";
+    location.href = url.href;
+  }
+```
+
+### 7.3. 繰り返しを使って表示を作ろう
+
+<!--
+* DBから値を取得する
+* コンポーネントを作成しよう
 * テンプレートリテラル中で繰り返し処理をする
+-->
+
 
 ## 8. 時間割表を表示できるようにしよう
 
