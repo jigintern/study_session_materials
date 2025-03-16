@@ -32,7 +32,7 @@
     - [6.2. 必要な情報を入力できるようにしよう](#62-必要な情報を入力できるようにしよう)
     - [6.3. 科目の情報を保存しよう](#63-科目の情報を保存しよう)
   - [7. 科目を一覧・管理できるようにしよう](#7-科目を一覧管理できるようにしよう)
-    - [7.1. 登録した科目を一覧で表示しよう](#71-登録した科目を一覧で表示しよう)
+    - [7.1. 科目一覧ページを準備しよう](#71-科目一覧ページを準備しよう)
     - [7.2. 繰り返しを使って表示を作ろう](#72-繰り返しを使って表示を作ろう)
   - [8. 時間割表を表示できるようにしよう](#8-時間割表を表示できるようにしよう)
     - [8.1. 表の見た目を作ろう](#81-表の見た目を作ろう)
@@ -990,7 +990,7 @@ export const basicStyle = /*css*/ `
         width: 100%;
         display: grid;
         grid-template-columns: 100px 1fr;
-        grid-template-rows: repeat(1, 32px)
+        grid-template-rows: repeat(1, 32px);
         gap: 8px;
 
         & input {
@@ -1071,10 +1071,97 @@ export const basicStyle = /*css*/ `
 
 次に、科目を管理するために一覧できるページを作成して、変更や削除をできるようにしよう。
 
-### 7.1. 登録した科目を一覧で表示しよう
+### 7.1. 科目一覧ページを準備しよう
 
+<!--
 * ふたつめのページの内容を修正する
 * リストの行のコンポーネントを作る
+-->
+
+登録した科目を表示するために`class-list.mjs`を編集しましょう。  
+ヘッダーがあってその下に一覧を表示する形のデザインで考えたので、一部`class-edit.mjs`のコードを流用できそうです。
+
+以下のコードで内容を置き換えましょう。
+
+```javascript
+import { basicStyle } from "../shared/style.mjs";
+
+export class ClassListPage extends HTMLElement {
+  /** @type {ShadowRoot | undefined} */
+  shadowRoot = undefined;
+
+  css = () => /* css */ `
+    ${basicStyle}
+
+    :host .class-list {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      & > .header {
+        height: 32px;
+        width: 100%;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        
+        & > button {
+          height: 32px;
+          width: 32px;
+          border: none;
+          background-color: transparent;
+          font-size: 24px;
+          text-align: center;
+        }
+
+        & > span {
+          width: 100%;
+          font-size: 24px;
+          font-weight: bold;
+          text-align: center;
+        }
+      }
+
+      & > .list {
+        height: 100%;
+        width: 100%;
+        overflow: scroll;
+      }
+    }
+  `;
+
+  html = () => /* html */ `
+    <style>${this.css()}</style>
+    <div class="class-list">
+      <div class="header">
+        <button class="move-home">⬅️</button>
+        <span>科目一覧</span>
+        <button class="add">➕</button>
+      </div>
+      <div class="list">
+      </div>
+    </div>
+  `;
+
+  constructor() {
+    super();
+    this.shadowRoot = this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = this.html();
+  }
+}
+```
+
+この状態でブラウザで確認すると以下の画像のようになるはずです。
+
+![class-list.mjsの内容を置き換えた状態](imgs/7-1-replace-class-list.png)
 
 ### 7.2. 繰り返しを使って表示を作ろう
 
