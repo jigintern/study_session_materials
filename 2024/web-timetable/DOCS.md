@@ -37,8 +37,10 @@
     - [7.3. 繰り返しを使って表示を作ろう](#73-繰り返しを使って表示を作ろう)
     - [7.4. 登録した科目の内容を編集できるようにしよう](#74-登録した科目の内容を編集できるようにしよう)
   - [8. 時間割表を表示できるようにしよう](#8-時間割表を表示できるようにしよう)
-    - [8.1. 表の見た目を作ろう](#81-表の見た目を作ろう)
-    - [8.2. 表に科目を設定できるようにしよう](#82-表に科目を設定できるようにしよう)
+    - [8.1. 画面全体を利用できるようにしよう](#81-画面全体を利用できるようにしよう)
+    - [8.2. 表の見た目を作ろう](#82-表の見た目を作ろう)
+    - [8.3.表のコンポーネントを作ろう](#83表のコンポーネントを作ろう)
+    - [8.4. 表に科目を設定できるようにしよう](#84-表に科目を設定できるようにしよう)
 
 </details>
 
@@ -1369,6 +1371,17 @@ export class ClassListItemComponent extends HTMLElement {
     });
 ```
 
+編集画面から他の画面に映るときにはクエリパラメータは必要ないので、遷移前にURLから取り除いておきましょう。
+
+```javascript
+  moveToList() {
+    const url = new URL(location.href);
+    url.hash = "#class-list";
+    url.search = "";
+    location.href = url.href;
+  }
+```
+
 最後に`html`を修正して、既存のデータがある場合は最初からデータを`<input>`要素の`value`に設定して入力済みの状態になるようにします。
 
 ```html
@@ -1384,15 +1397,209 @@ export class ClassListItemComponent extends HTMLElement {
 
 最後に、これまで登録したデータを時間割表として表示できるようにしよう。
 
-### 8.1. 表の見た目を作ろう
+### 8.1. 画面全体を利用できるようにしよう
 
+さて、ここまでの各画面は必ずしも画面全体を利用しているわけではなかったので気にしていませんでしたが、`style.css`の内容をまだ書いていません。  
+デザインを考えると、時間割表の画面はちゃんとアプリらしい挙動で使えるほうが好ましそうです。  
+そこで、以下の内容を`style.css`に記述しましょう。
+
+```css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  max-height: 100svh;
+  width: 100%;
+  max-width: 100svw;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+body {
+  padding: 8px;
+}
+
+app-root {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+```
+
+### 8.2. 表の見た目を作ろう
+
+<!--
 * 3つめのページを作成する
 * 表のセルのコンポーネントを作る
 * グリッドレイアウトで表のコンポーネントを作る
+-->
 
-### 8.2. 表に科目を設定できるようにしよう
+まずは時間割表を表示する土台になる格子状に配置された要素を作ってみましょう。  
+`home.mjs`を開いて、以下の内容を記述してください。`html`は置き換える形にしてください。
 
+```javascript
+  css = () => /* css */ `
+    ${basicStyle}
+
+    :host .home {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: 32px repeat(4, 1fr);
+      place-content: center;
+
+      & > .class-item {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-content: center;
+      }
+    }
+  `;
+
+  html = () => /* html */ `
+    <style>${this.css()}</style>
+    <div class="home">
+      ${["月", "火", "水", "木", "金"]
+        .map((day) =>
+          [0, 1, 2, 3, 4]
+            .map(
+              (period) => /* html */ `
+                <div class="class-item">
+                  <span>${day}${period}</span>
+                </div>
+              `
+            )
+            .join("")
+        )
+        .join("")}
+    </div>
+  `;
+```
+
+この状態でブラウザを確認すると以下の画像のような表示になると思います。
+
+![表のように格子状に配置された様子](imgs/8-2-table-like.png)
+
+これをもとに時間割表のコンポーネントを作成しましょう。  
+[2.2.](#22-デザインを考えよう)の時間割表の画面を考えると、時間割表が画面上部に、科目の詳細確認と編集が画面下部にある構成になります。
+
+### 8.3.表のコンポーネントを作ろう
+
+`src/components/timetable.mjs`を作成して以下の`home.mjs`の内容をもとにクラス名や`class`セレクタなどを調整しつつコピーしましょう。
+
+```javascript
+import { basicStyle } from "../shared/style.mjs";
+
+export class TimetableComponent extends HTMLElement {
+  /** @type {ShadowRoot | undefined} */
+  shadowRoot = undefined;
+
+  css = () => /* css */ `
+    ${basicStyle}
+
+    :host .timetable {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-auto-flow: column;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: 32px repeat(4, 1fr);
+      place-content: center;
+
+      & > div {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-content: center;
+      }
+    }
+  `;
+
+  html = () => /* html */ `
+    <style>${this.css()}</style>
+    <div class="timetable">
+      ${["月", "火", "水", "木", "金"]
+        .map((day) =>
+          [0, 1, 2, 3, 4]
+            .map((period) =>
+              period === 0
+                ? /* html */ `
+                <div class="table-header">
+                  <span>${day}</span>
+                </div>
+              `
+                : /* html */ `
+                <div class="class-item">
+                  <span>${day}${period}</span>
+                </div>
+              `
+            )
+            .join("")
+        )
+        .join("")}
+    </div>
+  `;
+
+  constructor() {
+    super();
+    this.shadowRoot = this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = this.html();
+  }
+}
+```
+
+これを`register.mjs`で登録して、`home.mjs`を以下のように書き換えて表示させてみましょう。  
+`css`と`html`を置き換えてください。
+
+```javascript
+  css = () => /* css */ `
+    ${basicStyle}
+
+    :host .home {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      & > timetable-component {
+        height: 60%;
+      }
+    }
+  `;
+
+  html = () => /* html */ `
+    <style>${this.css()}</style>
+    <div class="home">
+      <timetable-component></timetable-component>
+    </div>
+  `;
+```
+
+![画面上部のみ時間割表](imgs/8-3-table-upper.png)
+
+### 8.4. 表に科目を設定できるようにしよう
+
+<!--
 * 科目の詳細を表示するコンポーネントを作る
 * 表のセルからクリックイベントを発火させる
 * ページでイベントを購読する
 * 変更内容を表に反映できるようにする
+-->
+
