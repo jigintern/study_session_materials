@@ -35,6 +35,7 @@
     - [7.1. 科目一覧ページを準備しよう](#71-科目一覧ページを準備しよう)
     - [7.2. 画面遷移を追加しよう](#72-画面遷移を追加しよう)
     - [7.3. 繰り返しを使って表示を作ろう](#73-繰り返しを使って表示を作ろう)
+    - [7.4. 登録した科目の内容を編集できるようにしよう](#74-登録した科目の内容を編集できるようにしよう)
   - [8. 時間割表を表示できるようにしよう](#8-時間割表を表示できるようにしよう)
     - [8.1. 表の見た目を作ろう](#81-表の見た目を作ろう)
     - [8.2. 表に科目を設定できるようにしよう](#82-表に科目を設定できるようにしよう)
@@ -1323,6 +1324,61 @@ export class ClassListItemComponent extends HTMLElement {
 うまくかけていればヘッダーボタンの遷移と同様にリストの行からも編集画面に遷移できるようになっているはずです。
 
 ![リスト表示](imgs/7-3-list.png)
+
+### 7.4. 登録した科目の内容を編集できるようにしよう
+
+リストの行から科目編集画面に遷移してきたときに既存のデータを編集できるよう`class-edit.mjs`も修正しましょう。
+
+クラス上部でデータを取り扱うためのプロパティをそれぞれ宣言しておきます。  
+このとき、`classId`の宣言はURLのクエリパラメータからclassIdの値を取得しようとしています。  
+もしfalsyな値（論理演算で偽となる値）が取得された場合（classIdが無いなど）は新規作成として新しいIDを作成しています。
+
+```javascript
+  classId = new URLSearchParams(window.location.search).get("classId") || crypto.randomUUID();
+  /** @type {import("../types.mjs").ClassData} */
+  classData = undefined;
+```
+
+一覧画面と同じように、データベースから情報を取得しようとします。  
+`render`関数が実行されるより先にデータがあってほしいので、同様に`connectedCallback`関数を編集します。
+
+```javascript
+  async connectedCallback() {
+    this.classData = await DB.get(CLASS_STORE_NAME, this.classId);
+
+    this.render();
+  }
+```
+
+`render`関数内でイベントによって起動されるように設定している関数もこれに合わせて修正します。
+
+```javascript
+    saveButton.addEventListener("click", async () => {
+      const className = /** @type {HTMLInputElement} */ (
+        this.shadowRoot.getElementById("class-name")
+      ).value;
+
+      /** @type {import("../types.mjs").ClassData} */
+      const data = {
+        id: this.classId,
+        name: className,
+      };
+      await DB.set(CLASS_STORE_NAME, data);
+
+      this.moveToList();
+    });
+```
+
+最後に`html`を修正して、既存のデータがある場合は最初からデータを`<input>`要素の`value`に設定して入力済みの状態になるようにします。
+
+```html
+        <input type="text" id="class-name" value="${this.classData?.name ?? ""}"/>
+```
+
+保存してブラウザで動作を確認しましょう。  
+以下の画像のような動作になっていればOKです。
+
+![既存の科目の編集](imgs/7-4-class-edit-demo.gif)
 
 ## 8. 時間割表を表示できるようにしよう
 
