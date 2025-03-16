@@ -679,7 +679,7 @@ customElements.define("counter-component", CounterComponent);
 
 ```javascript
 export const routes = {
-  "#home": "<home-page></home-page",
+  "#home": "<home-page></home-page>",
 }
 ```
 
@@ -719,12 +719,63 @@ onHashChange();
 
 ### 4.2. ひとつめのページを用意しよう
 
+<!--
 * カスタム要素でページを作る
 * ルーティングに登録
+-->
+
+さて、ルーティングはできましたが肝心のページはどうやって表示するのでしょうか？  
+ここでブラウザの開発者ツールで要素タブを表示してみると、`app-root`要素の中に`home-page`要素が追加されているのがわかります。
+
+![要素タブで確認するとちゃんとapp-rootのなかにhome-pageが追加されている](imgs/4-2-elements.png)
+
+ということは、[3.4.](#34-カスタム要素を作ってみよう)で学習したカスタム要素で`home-page`という要素を登録すればここにページの内容を表示することができそうです。  
+`src/pages/home.mjs`というファイルを作成して、簡単な内容のカスタム要素を宣言、`export`しておきましょう。以下の内容を作成したファイルに書き込んでください。
+
+```javascript
+export class HomePage extends HTMLElement {
+  /** @type {ShadowRoot | undefined} */
+  shadowRoot = undefined;
+
+  html = () => /* html */ `
+    <span>home page</span>
+  `;
+
+  constructor() {
+    super();
+    this.shadowRoot = this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = this.html();
+  }
+}
+```
+
+このページ用カスタム要素を登録するため、カスタム要素の登録用の`src/register.mjs`を作成し、`main.mjs`から呼び出しておきましょう。内容は以下のようにしてください。
+
+```javascript
+import { HomePage } from "./pages/home.mjs";
+
+customElements.define("home-page", HomePage);
+```
+
+`main.mjs`からは以下の内容を1行目に書いて呼び出してください。
+
+```javascript
+import "./src/register.mjs"
+```
+
+ここまでできたら編集したファイルを保存し直して、ブラウザでページの表示を確認しましょう。  
+home pageと表示されていればOKです！
+
+![ブラウザにhome pageと表示されていることを確認する](imgs/4-2-routing-success.png)
 
 ### 4.3. ふたつめとみっつめのページを用意しよう
-
-* ひとつめと同様
 
 ## 5. データを保存しよう
 
