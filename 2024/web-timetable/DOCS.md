@@ -40,7 +40,10 @@
     - [8.1. 画面全体を利用できるようにしよう](#81-画面全体を利用できるようにしよう)
     - [8.2. 表の見た目を作ろう](#82-表の見た目を作ろう)
     - [8.3.表のコンポーネントを作ろう](#83表のコンポーネントを作ろう)
-    - [8.4. 表に科目を設定できるようにしよう](#84-表に科目を設定できるようにしよう)
+    - [8.4. 科目を設定できるようにしよう](#84-科目を設定できるようにしよう)
+    - [8.5. 時間割表でクリックされた時間を詳細コンポーネントに通知できるようにしよう](#85-時間割表でクリックされた時間を詳細コンポーネントに通知できるようにしよう)
+    - [8.6. 設定された科目を表に表示できるようにしよう](#86-設定された科目を表に表示できるようにしよう)
+    - [8.7. 科目一覧画面への遷移を追加しよう](#87-科目一覧画面への遷移を追加しよう)
 
 </details>
 
@@ -1594,7 +1597,7 @@ export class TimetableComponent extends HTMLElement {
 
 ![画面上部のみ時間割表](imgs/8-3-table-upper.png)
 
-### 8.4. 表に科目を設定できるようにしよう
+### 8.4. 科目を設定できるようにしよう
 
 <!--
 * 科目の詳細を表示するコンポーネントを作る
@@ -1602,4 +1605,326 @@ export class TimetableComponent extends HTMLElement {
 * ページでイベントを購読する
 * 変更内容を表に反映できるようにする
 -->
+
+では画面下部に科目を登録するためのコンポーネントを作りましょう。  
+ここで、時間割表と選択しているデータをやり取りするために「曜日と時間」を使うことにします。  
+`src/components/timetable-detail.mjs` を作成して、以下の内容を記述してください。
+
+```javascript
+import { basicStyle } from "../shared/style.mjs";
+
+export class TimetableDetailComponent extends HTMLElement {
+  /** @type {ShadowRoot | undefined} */
+  shadowRoot = undefined;
+
+  static observedAttributes = ["day-period"];
+  /** @type {import("../types.mjs").ClassData} */
+  get dayPeriod() {
+    return this.getAttribute("dayperiod");
+  }
+
+  get day() {
+    return this.dayperiod.split("-")[0];
+  }
+  get period() {
+    return this.dayperiod.split("-")[1];
+  }
+
+  css = () => /* css */ `
+    ${basicStyle}
+
+    :host .timetable-detail {
+      height: 100%;
+      width: 100%;
+      padding: 16px;
+      border-top: 2px solid lightgray;
+
+      > .empty {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-content: center;
+        color: gray;
+      }
+    }
+  `;
+
+  html = () => /* html */ `
+    <style>${this.css()}</style>
+    <div class="timetable-detail">
+      ${
+        !this.dayperiod
+          ? /*html */ `
+              <div class="empty">
+                <span>授業を選択してください</span>
+              </div>
+            `
+          : /*html */ `<span>${this.dayPeriod}</span>`
+      }
+    </div>
+  `;
+
+  constructor() {
+    super();
+    this.shadowRoot = this.attachShadow({ mode: "open" });
+  }
+
+  async connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = this.html();
+  }
+}
+```
+
+これをベースに、科目を変更できるように修正していきます。  
+このとき「曜日と時間」は、表の中の要素がクリックされたときに親になる`home-page.mjs`から要素の属性を通して渡されるものとします。  
+この曜日と時間を組み合わせて、データベースに情報を登録しましょう。  
+まずは時間割表を保存するための型を用意します。以下の内容を`src/types.mjs`に追記してください。
+
+```javascript
+/**
+ * @typedef TableData
+ * @property {string} dayperiod `<曜日>-<時間>`の形式のテキスト
+ * @property {string} classId 科目のID
+ */
+```
+
+次に、登録する科目の候補を表示するためにデータベースからデータを取得します。`timetable-detail.mjs`を編集しましょう。  
+このとき、利用するデータベースのキーは`TABLE_STORE_NAME`として宣言済みなので、これをインポートして利用してください。
+
+```javascript
+  /** @type {import("../types.mjs").TableData} */
+  tableData = undefined;
+  /** @type {import("../types.mjs").ClassData[]} */
+  classDatas = [];
+```
+
+```javascript
+  async connectedCallback() {
+    if (this.dayperiod) {
+      this.tableData = await DB.get(TABLE_STORE_NAME);
+    }
+    this.classDatas = await DB.getAll(CLASS_STORE_NAME);
+
+    this.classList = this.render();
+  }
+```
+
+これでデータを取得する仕組みはできたので、これを表示して編集できるように改修します。  
+現在が編集モードかどうかを保持するための変数を宣言して、この変数に合わせて`html`で生成する内容も変更します。  
+これに追加でモード切替・保存を行うボタンと、科目を選択するセレクトボックスも表示するようにします。
+更にこのボタンの動作まで実装したのが以下のコードになります。
+
+```javascript
+import { basicStyle } from "../shared/style.mjs";
+import { TABLE_STORE_NAME, CLASS_STORE_NAME, DB, TABLE_STORE_KEY } from "../shared/db.mjs";
+
+export class TimetableDetailComponent extends HTMLElement {
+  /** @type {ShadowRoot | undefined} */
+  shadowRoot = undefined;
+
+  /** @type {import("../types.mjs").TableData} */
+  tableData = undefined;
+  /** @type {import("../types.mjs").ClassData[]} */
+  classDatas = [];
+  get classData() {
+    return this.classDatas.find((classData) => classData.id === this.tableData?.classId);
+  }
+
+  /** 編集モードに入っていれば真 */
+  isEditing = false;
+
+  static observedAttributes = ["day-period"];
+  get dayPeriod() {
+    return this.getAttribute("dayperiod");
+  }
+
+  get day() {
+    return this.dayPeriod.split("-")[0];
+  }
+  get period() {
+    return this.dayPeriod.split("-")[1];
+  }
+
+  css = () => /* css */ `
+    ${basicStyle}
+
+    :host .timetable-detail {
+      height: 100%;
+      width: 100%;
+      padding: 16px;
+      border-top: 2px solid lightgray;
+
+      > .empty {
+        height: 100%;
+        width: 100%;
+        display: grid;
+        place-content: center;
+        color: gray;
+      }
+    }
+  `;
+
+  html = () => {
+    /** 時間が未選択のときに表示する内容 */
+    const empty = () => /* html */ `
+      <div class="empty">
+        <span>授業を選択してください</span>
+      </div>
+    `;
+
+    /** 空きコマが設定できるように、セレクトボックスの候補で使う配列に空きコマを追加しておく */
+    const classDatas = [{ id: "empty", name: "空き" }, ...this.classDatas];
+    /** 時間が選択済みのときに表示する内容 */
+    const contentfull = () => /* html */ `
+      <div class="header">
+        <span>${this.day}曜日 ${this.period}時間目</span>
+        <button class="header-button">${this.isEditing ? "💾" : "✏️"}</button>
+      </div>
+      <div>${
+        this.isEditing
+          ? /* html */ `<select id="class-select">${classDatas.map(
+              (classData) => /* html */ `
+                  <option value="${classData.id}" ${
+                classData.id === this.classData.id ? "selected" : ""
+              }>${classData.name}</option>
+              `
+            )}</select>`
+          : !this.tableData
+          ? /* html */ `<span>空きコマ</span>`
+          : /* html */ `<span>${this.classData.name}</span>`
+      }</div>
+    `;
+
+    return /* html */ `
+    <style>${this.css()}</style>
+    <div class="timetable-detail">
+      ${!this.dayPeriod ? empty() : contentfull()}
+    </div>
+    `;
+  };
+
+  constructor() {
+    super();
+    this.shadowRoot = this.attachShadow({ mode: "open" });
+  }
+
+  async connectedCallback() {
+    if (this.dayPeriod) {
+      this.tableData = await DB.get(TABLE_STORE_NAME, this.dayPeriod);
+    }
+    this.classDatas = await DB.getAll(CLASS_STORE_NAME);
+
+    this.classList = this.render();
+  }
+
+  async attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "dayperiod") {
+      this.isEditing = false;
+      this.tableData = /** @type {import("../types/table-data.mjs").TableData} */ (
+        await DB.get(TABLE_STORE_NAME, newValue)
+      );
+      this.render();
+    }
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = this.html();
+
+    if (this.dayPeriod) {
+      this.shadowRoot
+        .querySelector("button.header-button")
+        .addEventListener("click", this.onClickHeaderButton);
+    }
+  }
+
+  onClickHeaderButton = async () => {
+    if (this.isEditing) {
+      const id = /** @type {HTMLSelectElement} */ (
+        this.shadowRoot.querySelector("select#class-select")
+      ).value;
+      if (id === "empty") {
+        this.tableData = undefined;
+        await DB.delete(TABLE_STORE_NAME, this.dayPeriod);
+      } else {
+        this.tableData = { dayperiod: this.dayPeriod, classId: id };
+        await DB.set(
+          TABLE_STORE_NAME,
+          /** @type {import("../types.mjs").TableData} */ (this.tableData)
+        );
+      }
+      // 親になるHomePageで時間割表の内容が書き換えられたことを検知するため
+      this.dispatchEvent(
+        new CustomEvent("tableItemChange", { bubbles: true, composed: true, detail: null })
+      );
+    }
+    this.isEditing = !this.isEditing;
+    this.render();
+  };
+}
+```
+
+ここまで書いて保存したら、`dayPeriod`が`return`する値を、属性で与えられる形式と同じ`<曜日>-<時間>`のテキストに書き換えてみて、表示が問題なく切り替わるか、データを保存できるか確認してみましょう。
+
+![IndexedDB上で変更できていることを確認する](imgs/8-4-edit-table-item.png)
+
+最後にCSSを調整しておきます。
+
+```javascript
+  css = () => /* css */ `
+    ${basicStyle}
+
+    :host .timetable-detail {
+      height: 100%;
+      width: 100%;
+      padding: 16px;
+      border-top: 2px solid lightgray;
+
+      > .empty {
+        height: 100%;
+        width: 100%;
+        display: grid;
+        place-content: center;
+        color: gray;
+      }
+
+      > .header {
+        height: 32px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+
+        & > button.header-button {
+          height: 32px;
+          width: 32px;
+          margin-left: auto;
+          border: none;
+          display: grid;
+          place-content: center;
+          background-color: transparent;
+          font-size 24px;
+        }
+      }
+
+      & select {
+        height: 32px;
+        width: 100%;
+        padding: 0 16px;
+        border-radius: 100vh;
+      }
+    }
+  `;
+```
+
+ここまで書いたら、ブラウザ上での表示もかなりそれらしくなってくると思います。  
+あとは時間割表のクリックされた位置を属性を経由して通知して貰えば、データの編集が可能になるはずです。
+
+### 8.5. 時間割表でクリックされた時間を詳細コンポーネントに通知できるようにしよう
+
+### 8.6. 設定された科目を表に表示できるようにしよう
+
+### 8.7. 科目一覧画面への遷移を追加しよう
 
