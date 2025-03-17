@@ -1789,7 +1789,7 @@ export class TimetableDetailComponent extends HTMLElement {
           ? /* html */ `<select id="class-select">${classDatas.map(
               (classData) => /* html */ `
                   <option value="${classData.id}" ${
-                classData.id === this.classData.id ? "selected" : ""
+                classData.id === this.classData?.id ? "selected" : ""
               }>${classData.name}</option>
               `
             )}</select>`
@@ -1987,7 +1987,6 @@ export class TimetableDetailComponent extends HTMLElement {
     this.render();
 
     this.shadowRoot.addEventListener("tableItemClick", (event) => {
-      console.log(event.detail);
       this.dayperiod = event.detail;
       this.render();
     });
@@ -2000,5 +1999,97 @@ export class TimetableDetailComponent extends HTMLElement {
 
 ### 8.6. 設定された科目を表に表示できるようにしよう
 
-### 8.7. 科目一覧画面への遷移を追加しよう
+では、最後に設定された科目を時間割表に表示するようにしましょう。  
+未設定のマスは「空き」と表示することにします。
 
+`timetable.mjs`のコードにそれぞれ以下のコードを追記したり、既存の記述を置き換えてください。  
+必要なオブジェクトは適宜`import`するようにしてください。
+
+```javascript
+  /** @type {import("../types.mjs").ClassData[]} */
+  classDatas = [];
+  /** @type {import("../types.mjs").TableData[]} */
+  tableDatas = [];
+
+  classDataDayPeriod = (dayperiod) => {
+    const id = this.tableDatas.find((tabledata) => tabledata.dayperiod === dayperiod)?.classId;
+    return this.classDatas.find((classData) => classData.id === id);
+  };
+```
+
+```javascript
+                : /* html */ `
+                <div class="class-item" dayperiod="${`${day}-${period}`}" >
+                  <span>${this.classDataDayPeriod(`${day}-${period}`)?.name || "空き"}</span>
+                </div>
+              `
+```
+
+```javascript
+  async connectedCallback() {
+    this.classDatas = await DB.getAll(CLASS_STORE_NAME);
+    this.tableDatas = await DB.getAll(TABLE_STORE_NAME);
+    this.render();
+  }
+```
+
+これで、もし過去に登録済みの時間があれば科目名が表示されるはずです。  
+しかし、この状態で詳細コンポーネントで科目を変更して保存しても時間割表が更新されません。  
+一応別のマスをクリックすれば更新されるのですが、違和感のある挙動なので直しておきます。
+
+実は[8.4.](#84-科目を設定できるようにしよう)でカスタムイベントを発生させるように設定してありました。  
+発生するイベントは`"tableItemChange"`という名前なので、これをhome-page.mjsで監視して、値が切り替わったらランダムな値を作成して`<table-component>`の`render-id`という属性に設定するようにします。  
+`home-page.mjs`を開いて、以下のそれぞれのコードを追加するか置き換えるかしてください。
+
+```javascript
+  renderId = undefined;
+```
+
+```javascript
+  html = () => /* html */ `
+    <style>${this.css()}</style>
+    <div class="home">
+      <timetable-component render-id="${this.renderId}"></timetable-component>
+      <timetable-detail dayperiod="${this.dayperiod ?? ""}"></timetable-detail>
+    </div>
+  `;
+```
+
+```javascript
+  connectedCallback() {
+    this.render();
+
+    this.shadowRoot.addEventListener("tableItemClick", (event) => {
+      this.dayperiod = event.detail;
+      this.render();
+    });
+    this.shadowRoot.addEventListener("tableItemChange", () => {
+      this.renderId = crypto.randomUUID();
+      this.render();
+    });
+  }
+```
+
+これを `static observedAttributes = ["render-id"];` としてカスタム要素から監視し、変更に合わせて再描画を実行するようにします。  
+`timebable.mjs`に以下のそれぞれのコードを追加するか置き換えるかしてください。
+
+```javascript
+  static observedAttributes = ["render-id"];
+  get renderId() {
+    return this.getAttribute("render-id");
+  }
+```
+
+```javascript
+  async attributeChangedCallback(name, oldValue, newValue) {
+    if ((name = "render-id")) {
+      this.render();
+    }
+  }
+```
+
+ここまでできたら編集したファイルをそれぞれ保存し直して、ブラウザで動作を確認しましょう。
+
+![設定された科目が時間割表に表示されている](imgs/8-6-setting-demo.gif)
+
+### 8.7. 科目一覧画面への遷移を追加しよう
