@@ -1924,6 +1924,80 @@ export class TimetableDetailComponent extends HTMLElement {
 
 ### 8.5. 時間割表でクリックされた時間を詳細コンポーネントに通知できるようにしよう
 
+では、どのようにしてその時間割表でクリックされたマスを伝えればいいでしょうか。  
+一つ、`<home-page>`要素が`<timetable-component>`要素からクリックされた時間の情報を受け取って、`<timetable-detail>`要素の属性に指定する方法が考えられるでしょう。  
+今回はこの手法で情報を伝えてみようと思います。
+
+この処理を実現するために、「カスタムイベント」というものを利用します。  
+これは今までみなさんがボタンのクリックなどで利用してきたイベントを自作して発生させるためのものです。  
+
+`timetable.mjs`を開いて以下のそれぞれのコードで上書きしてください。
+
+```javascript
+                : /* html */ `
+                <div class="class-item" dayperiod="${`${day}-${period}`}" >
+                  <span>${day}-${period}</span>
+                </div>
+```
+
+```javascript
+  render() {
+    this.shadowRoot.innerHTML = this.html();
+
+    this.shadowRoot.querySelectorAll("div.class-item").forEach((elem) => {
+      elem.addEventListener("click", () => {
+        this.dispatchEvent(
+          new CustomEvent("tableItemClick", {
+            bubbles: true,
+            composed: true,
+            detail: elem.getAttribute("dayperiod"),
+          })
+        );
+      });
+    });
+  }
+```
+
+これで要素がクリックされたイベントを親に伝えることができるので、今度は`home-page.mjs`を開いて、今発生するようにした`tableItemClick`を監視して、イベント内容をコンソールに出力するようにて、ブラウザで確認しましょう。
+
+```javascript
+  connectedCallback() {
+    this.render();
+
+    this.shadowRoot.addEventListener("tableItemClick", console.log);
+  }
+```
+
+![クリックでカスタムイベントが発生しているのが確認できる](imgs/8-5-click-event-demo.gif)
+
+このイベントの`detail`プロパティをうまく利用すれば、詳細コンポーネントにわたす属性を変更していい感じにできそうです。`home.mjs`のコードをそれぞれ以下のコードで置き換えてください。
+
+```javascript
+  html = () => /* html */ `
+    <style>${this.css()}</style>
+    <div class="home">
+      <timetable-component></timetable-component>
+      <timetable-detail dayperiod="${this.dayperiod ?? ""}"></timetable-detail>
+    </div>
+  `;
+```
+
+```javascript
+  connectedCallback() {
+    this.render();
+
+    this.shadowRoot.addEventListener("tableItemClick", (event) => {
+      console.log(event.detail);
+      this.dayperiod = event.detail;
+      this.render();
+    });
+  }
+```
+
+ここまでできたら、編集した各ファイルを保存し直して、ブラウザで動作を確認しましょう。
+
+![表をクリックしたら詳細コンポーネントの表示が変更されている](imgs/8-5-detail-change-demo.gif)
+
 ### 8.6. 設定された科目を表に表示できるようにしよう
 
 ### 8.7. 科目一覧画面への遷移を追加しよう
