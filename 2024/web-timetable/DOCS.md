@@ -2099,7 +2099,8 @@ export class TimetableDetailComponent extends HTMLElement {
 
 では最後に科目一覧画面への遷移を追加しましょう。  
 デザインでは、画面左下にフローティングボタンを配置してそこから遷移するイメージにしていました。  
-今回はカスタム要素で画面遷移用のボタンを用意します。
+今回はカスタム要素で画面遷移用のボタンを用意します。  
+~src/components/floating-link.mjs~を作成して、以下のコードを貼り付けてください。
 
 ```javascript
 import { basicStyle } from "../shared/style.mjs";
