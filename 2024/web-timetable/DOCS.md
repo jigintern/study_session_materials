@@ -694,7 +694,7 @@ export const routes = {
 
 次に、`main.mjs`にルーティング処理を書きます。  
 URLのhashは変更されたときに`hashchange`というイベントを発生させるので、このイベントを監視してルーティング処理を実行させるのがいいでしょう。  
-`routes.mjs`に書いたhashとページの対応は`import`という命令で読み込んでおき、処理中に呼び出せるようにします。
+`src/routes.mjs`に書いたhashとページの対応は`import`という命令で読み込んでおき、処理中に呼び出せるようにします。
 
 ```javascript
 import { routes } from "./src/routes.mjs";
@@ -787,16 +787,16 @@ home pageと表示されていればOKです！
 ### 4.3. ふたつめとみっつめのページを用意しよう
 
 この調子で残り必要な２つのページも作成してしまいましょう。
-`routes.mjs`の`routes`オブジェクトに以下の２つの対応を追加してください。
+`src/routes.mjs`の`routes`オブジェクトに以下の２つの対応を追加してください。
 
 ```javascript
   "#class-list": "<class-list-page></class-list-page>",
   "#class-edit": "<class-edit-page></class-edit-page>",
 ```
 
-`src/pages/class-list.mjs`、`src/pages/class-edit.mjs`を作成して、`home.mjs`の内容をコピーして改変しながら、それぞれのページであることを確認できるよう`html`の内容を適宜書き換えてください。
+`src/pages/class-list.mjs`、`src/pages/class-edit.mjs`を作成して、`src/pages/home.mjs`の内容をコピーして改変しながら、それぞれのページであることを確認できるよう`html`の内容を適宜書き換えてください。
 
-`register.mjs`の内容もアップデートしましょう。各カスタム要素を登録してください。
+`src/register.mjs`の内容もアップデートしましょう。各カスタム要素を登録してください。
 
 ```javascript
 import { ClassEditPage } from "./pages/class-edit.mjs";
@@ -896,7 +896,7 @@ DB.set(CLASS_STORE_NAME, { id: "test", name: "情報処理I" });
 * レイアウトする
 -->
 
-では、実際に必要な情報を入力できるように`class-edit.mjs`の内容を編集していきましょう。
+では、実際に必要な情報を入力できるように`src/pages/class-edit.mjs`の内容を編集していきましょう。
 まずは`html`の内容を以下のように書き換えてください。
 
 ```javascript
@@ -936,7 +936,7 @@ export const basicStyle = /*css*/ `
 `;
 ```
 
-次に、`class-edit.mjs`に`css`を作成する関数を書きましょう。  
+次に、`src/pages/class-edit.mjs`に`css`を作成する関数を書きましょう。  
 `html`より上に書くようにしてください。`basicStyle`のインポートも忘れずに書きましょう。
 
 ```javascript
@@ -1026,7 +1026,7 @@ export const basicStyle = /*css*/ `
 ここまででページの外観は出来上がったので、機能の方を実装していきましょう。  
 まずは情報の保存です。
 
-`render`関数内で要素を取得してクリックイベントを監視、保存ボタンがクリックされたときに科目名を取得して[6.1.](#61-科目の情報の型を考えよう)で作成した型に合わせてデータを作成し、`DB.mjs`ラッパーを利用して保存します。
+`render`関数内で要素を取得してクリックイベントを監視、保存ボタンがクリックされたときに科目名を取得して[6.1.](#61-科目の情報の型を考えよう)で作成した型に合わせてデータを作成し、`src/shared/db.mjs`ラッパーを利用して保存します。
 
 ```javascript
   render() {
@@ -1088,8 +1088,8 @@ export const basicStyle = /*css*/ `
 * リストの行のコンポーネントを作る
 -->
 
-登録した科目を表示するために`class-list.mjs`を編集しましょう。  
-ヘッダーがあってその下に一覧を表示する形のデザインで考えたので、一部`class-edit.mjs`のコードを流用できそうです。
+登録した科目を表示するために`src/pages/class-list.mjs`を編集しましょう。  
+ヘッダーがあってその下に一覧を表示する形のデザインで考えたので、一部`src/pages/class-edit.mjs`のコードを流用できそうです。
 
 以下のコードで内容を置き換えましょう。
 
@@ -1211,7 +1211,7 @@ export class ClassListPage extends HTMLElement {
 
 科目を一覧で確認するための機能を作成します。  
 しかし、この一覧画面はそれぞれの行をクリックしたときにその科目を編集する画面に遷移したいので、専用の処理を書きやすいようカスタム要素に切り出して作成します。  
-まずは`components/class-list-item.mjs`を作成して、以下の内容を記述してください。
+まずは`src/components/class-list-item.mjs`を作成して、以下の内容を記述してください。
 
 ```javascript
 import { basicStyle } from "../shared/style.mjs";
@@ -1276,10 +1276,10 @@ export class ClassListItemComponent extends HTMLElement {
 }
 ```
 
-このカスタム要素を`register.mjs`でインポートして登録します。  
+このカスタム要素を`src/register.mjs`でインポートして登録します。  
 この要素を利用して各科目のデータを表示、科目のデータを編集する画面へ遷移できるように、データベースから登録済みの科目一覧を取得します。
 
-データの取り扱いのため、`class-list.mjs`のclass内上部で`classDatas`プロパティを宣言しておきましょう。
+データの取り扱いのため、`src/pages/class-list.mjs`のclass内上部で`classDatas`プロパティを宣言しておきましょう。
 
 ```javascript
   /** @type {import("../types.mjs").ClassData[]} */
@@ -1335,7 +1335,7 @@ export class ClassListItemComponent extends HTMLElement {
 
 ### 7.4. 登録した科目の内容を編集できるようにしよう
 
-リストの行から科目編集画面に遷移してきたときに既存のデータを編集できるよう`class-edit.mjs`も修正しましょう。
+リストの行から科目編集画面に遷移してきたときに既存のデータを編集できるよう`src/pages/class-edit.mjs`も修正しましょう。
 
 クラス上部でデータを取り扱うためのプロパティをそれぞれ宣言しておきます。  
 このとき、`classId`の宣言はURLのクエリパラメータからclassIdの値を取得しようとしています。  
@@ -1448,7 +1448,7 @@ app-root {
 -->
 
 まずは時間割表を表示する土台になる格子状に配置された要素を作ってみましょう。  
-`home.mjs`を開いて、以下の内容を記述してください。`html`は置き換える形にしてください。
+`src/pages/home.mjs`を開いて、以下の内容を記述してください。`html`は置き換える形にしてください。
 
 ```javascript
   css = () => /* css */ `
@@ -1571,7 +1571,7 @@ export class TimetableComponent extends HTMLElement {
 }
 ```
 
-これを`register.mjs`で登録して、`home.mjs`を以下のように書き換えて表示させてみましょう。  
+これを`src/register.mjs`で登録して、`src/pages/home.mjs`を以下のように書き換えて表示させてみましょう。  
 `css`と`html`を置き換えてください。
 
 ```javascript
@@ -1683,7 +1683,7 @@ export class TimetableDetailComponent extends HTMLElement {
 ```
 
 これをベースに、科目を変更できるように修正していきます。  
-このとき「曜日と時間」は、表の中の要素がクリックされたときに親になる`home-page.mjs`から要素の属性を通して渡されるものとします。  
+このとき「曜日と時間」は、表の中の要素がクリックされたときに親になる`<home-page>`要素から作成する要素に属性の値として渡されるものとします。  
 この曜日と時間を組み合わせて、データベースに情報を登録しましょう。  
 まずは時間割表を保存するための型を用意します。以下の内容を`src/types.mjs`に追記してください。
 
@@ -1695,7 +1695,7 @@ export class TimetableDetailComponent extends HTMLElement {
  */
 ```
 
-次に、登録する科目の候補を表示するためにデータベースからデータを取得します。`timetable-detail.mjs`を編集しましょう。  
+次に、登録する科目の候補を表示するためにデータベースからデータを取得します。`src/components/timetable-detail.mjs`を編集しましょう。  
 このとき、利用するデータベースのキーは`TABLE_STORE_NAME`として宣言済みなので、これをインポートして利用してください。
 
 ```javascript
@@ -1934,7 +1934,7 @@ export class TimetableDetailComponent extends HTMLElement {
 この処理を実現するために、「カスタムイベント」というものを利用します。  
 これは今までみなさんがボタンのクリックなどで利用してきたイベントを自作して発生させるためのものです。  
 
-`timetable.mjs`を開いて以下のそれぞれのコードで上書きしてください。
+`src/components/timetable.mjs`を開いて以下のそれぞれのコードで上書きしてください。
 
 ```javascript
                 : /* html */ `
@@ -1961,7 +1961,7 @@ export class TimetableDetailComponent extends HTMLElement {
   }
 ```
 
-これで要素がクリックされたイベントを親に伝えることができるので、今度は`home-page.mjs`を開いて、今発生するようにした`tableItemClick`を監視して、イベント内容をコンソールに出力するようにて、ブラウザで確認しましょう。
+これで要素がクリックされたイベントを親に伝えることができるので、今度は`src/pages/home.mjs`を開いて、今発生するようにした`tableItemClick`を監視して、イベント内容をコンソールに出力するようにて、ブラウザで確認しましょう。
 
 ```javascript
   connectedCallback() {
@@ -1973,7 +1973,7 @@ export class TimetableDetailComponent extends HTMLElement {
 
 ![クリックでカスタムイベントが発生しているのが確認できる](imgs/8-5-click-event-demo.gif)
 
-このイベントの`detail`プロパティをうまく利用すれば、詳細コンポーネントにわたす属性を変更していい感じにできそうです。`home.mjs`のコードをそれぞれ以下のコードで置き換えてください。
+このイベントの`detail`プロパティをうまく利用すれば、詳細コンポーネントにわたす属性を変更していい感じにできそうです。`src/pages/home.mjs`のコードをそれぞれ以下のコードで置き換えてください。
 
 ```javascript
   html = () => /* html */ `
@@ -2005,7 +2005,7 @@ export class TimetableDetailComponent extends HTMLElement {
 では、最後に設定された科目を時間割表に表示するようにしましょう。  
 未設定のマスは「空き」と表示することにします。
 
-`timetable.mjs`のコードにそれぞれ以下のコードを追記したり、既存の記述を置き換えてください。  
+`src/components/timetable.mjs`のコードにそれぞれ以下のコードを追記したり、既存の記述を置き換えてください。  
 必要なオブジェクトは適宜`import`するようにしてください。
 
 ```javascript
@@ -2041,8 +2041,8 @@ export class TimetableDetailComponent extends HTMLElement {
 一応別のマスをクリックすれば更新されるのですが、違和感のある挙動なので直しておきます。
 
 実は[8.4.](#84-科目を設定できるようにしよう)でカスタムイベントを発生させるように設定してありました。  
-発生するイベントは`"tableItemChange"`という名前なので、これをhome-page.mjsで監視して、値が切り替わったらランダムな値を作成して`<table-component>`の`render-id`という属性に設定するようにします。  
-`home-page.mjs`を開いて、以下のそれぞれのコードを追加するか置き換えるかしてください。
+発生するイベントは`"tableItemChange"`という名前なので、これを`HomePage`クラスで監視して、値が切り替わったらランダムな値を作成して`<table-component>`の`render-id`という属性に設定するようにします。  
+`src/pages/home.mjs`を開いて、以下のそれぞれのコードを追加するか置き換えるかしてください。
 
 ```javascript
   renderId = undefined;
@@ -2074,7 +2074,7 @@ export class TimetableDetailComponent extends HTMLElement {
 ```
 
 これを `static observedAttributes = ["render-id"];` としてカスタム要素から監視し、変更に合わせて再描画を実行するようにします。  
-`timebable.mjs`に以下のそれぞれのコードを追加するか置き換えるかしてください。
+`src/components/timebable.mjs`に以下のそれぞれのコードを追加するか置き換えるかしてください。
 
 ```javascript
   static observedAttributes = ["render-id"];
@@ -2187,7 +2187,7 @@ export class FloatingLink extends HTMLElement {
 }
 ```
 
-これを`register.mjs`で読み込んで、`home.mjs`にボタンを追加します。
+これを`src/register.mjs`で読み込んで、`src/pages/home.mjs`にボタンを追加します。
 
 ```javascript
       <floating-link href="#class-list" emoji="📚"></floating-link>
