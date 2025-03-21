@@ -37,12 +37,6 @@
       - [4.2.3. ネットワークタブ](#423-ネットワークタブ)
       - [4.2.4. アプリケーションタブ](#424-アプリケーションタブ)
   - [5. JavaScript](#5-javascript)
-    - [5.1. `console` オブジェクト](#51-console-オブジェクト)
-    - [5.2. コメント](#52-コメント)
-    - [5.2. 基本的な演算](#52-基本的な演算)
-      - [5.2.1. 算術](#521-算術)
-      - [5.2.2. 文字列](#522-文字列)
-    - [5.3. 変数・定数](#53-変数定数)
   - [6. まとめ](#6-まとめ)
 
 
@@ -94,6 +88,8 @@
   * JavaScriptファイル内にテンプレートリテラルでHTMLやCSSを記述するときにシンタックスハイライトが効くようにする拡張機能
 * [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
   * Markdownと呼ばれるマークアップ言語を書きやすくなる拡張機能
+* [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+  * Web開発言語を対象にしたコードフォーマッター
 
 <details>
   <summary>コマンドラインからインストールする</summary>
@@ -106,6 +102,7 @@ code --install-extension vscode-icons-team.vscode-icons
 code --install-extension ritwickdey.LiveServer
 code --install-extension Tobermory.es6-string-html
 code --install-extension yzhang.markdown-all-in-one
+code --install-extension esbenp.prettier-vscode
 ```
 
 </details>
@@ -399,88 +396,9 @@ JavaScript はインタプリタ型のスクリプト言語の一つで、ウェ
 今回の開発はWeb開発になるので、基本的に処理はJavaScriptを使用して実装することになります。  
 ここではJavaScriptの基本的な文法を説明します。
 
-### 5.1. `console` オブジェクト
+以下の資料をもとにJavaScriptについて学習しましょう。
 
-`console`オブジェクトは、コンソール出力を行う関数が多く内包されているオブジェクトです。  
-資料の作成者が「新たにプログラミング言語を書き始めるときは Hello, World! から始める教」に入信しているので、まずは「Hello, World!」を出力してみましょう。
-
-Chromeの開発者ツールを開き、コンソールタブに切り替えて以下のコードを実行してみてください。
-
-```javascript
-console.log("Hello, World!");
-```
-
-![Hello, World!](imgs/hello-world.png)
-
-このように表示されれば成功です。  
-他にも`console`内には`console.warn()`や`console.error()`、`console.table()`など便利な関数があります。  
-状況や目的に応じて使い分けると良いでしょう。
-
-### 5.2. コメント
-
-プログラミング言語におけるコメントは主に以下の２つで利用されます。
-
-1. プログラムの処理内容の補足説明
-2. デバッグ中の一時的な処理無効化
-
-JavaScriptには2つのコメントの書き方があります。
-
-```javascript
-// スラッシュを2つ書くと、その行のそれ以降はコメントとして取り扱われます。
-
-/*
- * 複数行になるコメントはこのように囲むことで表現できます
- */
-```
-
-### 5.2. 基本的な演算
-
-プログラム中で利用する基本的な演算について説明します。
-
-#### 5.2.1. 算術
-
-四則演算は以下のように記述できます。
-
-```javascript
-console.log(2 + 3); // 加算
-console.log(5 - 2); // 減算
-console.log(2 * 2); // 乗算
-console.log(6 / 3); // 除算
-```
-
-その他、三角関数などの高度な算術演算は`Math`組み込みオブジェクトから利用できます。
-
-#### 5.2.2. 文字列
-
-文字列は以下のように記述することができます。
-
-```javascript
-console.log("ダブルクォートで囲むと文字列");
-console.log('シングルクォートで囲むと文字列');
-
-const string = "テンプレートリテラル";
-console.log(`バッククォートで囲むと${string}`);
-```
-
-![文字列の表示](imgs/js-string.png)
-
-また、文字列に対して+演算子を利用して文字列を結合することができます。
-
-### 5.3. 変数・定数
-
-プログラム中の値に名前をつけて取り扱えるようにしたものを変数・定数と呼びます。  
-JavaScriptでは以下のようにして宣言することができます。
-
-```javascript
-let v = 0; // 変数を宣言する
-console.log(v);
-v = v + 1; // JavaScriptにおける変数は再代入可能な値
-console.log(v);
-
-const c = 10; // 定数を宣言する
-console.log(c);
-c = c + 1; // 定数は再代入不可能なのでエラーとなる
-```
+<https://github.com/jigintern/intern-dev-tutorial/blob/main/javascript/DOCS.md>
 
 ## 6. まとめ
 
