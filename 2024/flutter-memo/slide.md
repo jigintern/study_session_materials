@@ -826,20 +826,20 @@ MemoAddScreenでメモを保存できるようにします！
 
 ---
 
+### 6-2. 追加したメモをstateにも
+### 反映できるようにしよう
+
+作成したメモを
+SharedPreferencesだけでなく、MemoListScreenの `useState` にも反映できるようにしましょう！
+
+---
+
 ### 6-2. 起動時に保存してあるメモを
 ### stateに反映しよう
 
 ここでは、アプリの起動時に、
 SharedPreferencesに保存されているメモを
 `useState` に反映させます
-
----
-
-### 6-3. 追加したメモをstateにも
-### 反映できるようにしよう
-
-作成したメモを
-SharedPreferencesだけでなく、MemoListScreenの `useState` にも反映できるようにしましょう！
 
 ---
 
