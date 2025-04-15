@@ -2,7 +2,7 @@
 marp: true
 theme: academic
 paginate: true
-footer: ウェブコンポーネントを利用したSPAの開発手法 - HTML/CSSの基礎
+footer: ウェブコンポーネントを利用したSPAの開発手法 - 3. 開発ツール
 ---
 
 <!-- 
@@ -12,21 +12,22 @@ _footer: ""
 
 #### ウェブコンポーネントを利用したSPAの開発手法
 
-# HTML/CSS の基礎
+# 3. 開発ツール
 
 ---
 
 <!-- _header: 目次 -->
 
-* ブラウザの開発者ツールを活用する
-* HTML
-  * DOCTYPE宣言
-  * HTML要素
-    * head, meta, title, link, script
-    * body, div, span, button, a, p
-    * 要素と属性
-  * HTML要素によるアクセシビリティ
-* CSS 
+- 3. 開発ツール
+  - 3.1. Visual Studio Code
+    - 拡張機能
+    - ユーザー設定
+  - 3.2. ブラウザの開発者ツール
+    - 開発者ツールとは
+    - 要素タブ
+    - スタイルタブ
+    - コンソールタブ
+    - アプリケーションタブ
 
 ---
 
