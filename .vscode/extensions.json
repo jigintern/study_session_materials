@@ -1,5 +1,6 @@
 {
   "recommendations": [
-    "marp-team.marp-vscode"
+    "marp-team.marp-vscode",
+    "bierner.markdown-preview-github-styles"
   ]
 }
