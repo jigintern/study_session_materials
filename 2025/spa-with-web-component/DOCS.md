@@ -2026,7 +2026,69 @@ mainButton.addEventListener('click', updateMessage);
 
 ### 9.1. カスタム要素
 
-> カスタム要素の命名規則
+HTMLコードを再利用可能にするための仕組みがあります。それが「カスタム要素」です。
+
+カスタム要素は、`HTMLElement`を継承したクラスを宣言して、そのクラスを`customeElements.define()`を利用して登録することで利用可能になります。
+
+カウンターをカスタム要素を用いて置き換えてみると、以下のリポジトリのようになります。
+
+<https://github.com/haruyuki-16278/counter>
+
+`main.mjs`の内容は以下のようになります。
+
+```javascript
+class CounterComponent extends HTMLElement {
+  /** @type {ShadowRoot | undefined} */
+  shadowRoot = undefined;
+
+  count = 0;
+
+  css = () => /*css*/ `
+    省略
+  `;
+
+  html = () => /*html*/ `
+    省略
+  `;
+
+  constructor() {
+    super();
+    this.shadowRoot = this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.innerHTML = this.html();
+
+    this.shadowRoot.querySelector("button.plus").addEventListener("click", () => {
+      this.count += 1;
+      this.render();
+    });
+    this.shadowRoot.querySelector("button.minus").addEventListener("click", () => {
+      this.count -= 1;
+      this.render();
+    });
+  }
+}
+
+customElements.define("counter-component", CounterComponent);
+```
+
+1行目からがクラスの宣言で、最後の行はカスタムコンポーネントの登録の命令になります。  
+
+カスタムコンポーネントを登録するには、呼び出しに利用する要素名をつける必要があります。  
+この要素名は標準のHTMLとの混同を防ぐため、必ず名前にハイフンを含むよう規定されています。
+
+クラス中にある`constructor()`は特別な関数で、クラスの実態を作成するときに呼び出される関数です。  
+`extends <継承元クラス>`という構文でクラスを継承して作成されたクラスは、このコンストラクタ関数の中で必ず`super()という関数を呼び出す必要があります。
+
+もう一つ、カスタム要素ゆえの特別な関数があります。それが`connectedCallback()`です。  
+この関数は文書中にカスタム要素が追加されたときに必ず呼び出される関数で、要素の内容への変更はこの関数内で処理することが推奨されています。  
+この関数を含めて、カスタム要素には「ライフサイクルコールバック」と呼ばれる関数が4つあります。  
+目的に応じて都度宣言して利用するようにしましょう。
 
 ### 9.2. ShadowDOM
 
