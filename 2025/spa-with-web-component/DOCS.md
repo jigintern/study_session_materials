@@ -51,8 +51,17 @@
   - [6. CSS](#6-css)
     - [6.1. ボックスモデル](#61-ボックスモデル)
     - [6.2. セレクタ](#62-セレクタ)
-    - [6.3. フレックスボックスとグリッドレイアウト](#63-フレックスボックスとグリッドレイアウト)
-    - [6.4. CSSカスタムプロパティを利用したスタイリング](#64-cssカスタムプロパティを利用したスタイリング)
+      - [6.2.1. 基本セレクタと結合子](#621-基本セレクタと結合子)
+      - [6.2.2. 疑似表記](#622-疑似表記)
+    - [6.3. CSSを利用したスタイリング](#63-cssを利用したスタイリング)
+      - [6.3.1. CSSを適用する](#631-cssを適用する)
+      - [6.3.2. カスタムプロパティ](#632-カスタムプロパティ)
+      - [6.3.3. 文字の見た目を変更しよう](#633-文字の見た目を変更しよう)
+      - [6.3.4. 要素の見た目を変更しよう](#634-要素の見た目を変更しよう)
+    - [6.4. フレックスボックスとグリッドレイアウト](#64-フレックスボックスとグリッドレイアウト)
+      - [6.4.1. 聖杯レイアウト](#641-聖杯レイアウト)
+      - [6.4.2. フレックスボックス](#642-フレックスボックス)
+      - [6.4.3. グリッドレイアウト](#643-グリッドレイアウト)
   - [7. JavaScript](#7-javascript)
     - [7.1. 基本的な処理](#71-基本的な処理)
     - [7.2. 条件分岐](#72-条件分岐)
@@ -658,17 +667,435 @@ webにおけるリンクと呼ばれるものは、正式にはハイパーリ�
 
 ## 6. CSS
 
-CSS(Cascading Style Sheet)
+CSSは「Cascading Style Sheet」の略で、HTMLで記述された文書の文字の大きさや色、背景や配置など、その見た目を設定する言語です。
 
 ### 6.1. ボックスモデル
+
+CSSでHTMLを装飾してページの見た目を変更していく上で、必ず知っておく必要があるものの一つがボックスモデルです。  
+CSSで表現できるものはすべてボックス、四角形の領域を持ちます。(たとえ見かけ上円形に見えてもです)
+
+![ボックスモデル](imgs/box-model.png)
+
+すでにこんな表示のものを見たことがあるはずです。そう、1-1-3.で紹介した開発者ツールのComputedタブです。  
+また、開発者ツールでの要素選択中にマウスホバーした要素にも↑のような表示が見えることがあります。
+
+それぞれ`margin`プロパティで設定する要素間の余白部分が「Margin Box」、`border`プロパティで設定する境界線部分が「Border Box」、`padding`プロパティで設定する要素内の余白部分が「Padding Box」、そしてコンテンツの領域が「Content Box」です。  
+↓のように額に入った絵画を思い浮かべると捉えやすいです。
+
+![額に入った絵で考えるボックスモデル](imgs/box-model-in-art.png)
+
+ところで、CSSでは`width`プロパティ、`height`プロパティでコンテンツの大きさを指定できます。  
+しかし、デフォルトでは↑のContent Boxの大きさとして指定されてしまい、人間が扱うには直感的でないです。  
+
+これを解決するCSSプロパティが`box-sizing`です。  
+`box-sizing`プロパティには`content-box`と`border-box`が指定できますが、これは`width`と`height`がContent Boxの大きさとして指定されるか、Border Boxの大きさとして指定されるかが変わります。
+
+![box-sizingで大きさを指定できる領域が変わる](imgs/content-border-box-diff.png)
+
+例えば、↑の図のように額に入った絵を飾る場合、絵そのものの大きさ（`content-box`）ではなく、額を含めた大きさ（`border-box`）を指定できる方が配置しやすいと考えられます。  
+しかし、デフォルトでは`content-box`を指定する設定になっています。  
+そのため、現在web開発では *全称セレクタ*`*` を用いて以下のように設定するのが一般的です。
+
+```css
+* {
+  box-sizing: border-box;
+}
+```
+
+<details>
+  <summary>margin</summary>
+
+  Margin Box の大きさはいわば額と額の間の距離です。HTML的には要素間の間隔・距離になります。  
+  つまり2つの要素から別々に指定したりもできてしまいます。  
+  これだと要素間の間隔に計算が必要なので、レイアウトによりますが、上下左右ではなく上と左のみ、下と右のみなど指定を工夫することでわかりやすくなると思います。
+
+  また、marginはコンテンツの大きさに影響を与えないため、box-sizingには margin-box が存在しません。
+
+> ちなみに、Aに16pxのmargin、Bに32pxのmarginを指定するとA-B間の間隔は値の相殺が行われて32pxとなります。  
+> この相殺は要素と要素が兄弟として扱える場合や要素の一番目の子要素のmargin-top、要素の最後の子要素のmargin-bottomなどに適用されます。  
+> このような複雑な条件のもと要素間の間隔を計算しなければならないため、指定の工夫が有効なのです。  
+> より詳細には [マージンの相殺の習得 - CSS: カスケーディングスタイルシート | MDN](https://developer.mozilla.org/ja/docs/Web/CSS/CSS_box_model/Mastering_margin_collapsing) などを参照してください。
+
+</details>
+
+<details>
+  <summary>padding</summary>
+
+  Padding Boxはいわば額の中の余白です。これに関する逸話として、box-sizingプロパティに padding-box が指定できる案もあったそうです。今はありません。使いみちがあんまりなかったんですね....🥺
+</details>
 
 ### 6.2. セレクタ
 
 > 要素、クラス、ID、属性、結合子
 
-### 6.3. フレックスボックスとグリッドレイアウト
+CSSはセレクタを指定することでそのセレクタ以下に見た目を設定します。  
+ここではセレクタについて詳しく説明します。
 
-### 6.4. CSSカスタムプロパティを利用したスタイリング
+#### 6.2.1. 基本セレクタと結合子
+
+セレクタには以下のものがあります。
+
+- 全称セレクタ
+  - 全ての要素を選択するセレクタ
+  - `*`と表します。
+- 要素型セレクタ
+  - あるHTML要素を選択するセレクタ
+  - `<h1>`要素なら`h1`と表します。
+- クラスセレクタ
+  - `class="<クラス名>"`とclass属性が指定された要素を選択するセレクタ
+  - クラス名が`class-name`なら`.class-name`と表します。
+- IDセレクタ
+  - `id="<id名>"`とid属性が指定された要素を選択するセレクタ
+  - id名が`id-name`なら`#id-name`と表します。
+  - id名は重複してはいけません
+- 属性セレクタ
+  - HTML要素に付与された任意の属性`attr`が付与されたすべての要素を選択するセレクタ
+  - `attr`属性が付与された要素なら`[attr]`と表します。
+  - `attr`に特定の値`value`が指定されている場合、`[attr=value]`として`attr`に`value`が指定された要素を選択できます。
+- グループ化セレクタ
+  - `,`でこれまでのセレクタをつなげる、例えば`header, footer`とすることで、`<header>`要素と`<footer>`要素の両方を選択します
+
+結合子はこれ以外にもありますが、使用機会が少ないため省きます。知りたい方は[こちらへ](https://developer.mozilla.org/ja/docs/Web/CSS/CSS_selectors#%E7%B5%90%E5%90%88%E5%AD%90)。  
+
+これらのセレクタと以下の結合子を用いることで要素をより限定できます。
+
+- 子孫結合子
+  - `⎵`(スペース)
+  - `p span`として指定すると、`<p>`要素の *子孫にある* 全ての`<span>`要素を選択します
+- 子結合子
+  - `>`
+  - `p>span`として指定すると、`<p>`要素の *子にある* 全ての`<span>`要素を選択します。
+
+#### 6.2.2. 疑似表記
+
+ここまでのセレクタはHTMLファイルに記述されている情報のみをもって要素を選択するものでした。  
+ここで説明する疑似表記は、HTMLファイルにかかれていない情報も使って要素を選択できるものです。
+
+- 擬似クラス
+  - `:<擬似クラス名>`で表します。
+  - `.reaction:hover`とすると、マウスホバー中の`class="reaction"`が指定された要素を選択します。
+  - ![擬似クラスサンプル](imgs/pseudo-class-sample.gif)
+- 疑似要素
+  - `::<疑似要素名>`で表します。
+  - `p::first-letter`とすると、`<p>`要素の最初の文字のみを選択します。
+  - ![疑似要素サンプル](imgs/pseudo-element-sample.png)
+
+### 6.3. CSSを利用したスタイリング
+
+#### 6.3.1. CSSを適用する
+
+このときのh1タグの文字色を変更してみます。  
+まず右のファイルビューアから新規ファイルとして`style.css`を作成してください。  
+このCSSファイルを`index.html`から読み込んで使います。  
+↓のコードを`index.html`の`<head>`要素に追記してください。
+
+```HTML
+<link rel="stylesheet" href="style.css" />
+```
+
+これでHTMLからCSSを読み込めるようになったので、`style.css`を編集して見た目を変更していきます。  
+↓のコードを追記してください。
+
+```css
+h1 {
+  color: red;
+}
+```
+
+↓の画像のように「Hello, World !」が赤字で表示されれば成功です。
+
+このとき、`h1`のように表示を設定する要素を識別するものを**セレクタ**、`color`のように値が設定されるものを**プロパティ**、`red`のようにプロパティに設定するものを**値**といいます。
+
+![cssでh1を赤字にする](imgs/hello-css-sample.gif)
+
+#### 6.3.2. カスタムプロパティ
+
+CSSには、名前に値を設定して、その名前を特定の値の代わりとして利用できる*カスタムプロパティ*という仕組みがあります。  
+カスタムプロパティは[コード 6.3.1.1.](#c6311)のようにして宣言できます。
+
+<div class="center">
+
+<a class="title" id="c6311">コード 6.3.1.1. カスタムプロパティの宣言</a>
+
+```css
+:root {
+  <カスタムプロパティ名>: <値>
+}
+```
+
+</div>
+
+カスタムプロパティ名は`--`から始まる必要があることに注意してください。
+
+ここでセレクタとして`:root`疑似要素を使用しています。これはルート要素セレクタと同等の働きをします。  
+このように宣言することで文書中の適当な場所からもカスタムプロパティを利用できるようになります。
+
+また、カラーコードやキーワードでの指定に比べて、色の持つ意味等もカスタムプロパティ名で伝えられるので、可読性に良い影響を与えるでしょう。
+
+以下の[コード 6.3.1.2.](#c6312)のように、設定したカスタムプロパティに`var(<カスタムプロパティ名>);`とすることで値にアクセスできます。
+
+<div class="center">
+
+<a class="title" id="c6312">コード 6.3.1.2. カスタムプロパティの使用</a>
+
+```css
+:root {
+  --color-greeting: #668844;
+}
+
+h1 {
+  color: var(--color-greeting);
+}
+```
+
+</div>
+
+![カスタムプロパティ](imgs/css-custom-property.png)
+
+#### 6.3.3. 文字の見た目を変更しよう
+
+文字の見た目を変更するプロパティを紹介します。
+
+| プロパティ | 影響箇所 | 実行結果 |
+| ---- | ---- | ---- |
+| `color` | 色 | ![色](imgs/css-color-sample.png) |
+| `font-size` | 文字の大きさ | ![大きさ](imgs/css-font-size-sample.png) |
+| `font-weight` | 文字の太さ | ![太さ](imgs/css-font-weight-sample.png) |
+| `font-style` | 書体(斜体) | ![斜体](imgs/css-font-style-sample.png) |
+| `text-decoration` | 線 | ![下線](imgs/css-text-decoration-sample.png) |
+| `font-family` | フォント | ![フォント](igms/../imgs/css-font-family-smple.png) |
+
+↑の例以外のプロパティや値もたくさんあるので、[mdn web docs](https://developer.mozilla.org/ja/docs/Web/CSS)やWeb検索などで調べて使用してみてください。
+
+#### 6.3.4. 要素の見た目を変更しよう
+
+ここで言う要素の見た目は例えば境界線や要素の背景などです。
+
+要素の背景や境界線に関するプロパティと実行結果を表に示します。
+
+| プロパティ | 影響箇所 | 実行結果 |
+| ---- | ---- | ---- |
+| `background-color` | 背景色 | ![背景色の指定](imgs/css-background-color-sample.png) |
+| `background-image` | 背景画像 | ![背景画像の指定](imgs/css-background-image-sample.png) |
+| `background-size` | 背景画像の大きさ | ![背景画像の大きさ](imgs/css-background-size-sample.png) |
+| `background-repeat` | 背景画像の繰り返し | ![背景画像の繰り返し](imgs/css-background-repeat-sample.png) |
+| `background-position` | 背景画像の位置 | ![背景画像の位置](imgs/css-background-position-sample.png) |
+| `background-blend-mode` | 背景色と背景画像の混色 | ![背景色との混色法](imgs/css-background-blend-mode-sample.png) |
+| `border` | 境界線 | ![境界線](imgs/css-border-sample.png) |
+| `border-radius` | 境界線の角の丸め | ![境界線の角の丸め](imgs/css-border-radius-sample.png) |
+
+文字の見た目と同様に、背景や境界線に関するプロパティや値ももっとたくさんあります。  
+↑に示したのは一例なので、実際に使うときに調べながら開発してください。
+
+### 6.4. フレックスボックスとグリッドレイアウト
+
+#### 6.4.1. 聖杯レイアウト
+
+実際にwebページの構造を考えてみましょう。  
+図のような構成のウェブページを見たことがあると思います。
+
+<div class="center">
+
+<a class="title" id="f6311">図 6.4.1.1. 一般的なウェブページの例</a>
+
+![一般的なウェブページの例](imgs/usually-website-layout.png)
+
+</div>
+
+このレイアウトは、大きく分けるとヘッダー、右カラム、メインコンテンツ、左カラム、フッターで構成されています。  
+このようなレイアウトを聖杯レイアウトと言います。
+
+<div class="center">
+
+<a class="title" id="f6312">図 6.4.1.2. 聖杯レイアウトの部分の名称</a>
+
+![説明付き](imgs/usually-website-layout-with-description.png)
+
+</div>
+
+この節では、[コード 6.4.1.1.](#c6411)のHTMLを改変しながらCSSを用いて装飾し、聖杯レイアウトを実装することを考えます。  
+VSCodeのエクスプローラーから`holy-grail.html`と`holy-grail.css`の2つのファイルを作成し、`holy-grail.html`には[コード 6.4.1.1.](#c6411)の内容を貼り付けてください。
+
+<div class="center">
+
+<a class="title" id="c6411">コード 6.4.1.1. 聖杯レイアウトの元になるHTML</a>
+
+```HTML
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>サンプルページ</title>
+    <link rel="stylesheet" href="holy-grail.css"/>
+  </head>
+  <body>
+    <header>
+      <p>ヘッダー</p>
+    </header>
+    <div class="mid">
+      <aside id="left">
+        <p>左カラム</p>
+      </aside>
+      <main>
+        <p>メインコンテンツ</p>
+      </main>
+      <aside id="right">
+        <p>右カラム</p>
+      </aside>
+    </div>
+    <footer>
+      <p>フッター</p>
+    </footer>
+  </body>
+</html>
+```
+
+</div>
+
+#### 6.4.2. フレックスボックス
+
+フレックスボックスは`display`プロパティに`flex`を指定することで利用できるレイアウトです。
+
+フレックスボックスは要素を行または列のどちらかに一次元に配置するレイアウトです。  
+この性質から、聖杯レイアウトのような縦のレイアウトの中に横のレイアウトがあるものは、階層構造を取って表現する必要があります。
+
+[コード 6.4.1.1.](#c6411)のHTMLに以下のCSSを適用することで、聖杯レイアウトを実現できます。  
+`holy-grail.css`に[コード 6.4.2.1.](#c6421)の内容を貼り付けてください。
+
+<div class="center">
+
+<a class="title" id="c6422">コード 6.4.2.1. フレックスボックスを利用して聖杯レイアウトを実現するCSS</a>
+
+```css
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  height: 40px;
+  background-color: lightblue;
+}
+.mid {
+  display: flex;
+}
+aside#left {
+  width: 200px;
+  background-color: lightsalmon;
+}
+main {
+  height: calc(100vh - 80px);
+  width: 100%;
+  background-color: lightgreen;
+}
+aside#right {
+  width: 200px;
+  background-color: lightsalmon;
+}
+footer {
+  height: 40px;
+  background-color: lightblue;
+}
+```
+
+</div>
+
+![フレックスボックスのサンプル](imgs/flexbox-sample.png)
+
+フレックスボックスを使ったレイアウトの面倒なところは、先述の通り、水平方向に要素を並べるか垂直方向に要素を並べるかの*どちらかしかできない*ところです。  
+今回の聖杯レイアウトでは、二行目の水平に並んだレイアウトがあり、ヘッダー・フッターにその要素が挟まれているため、二行目を`<div>`要素で囲むことで実現しています。
+
+**📝課題**: フレックスボックスにより習熟するための教材として[FlexBox Floggy](https://flexboxfroggy.com/#ja)があります。これに取り組み、全24問題をすべてクリアして、ドロップダウンメニューのレベルがすべて緑に点灯している状態のスクリーンショットを取り、レポートに添付しなさい。（3点）
+
+#### 6.4.3. グリッドレイアウト
+
+グリッドレイアウトは`display`プロパティに`grid`を指定することで利用できるレイアウトです。  
+行と列を用いた2次元的なレイアウト方法で、行と列の中に配置するものです。  
+これを用いて聖杯レイアウトを実装してみます。
+
+[6.4.1. 聖杯レイアウト](#631-聖杯レイアウト)で作成した`holy-grail.html`から、以下の[コード 6.4.3.1.](#c6421)の`<!-- 削除 --->`とコメントがある部分を削除してください。
+
+<div class="center">
+
+<a class="title" id="c6421">コード 6.4.3.1. グリッドレイアウトを利用して聖杯レイアウトを実装する準備</a>
+
+```html
+    </header>
+    <div class="mid"> <!-- 削除 --->
+      <aside id="left">
+        <p>左カラム</p>
+      </aside>
+      <main>
+        <p>メインコンテンツ</p>
+      </main>
+      <aside id="right">
+        <p>右カラム</p>
+      </aside>
+    </div> <!-- 削除 --->
+    <footer>
+```
+
+</div>
+
+修正後のHTMLに対して以下のCSSを適用することで、聖杯レイアウトを実現できます。  
+`holy-grail.css`に[コード 6.4.3.1.](#c6432)の内容を貼り付けてください。
+
+<div class="center">
+
+<a class="title" id="c6432">コード 6.4.3.2. グリッドレイアウトを利用して聖杯レイアウトを実現するCSS</a>
+
+```css
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  display: grid;
+  grid-template:
+    'header header header' 40px
+    'left-column main right-colmun' auto
+    'footer footer footer' 40px / 200px auto 200px;
+}
+
+header {
+  grid-area: header;
+  background-color: lightblue;
+}
+aside#left {
+  grid-area: left-column;
+  background-color: lightsalmon;
+}
+main {
+  height: calc(100vh - 80px);
+  grid-area: main;
+  background-color: lightgreen;
+}
+aside#right {
+  grid-area: right-colmun;
+  background-color: lightsalmon;
+}
+footer {
+  grid-area: footer;
+  background-color: lightblue;
+}
+
+```
+
+</div>
+
+![gridサンプル](imgs/grid-sample.png)
+
+フレックスボックスとグリッドレイアウト、どちらを利用してレイアウトを実装するかは好みの部分もあります。  
+しかし、一般にフレックスボックスのみを使ったレイアウトのほうがHTMLの構造は複雑になりやすいです。  
+複雑な文書はパフォーマンスの低下を招くことに注意するべきでしょう。  
+かといって、すべてのデザインでgridが優れているわけではないので、あくまでデザインにあった方法で実装するようにしましょう。
 
 ## 7. JavaScript
 
