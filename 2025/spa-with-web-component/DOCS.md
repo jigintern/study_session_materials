@@ -103,10 +103,8 @@
     - [9.2. ShadowDOM](#92-shadowdom)
   - [10. ウェブコンポーネントを利用したSPAの開発](#10-ウェブコンポーネントを利用したspaの開発)
     - [10.1. ルーティング](#101-ルーティング)
-      - [10.1.1 URL](#1011-url)
-      - [10.1.2 onHashChange](#1012-onhashchange)
     - [10.2. ディレクトリ構成](#102-ディレクトリ構成)
-    - [10.3. デザイン](#103-デザイン)
+    - [10.3. コンポーネントの作成と利用](#103-コンポーネントの作成と利用)
   - [11. まとめ](#11-まとめ)
 
 </details>
@@ -2100,25 +2098,108 @@ customElements.define("counter-component", CounterComponent);
 
 ### 10.1. ルーティング
 
-> ルーティングとは
+ルーティングとは、特定のURLが開かれたときにそのURLによって処理を切り替えることです。  
+今回のようなウェブアプリケーションの場合には、URLに合わせて表示するページを切り替える機能がルーティングです。
 
-#### 10.1.1 URL
+通常静的ウェブサイトではURLのパスがそのままホスティングするディレクトリ以下のファイルパスになっていることが多いですが、それだとHTMLファイルをページ分用意することになり、面倒です。  
+かわりに、このルーティングの仕組みを自作すればHTMLファイルは一つで、JavaScriptによる処理でページを分岐させることができます。  
+他にも、`<head>`要素内のメタデータの設定を防げたり、いいこともあるので今回はこの方法でページを用意します。
 
-> スキーム、ドメイン、ポート、パス、クエリパラメータ、ハッシュ
+具体的には、URLの末尾につく「hash」と呼ばれる値を利用します。  
+フラグメント識別子と呼ばれることもあり、ページ内で特定の要素にフォーカスした状態のリンクを作成する用途で使われるのをよく見かけるでしょう。
 
-#### 10.1.2 onHashChange
+まずは`index.html`に[5.3. 基本的なhtml文書の構成](#53-基本的なhtml文書の構成)を参考にしながら、最低限必要なHTMLを書きましょう。`main.mjs`、`style.css`の読み込みも追加ください。  
+`<body>`要素の内容は`<app-root></app-root>`としてください。
 
-> イベントリスナー
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>時間割</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="main.mjs"></script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>
+```
+
+ルーティングはURLと処理を紐づける処理のため、今回の場合ではhashとページの対応を示すデータをおいておく必要があります。  
+このデータを配置するファイルを `src/routes.mjs`というファイル内に配置して、外部から呼び出せるように`export`します。  
+以下の内容を`src/routes.mjs`を作成して書いてください。
+
+```javascript
+export const routes = {
+  "#home": "<home-page></home-page>",
+}
+```
+
+次に、`main.mjs`にルーティング処理を書きます。  
+URLのhashは変更されたときに`hashchange`というイベントを発生させるので、このイベントを監視してルーティング処理を実行させるのがいいでしょう。  
+`routes.mjs`に書いたhashとページの対応は`import`という命令で読み込んでおき、処理中に呼び出せるようにします。
+
+```javascript
+import { routes } from "./src/routes.mjs";
+
+async function onHashChange() {
+  const hash = window.location.hash;
+  console.log(hash);
+  if (hash === "") {
+    window.location.hash = "#home";
+  }
+  const page = routes[hash];
+  if (!page) {
+    console.warn("unknown route");
+    return;
+  }
+
+  const appRoot = document.querySelector("app-root");
+  appRoot.innerHTML = page;
+}
+
+window.addEventListener("hashchange", onHashChange);
+onHashChange();
+```
+
+一番最後の行で一度`onHashChange()`関数を呼び出しているのは、アクセス時に一度実行してページ内容を変更する必要があるからです。
+
+ここまでできたら一度保存し、`index.html`を開いて「Live Server」を起動してブラウザで確認しましょう。  
+問題なく実装できていれば以下のような表示になるはずです。開発者ツールを開いて確認してください。
+
+![ルーターがログに出力を行っている](imgs/4-1-router-warn.png)
 
 ### 10.2. ディレクトリ構成
 
-> ファイルの責任範囲、ディレクトリ構成、命名規則
+開発の上で混乱を生みづらいリポジトリのディレクトリ構成について説明します。  
+関数や変数もそうですが、プログラム中で利用するものの名前は「説明的」であると混乱を招きづらいです。  
 
-### 10.3. デザイン
+今回は以下の構成で開発を行っていきます。
 
-> UI、オブジェクト、CRUD
+```txt
+.
+├── src/
+│   ├── pages/
+│   ├── components/
+│   └── shared/
+├── index.html
+├── style.css
+└── main.mjs
+```
+
+`pages`は各ページとして利用するカスタム要素を配置するディレクトリ。  
+`components`はページ内のパーツとして利用するコンポーネントとなるカスタム要素を配置するディレクトリ。  
+`shared`は各JSファイル中での記述を共通化した内容を入りするディレクトリです。
+
+### 10.3. コンポーネントの作成と利用
+
+> 実践
 
 ## 11. まとめ
 
-> ウェブコンポーネントとは、SPAとは、効率的なウェブアプリケーションの開発に有効な手段とは
+この実験では、まずHTML、CSS、JavaScriptの3つの言語について学習しました。
+その後、「ウェブコンポーネント」とまとめて呼ばれる一連の技術を学習し、これを利用したSPAの開発を体験しました。
 
+<!--  TODO: よしなにまとめ -->
