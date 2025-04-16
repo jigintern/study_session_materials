@@ -18,13 +18,6 @@
   * [Google Chrome](https://www.google.com/intl/ja/chrome/)
   * [Microsoft Edge](https://www.microsoft.com/ja-jp/edge/download)
 * [Visual Studio Code](https://code.visualstudio.com/Download)
-  * 以下の拡張機能がインストール済みであること
-    * [Japanese Language Pack for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-ja)
-    * [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
-    * [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
-    * [es6-string-html](https://marketplace.visualstudio.com/items?itemName=Tobermory.es6-string-html)
-    * [Prettier - Code formatter](https://marketplace.visualstudio.com/items/?itemName=esbenp.prettier-vscode)
-
 
 ## 困ったときは
 
