@@ -1,5 +1,17 @@
 # ウェブコンポーネントを利用したSPAの開発手法
 
+<style>
+  div.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .title {
+    font-size: 0.8em;
+  }
+</style>
+
 - [ウェブコンポーネントを利用したSPAの開発手法](#ウェブコンポーネントを利用したspaの開発手法)
   - [1. イントロダクション](#1-イントロダクション)
     - [1.1. 目的](#11-目的)
