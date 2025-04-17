@@ -1534,7 +1534,7 @@ constantValue = 2030;
 
 <figure>
 
-<figcaption><a id="c722-1">コード 7.2.2-1. 加算代入演算子を利用した処理</a></figcaption>
+<figcaption><a id="c722-2">コード 7.2.2-2. 加算代入演算子を利用した処理</a></figcaption>
 
 ```javascript
 let value = 1;
@@ -1547,7 +1547,7 @@ value += 2;
 
 <figure>
 
-<figcaption><a id="c722-2">コード 7.2.2-1. コード 7.2.2-1.の等価コード</a></figcaption>
+<figcaption><a id="c722-3">コード 7.2.2-3. コード 7.2.2-2.の等価コード</a></figcaption>
 
 ```javascript
 let value = 1;
