@@ -334,13 +334,13 @@ HTMLとは「Hypertext Markup Language」の略で、相互に関連付いた文
 作成したファイルに[コード 5.1.1.](#c511)を書き込んで保存してください。  
 Live Server拡張機能を使ってこのファイルをブラウザから閲覧します。  
 コマンドパレットを開いて「Live Server」と入力すると「Live Server: Open with Live Server」とあるのでこちらを選択して実行してください。
-自動で既定のブラウザが起動し、`http://127.0.0.1:5500/index.html`が開かれ、図 5.1.1.の用に表示されるはずです。
+自動で既定のブラウザが起動し、`http://127.0.0.1:5500/index.html`が開かれ、[図 5.1.1.](#f511)のように表示されるはずです。
 
 <figure>
 
 ![コード 5.1.1.のブラウザでの表示](imgs/live-server-code511.png)
 
-<figcaption><a class="title" id="fig511">図5.1.1. コード 5.1.1.のブラウザでの表示</a></figcaption>
+<figcaption><a class="title" id="f511">図5.1.1. コード 5.1.1.のブラウザでの表示</a></figcaption>
 
 </figure>
 
