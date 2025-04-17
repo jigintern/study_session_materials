@@ -77,7 +77,7 @@
         - [7.5.1.3. 値としての関数](#7513-値としての関数)
       - [7.5.2. オブジェクト](#752-オブジェクト)
         - [7.5.2.1. 定義とアクセス](#7521-定義とアクセス)
-        - [7.5.2-2. プロパティの追加と存在確認](#752-2-プロパティの追加と存在確認)
+        - [7.5.2.2. プロパティの追加と存在確認](#7522-プロパティの追加と存在確認)
       - [7.5.3. クラス](#753-クラス)
   - [8. 動的なウェブページの開発](#8-動的なウェブページの開発)
     - [8.1. ユーザー入力イベント](#81-ユーザー入力イベント)
@@ -1963,7 +1963,7 @@ for文中の処理の最初で`array[i]`を別の変数(例えば`value`)に代�
 
 ### 7.5. コードの再利用
 
-ここまででJSでの基本的な処理の説明を行ってきました。  
+ここまででJavaScriptでの基本的な処理の説明を行ってきました。  
 その組み合わせで多種多様な処理を開発するのですが、処理のたびに毎回同じコードを書くのは億劫です。  
 これを解決するため、一連の処理に名前をつけて呼び出す仕組みをいくつか説明します。
 
@@ -2033,7 +2033,9 @@ function (msg) {
 };
 ```
 
-後者は特別に*アロー関数*と呼ばれる場合もあります。これらは返り値として関数を返します。
+後者は特別に*アロー関数*と呼ばれる場合もあります。
+
+これらは返り値として関数を返します。  
 そのため、変数に関数を代入して変数名の後ろに`()`をつけることで代入した関数を呼び出すことができます。
 
 ```javascript
@@ -2087,7 +2089,7 @@ console.log(obj.key1, obj['key2']);
 このとき、`[]`(ブラケット記法)を利用したアクセスでは`obj['key2']`のように、プロパティ名を文字列として記述するほうが望ましいです。仮に`obj[key2]`と記述してアクセスしようとしたとき、`key2`が変数として解釈されて未定義のためエラーが発生します。
 これに対して、`.`(ドット記法)を利用したアクセスでは、使えないプロパティ名があることに注意が必要です。数字で始まるプロパティ名やハイフンを含んだプロパティ名はブラケット記法でアクセスする必要があります。
 
-##### 7.5.2-2. プロパティの追加と存在確認
+##### 7.5.2.2. プロパティの追加と存在確認
 
 JSのオブジェクトは、一度作成したあとその値自体を変更できる特性を持ちます。これは`const`を利用して宣言したときも同様です。
 そのため、以下のようにしてオブジェクトにプロパティを追加できます。
@@ -2113,22 +2115,22 @@ const obj = {
   key2: 'value2'
 };
 
-console.log(obj.key1); // X  undefined
-console.log(obj.key2); // O  'value2'
-console.log(obj.prop1); // O  {key1: 'value1'}
-console.log(obj.prop1.key1); // O  'value1'
-console.log(obj.prop1.key2); // X  undefined
-console.log(obj.prop2); // X  undefined
-console.log(obj.prop2.key1); // エラー  undefinedに対して更にプロパティにアクセスしようとした
-console.log(obj.prop2.key2); // エラー  undefinedに対して更にプロパティにアクセスしようとした
+console.log(obj.key1);        // X      undefined
+console.log(obj.key2);        // O      'value2'
+console.log(obj.prop1);       // O      {key1: 'value1'}
+console.log(obj.prop1.key1);  // O      'value1'
+console.log(obj.prop1.key2);  // X      undefined
+console.log(obj.prop2);       // X      undefined
+console.log(obj.prop2.key1);  // エラー  undefinedに対して更にプロパティにアクセスしようとした
+console.log(obj.prop2.key2);  // エラー  undefinedに対して更にプロパティにアクセスしようとした
 
 // optional chaining
 // `?.`のつなげられたプロパティが存在するかを確認して
 //   存在すれば`?.`でつながったプロパティにアクセスする
 //   存在しなければundefinedを返す
-console.log(obj.prop2?.key1); // X  undefined
-console.log(obj?.prop2.key1); // エラー (obj?.prop2 が undefinedになり、undefined.key1と同じ意味になる)
-console.log(obj?.prop2?.key1); // X  undefined (obj?.prop2 が undefinedになり、undefined?.key1がundefinedになる)
+console.log(obj.prop2?.key1);  // X     undefined
+console.log(obj?.prop2.key1);  // エラー (obj?.prop2 が undefinedになり、undefined.key1と同じ意味になる)
+console.log(obj?.prop2?.key1); // X     undefined (obj?.prop2 が undefinedになり、undefined?.key1がundefinedになる)
 ```
 
 例えば、APIリクエストのレスポンスにあったりなかったりするプロパティにアクセスするときや、入力が必須でない項目があるフォームなどを扱うときに重宝する機能です。覚えていると良いことがあるかもしれません。
