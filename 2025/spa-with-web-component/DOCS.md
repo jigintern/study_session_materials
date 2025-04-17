@@ -336,13 +336,13 @@ Live Server拡張機能を使ってこのファイルをブラウザから閲覧
 コマンドパレットを開いて「Live Server」と入力すると「Live Server: Open with Live Server」とあるのでこちらを選択して実行してください。
 自動で既定のブラウザが起動し、`http://127.0.0.1:5500/index.html`が開かれ、図 5.1.1.の用に表示されるはずです。
 
-<div class="center">
+<figure>
 
 ![コード 5.1.1.のブラウザでの表示](imgs/live-server-code511.png)
 
-<a class="title" id="fig511">図5.1.1. コード 5.1.1.のブラウザでの表示</a>
+<figcaption><a class="title" id="fig511">図5.1.1. コード 5.1.1.のブラウザでの表示</a></figcaption>
 
-</div>
+</figure>
 
 ### 5.2. DOCTYPE宣言
 
@@ -350,28 +350,28 @@ Live Server拡張機能を使ってこのファイルをブラウザから閲覧
 
 1行目に新しく「DOCTYPE宣言」という命令を追加します。これはブラウザに対してファイルを解釈する方法を設定するものです。
 
-<div class="center">
+<figure>
 
-<a class="title" id="c521">コード 5.2.1.</a>
+<figcaption><a class="title" id="c521">コード 5.2.1.</a></figcaption>
 
 ```html
 <!DOCTYPE html>
 <h1 class="greet">Hello, World !</h1>
 ```
 
-</div>
+</figure>
 
 `index.html` の内容を[コード 5.2.1.](#c521)に置き換えて保存し、ブラウザをリロードすると先程までと若干余白の大きさが変化しました。
 
-<div class="center">
+<figure>
 
-<a class="title" id="t521">表 5.2.1. コード 5.1.1.とコード 5.2.1.の表示結果</a>
+<figcaption><a class="title" id="t521">表 5.2.1. コード 5.1.1.とコード 5.2.1.の表示結果</a></figcaption>
 
 | コード 5.1.1. | コード 5.2.1. |
 | :---: | :---: |
 | ![5.1.1.](imgs/live-server-code511.png) | ![5.2.1](imgs/live-server-code521.png) |
 
-</div>
+</figure>
 
 これは、DOCTYPE宣言を追加したことで、ブラウザが後方互換モードでHTMLを解釈しないように強制したからです。  
 古いHTMLとしてHTMLが解釈されると、このように意図した表示と異なる表示がされてしまい、不具合に繋がります。  
@@ -382,9 +382,9 @@ HTMLファイルの先頭には必ずDOCTYPE宣言を記述しておきましょ
 モダンなウェブ開発において最低限記述するべき内容を書いたHTMLを[コード 5.3.1.](#c531)に示します。
 このコードで `index.html` の内容を置き換えて保存し、ブラウザをリロードして表示が変化しないことを確認してください。
 
-<div class="center">
+<figure>
 
-<a class="title" id="c531">コード 5.3.1. 基本的なHTML文書の構成</a>
+<figcaption><a class="title" id="c531">コード 5.3.1. 基本的なHTML文書の構成</a></figcaption>
 
 ```html
 <!DOCTYPE html>
@@ -400,7 +400,7 @@ HTMLファイルの先頭には必ずDOCTYPE宣言を記述しておきましょ
 </html>
 ```
 
-</div>
+</figure>
 
 [コード 5.3.1.](#c531)について、各HTML要素を簡単に説明します。
 
@@ -423,9 +423,9 @@ HTML要素の子には *一つの`<head>`要素* と *そのあとに続く一�
 例えば、ページのタイトルや説明文が含まれます。2-2.のコードから`<head>`要素を切り出すと[コード 5.3.2.](#c532)のようになります。
 
 
-<div class="center">
+<figure>
 
-<a class="title" id="c532">コード 5.3.2. コード 5.3.1のhead要素</a>
+<figcaption><a class="title" id="c532">コード 5.3.2. コード 5.3.1のhead要素</a></figcaption>
 
 ```HTML
 <head>
@@ -435,7 +435,7 @@ HTML要素の子には *一つの`<head>`要素* と *そのあとに続く一�
 </head>
 ```
 
-</div>
+</figure>
 
 このうち、`<meta`\~`/>`で囲まれた要素を *メタ要素* と言います。その名の通りメタデータを表現するために利用します。  
 属性を`charset="UTF-8"`としたものは「文書の文字セットをUTF-8に設定する」意味を持ちます。  
@@ -460,9 +460,9 @@ HTMLには、その表示や処理に一切影響せず、通常ユーザーに�
 
 以下のコードを、コメントを置き換えつつ追記してみてください。
 
-<div class="center">
+<figure>
 
-<a class="title" id="c533">コード 5.3.3. 自己紹介ページのHTMLのテンプレート</a>
+<figcaption><a class="title" id="c533">コード 5.3.3. 自己紹介ページのHTMLのテンプレート</a></figcaption>
 
 ```HTML
   <body>
@@ -484,15 +484,15 @@ HTMLには、その表示や処理に一切影響せず、通常ユーザーに�
     <!-- ここまで追加の記述 -->
   </body>
 ```
-</div>
+</figure>
 
-<div class="center">
+<figure>
 
 ![自己紹介ページのサンプル](imgs/self-introduction.png)
 
-<a class="title" id="f531">図 5.3.1. 自己紹介ページのサンプル</a>
+<figcaption><a class="title" id="f531">図 5.3.1. 自己紹介ページのサンプル</a></figcaption>
 
-</div>
+</figure>
 
 ### 5.4. HTML要素
 
@@ -831,9 +831,9 @@ h1 {
 CSSには、名前に値を設定して、その名前を特定の値の代わりとして利用できる*カスタムプロパティ*という仕組みがあります。  
 カスタムプロパティは[コード 6.3.1.1.](#c6311)のようにして宣言できます。
 
-<div class="center">
+<figure>
 
-<a class="title" id="c6311">コード 6.3.1.1. カスタムプロパティの宣言</a>
+<figcaption><a class="title" id="c6311">コード 6.3.1.1. カスタムプロパティの宣言</a></figcaption>
 
 ```css
 :root {
@@ -841,7 +841,7 @@ CSSには、名前に値を設定して、その名前を特定の値の代わ�
 }
 ```
 
-</div>
+</figure>
 
 カスタムプロパティ名は`--`から始まる必要があることに注意してください。
 
@@ -852,9 +852,9 @@ CSSには、名前に値を設定して、その名前を特定の値の代わ�
 
 以下の[コード 6.3.1.2.](#c6312)のように、設定したカスタムプロパティに`var(<カスタムプロパティ名>);`とすることで値にアクセスできます。
 
-<div class="center">
+<figure>
 
-<a class="title" id="c6312">コード 6.3.1.2. カスタムプロパティの使用</a>
+<figcaption><a class="title" id="c6312">コード 6.3.1.2. カスタムプロパティの使用</a></figcaption>
 
 ```css
 :root {
@@ -866,7 +866,7 @@ h1 {
 }
 ```
 
-</div>
+</figure>
 
 ![カスタムプロパティ](imgs/css-custom-property.png)
 
@@ -912,31 +912,31 @@ h1 {
 実際にwebページの構造を考えてみましょう。  
 図のような構成のウェブページを見たことがあると思います。
 
-<div class="center">
+<figure>
 
-<a class="title" id="f6311">図 6.4.1.1. 一般的なウェブページの例</a>
+<figcaption><a class="title" id="f6311">図 6.4.1.1. 一般的なウェブページの例</a></figcaption>
 
 ![一般的なウェブページの例](imgs/usually-website-layout.png)
 
-</div>
+</figure>
 
 このレイアウトは、大きく分けるとヘッダー、右カラム、メインコンテンツ、左カラム、フッターで構成されています。  
 このようなレイアウトを聖杯レイアウトと言います。
 
-<div class="center">
+<figure>
 
-<a class="title" id="f6312">図 6.4.1.2. 聖杯レイアウトの部分の名称</a>
+<figcaption><a class="title" id="f6312">図 6.4.1.2. 聖杯レイアウトの部分の名称</a></figcaption>
 
 ![説明付き](imgs/usually-website-layout-with-description.png)
 
-</div>
+</figure>
 
 この節では、[コード 6.4.1.1.](#c6411)のHTMLを改変しながらCSSを用いて装飾し、聖杯レイアウトを実装することを考えます。  
 VSCodeのエクスプローラーから`holy-grail.html`と`holy-grail.css`の2つのファイルを作成し、`holy-grail.html`には[コード 6.4.1.1.](#c6411)の内容を貼り付けてください。
 
-<div class="center">
+<figure>
 
-<a class="title" id="c6411">コード 6.4.1.1. 聖杯レイアウトの元になるHTML</a>
+<figcaption><a class="title" id="c6411">コード 6.4.1.1. 聖杯レイアウトの元になるHTML</a></figcaption>
 
 ```HTML
 <!DOCTYPE html>
@@ -969,7 +969,7 @@ VSCodeのエクスプローラーから`holy-grail.html`と`holy-grail.css`の2�
 </html>
 ```
 
-</div>
+</figure>
 
 #### 6.4.2. フレックスボックス
 
@@ -981,9 +981,9 @@ VSCodeのエクスプローラーから`holy-grail.html`と`holy-grail.css`の2�
 [コード 6.4.1.1.](#c6411)のHTMLに以下のCSSを適用することで、聖杯レイアウトを実現できます。  
 `holy-grail.css`に[コード 6.4.2.1.](#c6421)の内容を貼り付けてください。
 
-<div class="center">
+<figure>
 
-<a class="title" id="c6422">コード 6.4.2.1. フレックスボックスを利用して聖杯レイアウトを実現するCSS</a>
+<figcaption><a class="title" id="c6422">コード 6.4.2.1. フレックスボックスを利用して聖杯レイアウトを実現するCSS</a></figcaption>
 
 ```css
 * {
@@ -1022,7 +1022,7 @@ footer {
 }
 ```
 
-</div>
+</figure>
 
 ![フレックスボックスのサンプル](imgs/flexbox-sample.png)
 
@@ -1039,9 +1039,9 @@ footer {
 
 [6.4.1. 聖杯レイアウト](#631-聖杯レイアウト)で作成した`holy-grail.html`から、以下の[コード 6.4.3.1.](#c6421)の`<!-- 削除 --->`とコメントがある部分を削除してください。
 
-<div class="center">
+<figure>
 
-<a class="title" id="c6421">コード 6.4.3.1. グリッドレイアウトを利用して聖杯レイアウトを実装する準備</a>
+<figcaption><a class="title" id="c6421">コード 6.4.3.1. グリッドレイアウトを利用して聖杯レイアウトを実装する準備</a></figcaption>
 
 ```html
     </header>
@@ -1059,14 +1059,14 @@ footer {
     <footer>
 ```
 
-</div>
+</figure>
 
 修正後のHTMLに対して以下のCSSを適用することで、聖杯レイアウトを実現できます。  
 `holy-grail.css`に[コード 6.4.3.1.](#c6432)の内容を貼り付けてください。
 
-<div class="center">
+<figure>
 
-<a class="title" id="c6432">コード 6.4.3.2. グリッドレイアウトを利用して聖杯レイアウトを実現するCSS</a>
+<figcaption><a class="title" id="c6432">コード 6.4.3.2. グリッドレイアウトを利用して聖杯レイアウトを実現するCSS</a></figcaption>
 
 ```css
 * {
@@ -1106,7 +1106,7 @@ footer {
 
 ```
 
-</div>
+</figure>
 
 ![gridサンプル](imgs/grid-sample.png)
 
