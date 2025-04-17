@@ -139,9 +139,9 @@
 
 <figure class="center">
 
-![ネイティブアプリケーションのコンテンツ配信](imgs/smartphone-application-delivery.drawio.png)
-
 <figcaption><a id="f22-1">図 2.2-1. ネイティブアプリケーションのコンテンツ配信</a></figcaption>
+
+![ネイティブアプリケーションのコンテンツ配信](imgs/smartphone-application-delivery.drawio.png)
 
 </figure>
 
@@ -150,9 +150,9 @@
 
 <figure class="center">
 
-![ウェブアプリケーションのコンテンツ配信](imgs/web-application-delivery.drawio.png)
-
 <figcaption><a id="f22-2">図 2.2-2. ウェブアプリケーションのコンテンツ配信</a></figcaption>
+
+![ウェブアプリケーションのコンテンツ配信](imgs/web-application-delivery.drawio.png)
 
 </figure>
 
@@ -197,9 +197,9 @@ VSCodeには標準では実装されていない機能を追加できる「拡�
 
 <figure class="center">
 
-![VSCodeの拡張機能サイドパネルを開くアイコンの位置](imgs/open-vscode-extensions.png)
-
 <figcaption><a id="f311-1">図 3.1.1-1. VSCodeの拡張機能サイドパネルを開くアイコンの位置</a></figcaption>
+
+![VSCodeの拡張機能サイドパネルを開くアイコンの位置](imgs/open-vscode-extensions.png)
 
 </figure>
 
@@ -207,9 +207,9 @@ VSCodeには標準では実装されていない機能を追加できる「拡�
 
 <figure class="center">
 
-![VSCodeの拡張機能の検索とインストールボタン](imgs/install-vscode-extension.png)
-
 <figcaption><a id="f311-2">図 3.1.1-2. VSCodeの拡張機能の検索とインストールボタン</a></figcaption>
+
+![VSCodeの拡張機能の検索とインストールボタン](imgs/install-vscode-extension.png)
 
 </figure>
 
@@ -307,9 +307,9 @@ JavaScriptについては後述します。
 
 <figure class="center">
 
-![開発者ツールのコンソールタブ](../../2024/web-timetable/basic-web-development/imgs/devtool-console.png)
-
 <figcaption><a id="f322-1">図 3.2.2-1. 開発者ツールのコンソールタブ</a></figcaption>
+
+![開発者ツールのコンソールタブ](../../2024/web-timetable/basic-web-development/imgs/devtool-console.png)
 
 </figure>
 
@@ -322,9 +322,9 @@ GitHub Pagesを利用するような場合にはローカルの開発環境と�
 
 <figure class="center">
 
-![開発者ツールのネットワークタブ](../../2024/web-timetable/basic-web-development/imgs/devtool-network.png)
-
 <figcaption><a id="f323-1">図 3.2.3-1. 開発者ツールのネットワークタブ</a></figcaption>
+
+![開発者ツールのネットワークタブ](../../2024/web-timetable/basic-web-development/imgs/devtool-network.png)
 
 </figure>
 
@@ -337,9 +337,9 @@ GitHub Pagesを利用するような場合にはローカルの開発環境と�
 
 <figure class="center">
 
-![開発者ツールのアプリケーションタブ](../../2024/web-timetable/basic-web-development/imgs/devtool-application.png)
-
 <figcaption><a id="f324-1">図 3.2.4-1. 開発者ツールのアプリケーションタブ</a></figcaption>
+
+![開発者ツールのアプリケーションタブ](../../2024/web-timetable/basic-web-development/imgs/devtool-application.png)
 
 </figure>
 
@@ -404,8 +404,9 @@ Live Server拡張機能を使ってこのファイルをブラウザから閲覧
 
 <figure>
 
-![コード 5.1-1.のブラウザでの表示](imgs/live-server-code511.png)
 <figcaption><a id="f51-1">図5.1-1. コード 5.1-1.のブラウザでの表示</a></figcaption>
+
+![コード 5.1-1.のブラウザでの表示](imgs/live-server-code511.png)
 
 </figure>
 
@@ -552,9 +553,9 @@ HTMLには、その表示や処理に一切影響せず、通常ユーザーに�
 
 <figure>
 
-![自己紹介ページのサンプル](imgs/self-introduction.png)
-
 <figcaption><a id="f534-1">図 5.3.4-1. 自己紹介ページのサンプル</a></figcaption>
+
+![自己紹介ページのサンプル](imgs/self-introduction.png)
 
 </figure>
 
@@ -594,9 +595,9 @@ HTML要素は資料作成時点で127種あり、これらを最適な用途で�
 
 <figure class="center">
 
-![見出しのサンプル](imgs/heading-tag-sample.png)
-
 <figcaption><a id="f541-1">図 5.4.1-1. 見出しの表示</a></figcaption>
+
+![見出しのサンプル](imgs/heading-tag-sample.png)
 
 </figure>
 
@@ -634,9 +635,9 @@ HTML要素は資料作成時点で127種あり、これらを最適な用途で�
 
 <figure class="center">
 
-![順序なし箇条書きのサンプル](imgs/list-sample.png)
-
 <figcaption><a id="f542-1">図 5.4.2-1. 順序なし箇条書きのブラウザでの表示</a></figcaption>
+
+![順序なし箇条書きのサンプル](imgs/list-sample.png)
 
 </figure>
 
@@ -660,9 +661,9 @@ HTML要素は資料作成時点で127種あり、これらを最適な用途で�
 
 <figure class="center">
 
-![順序有り箇条書きのサンプル](imgs/ordered-list-sample.png)
-
 <figcaption><a id="f542-2">図 5.4.2-2. 順序有り箇条書きのブラウザでの表示</a></figcaption>
+
+![順序有り箇条書きのサンプル](imgs/ordered-list-sample.png)
 
 </figure>
 
@@ -740,9 +741,9 @@ HTMLにもこのような強調や重要を示す要素があります。
 
 <figure>
 
-![強調のサンプル](imgs/emphasize-sample.png)
-
 <figcaption><a id="f543-1">図 5.4.3-1. 強調要素のブラウザでの表示</a></figcaption>
+
+![強調のサンプル](imgs/emphasize-sample.png)
 
 </figure>
 
@@ -766,9 +767,9 @@ HTMLにもこのような強調や重要を示す要素があります。
 
 <figure>
 
-![重要表現のサンプル](imgs/strong-sample.png)
-
 <figcaption><a id="f543-2">図 5.4.3-2. 重要要素のブラウザでの表示</a></figcaption>
+
+![重要表現のサンプル](imgs/strong-sample.png)
 
 </figure>
 
@@ -826,9 +827,9 @@ HTML要素には`<img>`要素と同じ用に、`<`~`/>`で囲まれた一つの�
 
 <figure>
 
-![ハイパーリンクのサンプル](imgs/hyper-link-sample.png)
-
 <figcaption><a id="f545-1">図 5.4.5-1. ハイパーリンクのブラウザでの表示</a></figcaption>
+
+![ハイパーリンクのサンプル](imgs/hyper-link-sample.png)
 
 </figure>
 
@@ -859,9 +860,9 @@ CSSで表現できるものはすべてボックス、四角形の領域を持�
 
 <figure>
 
-![ボックスモデル](imgs/box-model.png)
-
 <figcaption><a id="f61-1">図 6.1-1. ボックスモデルのイメージ図</a></figcaption>
+
+![ボックスモデル](imgs/box-model.png)
 
 </figure>
 
@@ -874,9 +875,9 @@ CSSで表現できるものはすべてボックス、四角形の領域を持�
 
 <figure>
 
-![額に入った絵で考えるボックスモデル](imgs/box-model-in-art.png)
-
 <figcaption><a id="f61-2">図 6.1-2. 額縁と絵で考えるボックスモデル</a></figcaption>
+
+![額に入った絵で考えるボックスモデル](imgs/box-model-in-art.png)
 
 </figure>
 
@@ -887,9 +888,9 @@ CSSで表現できるものはすべてボックス、四角形の領域を持�
 `box-sizing`プロパティには`content-box`と`border-box`が指定できますが、これは`width`と`height`がContent Boxの大きさとして指定されるか、Border Boxの大きさとして指定されるかが変わります。
 <figure>
 
-![box-sizingで大きさを指定できる領域が変わる](imgs/content-border-box-diff.png)
-
 <figcaption><a id="f61-3">図 6.1-3. box-sizingプロパティを変更したときにwidth,heightプロパティが指定する大きさがどこに適用されるか</a></figcaption>
+
+![box-sizingで大きさを指定できる領域が変わる](imgs/content-border-box-diff.png)
 
 </figure>
 
@@ -971,17 +972,17 @@ CSSはセレクタを指定することでそのセレクタ以下に見た目�
 
 <figure>
 
-![擬似クラスサンプル](imgs/pseudo-class-sample.png)
-
 <figcaption><a id="f622-1">図 6.2.2-1. 擬似クラスを利用したスタイリング</a></figcaption>
+
+![擬似クラスサンプル](imgs/pseudo-class-sample.png)
 
 </figure>
 
 <figure>
 
-![疑似要素サンプル](imgs/pseudo-element-sample.png)
-
 <figcaption><a id="f622-2">図 6.2.2-2. 擬似要素を利用したスタイリング</a></figcaption>
+
+![疑似要素サンプル](imgs/pseudo-element-sample.png)
 
 </figure>
 
@@ -1023,9 +1024,9 @@ h1 {
 
 <figure>
 
-![cssでh1を赤字にする](imgs/hello-css-sample.png)
-
 <figcaption><a id="f631-1">図 6.3.1-1. CSSが適用され文字色が赤になったh1要素</a></figcaption>
+
+![cssでh1を赤字にする](imgs/hello-css-sample.png)
 
 </figure>
 
@@ -1372,9 +1373,9 @@ a = 1;
 
 <figure>
 
-![未宣言の変数に値を代入しようとしたエラー](imgs/strict-error-undefined-variable.png)
-
 <figcaption><a id="f711-1">図 7.1.1-1. 厳格モードで発生するエラー</a></figcaption>
+
+![未宣言の変数に値を代入しようとしたエラー](imgs/strict-error-undefined-variable.png)
 
 </figure>
 
@@ -1491,9 +1492,9 @@ constantValue = 2030;
 
 <figure>
 
-![定数に値を代入したことによるエラー](imgs/assignment-to-constant.png)
-
 <figcaption><a id="f721-1">図 7.2.1-1. 定数に値を代入したことによるエラー</a></figcaption>
+
+![定数に値を代入したことによるエラー](imgs/assignment-to-constant.png)
 
 </figure>
 
@@ -1718,17 +1719,17 @@ if (d === 0) {
 
 <figure>
 
-![重解](imgs/if-discriminant-1.png)
-
 <figcaption><a id="f732-1">図 7.3.2-1. a=2,b=4,c=2のときの実行結果</a></figcaption>
+
+![重解](imgs/if-discriminant-1.png)
 
 </figure>
 
 <figure>
 
-![実数解](imgs/if-discriminant-2.png)
-
 <figcaption><a id="f732-2">図 7.3.2-2. a=4,b=0,c=-4のときの実行結果<</a></figcaption>
+
+![実数解](imgs/if-discriminant-2.png)
 
 </figure>
 
@@ -1777,17 +1778,17 @@ console.log(res);
 
 <figure>
 
-![三項演算子](imgs/conditional-operator-1.png)
-
 <figcaption><a id="f732-1">図 7.3.3-1. a=2,b=4,c=2のときの実行結果</a></figcaption>
+
+![三項演算子](imgs/conditional-operator-1.png)
 
 </figure>
 
 <figure>
 
-![三項演算子](imgs/consitional-operator-2.png)
-
 <figcaption><a id="f732-2">図 7.3.3-2. a=4,b=0,c=-4のときの実行結果<</a></figcaption>
+
+![三項演算子](imgs/consitional-operator-2.png)
 
 </figure>
 
@@ -1914,9 +1915,9 @@ array.forEach((value) => {
 
 <figure>
 
-![foreach](imgs/calc-evenodd-foreach.png)
-
 <figcaption><a id="f743-1">図 7.4.3-1. コード 7.4.3-1. の実行結果</a></figcaption>
+
+![foreach](imgs/calc-evenodd-foreach.png)
 
 </figure>
 
@@ -1951,9 +1952,9 @@ for (let i = 0; i < 10; i++) {
 
 <figure>
 
-![index](imgs/calc-evenodd-index.png)
-
 <figcaption><a id="f743-1">図 7.4.3-2. コード 7.4.3-2. の実行結果</a></figcaption>
+
+![index](imgs/calc-evenodd-index.png)
 
 </figure>
 
@@ -1962,11 +1963,12 @@ for文中の処理の最初で`array[i]`を別の変数(例えば`value`)に代�
 
 ### 7.5. コードの再利用
 
-ここまででJSでの基本的な処理の説明を行ってきました。
-それらの組み合わせで多種多様な処理を作っていくわけですが、処理のたびに毎回同じコードを書くのは気が引けますよね？一連の処理に名前をつけて呼び出せたら...それを実現する愉快な仲間たちを紹介します。
+ここまででJSでの基本的な処理の説明を行ってきました。  
+その組み合わせで多種多様な処理を開発するのですが、処理のたびに毎回同じコードを書くのは億劫です。
+これを解決するため、一連の処理に名前をつけて呼び出す仕組みをいくつか説明します。
 
 > ※ このセクションは全体的にだいぶ端折った説明をしています。
-> より詳細な説明は参考文献から[mdn web docs](https://developer.mozilla.org/ja/docs/Web)や[JSPrimer](https://jsprimer.net/)の該当箇所を読んでください。
+> より詳細な説明は参考文献から[mdn web docs](https://developer.mozilla.org/ja/docs/Web)や[JSPrimer](https://jsprimer.net/)の該当箇所を参照してください。
 
 #### 7.5.1. 関数
 
