@@ -85,8 +85,8 @@
       - [9.1.1. ボタン要素](#911-ボタン要素)
       - [9.1.2. イベントリスナー](#912-イベントリスナー)
     - [9.2. DOM操作](#92-dom操作)
-      - [9.2.1. テキストコンテンツを変更する](#921-テキストコンテンツを変更する)
-      - [9.2-2. CSSを動的に適用する](#92-2-cssを動的に適用する)
+      - [9.2.1. コンテンツを変更する](#921-コンテンツを変更する)
+      - [9.2.2. CSSを動的に適用する](#922-cssを動的に適用する)
     - [9.3. CSS トランジション](#93-css-トランジション)
   - [10. ウェブコンポーネント](#10-ウェブコンポーネント)
     - [10.1. カスタム要素](#101-カスタム要素)
@@ -2350,7 +2350,7 @@ myClass.printText();
 
 ## 9. 動的なウェブページの開発
 
-[5. HTML](#5-html)と[6. CSS](#6-css)、[7. JavaScript （Ⅰ）](#7-javascript-ⅰ)で説明した3つのウェブ技術を組み合わせて、実際に動的に変化するウェブページを開発します。
+[5. HTML](#5-html)と[6. CSS](#6-css)、[7. JavaScript （Ⅰ）](#7-javascript-ⅰ)、[8. JavaScript （Ⅱ）](#8-javascript-ⅱ)で説明した3つのウェブ技術を組み合わせて、実際に動的に変化するウェブページを開発します。
 
 ### 9.1. ユーザー入力イベント
 
@@ -2362,20 +2362,30 @@ myClass.printText();
 閲覧者からの入力を受け取るモノの代表がボタンでしょう。ウェブページにもよく登場する要素の一つです。  
 HTMLではボタン要素は以下のようにして記述できます。
 
+<figure>
+
+<figcaption><a id="c911-1">コード 9.1.1-1. ボタンを表現するHTML</a></figcaption>
+
 ```html
 <button>ボタンです</button>
 <button disabled>無効なボタンです</button>
 ```
 
-![ボタン要素のサンプル](imgs/button-element-sample.gif)
+</figure>
+
+![ボタン要素のサンプル](imgs/button-element-sample.png)
 
 #### 9.1.2. イベントリスナー
 
 ボタンは置いただけでは何にもなりません。  
 閲覧者による入力、例えばクリックを処理するには、JavaScriptを用いて要素のクリックを取得して処理する必要があります。
 
-まずはJavaScriptを記述する`main.js`ファイルを用意してください。  
+まずは、VSCodeのエクスプローラーから、`main.js`という名前で新しいファイルを作成してください。  
 用意したJavaScriptファイルをHTMLから読み込みます。`index.html`を以下の内容に書き換えてください。
+
+<figure>
+
+<figcaption><a id="c912-1">コード 9.1.2-1. JavaScriptを読み込むHTML</a></figcaption>
 
 ```html
 <!DOCTYPE html>
@@ -2392,14 +2402,26 @@ HTMLではボタン要素は以下のようにして記述できます。
 </html>
 ```
 
+</figure>
+
 JavaScriptでは以下のようにしてHTML要素を取得できます。
+
+<figure>
+
+<figcaption><a id="c912-2">コード 9.1.2-2. JavaScriptから特定のHTML要素を取得する処理</a></figcaption>
 
 ```javascript
 document.querySelector("<セレクタ>")
 ```
 
+</figure>
+
 `<セレクタ>`にはCSSのセレクタを使えます。これを使って、ボタンがクリックされたときにアラートを出すようにします。  
 以下のコードを`main.js`に書き込んでください。
+
+<figure>
+
+<figcaption><a id="c912-3">コード 9.1.2-3. JavaScriptでボタンのクリックを受け取って処理を行う</a></figcaption>
 
 ```javascript
 const mainButton = document.querySelector('#main-button');
@@ -2411,7 +2433,15 @@ const showAlert = function () {
 mainButton.addEventListener('click', showAlert);
 ```
 
+</figure>
+
+<figure>
+
+<figcaption><a id="f912-1">図 9.1.2-1. コード9.1.2-3.の実行結果</a></figcaption>
+
 ![ボタンクリックでアラートが出るサンプル](imgs/alert-sample.gif)
+
+</figure>
 
 このように、HTML要素に対して閲覧者が特定の操作をすることを、JavaScriptでは**イベント**として扱います。  
 閲覧者がボタンをクリックしたとき、`'click'`イベントが*発火*すると言います。  
@@ -2421,59 +2451,78 @@ mainButton.addEventListener('click', showAlert);
 `defer`属性、`async`属性か、`type="module"`属性を持たない場合、スクリプトは読み込まれた順に即時実行されます。  
 今回はページに表示される要素を取得する必要があり、実行時に要素がない（表示されていない）とエラーになってしまうため、`defer`属性を与えています。
 
-`async`属性や`type="module"`属性は、`defer`属性とは違った意味を持ちます。詳しくは[mdn web docs](https://developer.mozilla.org/ja/docs/Web/HTML/Element/script#%E5%B1%9E%E6%80%A7)を見てみてください。
+`async`属性や`type="module"`属性は、`defer`属性とは違った意味を持ちます。詳しくは[\<script\>: スクリプト要素 - HTML: ハイパーテキストマークアップ言語 | MDN](https://developer.mozilla.org/ja/docs/Web/HTML/Element/script#%E5%B1%9E%E6%80%A7)を見てみてください。
 
 ### 9.2. DOM操作
 
 ここでは、操作を受け取って処理した結果を閲覧者に見せるために、JavaScriptで要素に変更を加える方法を説明します。
 
-#### 9.2.1. テキストコンテンツを変更する
+#### 9.2.1. コンテンツを変更する
 
-JavaScriptで取得した要素は、様々なプロパティを持つオブジェクト([HTMLElement](https://developer.mozilla.org/ja/docs/Web/API/HTMLElement))です。  
+JavaScriptで取得した要素は、様々なプロパティを持つオブジェクト（[HTMLElement](https://developer.mozilla.org/ja/docs/Web/API/HTMLElement)）です。  
 コンテンツを変更するときには`HTMLElement`オブジェクトにある  `setHTMLUnsafe()` というメソッドを利用します。
 
-今回は、ボタンがクリックされるたびにクリックされた回数をページに追記するページをサンプルに示します。
+この`setHTMLUnsafe`メソッドを利用して、ボタンがクリックされるたびにクリックされた回数をページに追記するページを作成します。
 
-- HTML
+`index.html`は[コード 9.1.2-1.](#c912-1)に示したコードに、以下の[コード 9.2.1-1.](#c921-1)の`<!-- 追加 -->`と書いてある行を追記してください
 
-  - ```html
-      <!DOCTYPE html>
-      <html lang="ja">
-        <head>
-          <meta charset="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>サンプルページ</title>
-          <script src="main.js" defer></script>
-        </head>
-        <body>
-          <button id="main-button">ボタンです</button>
-          <p id="messages"></p>
-        </body>
-      </html>
-    ```
+<figure>
 
-- JavaScript
+<figcaption><a id="c921-1">コード 9.2.1-1. index.htmlの変更箇所</a></figcaption>
 
-  - ```javascript
-      let clickCount = 0;
+```html
+  <body>
+    <button id="main-button">ボタンです</button>
+    <p id="messages"></p> <!-- 追加 -->
+  </body>
+```
 
-      const mainButton = document.querySelector('#main-button');
-      const messages = document.querySelector('#messages');
+</figure>
 
-      const updateMessage = function () {
-        clickCount++;
-        messages.innerText += `${clickCount}回クリックされました。\n`;
-      };
+`main.js`は以下の[コード 9.2.1-2.](#c921-2)で内容を置き換えてください。
 
-      mainButton.addEventListener('click', updateMessage);
-    ```
+```javascript
+let clickCount = 0;
 
-![コンテンツを変更するサンプル](imgs/edit-content.gif)
+const mainButton = document.querySelector('#main-button');
+const messages = document.querySelector('#messages');
 
-#### 9.2-2. CSSを動的に適用する
+const updateMessage = function () {
+  clickCount++;
+  messages.setHTMLUnsafe(messages.innerHTML + `${clickCount}回クリックされました。<br>`);
+};
+
+mainButton.addEventListener('click', updateMessage);
+```
+
+上記2つの変更を追加して各ファイルを保存したら、ブラウザで表示を確認してください。  
+ボタンをクリックする毎に「◯回クリックされました。」というメッセージが増えていくはずです。
+
+<figure>
+
+<figcaption><a id="f921-1">図 9.2.1-1. 1回もボタンをクリックしていない状態</a></figcaption>
+
+![コンテンツを変更するサンプル](imgs/edit-content-1.png)
+
+</figure>
+
+<figure>
+
+<figcaption><a id="f921-1">図 9.2.1-2. 1回ボタンをクリックした状態</a></figcaption>
+
+![コンテンツを変更するサンプル](imgs/edit-content-2.png)
+
+</figure>
+
+#### 9.2.2. CSSを動的に適用する
 
 続いて、見た目にも変更を加えて見ましょう。ここでは`style`プロパティを用います。  
-以下にサンプルを示します。(HTMLは8.2-1.と同じものです)
+以下の[コード 9.2.2-1.](#c922-1)に示すコードで`main.js`の内容を置き換えてください。  
+(HTMLは[9.2.1 コンテンツを変更する](#921-コンテンツを変更する)と同じものです)
+
+<figure>
+
+<figcaption><a id="c922-1">コード 9.2.2-1. CSSを動的に適用するJavaScript</a></figcaption>
 
 ```javascript
 const colorList = ['pink', 'cyan', 'yellow'];
@@ -2484,93 +2533,120 @@ const messages = document.querySelector('#messages');
 
 const updateMessage = function () {
   clickCount++;
-  messages.innerText += `${clickCount}回クリックされました。\n`;
+  messages.setHTMLUnsafe(messages.innerHTML + `${clickCount}回クリックされました。<br>`);
   messages.style.backgroundColor = colorList[clickCount % 3];
 };
 
 mainButton.addEventListener('click', updateMessage);
 ```
 
+</figure>
+
+<figure>
+
+<figcaption><a id="f922-1">図 9.2.2-1. コード 9.2.2-1.の実行結果</a></figcaption>
+
 ![見た目を変更するサンプル](imgs/edit-view.gif)
+
+</figure>
 
 ### 9.3. CSS トランジション
 
-最後に説明するのは簡単なCSSでのアニメーション、`transition`プロパティを用いたアニメーションを説明しておきます。  
+最後に説明するのは簡単なCSSでのアニメーションです。
+`transition`プロパティを用いたアニメーションを説明しておきます。  
+
 > 注: 一般にこれをCSSアニメーションとは言いません。  
-> CSSアニメーションについては[こちら](https://developer.mozilla.org/ja/docs/Web/CSS/CSS_animations/Using_CSS_animations)を確認してください。
+> CSSアニメーションについては[CSS アニメーションの使用 - CSS: カスケーディングスタイルシート | MDN](https://developer.mozilla.org/ja/docs/Web/CSS/CSS_animations/Using_CSS_animations)など参照してください。
 
-以下にサンプルを示します。この例では、ボタンがクリックされるたびに移動する四角形が、移動時にアニメーションします。
+以下に`index.html`、`style.css`、`main.js`をそれぞれ示します。  
+この例では、ボタンがクリックされるたびに移動する四角形が、移動時にアニメーションします。
 
-- HTML
+<figure>
 
-  - ```html
-      <!DOCTYPE html>
-      <html lang="ja">
-        <head>
-          <meta charset="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>サンプルページ</title>
-          <script src="main.js" defer></script>
-          <link rel="stylesheet" href="style.css"/>
-        </head>
-        <body>
-          <button id="main-button">ボタンです</button>
-          <div id="field">
-            <div id="box">0</div>
-          </div>
-        </body>
-      </html>
-    ```
+<figcaption><a id="c93-1">コード 9.3-1. index.html</a></figcaption>
 
-- CSS
+```html
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>サンプルページ</title>
+    <script src="main.js" defer></script>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+    <button id="main-button">ボタンです</button>
+    <div id="field">
+      <div id="box">0</div>
+    </div>
+  </body>
+</html>
+```
 
-  - ```css
-      #main-button {
-        margin-bottom: 16px;
-      }
+</figure>
 
-      #field {
-        position: relative;
-        width: 300px;
-        height: 300px;
-        border: 2px solid gray;
-      }
+<figure>
 
-      #box {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        width: 100px;
-        height: 100px;
-        display: grid;
-        place-content: center;
-        background-color: pink;
-        transition: all ease 0.2s;
-      }
-    ```
+<figcaption><a id="c93-2">コード 9.3-2. style.css</a></figcaption>
 
-- JavaScript
+```css
+#main-button {
+  margin-bottom: 16px;
+}
 
-  - ```javascript
-      const colorList = ['pink', 'cyan', 'yellow'];
-      let clickCount = 0;
+#field {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border: 2px solid gray;
+}
 
-      const mainButton = document.querySelector('#main-button');
-      const box = document.querySelector('#box');
+#box {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100px;
+  height: 100px;
+  display: grid;
+  place-content: center;
+  background-color: pink;
+  transition: all ease 0.2s;
+}
+```
 
-      const moveBox = function () {
-        clickCount++;
-        box.textContent = `${clickCount % 4}`;
-        box.style.top = [0, 1].includes(clickCount % 4) ? '0px' : '200px';
-        box.style.left = [0, 3].includes(clickCount % 4) ? '0px' : '200px';
-      };
+</figure>
 
-      mainButton.addEventListener('click', moveBox);
-    ```
+<figure>
+
+<figcaption><a id="c93-3">コード 9.3-3. main.js</a></figcaption>
+
+```javascript
+const colorList = ['pink', 'cyan', 'yellow'];
+let clickCount = 0;
+
+const mainButton = document.querySelector('#main-button');
+const box = document.querySelector('#box');
+
+const moveBox = function () {
+  clickCount++;
+  box.textContent = `${clickCount % 4}`;
+  box.style.top = [0, 1].includes(clickCount % 4) ? '0px' : '200px';
+  box.style.left = [0, 3].includes(clickCount % 4) ? '0px' : '200px';
+};
+
+mainButton.addEventListener('click', moveBox);
+```
+
+</figure>
 
 ![transitionサンプル](imgs/transition-sample.gif)
 
-このサンプルで重要な記述は↓です
+このサンプルで重要な記述は[コード 9.3-2.](#c93-2)にある、以下に示す部分です。
+
+<figure>
+
+<figcaption><a id="c93-4">コード 9.3-4. トランジションプロパティ</a></figcaption>
 
 ```css
   #box {
@@ -2578,6 +2654,8 @@ mainButton.addEventListener('click', updateMessage);
     transition: all ease 0.2s;
   }
 ```
+
+</figure>
 
 `transition`プロパティは、プロパティと時間を指定することで、指定したプロパティの値が切り替わったときにその変化に指定した時間かけてゆっくり行わせるものです。  
 今回は`all`で全てのプロパティに対して変化をゆるやかにするように指定し、変化には`0.2s`かけるよう指定しています。  
