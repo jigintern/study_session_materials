@@ -17,15 +17,15 @@
 	// }
 	"centering": {
 		"scope": "markdown",
-		"prefix": "centering",
+		"prefix": "figure",
 		"body": [
-			"<div class=\"center\">",
+			"<figure class=\"center\">",
 			"",
-			"<a class=\"title\" id=\"$1\">$2</a>",
+			"<figcaption><a class=\"title\" id=\"$1\">$2</a></figcaption>",
 			"",
 			"$3",
 			"",
-			"</div>",
+			"</figure>",
 		],
 	}
 }

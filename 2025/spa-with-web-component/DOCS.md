@@ -1,17 +1,5 @@
 # ウェブコンポーネントを利用したSPAの開発手法
 
-<style>
-  div.center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .title {
-    font-size: 0.8em;
-  }
-</style>
-
 <details>
   <summary>目次</summary>
 
@@ -325,15 +313,15 @@ HTMLとは「Hypertext Markup Language」の略で、相互に関連付いた文
 
 以下に一般的なHTMLの記述を示します。
 
-<div class="center">
+<figure>
 
-<a class="title" id="c511">コード 5.1.1.</a>
+<figcaption><a class="title" id="c511">コード 5.1.1. HTMLの例</a></figcaption>
 
 ```html
 <h1 class="greet">Hello, World !</h1>
 ```
 
-</div>
+</figure>
 
 このとき[コード 5.1.1.](#c511)の`<h1 ... >`,`</h1>`を **タグ**　*（開始タグ、終了タグ）* といい、タグを含む全体を **要素** といいます。  
 また、開始タグ内にある `class="greet"` のような部分を **属性** と言います。
