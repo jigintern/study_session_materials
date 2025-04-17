@@ -1254,7 +1254,7 @@ footer {
 
 <figure>
 
-<figcaption><a id="f642-1">図 6.4.2-1. フレックスボックスを利用して聖杯レイアウトを実装する準備</a></figcaption>
+<figcaption><a id="f642-1">図 6.4.2-1. フレックスボックスを利用した聖杯レイアウトの表示</a></figcaption>
 
 ![フレックスボックスのサンプル](imgs/flexbox-sample.png)
 
@@ -1341,7 +1341,13 @@ footer {
 
 </figure>
 
+<figure>
+
+<figcaption><a id="f643-1">図 6.4.3-1. グリッドレイアウトを利用した聖杯レイアウトの表示</a></figcaption>
+
 ![gridサンプル](imgs/grid-sample.png)
+
+</figure>
 
 フレックスボックスとグリッドレイアウト、どちらを利用してレイアウトを実装するかは好みの部分もあります。  
 しかし、一般にフレックスボックスのみを使ったレイアウトのほうがHTMLの構造は複雑になりやすいです。  
