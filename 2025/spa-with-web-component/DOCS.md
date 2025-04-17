@@ -78,6 +78,7 @@
     - [8.2. オブジェクト](#82-オブジェクト)
       - [8.2.1. 定義とアクセス](#821-定義とアクセス)
       - [8.2.2. プロパティの追加と存在確認](#822-プロパティの追加と存在確認)
+      - [8.2.3. メソッド](#823-メソッド)
     - [8.3. クラス](#83-クラス)
   - [9. 動的なウェブページの開発](#9-動的なウェブページの開発)
     - [9.1. ユーザー入力イベント](#91-ユーザー入力イベント)
@@ -1987,17 +1988,14 @@ for文中の処理の最初で`array[i]`を別の変数(例えば`value`)に代�
 
 #### 8.1.1. 関数
 
-すでに関数の呼び出しは資料中にたくさん登場しています。例えば`console.log()`は立派な関数呼び出しです。このように`関数名(引数)`という形で関数は呼び出せます。
+すでに関数の呼び出しは資料中にたくさん登場しています。例えば`console.log()`は立派な関数呼び出しです。  
+このように`関数名(引数)`という形で関数は呼び出せます。
 
-では関数はどのようにプログラム中で記述できるのかというと、基本的に以下のように記述できます。
+では関数はどのようにプログラム中で記述できるのかというと、基本的に以下の[コード 8.1.1-1.](#c811-1)のように記述できます。
 
 <figure>
 
-<figcaption><a id="c751-"></a></figcaption>
-
-
-
-</figure>
+<figcaption><a id="c811-1">コード 8.1.1-1 関数宣言のイメージ</a></figcaption>
 
 ```javascript
 function <関数名> (<引数>) {
@@ -2006,7 +2004,14 @@ function <関数名> (<引数>) {
 }
 ```
 
-具体的に二次方程式の解を求める関数を作成してみます。(ただし、JSは標準では虚数を表現できません)
+</figure>
+
+具体的に、二次方程式の解を求める関数を作成してみます。  
+(ただし、JSは標準では虚数を表現できません)
+
+<figure>
+
+<figcaption><a id="c811-2">コード 8.1.1-2 二次方程式の解を求める関数</a></figcaption>
 
 ```javascript
 function solveQuadraticEquation (a, b, c) {
@@ -2035,14 +2040,25 @@ function solveQuadraticEquation (a, b, c) {
 }
 ```
 
+</figure>
+
 ここで `a`, `b`, `c` は**仮引数**と呼ばれ、関数の呼び出し時に`()`の中の対応する位置に与えられた値(**引数**)を参照できます。その後`return`で関数の処理結果を**返り値**として返しています。
 この`return`文は値を返す必要がない関数では省略可能です。
 
 また、`return`は値を返す、つまり関数の処理を終えたことを意味します。そのため上記の処理のように処理の途中で関数を終了したり、条件によって複数の終了処理を記述することができます。
 
+**📝課題**: [7.3.2 if文](#732-if文)で判別式を計算した値a,b,cの組み合わせ2通りに対して、[コード 8.1.1-2.](#c811-2)を利用して解を計算しなさい。実行結果をスクリーンショットで撮影し、レポートに添付しなさい。（1点）
+
 #### 8.1.2. 無名関数
 
-JSで頻出する関数の書き方には名前はないけど関数として宣言されて実行されるものがあります。それが無名関数です。以下のようなものが無名関数と呼ばれます。
+JavaScriptで頻出する関数の書き方には名前はないけど関数として宣言されて実行されるものがあります。  
+それが無名関数です。
+
+以下の[コード 8.1.2-1.](#c812-1)に無名関数を作成する2種の記述を示します
+
+<figure>
+
+<figcaption><a id="c812-1">コード 8.1.2-1. 無名関数の作成</a></figcaption>
 
 ```javascript
 function (msg) {
@@ -2054,10 +2070,16 @@ function (msg) {
 };
 ```
 
+</figure>
+
 後者は特別に*アロー関数*と呼ばれる場合もあります。
 
 これらは返り値として関数を返します。  
 そのため、変数に関数を代入して変数名の後ろに`()`をつけることで代入した関数を呼び出すことができます。
+
+<figure>
+
+<figcaption><a id="c812-2">コード 8.1.2-2. 定数に代入した関数の実行</a></figcaption>
 
 ```javascript
 const log = function (msg) {
@@ -2066,10 +2088,24 @@ const log = function (msg) {
 log('test');
 ```
 
+</figure>
+
+<figure>
+
+<figcaption><a id="f812-1">図 8.1.2-1. コード 8.1.2-2.の実行結果</a></figcaption>
+
+![コード 8.1.2-2.の実行結果](imgs/exec-constant-function.png)
+
+</figure>
+
 #### 8.1.3. 値としての関数
 
-8.1.2.では無名関数を変数に代入していました。このことから、JSの関数は値として扱うことができるのがわかります。
+[8.1.2. 無名関数](#812-無名関数)では無名関数を変数に代入していました。このことから、JSの関数は値として扱うことができるのがわかります。
 また、この性質を利用してコールバックという処理方法を取れます。`setTimeout(callback, delay)`の`callback`のように関数を値として渡すことで特別な処理がしやすくなります。
+
+<figure>
+
+<figcaption><a id="c813-1">コード 8.1.3-1. コールバックを利用した処理</a></figcaption>
 
 ```javascript
 setTimeout(() => {
@@ -2078,23 +2114,32 @@ setTimeout(() => {
 }, 5 * 1000);
 ```
 
-![setTimeout](imgs/set-interval.gif)
+</figure>
 
-<details>
-  <summary>setTimeout</summary>
+<figure>
 
-  `setTimeout`は`setTimeout(callback, delay)`のように2つの引数を取ります。
-  `callback`はコールバック関数で`delay`ミリ秒後に実行されます。
-  また、返り値として正の整数値を返します。これは登録されたtimeoutのIDで、`setTimeout`が呼ばれてから`delay`ミリ秒の間に`clearTimeout(timeoutID)`とすることで登録されたコールバック関数の実行をキャンセルできます。
-</details>
+<figcaption><a id="f813-1">図 8.1.3-1. コード 8.1.3-1.の実行結果</a></figcaption>
+
+![setTimeout](imgs/set-interval.png)
+
+</figure>
+
+`setTimeout`は`setTimeout(callback, delay)`のように2つの引数を取ります。  
+`callback`はコールバック関数で`delay`ミリ秒後に実行されます。  
+また、返り値として正の整数値を返します。  
+これは登録されたtimeoutのIDで、`setTimeout`が呼ばれてから`delay`ミリ秒の間に`clearTimeout(timeoutID)`とすることで登録されたコールバック関数の実行をキャンセルできます。
 
 ### 8.2. オブジェクト
 
 #### 8.2.1. 定義とアクセス
 
-オブジェクトの名はここまでにも登場していますが、あらためて説明します。
-JSにおけるオブジェクトとは、キーと値が対になった**プロパティの集合**です。
+オブジェクトの名はここまでにも登場していますが、あらためて説明します。  
+JSにおけるオブジェクトとは、キーと値が対になった**プロパティの集合**です。  
 以下の文法で定義・アクセスできます。
+
+<figure>
+
+<figcaption><a id="c821-1">コード 8.2.1-1. オブジェクトの定義と利用</a></figcaption>
 
 ```javascript
 let obj = {
@@ -2105,15 +2150,27 @@ let obj = {
 console.log(obj.key1, obj['key2']);
 ```
 
+</figure>
+
+<figure>
+
+<figcaption><a id="f821-1">図 8.2.1-1. コード 8.2.1-1.の実行結果</a></figcaption>
+
 ![オブジェクトのサンプル実行結果](imgs/object-sample.png)
+
+</figure>
 
 このとき、`[]`(ブラケット記法)を利用したアクセスでは`obj['key2']`のように、プロパティ名を文字列として記述するほうが望ましいです。仮に`obj[key2]`と記述してアクセスしようとしたとき、`key2`が変数として解釈されて未定義のためエラーが発生します。
 これに対して、`.`(ドット記法)を利用したアクセスでは、使えないプロパティ名があることに注意が必要です。数字で始まるプロパティ名やハイフンを含んだプロパティ名はブラケット記法でアクセスする必要があります。
 
 #### 8.2.2. プロパティの追加と存在確認
 
-JSのオブジェクトは、一度作成したあとその値自体を変更できる特性を持ちます。これは`const`を利用して宣言したときも同様です。
-そのため、以下のようにしてオブジェクトにプロパティを追加できます。
+JavaScriptのオブジェクトは、一度作成したあとその値自体を変更できる特性を持ちます。これは`const`を利用して宣言したときも同様です。
+そのため、[コード 8.2.2-1.](#c822-1)のようにしてオブジェクトにプロパティを追加できます。
+
+<figure>
+
+<figcaption><a id="c822-1">コード 8.2.2-1. プロパティの追加</a></figcaption>
 
 ```javascript
 const obj = {};
@@ -2124,9 +2181,21 @@ obj['key2'] = 'value2';
 console.log(obj.key1, obj['key2']);
 ```
 
-![オブジェクトにプロパティを追加](imgs/objectr-add-property.png)
+</figure>
+
+<figure>
+
+<figcaption><a id="f822-1">図 8.2.2-1. コード 8.2.2-1.の実行結果</a></figcaption>
+
+![オブジェクトにプロパティを追加](imgs/object-add-property.png)
+
+</figure>
 
 またこの特性から、オブジェクトにないプロパティも参照できてしまいます(参照すると`undefined`が返ります)。この挙動によるバグを回避するために、いくつかの方法でオブジェクトに目的のプロパティが存在するかを確認することができます。ここでは最も使いやすい手法として**Optional Chaining演算子**`?.`を用いた方法を以下に示します。
+
+<figure>
+
+<figcaption><a id="c822-2">コード 8.2.2-2. Optional Chaining演算子を用いた存在確認</a></figcaption>
 
 ```javascript
 const obj = {
@@ -2154,33 +2223,53 @@ console.log(obj?.prop2.key1);  // エラー (obj?.prop2 が undefinedになり�
 console.log(obj?.prop2?.key1); // X     undefined (obj?.prop2 が undefinedになり、undefined?.key1がundefinedになる)
 ```
 
-例えば、APIリクエストのレスポンスにあったりなかったりするプロパティにアクセスするときや、入力が必須でない項目があるフォームなどを扱うときに重宝する機能です。覚えていると良いことがあるかもしれません。
+</figure>
 
-<details>
-  <summary>オブジェクトのプロパティに関数を</summary>
+例えば、APIリクエストのレスポンスにあったりなかったりするプロパティにアクセスするときや、入力が必須でない項目があるフォームなどを扱うときに重宝する機能です。
 
-  JSの関数は値として扱える、という話をしましたが、ならばキーと値が対になったプロパティに関数を使うこともできそうですよね？できます。
+#### 8.2.3. メソッド
 
-  ```javascript
-  const basicArithmeticOperations = {
-    sum: (a, b) => a + b,
-    diff: (a, b) => a - b,
-    multi: (a, b) => a * b,
-    div: (a, b) => a / b
-  };
+JSの関数は値として扱える、という説明を[8.1.3. 値としての関数](#813-値としての関数)でしました。  
+これは、オブジェクトのプロパティに関数を設定することもできるということです。
 
-  console.log(basicArithmeticOperations.sum(1, 1));
-  console.log(basicArithmeticOperations.diff(1, 1));
-  console.log(basicArithmeticOperations.multi(2, 2));
-  console.log(basicArithmeticOperations.div(2, 2));
-  ```
+このように、オブジェクトのプロパティとして存在する関数を「メソッド」と呼びます。
+一般的な値のプロパティと同様に、`<オブジェクト名>.<メソッド名>`でアクセスでき、関数呼び出しと同様に`<オブジェクト名>.<メソッド名>()`と書いて呼び出せます。
 
-  ![関数をプロパティに](imgs/object-function.png)
-</details>
+<figure>
+
+<figcaption><a id="c823-1">コード 8.2.3-1. メソッドの宣言と利用</a></figcaption>
+
+```javascript
+const basicArithmeticOperations = {
+  sum: (a, b) => a + b,
+  diff: (a, b) => a - b,
+  multi: (a, b) => a * b,
+  div: (a, b) => a / b
+};
+
+console.log(basicArithmeticOperations.sum(1, 1));
+console.log(basicArithmeticOperations.diff(1, 1));
+console.log(basicArithmeticOperations.multi(2, 2));
+console.log(basicArithmeticOperations.div(2, 2));
+```
+
+</figure>
+
+<figure>
+
+<figcaption><a id="f823-1">図 8.2.3-1. コード 8.2.3-1.の実行結果</a></figcaption>
+
+![関数をプロパティに](imgs/object-method.png)
+
+</figure>
 
 ### 8.3. クラス
 
 クラスは以下のような文で定義し、インスタンスを生成してメソッドやプロパティにアクセスできます。
+
+<figure>
+
+<figcaption><a id="c83-1">コード 8.3-1. クラスの利用イメージ</a></figcaption>
 
 ```javascript
 // クラス定義
@@ -2202,6 +2291,8 @@ class <クラス名> {
 <インスタンス変数名>.<プロパティ または メソッド>
 ```
 
+</figure>
+
 ↑の疑似コードでは分かりづらい部分もあるので具体的に
 
 - クラス名: `MyClass`
@@ -2209,6 +2300,10 @@ class <クラス名> {
   - `printText`メソッドを呼び出すことで自身が持つ文字列を出力する
 
 というクラスを実装してみます。
+
+<figure>
+
+<figcaption><a id="c83-2">コード 8.3-2. MyClassクラスの宣言</a></figcaption>
 
 ```javascript
 class MyClass {
@@ -2224,18 +2319,32 @@ class MyClass {
 }
 ```
 
+</figure>
+
 これがクラスです。クラスは設計書のようなもので、これをもとに実体(**インスタンス**)を生成します。
+
+<figure>
+
+<figcaption><a id="c83-3">コード 8.3-3. MyClassクラスのインスタンス生成</a></figcaption>
 
 ```javascript
 const myClass = new MyClass('my text');
 ```
 
+</figure>
+
 これで自身の文字列として`'my text'`を持つ`MyClass`のインスタンスを生成して`myClass`に代入できました。
 `myClass`から`printText`メソッドを呼び出せば`'my text'`と出力されるはずです。
+
+<figure>
+
+<figcaption><a id="c83-4">コード 8.3-4. インスタンスのメソッド呼び出し</a></figcaption>
 
 ```javascript
 myClass.printText();
 ```
+
+</figure>
 
 ![クラスのサンプルコード実行結果](imgs/class-sample.png)
 
