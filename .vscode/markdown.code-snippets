@@ -19,7 +19,7 @@
 		"scope": "markdown",
 		"prefix": "figure",
 		"body": [
-			"<figure class=\"center\">",
+			"<figure>",
 			"",
 			"<figcaption><a id=\"$1\">$2</a></figcaption>",
 			"",
