@@ -15,13 +15,13 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
-	"centering": {
+	"figure": {
 		"scope": "markdown",
 		"prefix": "figure",
 		"body": [
 			"<figure class=\"center\">",
 			"",
-			"<figcaption><a class=\"title\" id=\"$1\">$2</a></figcaption>",
+			"<figcaption><a id=\"$1\">$2</a></figcaption>",
 			"",
 			"$3",
 			"",
