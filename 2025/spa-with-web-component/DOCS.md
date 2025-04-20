@@ -106,6 +106,11 @@
       - [11.5.1. ベースになるカスタム要素の作成と登録の確認](#1151-ベースになるカスタム要素の作成と登録の確認)
       - [11.5.2. 編集画面の実装](#1152-編集画面の実装)
     - [11.6. TODOアイテム一覧画面の実装](#116-todoアイテム一覧画面の実装)
+      - [11.6.1. ベースになるカスタム要素の作成と登録の確認](#1161-ベースになるカスタム要素の作成と登録の確認)
+      - [11.6.2. TODOアイテムを表示するカスタム要素の作成](#1162-todoアイテムを表示するカスタム要素の作成)
+      - [11.6.3. TODOアイテムカスタム要素の実装](#1163-todoアイテムカスタム要素の実装)
+      - [11.6.4. 一覧画面の実装](#1164-一覧画面の実装)
+      - [11.6.5. 動作確認](#1165-動作確認)
   - [12. まとめ](#12-まとめ)
 
 </details>
@@ -3315,6 +3320,7 @@ export class EditPage extends HTMLElement {
   backToHome() {
     const url = new URL(location.href);
     url.hash = "#home";
+    url.search = "";
     location.href = url.toString();
   }
 
@@ -3332,8 +3338,9 @@ export class EditPage extends HTMLElement {
       alert("タスク名が入力されていません");
       return;
     }
+    const editedDone = this.shadowRoot.querySelector('input[type="checkbox"]')?.checked ?? false;
     // タスク名が設定されていれば登録して一覧画面に遷移
-    localStorage.setItem(this.id, JSON.stringify({ title: editedTitle, done: this.done }));
+    localStorage.setItem(this.id, JSON.stringify({ title: editedTitle, done: editedDone }));
     this.backToHome();
   }
 }
@@ -3354,7 +3361,318 @@ export class EditPage extends HTMLElement {
 
 ### 11.6. TODOアイテム一覧画面の実装
 
-<!-- TODO -->
+TODOアイテム一覧画面では、TODOの一覧と完了状態の変更を行えるようにします。  
+
+#### 11.6.1. ベースになるカスタム要素の作成と登録の確認
+
+この画面でもまず[11.5.1. ベースになるカスタム要素の作成と登録の確認](#1151-ベースになるカスタム要素の作成と登録の確認)でやったのと同じように、ベースとなるカスタム要素を作成、登録してカスタム要素登録までが問題なく行えていることを確認します。
+
+[コード 11.5.1-1.](#c1151-1)を参考に、`EditPage`を`HomePage`に置き換えながら`src/pages/home.page.mjs`を作成して書いてください。  
+ブラウザで以下の[図 11.5.1-1.](#f1151-1)の画面の表示を確認できれば問題ありません。
+
+<figure>
+
+<figcaption><a id="f1151-1">図 11.5.1-1. カスタム要素の登録確認</a></figcaption>
+
+![カスタム要素の登録確認](imgs/base-home-page.png)
+
+</figure>
+
+#### 11.6.2. TODOアイテムを表示するカスタム要素の作成
+
+ひとまずページ用カスタム要素と同じように、TODOアイテムもカスタム要素の作成と登録までを行います。  
+`src/components/todo.component.mjs`を作成して`TodoComponent`というクラス名でカスタム要素用クラスを宣言してください。  
+登録する要素名は`todo-component`としてください。
+
+今回はページ用のカスタム要素ではなくパーツ用カスタム要素なので、`home.page.mjs`のhtml生成関数の`HomePage Works!`の次の行に要素を追加しましょう。
+
+<figure>
+
+<figcaption><a id="c1162-1">コード 11.6.2. home.page.mjsの追記部分</a></figcaption>
+
+```javascript
+  // HTML生成関数
+  html = () => /* HTML */ `
+    <style>
+      ${this.css()}
+    </style>
+    <p>HomePage Works!</p>
+    <todo-component></todo-component> <!-- 追加 -->
+  `;
+```
+
+</figure>
+
+以下の[図 11.6.2-1.](#f1162-1)のような表示になるように調整してください。
+
+<figure>
+
+<figcaption><a id="f1162-1">図 11.6.2-1. todo-componentの登録確認</a></figcaption>
+
+![todo-componentの登録確認](imgs/base-todo-component.png)
+
+</figure>
+
+#### 11.6.3. TODOアイテムカスタム要素の実装
+
+一覧画面では、TODOアイテムをチェックボックスとタスク名が表示できるカスタム要素で表示するデザインになっています。  
+このカスタム要素は[図 11-3.](#f11-3)にデザインがあるので、これをもとに実装します。  
+ページの遷移に利用するTODOアイテムのidと、チェックボックスとタスク名の入ったJSON文字列を、それぞれカスタム要素に属性を利用して与えることにします。
+
+以下の[コード 11.6.3-1.](#c1163-1)で`todo.component.mjs`の内容を更新してください。  
+各記述の目的や動作はそれぞれ各部のコメントを参照してください。
+
+<figure>
+
+<figcaption><a id="c1163-1">コード 11.6.3-1. todo.component.mjs</a></figcaption>
+
+```javascript
+import { BASIC_STYLE } from "../shared/style.mjs";
+
+export class TodoComponent extends HTMLElement {
+  id = undefined;
+  title = undefined;
+  done = false;
+
+  // CSS生成関数
+  css = () => /* CSS */ `
+    ${BASIC_STYLE}
+
+    /* 全体を横flexにする */
+    :host {
+      width: 100%;
+      height: 32px;
+      padding: 0 16px !important;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* a要素のデフォルトスタイルを打ち消しつつ、横flexにする */
+    a {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    a .title {
+      width: 100%;
+    }
+  `;
+
+  // HTML生成関数
+  html = () => /* HTML */ `
+    <style>
+      ${this.css()}
+    </style>
+    <input type="checkbox" ${this.done ? "checked" : ""} />
+    <a href="?id=${this.id}#edit">
+      <span class="title">${this.title}</span>
+      <span class="arrow">➡️</span>
+    </a>
+  `;
+
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    // 与えられた属性の値を取得して保持する
+    this.id = this.getAttribute("id");
+    const data = JSON.parse(this.getAttribute("data"));
+    this.title = data?.title;
+    this.done = data?.done ?? false;
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.setHTMLUnsafe(this.html());
+
+    // チェックボックスの状態の変更イベントにイベントリスナーを設定
+    this.shadowRoot
+      .querySelector('input[type="checkbox"]')
+      .addEventListener("change", () => this.onDoneChanged());
+  }
+
+  onDoneChanged() {
+    // 現時点での状態を取得
+    const checkbox = this.shadowRoot.querySelector('input[type="checkbox"]');
+    this.done = checkbox?.checked ?? false;
+    // ローカルストレージに保存
+    localStorage.setItem(this.id, JSON.stringify({ title: this.title, done: this.done }));
+    // 更新された状態をページに反映するため再レンダリング
+    this.render();
+  }
+}
+```
+
+</figure>
+
+この状態で、`home.page.mjs`を変更しないまま（要素の属性で値を渡す処理をしないまま）ブラウザで動作確認をします。  
+以下の[図 11.6.3-1.](#f1163-1)のように、チェックボックスをクリックして状態を更新したときに、アプリケーションタブでLocal storageの値が変化していれば問題ありません。
+
+<figure>
+
+<figcaption><a id="f1163-1">図 11.6.3-1. TODOアイテムカスタム要素の動作確認</a></figcaption>
+
+![TODOアイテムカスタム要素の動作確認](imgs/todo-component-demo.gif)
+
+</figure>
+
+ここで作成されるデータは不要なので、忘れずにlocalStorageから削除してください。
+
+#### 11.6.4. 一覧画面の実装
+
+一覧画面は[図 11-1](#f11-1)にデザインがあります。  
+TODOアイテムカスタム要素は実装し終えたので、これを利用して画面全体を実装します。
+
+編集画面と見た目を統一したいヘッダー周辺は、編集画面の[コード 11.5.2-1.](#c1152-1)からコピーします。
+
+以下の[コード 11.6.4-1.](#c1164-1)で`home.page.mjs`の内容を更新してください。  
+各記述の目的や動作はそれぞれ各部のコメントを参照してください。
+
+<figure>
+
+<figcaption><a id="c1164-1">コード 11.6.4-1. home.page.mjs</a></figcaption>
+
+```javascript
+import { BASIC_STYLE } from "../shared/style.mjs";
+
+export class HomePage extends HTMLElement {
+  // CSS生成関数
+  css = () => /* CSS */ `
+    ${BASIC_STYLE}
+
+    /* 全体を縦flexにして、端から16pxの余白を用意する */
+    :host {
+      width: 100%;
+      height: 100%;
+      padding: 16px !important;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /*
+     * ヘッダーは横100%で高さ40pxの横flex
+     * ヘッダー下すぐに入力フォームが来ないようにマージンをつける
+     */
+    header {
+      width: 100%;
+      height: 40px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* ヘッダーのタイトルは太字で大きな文字にする */
+    header span {
+      width: 100%;
+      font-weight: bold;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    /*
+     * ToDoリストは縦flexで画面の残り領域全体に広がるように設定
+     */
+    main {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a.new {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      width: 40px;
+      height: 40px;
+      padding: 2px;
+      border: 2px solid blue;
+      border-radius: 32px;
+      line-height: 1;
+      font-size: 32px;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+    }
+  `;
+
+  // HTML生成関数
+  html = () => /* HTML */ `
+    <style>
+      ${this.css()}
+    </style>
+    <header>
+      <span>ToDo</span>
+    </header>
+    <main>
+      <!--
+        localStorageにObject.entriesを利用して、保存されている値を反復処理する
+        JSON文字列を渡すとき、内部に含まれるダブルクォーテーションで文字列が分割されてしまうのを、シングルクォーテーションで囲んで防いでいる
+        最後にjoin("")とすることで、全体の処理結果を一つの文字列に結合している
+      -->
+      ${Object.entries(localStorage)
+        .map(
+          ([id, data]) => /* HTML */ `
+            <!-- prettier-ignore -->
+            <todo-component id="${id}" data='${data}'></todo-component>
+          `
+        )
+        .join("")}
+    </main>
+    <a class="new" href="#edit">➕</a>
+  `;
+
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.setHTMLUnsafe(this.html());
+  }
+}
+```
+
+</figure>
+
+#### 11.6.5. 動作確認
+
+さて、これで２つの画面を実装し終えました。  
+最後にブラウザで動作確認を行います。
+
+以下の各機能について、確認してください。 
+
+* TODO編集画面
+  * [ ] タスク名を入力せずに保存ボタンをクリックするとアラートが表示される
+  * [ ] タスク名を入力して保存できる
+  * [ ] タスク名を入力して、完了状態のチェックボックスをチェック済みにして保存できる
+* TODO一覧画面
+  * [ ] タスクの完了状態のチェックボックスを切り替えられる
+    * [ ] 切り替えたあとリロードしても変更が保持されている
+  * [ ] タスク名〜➡️をクリックすると、そのタスクの編集画面が開く
+    * [ ] 変更して保存できる
+
+これらが一通り問題なく実行できればTODOアプリ開発完了です。  
+<https://github.com/jigintern/todo-with-web-component> に答え合わせ用ソースコードも用意したので、必要であれば確認してください。
+
+<figure>
+
+<figcaption><a id="f1165-1">図 11.6.5-1. 完成したTODOアプリ</a></figcaption>
+
+![完成したTODOアプリ](imgs/todo-spa-demo.gif)
+
+</figure>
 
 ## 12. まとめ
 
