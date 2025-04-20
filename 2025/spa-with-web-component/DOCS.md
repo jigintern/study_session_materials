@@ -2525,6 +2525,10 @@ JavaScriptで取得した要素は、様々なプロパティを持つオブジ�
 
 `main.js`は以下の[コード 9.2.1-2.](#c921-2)で内容を置き換えてください。
 
+<figure>
+
+<figcaption><a id="c912-2">コード 9.2.1-2. main.js</a></figcaption>
+
 ```javascript
 let clickCount = 0;
 
@@ -2538,6 +2542,8 @@ const updateMessage = function () {
 
 mainButton.addEventListener('click', updateMessage);
 ```
+
+</figure>
 
 上記2つの変更を追加して各ファイルを保存したら、ブラウザで表示を確認してください。  
 ボタンをクリックする毎に「◯回クリックされました。」というメッセージが増えていくはずです。
