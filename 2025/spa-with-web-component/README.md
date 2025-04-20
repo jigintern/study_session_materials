@@ -27,13 +27,4 @@
 
 ## 本編
 
-資料本編は4部に分割されています。  
-それぞれ、インデントされた「参考」に書いてある資料を補助的に用いるので、適宜参照してください。
-
-1. HTML/CSSの基礎
-  * https://github.com/jigintern/intern-dev-tutorial/blob/main/html-css/DOCS.md
-2. JavaScriptの基礎
-  * https://github.com/jigintern/intern-dev-tutorial/blob/main/javascript/DOCS.md
-3. ウェブコンポーネント
-  * https://github.com/jigintern/study_session_materials/blob/main/2024/web-timetable/DOCS.md#34-%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E8%A6%81%E7%B4%A0%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86
-4. シングルページアプリケーション
+資料本編はこちら [./DOCS.md](./DOCS.md)
