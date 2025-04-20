@@ -92,6 +92,7 @@
     - [9.3. CSS トランジション](#93-css-トランジション)
   - [10. ウェブコンポーネント](#10-ウェブコンポーネント)
     - [10.1. カスタム要素](#101-カスタム要素)
+      - [10.1.1. ライフサイクルコールバック](#1011-ライフサイクルコールバック)
     - [10.2. ShadowDOM](#102-shadowdom)
   - [11. ウェブコンポーネントを利用したSPAの開発](#11-ウェブコンポーネントを利用したspaの開発)
     - [11.1. ルーティング](#111-ルーティング)
@@ -2501,6 +2502,8 @@ mainButton.addEventListener('click', showAlert);
 
 ここでは、操作を受け取って処理した結果を閲覧者に見せるために、JavaScriptで要素に変更を加える方法を説明します。
 
+DOMとは「Document Object Model」の略で、HTMLドキュメントのコンテンツと構造をオブジェクトとして表現したものです。DOMを使うことで、JavaScriptからHTML要素にアクセスして、その内容や属性、スタイルなどを動的に変更することができます。ブラウザはHTMLを解析してDOMツリーを構築し、JavaScriptはこのDOMツリーを操作することでページの内容を動的に変更できるようになります。
+
 #### 9.2.1. コンテンツを変更する
 
 JavaScriptで取得した要素は、様々なプロパティを持つオブジェクト（[HTMLElement](https://developer.mozilla.org/ja/docs/Web/API/HTMLElement)）です。  
@@ -2715,34 +2718,33 @@ mainButton.addEventListener('click', moveBox);
 
 ### 10.1. カスタム要素
 
-HTMLコードを再利用可能にするための仕組みがあります。それが「カスタム要素」です。
-
+HTMLコードを再利用可能にするための仕組みがあります。それが「カスタム要素」です。  
 カスタム要素は、`HTMLElement`を継承したクラスを宣言して、そのクラスを`customeElements.define()`を利用して登録することで利用可能になります。
 
-カウンターをカスタム要素を用いて置き換えてみると、以下のリポジトリのようになります。
+この実験で利用するカスタム要素宣言のテンプレートを以下[コード 10.1-1.](#c101-1)に示します。  
 
-<https://github.com/haruyuki-16278/counter>
+<figure>
 
-`main.mjs`の内容は以下のようになります。
+<figcaption><a id="c101-1">コード 10.1-1. カスタム要素宣言のテンプレート</a></figcaption>
 
 ```javascript
-class CounterComponent extends HTMLElement {
-  /** @type {ShadowRoot | undefined} */
-  shadowRoot = undefined;
-
-  count = 0;
-
-  css = () => /*css*/ `
-    省略
+class <カスタム要素クラス名> extends HTMLElement {
+  // CSS生成関数
+  css = () => /* CSS */ `
+    /* CSS */
   `;
 
-  html = () => /*html*/ `
-    省略
+  // HTML生成関数
+  html = () => /* HTML */ `
+    <style>
+      ${this.css()}
+    </style>
+    <!-- HTML -->
   `;
 
   constructor() {
     super();
-    this.shadowRoot = this.attachShadow({ mode: "open" });
+    this.attachShadow({ mode: "open" });
   }
 
   connectedCallback() {
@@ -2750,38 +2752,61 @@ class CounterComponent extends HTMLElement {
   }
 
   render() {
-    this.shadowRoot.innerHTML = this.html();
-
-    this.shadowRoot.querySelector("button.plus").addEventListener("click", () => {
-      this.count += 1;
-      this.render();
-    });
-    this.shadowRoot.querySelector("button.minus").addEventListener("click", () => {
-      this.count -= 1;
-      this.render();
-    });
+    this.shadowRoot.setHTMLUnsafe(this.html());
   }
 }
 
-customElements.define("counter-component", CounterComponent);
+customElements.define("カスタム要素名", <カスタム要素クラス名>);
 ```
 
-1行目からがクラスの宣言で、最後の行はカスタムコンポーネントの登録の命令になります。  
+</figure>
 
-カスタムコンポーネントを登録するには、呼び出しに利用する要素名をつける必要があります。  
-この要素名は標準のHTMLとの混同を防ぐため、必ず名前にハイフンを含むよう規定されています。
+1行目からがカスタム要素クラスの宣言で、最後の行はカスタム要素の登録処理です。  
 
-クラス中にある`constructor()`は特別な関数で、クラスの実態を作成するときに呼び出される関数です。  
-`extends <継承元クラス>`という構文でクラスを継承して作成されたクラスは、このコンストラクタ関数の中で必ず`super()という関数を呼び出す必要があります。
+カスタム要素を登録するには、呼び出しに利用する要素名を設定する必要があります。  
+この要素名は、標準のHTMLとの混同を防ぐため、必ず名前にハイフンを含むようにしなければなりません。
 
-もう一つ、カスタム要素ゆえの特別な関数があります。それが`connectedCallback()`です。  
-この関数は文書中にカスタム要素が追加されたときに必ず呼び出される関数で、要素の内容への変更はこの関数内で処理することが推奨されています。  
-この関数を含めて、カスタム要素には「ライフサイクルコールバック」と呼ばれる関数が4つあります。  
-目的に応じて都度宣言して利用するようにしましょう。
+`extends <継承元クラス>`という構文でクラスを継承して作成されたクラスは、このコンストラクタメソッドの中で必ず`super()という関数を呼び出す必要があります。
+
+#### 10.1.1. ライフサイクルコールバック
+
+カスタム要素クラスには特別なメソッドを定義できます。[コード 10.1-1.](#c101-1.)の中では`connectedCallback()`がこれに該当します。  
+このメソッドを含めて、カスタム要素には「ライフサイクルコールバック」と呼ばれるメソッドが4つあります。  
+それぞれの名称と実行タイミングを以下の表に示します。
+
+<figure>
+
+<figcaption><a id="t1011-1">表 10.1.1-1. ライフサイクルコールバックの名称と実行タイミングの対応</a></figcaption>
+
+| メソッド名 | 実行タイミング |
+| --- | --- |
+| `connectedCallback()` | 要素がページに追加されたとき |
+| `disconnectedCallback()` | 要素がページから削除されたとき |
+| `adoptedCallback()` | 要素が別のページに移動されたとき |
+| `attributeChangedCallback()` | 要素の属性が変更されたとき |
+
+</figure>
+
+カスタム要素の表示の初期化処理は、ライフサイクルコールバックの`connectedCallback()`内で行うことが推奨されています。  
+例えば、なんらかの方法で保存されているデータを利用してカスタム要素の表示を行うような場合には、このメソッド内でデータを取得した後に`render()`メソッドを呼び出すようにしてください。
+
+今回のテンプレートでは、`render()`というメソッドを定義し、これを呼び出すことでカスタム要素の表示内容を設定することにしています。  
+`render()`メソッド内では、カスタム要素の表示を更新と、その後イベントリスナーの設定を行うようにしてください。  
+イベントハンドラ内でクラス内のプロパティを変更した場合には、そのハンドラの最後で`render()`メソッドを呼び出すことで、表示の変更の適用とイベントリスナーの設定を忘れずに行うことができるため、実装ミスを防ぎやすくなります。
 
 ### 10.2. ShadowDOM
 
-> カプセル化
+ShadowDOMは、ウェブコンポーネントの重要な機能の一つで、カスタム要素のスタイルとマークアップをメインドキュメントから隔離する仕組みです。  
+これにより、カスタム要素内のスタイルが外部に漏れたり、外部のスタイルがカスタム要素内に影響したりすることを防ぎます。
+
+ShadowDOMは、通常のDOM（Document Object Model）とは別の独立したDOM構造を作成します。  
+この独立したDOM構造は「シャドウツリー」と呼ばれ、メインのDOMツリー（「ライトDOM」）から隔離されています。
+
+ShadowDOMは`HTMLElement`クラスのオブジェクトやこれを継承したオブジェクト`element`に対して、`element.attachShadow({ mode: <"open" または "close"> })`とすることで作成できます。  
+[コード 10.1-1.](#c101-1.)の中では、コンストラクタメソッドの2行目でこの処理を行っています。
+
+作成したShadowDOMルート要素は`shadowRoot`プロパティに暗黙的に格納されます。  
+そのため、[コード 10.1-1.](#c101-1.)の`render()`メソッド内で`this.shadowRoot`がアクセス可能になっています。
 
 ## 11. ウェブコンポーネントを利用したSPAの開発
 
