@@ -98,8 +98,14 @@
     - [11.1. ディレクトリ構成](#111-ディレクトリ構成)
     - [11.2. ルーティング](#112-ルーティング)
     - [11.3. カスタム要素の登録を担うファイルを用意する](#113-カスタム要素の登録を担うファイルを用意する)
-    - [11.4. TODOアイテム編集画面の実装](#114-todoアイテム編集画面の実装)
-    - [11.5. TODOアイテム一覧画面の実装](#115-todoアイテム一覧画面の実装)
+    - [11.4. CSS（実践）](#114-css実践)
+      - [11.4.1. 全体のCSS](#1141-全体のcss)
+      - [11.4.2. カスタム要素のCSS](#1142-カスタム要素のcss)
+      - [11.4.3. :host 疑似クラス](#1143-host-疑似クラス)
+    - [11.5. TODOアイテム編集画面の実装](#115-todoアイテム編集画面の実装)
+      - [11.5.1. ベースになるカスタム要素の作成と登録の確認](#1151-ベースになるカスタム要素の作成と登録の確認)
+      - [11.5.2. 編集画面の実装](#1152-編集画面の実装)
+    - [11.6. TODOアイテム一覧画面の実装](#116-todoアイテム一覧画面の実装)
   - [12. まとめ](#12-まとめ)
 
 </details>
@@ -2814,7 +2820,35 @@ ShadowDOMは`HTMLElement`クラスのオブジェクトやこれを継承した�
 
 最後に、ウェブコンポーネントを利用して簡単なTODO管理アプリを作成します。
 
-TODOリストを一覧する画面とTODOアイテムを編集する2つの画面からなるウェブアプリケーションで、データの保存には`localStorage`
+TODOを一覧する画面とTODOを編集する2つの画面からなるウェブアプリケーションで、データの保存には[`localStorage`](https://developer.mozilla.org/ja/docs/Web/API/Window/localStorage)を利用します。
+
+各ページは以下の[図 11-1.](#f11-1)及び[図 11-2.](#f11-2)のようなデザインとします。
+
+<figure>
+
+<figcaption><a id="f11-1">図 11-1. TODO一覧画面デザイン</a></figcaption>
+
+![TODO一覧画面デザイン](imgs/home-page-design.png)
+
+</figure>
+
+<figure>
+
+<figcaption><a id="f11-2">図 11-2. TODO編集画面デザイン</a></figcaption>
+
+![TODO編集画面デザイン](imgs/edit-page-design.png)
+
+</figure>
+
+また、[図 11-1.](#f11-1)のTODOアイテムカスタム要素は以下のようなデザインとします。
+
+<figure>
+
+<figcaption><a id="f11-3">図 11-3. TODOアイテムカスタム要素デザイン</a></figcaption>
+
+![TODOアイテムカスタム要素](imgs/todo-item-component-design.png)
+
+</figure>
 
 ### 11.1. ディレクトリ構成
 
@@ -2908,6 +2942,10 @@ export const routes = {
 URLのhashは変更されたときに`hashchange`というイベントを発生させるので、このイベントを監視してルーティング処理を実行するようにイベントリスナーを設定します。  
 `routes.mjs`に書いたhashとページの対応は`import`という命令で読み込んでおき、処理中に呼び出せるようにします。
 
+<figure>
+
+<figcaption><a id="c112-3">コード 11.2-3. main.mjs</a></figcaption>
+
 ```javascript
 import { routes } from "./src/routes.mjs";
 
@@ -2930,6 +2968,8 @@ async function onHashChange() {
 window.addEventListener("hashchange", onHashChange);
 onHashChange();
 ```
+
+</figure>
 
 一番最後の行で一度`onHashChange()`関数を呼び出しているのは、アクセス時に一度実行してページ内容を変更する必要があるからです。
 
@@ -2971,11 +3011,348 @@ onHashChange();
 
 今後カスタム要素を作成してアプリケーションを作成していくのですが、カスタム要素クラスを作成したら忘れずにカスタム要素の登録も行うように気をつけてください。
 
-### 11.4. TODOアイテム編集画面の実装
+### 11.4. CSS（実践）
 
-<!-- TODO -->
+#### 11.4.1. 全体のCSS
 
-### 11.5. TODOアイテム一覧画面の実装
+[6.1. ボックスモデル](#61-ボックスモデル)で説明した通り、HTML要素はすべて四角形の領域を持ちます。  
+これと、SPA向けの基本的なスタイルを以下の[コード 11.4.1-1.](#c1141-1)に示します。  
+この内容を`style.css`に貼り付けてください。
+
+<figure>
+
+<figcaption><a id="c1141-1">コード 11.4.1-1. style.css</a></figcaption>
+
+```css
+* {
+  /* すべての要素に対して、ボックスモデルを border-box に変更する */
+  box-sizing: border-box; 
+  /* 要素にデフォルトのマージンやパディングが設定されているのでリセットする */
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+app-root {
+  /* SPAの画面が画面全体に広がるように設定 */
+  width: 100dvw;
+  height: 100dvh;
+}
+```
+
+</figure>
+
+#### 11.4.2. カスタム要素のCSS
+
+今回の実験で作成するカスタム要素は、[10.2. ShadowDOM](#102-shadowdom)で説明したShadowDOMを利用して作成しています。  
+そのため、各カスタム要素には[10.4.1. 全体のCSS](#1141-全体のcss)で記入した`style.css`の内容が適用されません。
+
+そこで、全称セレクタで指定している内容をJavaScriptの定数として宣言し、各カスタム要素の定義でこれを適用することにします。
+
+`src/shared/style.mjs`を作成し、以下の[コード 11.4.2-1.](#c1142-1)を貼り付けてください。
+
+<figure>
+
+<figcaption><a id="c1142-1">コード 11.4.2-1. style.mjs</a></figcaption>
+
+```javascript
+export const BASIC_STYLE = /* CSS */ `
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+`;
+```
+
+</figure>
+
+#### 11.4.3. :host 疑似クラス
+
+ShadowDOMの中でのみ、`:host`という擬似クラス表記が利用できます。  
+これは、ShadowDOMのルート要素にスタイルを適用できる疑似クラスになっています。
+
+### 11.5. TODOアイテム編集画面の実装
+
+TODOアイテムの編集画面では、TODOの新規作成と編集を行えるようにします。  
+TODOのアイテムにはタスク名と完了状態を設定できるようにします。
+
+#### 11.5.1. ベースになるカスタム要素の作成と登録の確認
+
+まず、`src/pages/edit.page.mjs`を作成して、以下の[コード 11.5.1-1.](#c1151-1)の内容を貼り付けてください。
+
+<figure>
+
+<figcaption><a id="c1151-1">コード 11.5.1-1. edit.page.mjs （カスタム要素登録確認用）</a></figcaption>
+
+```javascript
+import { BASIC_STYLE } from "../shared/style.mjs";
+
+export class EditPage extends HTMLElement {
+  // CSS生成関数
+  css = () => /* CSS */ `
+    ${BASIC_STYLE}
+  `;
+
+  // HTML生成関数
+  html = () => /* HTML */ `
+    <style>
+      ${this.css()}
+    </style>
+    <p>EditPage Works!</p>
+  `;
+
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.setHTMLUnsafe(this.html());
+  }
+}
+```
+
+</figure>
+
+このクラスを`src/register.mjs`でカスタム要素として登録します。
+
+```javascript
+// パーツ用カスタム要素の読み込み
+// import { <パーツ用カスタム要素クラス名> } from "./components/<ファイル名>.components.mjs";
+
+// ページ用カスタム要素の読み込み
+// import { <ページ用カスタム要素クラス名> } from "./pages/<ファイル名>.page.mjs";
+import { EditPage } from "./pages/edit.page.mjs";
+
+// パーツ用カスタム要素の登録
+// customElements.define(<パーツ用カスタム要素名>, <パーツ用カスタム要素クラス名>);
+
+// ページ用カスタム要素の登録
+// customElements.define(<ページ用カスタム要素名>,  <ページ用カスタム要素クラス名>);
+customElements.define("edit-page", EditPage);
+```
+
+ルーティングは[11.2. ルーティング](#112-ルーティング)で登録済みなので、この状態でブラウザで確認しましょう。  
+Live Server拡張機能のサーバーを起動して、ブラウザで`http://localhost:5500/#edit`を開いてください。  
+以下の[図 11.5.1-1.](#f1151-1)のような表示になっていれば大丈夫です。
+
+<figure>
+
+<figcaption><a id="f1151-1">図 11.5.1-1. 編集ページのカスタム要素が登録できている状態</a></figcaption>
+
+![編集ページのカスタム要素が登録できている状態](imgs/base-edit-page.png)
+
+</figure>
+
+#### 11.5.2. 編集画面の実装
+
+では[図 11-2.](#f11-2)に示したデザインで編集画面を実装します。
+
+このデザインでは、ヘッダー部分とその下のフォーム部分が縦に並んでいます。  
+ヘッダー部分は横並びの配置で、フォーム部分は縦並びの配置です。  
+今回は、ページ全体のレイアウトをフレックスボックスを利用して作成します。
+
+以下の[コード 11.5.2-1.](#c1152-1)で`edit.page.mjs`の内容を更新してください。  
+各記述の目的や動作はそれぞれ各部のコメントを参照してください。
+
+<figure>
+
+<figcaption><a id="c1152-1">コード 11.5.2-1. edit.page.mjs</a></figcaption>
+
+```javascript
+import { BASIC_STYLE } from "../shared/style.mjs";
+
+export class EditPage extends HTMLElement {
+  id = undefined;
+  title = undefined;
+  done = false;
+
+  // CSS生成関数
+  css = () => /* CSS */ `
+    ${BASIC_STYLE}
+
+    /* 全体を縦flexにして、端から16pxの余白を用意する */
+    :host {
+      width: 100%;
+      height: 100%;
+      padding: 16px !important;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /*
+     * ヘッダーは横100%で高さ40pxの横flex
+     * ヘッダー下すぐに入力フォームが来ないようにマージンをつける
+     */
+    header {
+      width: 100%;
+      height: 40px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    /*
+     * ヘッダー中のボタンは正方形の大きさを持つように
+     * ボタンのデフォルトスタイルを打ち消しつつ、フォントサイズと行高さを調整する
+     */
+    header button {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background-color: transparent;
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    /* ヘッダーのタイトルは太字で大きな文字にする */
+    header span {
+      width: 100%;
+      font-weight: bold;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    /*
+     * 入力フォームは縦flexで画面の残り領域全体に広がるように設定
+     * 要素間に8pxの隙間を設ける
+     */
+    main {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* 各行は横flexで縦中央揃え、ラベルとコンテンツの間に8px隙間を設ける */
+    main label {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    /* ラベルテキストが縮まないように */
+    main label span {
+      flex-shrink: 0;
+    }
+
+    /* タスク名の入力欄を角丸で囲んで丸に被らないように余白を設定 */
+    main input[type="text"] {
+      width: 100%;
+      height: 32px;
+      border: 2px solid lightgray;
+      border-radius: 32px;
+      padding: 0 16px;
+    }
+  `;
+
+  // HTML生成関数
+  html = () => /* HTML */ `
+    <style>
+      ${this.css()}
+    </style>
+    <header>
+      <button class="back">⬅️</button>
+      <span>ToDo詳細</span>
+      <button class="save">💾</button>
+    </header>
+    <main>
+      <label>
+        <span>タスク名</span>
+        <input type="text" placeholder="タスク名" value="${this.title ?? ""}" />
+      </label>
+      <label>
+        <input type="checkbox" ${this.done ? "checked" : ""} />
+        <span>完了済み</span>
+      </label>
+    </main>
+  `;
+
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
+    // URLクエリパラメータでIDが渡される
+    const url = new URL(location.href);
+    const paramId = url.searchParams.get("id");
+    if (paramId) {
+      // IDが渡されてきたら既存のタスクの修正なので、localstorageからデータを取得
+      const data = JSON.parse(localStorage.getItem(paramId));
+      this.id = paramId;
+      this.title = data?.title;
+      this.done = data?.done ?? false;
+    } else {
+      // IDが渡されなければ新規なのでIDを生成
+      // crupto.randomUUIDは桁数の大きい乱数生成で、現実的な回数で衝突し得ないため衝突の確認の必要がない
+      this.id = crypto.randomUUID();
+    }
+    this.render();
+  }
+
+  render() {
+    this.shadowRoot.setHTMLUnsafe(this.html());
+
+    // ToDo一覧に遷移するボタンのイベントリスナーを設定
+    this.shadowRoot
+      .querySelector("button.back")
+      .addEventListener("click", () => this.onClickBack());
+    // ToDoを保存するボタンのイベントリスナーを設定
+    this.shadowRoot
+      .querySelector("button.save")
+      .addEventListener("click", () => this.onClickSave());
+  }
+
+  // ToDo一覧画面に遷移する関数
+  backToHome() {
+    const url = new URL(location.href);
+    url.hash = "#home";
+    location.href = url.toString();
+  }
+
+  // ToDo一覧に遷移するボタンのイベントハンドラ
+  onClickBack() {
+    this.backToHome();
+  }
+
+  // ToDoを保存するボタンのイベントハンドラ
+  onClickSave() {
+    // input要素から入力内容を取得する
+    const editedTitle = this.shadowRoot.querySelector('input[type="text"]')?.value;
+    // タスク名が未設定なら登録せずに処理を終了する
+    if (!editedTitle) {
+      alert("タスク名が入力されていません");
+      return;
+    }
+    // タスク名が設定されていれば登録して一覧画面に遷移
+    localStorage.setItem(this.id, JSON.stringify({ title: editedTitle, done: this.done }));
+    this.backToHome();
+  }
+}
+```
+
+</figure>
+
+このコードが実装できれば、以下の図に示すような動作が確認できるはずです。
+ブラウザで開発者ツールを開き、アプリケーションタブでLocal storageの内容を表示しながら確認すると、データが保存されているのを確認しやすいです。
+
+<figure>
+
+<figcaption><a id="f1152-1">図 11.5.2-1. 編集画面のブラウザでの動作確認</a></figcaption>
+
+![編集画面のブラウザでの動作確認](imgs/edit-page-demo.gif)
+
+</figure>
+
+### 11.6. TODOアイテム一覧画面の実装
 
 <!-- TODO -->
 
