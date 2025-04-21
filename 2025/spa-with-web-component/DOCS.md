@@ -2173,7 +2173,7 @@ setTimeout(() => {
 また、返り値として正の整数値を返します。  
 これは登録されたtimeoutのIDで、`setTimeout`が呼ばれてから`delay`ミリ秒の間に`clearTimeout(timeoutID)`とすることで登録されたコールバック関数の実行をキャンセルできます。
 
-**課題 8.1.3-1.** `setTimeout()`のようにコールバック関数を受け取って後で実行するメソッドに`setInterval()`があります。これも同様にintervalのIDを返します。`setInterval()`を利用して1秒毎に`hello`と出力する処理を実行し、intervalのIDと`clearInterval()`メソッドを利用してintervalを停止してください。実行結果をスクリーンショットで撮影し、レポートに添付しなさい。（2点）
+**📝課題 8.1.3-1.** `setTimeout()`のようにコールバック関数を受け取って後で実行するメソッドに`setInterval()`があります。これも同様にintervalのIDを返します。`setInterval()`を利用して1秒毎に`hello`と出力する処理を実行し、intervalのIDと`clearInterval()`メソッドを利用してintervalを停止してください。実行結果をスクリーンショットで撮影し、レポートに添付しなさい。（2点）
 
 ### 8.2. オブジェクト
 
