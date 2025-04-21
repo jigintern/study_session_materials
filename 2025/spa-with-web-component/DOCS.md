@@ -2077,7 +2077,7 @@ function solveQuadraticEquation (a, b, c) {
     return {
       type: '虚数解',
       ans: [
-        `(${b} ± √${Math.abs(d)}i) / ${2 * a}`
+        `(-${b} ± √${Math.abs(d)}i) / ${2 * a}`
       ]
     };
   }
@@ -2395,7 +2395,13 @@ myClass.printText();
 
 </figure>
 
+<figure>
+
+<figcaption><a id="f83-1">図 8.3-1. クラスのサンプルコード実行結果</a></figcaption>
+
 ![クラスのサンプルコード実行結果](imgs/class-sample.png)
+
+</figure>
 
 #### 8.3.1. コンストラクタメソッド
 
@@ -2438,7 +2444,13 @@ HTMLではボタン要素は以下のようにして記述できます。
 
 </figure>
 
+<figure>
+
+<figcaption><a id="f911-1">図 9.1.1-1. ボタン要素のサンプル</a></figcaption>
+
 ![ボタン要素のサンプル](imgs/button-element-sample.png)
+
+</figure>
 
 #### 9.1.2. イベントリスナー
 
@@ -2512,7 +2524,7 @@ mainButton.addEventListener('click', showAlert);
 閲覧者がボタンをクリックしたとき、`'click'`イベントが**発火**すると言います。  
 この例ではid属性に`main-button`が設定されたボタンに対して、`'click'`イベントの購読を行っていて、イベントが発生したときに処理を行う**イベントハンドラ**に`showAlert`関数を呼び出すように設定しています。
 
-この`<script>`要素に追加した`defer`属性は、文書の解析語にスクリプトを実行するように遅延する意味があります。  
+この`<script>`要素に追加した`defer`属性は、「そのスクリプトの実行開始を文書の解析完了後まで待機する」という意味があります。  
 `defer`属性、`async`属性か、`type="module"`属性を持たない場合、スクリプトは読み込まれた順に即時実行されます。  
 今回はページに表示される要素を取得する必要があり、実行時に要素がない（表示されていない）とエラーになってしまうため、`defer`属性を与えています。
 
@@ -2591,7 +2603,7 @@ mainButton.addEventListener('click', updateMessage);
 
 続いて、見た目にも変更を加えて見ましょう。ここでは`style`プロパティを用います。  
 以下の[コード 9.2.2-1.](#c922-1)に示すコードで`main.js`の内容を置き換えてください。  
-(HTMLは[9.2.1 コンテンツを変更する](#921-コンテンツを変更する)と同じものです)
+(HTMLは[9.2.1 コンテンツを変更する](#921-コンテンツを変更する)で編集した、[コード 9.1.2-1.](#c912-1)に示したコードに、以下の[コード 9.2.1-1.](#c921-1)の`<!-- 追加 -->`と書いてある行を追記したものと同じものです)
 
 <figure>
 
@@ -2713,7 +2725,13 @@ mainButton.addEventListener('click', moveBox);
 
 </figure>
 
+<figure>
+
+<figcaption><a id="f93-1">図 9.3-1. CSS トランジションを利用するサンプル</a></figcaption>
+
 ![transitionサンプル](imgs/transition-sample.gif)
+
+</figure>
 
 このサンプルで重要な記述は[コード 9.3-2.](#c93-2)にある、以下に示す部分です。
 
