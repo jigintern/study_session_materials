@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>テスト実行 - パスワード強度チェッカー</title>
+    <link rel="stylesheet" href="test-runner.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>テスト実行</h1>
+        <p>パスワード強度チェッカーのテストケース</p>
+      </div>
+
+      <div class="summary">
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="summary-value total" id="totalCount">0</div>
+            <div class="summary-label">総テスト数</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-value passed" id="passedCount">0</div>
+            <div class="summary-label">成功</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-value failed" id="failedCount">0</div>
+            <div class="summary-label">失敗</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn-primary" onclick="runTests()">テスト実行</button>
+        <button class="btn-secondary" onclick="clearResults()">クリア</button>
+      </div>
+
+      <div class="tests" id="testsContainer">
+        <div class="empty-state">
+          <div class="empty-state-icon">[ ]</div>
+          <p>「テスト実行」ボタンをクリックしてください</p>
+        </div>
+      </div>
+
+      <div class="footer">正規表現ハンズオン @ jig.jp</div>
+    </div>
+
+    <script type="module">
+      import {
+        checkLevel1,
+        checkLevel2,
+        checkLevel3,
+        checkLevel4,
+        checkLevel5,
+      } from "./password-checker.js";
+
+      // グローバルに公開（テストファイルから参照できるように）
+      window.checkLevel1 = checkLevel1;
+      window.checkLevel2 = checkLevel2;
+      window.checkLevel3 = checkLevel3;
+      window.checkLevel4 = checkLevel4;
+      window.checkLevel5 = checkLevel5;
+
+      // テストケースの定義
+      const testSuites = {
+        "レベル1: 8文字以上": [
+          {
+            fn: () => checkLevel1("password"),
+            expected: true,
+            description: '"password" は true',
+          },
+          {
+            fn: () => checkLevel1("abcdefgh"),
+            expected: true,
+            description: '"abcdefgh" は true',
+          },
+          {
+            fn: () => checkLevel1("pass"),
+            expected: false,
+            description: '"pass" は false',
+          },
+          {
+            fn: () => checkLevel1("abc"),
+            expected: false,
+            description: '"abc" は false',
+          },
+          {
+            fn: () => checkLevel1("12345678"),
+            expected: true,
+            description: 'ちょうど8文字 "12345678" は true',
+          },
+          {
+            fn: () => checkLevel1(""),
+            expected: false,
+            description: '空文字 "" は false',
+          },
+        ],
+        "レベル2: 英小文字を含む": [
+          {
+            fn: () => checkLevel2("password"),
+            expected: true,
+            description: '"password" は true',
+          },
+          {
+            fn: () => checkLevel2("12345678a"),
+            expected: true,
+            description: '"12345678a" は true',
+          },
+          {
+            fn: () => checkLevel2("12345678"),
+            expected: false,
+            description: '"12345678" は false',
+          },
+          {
+            fn: () => checkLevel2("PASSWORD"),
+            expected: false,
+            description: '"PASSWORD" は false',
+          },
+          {
+            fn: () => checkLevel2("pass"),
+            expected: false,
+            description: '8文字未満 "pass" は false',
+          },
+          {
+            fn: () => checkLevel2("abcdefgh"),
+            expected: true,
+            description: '複数の英小文字 "abcdefgh" は true',
+          },
+        ],
+        "レベル3: 英大文字を含む": [
+          {
+            fn: () => checkLevel3("Password"),
+            expected: true,
+            description: '"Password" は true',
+          },
+          {
+            fn: () => checkLevel3("PASSword"),
+            expected: true,
+            description: '"PASSword" は true',
+          },
+          {
+            fn: () => checkLevel3("password"),
+            expected: false,
+            description: '"password" は false',
+          },
+          {
+            fn: () => checkLevel3("PASSWORD"),
+            expected: false,
+            description: '"PASSWORD" は false',
+          },
+          {
+            fn: () => checkLevel3("Pass"),
+            expected: false,
+            description: '8文字未満 "Pass" は false',
+          },
+          {
+            fn: () => checkLevel3("AbCdEfGh"),
+            expected: true,
+            description: '複数の大文字小文字 "AbCdEfGh" は true',
+          },
+        ],
+        "レベル4: 数字を含む": [
+          {
+            fn: () => checkLevel4("Password1"),
+            expected: true,
+            description: '"Password1" は true',
+          },
+          {
+            fn: () => checkLevel4("Pass1234"),
+            expected: true,
+            description: '"Pass1234" は true',
+          },
+          {
+            fn: () => checkLevel4("Password"),
+            expected: false,
+            description: '"Password" は false',
+          },
+          {
+            fn: () => checkLevel4("password1"),
+            expected: false,
+            description: '英大文字なし "password1" は false',
+          },
+          {
+            fn: () => checkLevel4("PASSWORD1"),
+            expected: false,
+            description: '英小文字なし "PASSWORD1" は false',
+          },
+          {
+            fn: () => checkLevel4("Pass1"),
+            expected: false,
+            description: '8文字未満 "Pass1" は false',
+          },
+          {
+            fn: () => checkLevel4("1Password"),
+            expected: true,
+            description: '数字が先頭 "1Password" は true',
+          },
+        ],
+        "レベル5: 記号を含む": [
+          {
+            fn: () => checkLevel5("Password1!"),
+            expected: true,
+            description: '"Password1!" は true',
+          },
+          {
+            fn: () => checkLevel5("Pass1@#$"),
+            expected: true,
+            description: '"Pass1@#$" は true',
+          },
+          {
+            fn: () => checkLevel5("Password1"),
+            expected: false,
+            description: '"Password1" は false',
+          },
+          {
+            fn: () => checkLevel5("Password!"),
+            expected: false,
+            description: '数字なし "Password!" は false',
+          },
+          {
+            fn: () => checkLevel5("password1!"),
+            expected: false,
+            description: '英大文字なし "password1!" は false',
+          },
+          {
+            fn: () => checkLevel5("PASSWORD1!"),
+            expected: false,
+            description: '英小文字なし "PASSWORD1!" は false',
+          },
+          {
+            fn: () => checkLevel5("Pass1!"),
+            expected: false,
+            description: '8文字未満 "Pass1!" は false',
+          },
+          {
+            fn: () => checkLevel5("Aa1!@#$%"),
+            expected: true,
+            description: '全記号対応 "Aa1!@#$%" は true',
+          },
+          {
+            fn: () => checkLevel5("!Password1"),
+            expected: true,
+            description: '記号が先頭 "!Password1" は true',
+          },
+          {
+            fn: () => checkLevel5("MyP@ssw0rd!"),
+            expected: true,
+            description: '複雑なパスワード "MyP@ssw0rd!" は true',
+          },
+        ],
+      };
+
+      window.runTests = function () {
+        const container = document.getElementById("testsContainer");
+        container.innerHTML = "";
+
+        let totalCount = 0;
+        let passedCount = 0;
+        let failedCount = 0;
+
+        Object.entries(testSuites).forEach(([suiteName, tests]) => {
+          const levelGroup = document.createElement("div");
+          levelGroup.className = "level-group";
+
+          const levelTitle = document.createElement("div");
+          levelTitle.className = "level-title";
+          levelTitle.textContent = suiteName;
+          levelGroup.appendChild(levelTitle);
+
+          tests.forEach((test) => {
+            totalCount++;
+
+            const testCase = document.createElement("div");
+            testCase.className = "test-case";
+
+            const testIcon = document.createElement("div");
+            testIcon.className = "test-icon";
+
+            const testDescription = document.createElement("div");
+            testDescription.className = "test-description";
+            testDescription.textContent = test.description;
+
+            try {
+              const result = test.fn();
+              if (result === test.expected) {
+                testCase.classList.add("passed");
+                passedCount++;
+              } else {
+                testCase.classList.add("failed");
+                failedCount++;
+
+                const errorDiv = document.createElement("div");
+                errorDiv.className = "test-error";
+                errorDiv.textContent = `期待値: ${test.expected}\n実際の値: ${result}`;
+                testDescription.appendChild(errorDiv);
+              }
+            } catch (error) {
+              testCase.classList.add("failed");
+              failedCount++;
+
+              const errorDiv = document.createElement("div");
+              errorDiv.className = "test-error";
+              errorDiv.textContent = `エラー: ${error.message}`;
+              testDescription.appendChild(errorDiv);
+            }
+
+            testCase.appendChild(testIcon);
+            testCase.appendChild(testDescription);
+            levelGroup.appendChild(testCase);
+          });
+
+          container.appendChild(levelGroup);
+        });
+
+        // サマリー更新
+        document.getElementById("totalCount").textContent = totalCount;
+        document.getElementById("passedCount").textContent = passedCount;
+        document.getElementById("failedCount").textContent = failedCount;
+      };
+
+      window.clearResults = function () {
+        const container = document.getElementById("testsContainer");
+        container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">[ ]</div>
+          <p>「テスト実行」ボタンをクリックしてください</p>
+        </div>
+      `;
+
+        document.getElementById("totalCount").textContent = "0";
+        document.getElementById("passedCount").textContent = "0";
+        document.getElementById("failedCount").textContent = "0";
+      };
+    </script>
+  </body>
+</html>

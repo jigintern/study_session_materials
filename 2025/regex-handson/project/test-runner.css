@@ -1,0 +1,204 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Courier New", monospace;
+  background: #fafafa;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border: 2px solid #000;
+}
+
+.header {
+  background: #000;
+  color: white;
+  padding: 30px;
+  border-bottom: 2px solid #000;
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.header p {
+  font-size: 12px;
+  color: #ccc;
+}
+
+.summary {
+  padding: 20px;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.summary-item {
+  text-align: center;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+}
+
+.summary-value {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.summary-label {
+  font-size: 10px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.summary-value.total {
+  color: #000;
+}
+.summary-value.passed {
+  color: #000;
+}
+.summary-value.failed {
+  color: #666;
+}
+
+.controls {
+  padding: 15px 20px;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 8px 16px;
+  border: 1px solid #000;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: "Courier New", monospace;
+  background: white;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #000;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #333;
+}
+
+.btn-secondary {
+  background: white;
+  color: #000;
+}
+
+.btn-secondary:hover {
+  background: #f5f5f5;
+}
+
+.tests {
+  padding: 20px;
+}
+
+.level-group {
+  margin-bottom: 25px;
+}
+
+.level-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #000;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #000;
+}
+
+.test-case {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.test-icon {
+  width: 20px;
+  margin-right: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.test-case.pending .test-icon::before {
+  content: "🟠";
+  color: #ccc;
+}
+.test-case.passed .test-icon::before {
+  content: "✅";
+  color: #000;
+}
+.test-case.failed .test-icon::before {
+  content: "❌";
+  color: #666;
+}
+
+.test-description {
+  flex: 1;
+  font-size: 13px;
+  color: #000;
+}
+
+.test-case.pending .test-description {
+  color: #999;
+}
+
+.test-case.failed .test-description {
+  color: #666;
+}
+
+.test-error {
+  margin-top: 5px;
+  padding: 8px;
+  background: #f5f5f5;
+  color: #666;
+  border-left: 2px solid #000;
+  font-size: 11px;
+  font-family: "Courier New", monospace;
+  white-space: pre-wrap;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+  color: #999;
+}
+
+.empty-state-icon {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.footer {
+  padding: 15px;
+  background: white;
+  text-align: center;
+  color: #999;
+  font-size: 10px;
+  border-top: 1px solid #e0e0e0;
+}
