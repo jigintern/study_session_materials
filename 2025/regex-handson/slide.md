@@ -69,6 +69,13 @@ paginate: true
 
 ---
 
+## 注意
+
+正規表現を学ぶための題材として、パスワードチェッカーを扱っています。
+実際のパスワードバリデーションには、セキュリティの要件やユーザビリティを考慮する必要があります。
+
+---
+
 <!-- _class: lead -->
 
 # 2. 正規表現の基礎
@@ -239,15 +246,14 @@ export function checkLevel1(password) {
 
 ### ブラウザで確認
 
-1. `project/test-runner.html` を開く
-2. 「テスト実行」をクリック
-3. レベル1のテストが通るか確認
+1. `deno run --allow-read --allow-net server.deno.js`
+2. `localhost:8080/test-runner.html` にアクセス
+3. 「テスト実行」をクリック、レベル1のテストが通ること
 
 ### または Deno でテスト
 
 ```bash
-cd project
-deno test password-checker.test.js
+deno test project/password-checker.test.js -- --level=1
 ```
 
 ---
@@ -272,37 +278,35 @@ export function checkLevel1(password) {
 - 8文字以上
 - **英小文字を1文字以上含む**
 
-### 正規表現
-
-```javascript
-/(?=.*[a-z]).{8,}/;
-```
-
-- `(?=.*[a-z])` : 英小文字を含むか先読みでチェック
-- `.*` : 0文字以上の任意の文字
-- `[a-z]` : 英小文字
-- `.{8,}` : 8文字以上
-
----
-
-## 先読みの仕組み
-
-### `(?=.*[a-z])`の動き
-
-```
-文字列: "Password123"
-         ↑
-         位置は進まず、ここから後ろに英小文字があるかチェック
-```
-
-1. `.*` で任意の文字を0文字以上スキップ
-2. `[a-z]` 英小文字が1つ以上あればマッチ
-3. 位置は最初に戻る（先読みなので）
-4. `.{8,}` で8文字以上をチェック
-
 ---
 
 ## レベル2: 実装してみよう
+
+```javascript
+export function checkLevel2(password) {
+  return /(?!)/.test(password); // TODO
+}
+```
+
+---
+
+## レベル2: テストしてみよう
+
+### ブラウザで確認
+
+1. `deno run --allow-read --allow-net server.deno.js`
+2. `localhost:8080/test-runner.html` にアクセス
+3. 「テスト実行」をクリック、レベル2のテストが通ること
+
+### または Deno でテスト
+
+```bash
+deno test project/password-checker.test.js -- --level=2
+```
+
+---
+
+## レベル2: 答え合わせ
 
 ```javascript
 export function checkLevel2(password) {
@@ -310,31 +314,12 @@ export function checkLevel2(password) {
 }
 ```
 
-### テストケース
-
-```javascript
-checkLevel2("password"); // true  (英小文字あり、8文字以上)
-checkLevel2("PASSWORD"); // false (英小文字なし)
-checkLevel2("12345678"); // false (英小文字なし)
-checkLevel2("pass"); // false (8文字未満)
-```
-
----
-
-## 💻 ハンズオン (15分)
-
-### やること
-
-1. `password-checker.js` を開く
-2. `checkLevel1` を実装
-3. `checkLevel2` を実装
-4. `test-runner.html` でテスト確認
-5. `index.html` で動作確認
-
-### 困ったら
-
-- スライドの解答例を参考に
-- 講師に質問してください！
+- `(?=.*[a-z])`
+  1. `.*` で任意の文字を0文字以上スキップ
+  2. `[a-z]` 英小文字が1つ以上あればマッチ
+  3. 位置は最初に戻る（先読みなので）
+- `.{8,}`
+  - 8文字以上をチェック
 
 ---
 
@@ -356,15 +341,16 @@ checkLevel2("pass"); // false (8文字未満)
 
 ### 例
 
-- `Password111` ❌ (1が3回連続)
-- `Paaassword1` ❌ (aが4回連続)
+- `Paaassword1` ❌ (aが3回連続)
 - `Password11` ✅ (2回までOK)
 
 ---
 
 ## レベル3: 新しいテクニック
 
-### キャプチャグループと後方参照
+### キャプチャグループ `( )`
+
+### 後方参照 `\1`
 
 ```javascript
 (.)\1\1  // 同じ文字が3回連続
@@ -374,31 +360,50 @@ checkLevel2("pass"); // false (8文字未満)
 - `\1` : キャプチャした文字への後方参照
 - `(.)\1` = 同じ文字2回、`(.)\1\1` = 同じ文字3回
 
-### 否定先読み
+---
+
+### 否定先読み `(?!パターン)`
+
+文字列が指定のパターンを**含まない**ことを確認
 
 ```javascript
-(?!パターン)  // パターンが続かないことを確認
+/(?!.*[a-z])/.test("Pass")  // false (英小文字を含む)
+/(?!.*[a-z])/.test("PASS")  // true (英小文字を含まない)
+```
+
+肯定先読み「`(?=パターン)`」の反対。
+
+---
+
+## レベル3: 実装してみよう
+
+- **連続する同じ文字が3つ以上ない**
+
+```javascript
+export function checkLevel3(password) {
+  return /(?!)/.test(password); // TODO
+}
 ```
 
 ---
 
-## レベル3: 正規表現
+## レベル3: テストしてみよう
 
-```javascript
-/^(?!.*(.)\1\1)(?=.*[a-z]).{8,}$/;
+### ブラウザで確認
+
+1. `deno run --allow-read --allow-net server.deno.js`
+2. `localhost:8080/test-runner.html` にアクセス
+3. 「テスト実行」をクリック、レベル3のテストが通ること
+
+### または Deno でテスト
+
+```bash
+deno test project/password-checker.test.js -- --level=3
 ```
-
-### 各要素の解説
-
-- `^` : 文字列の開始
-- `(?!.*(.)\1\1)` : 連続3文字がないことを確認（否定先読み）
-- `(?=.*[a-z])` : 英小文字を含む（肯定先読み）
-- `.{8,}` : 8文字以上
-- `$` : 文字列の終了
 
 ---
 
-## レベル3: 実装
+## レベル3: 答え合わせ
 
 ```javascript
 export function checkLevel3(password) {
@@ -406,14 +411,11 @@ export function checkLevel3(password) {
 }
 ```
 
-### テストケース
-
-```javascript
-checkLevel3("password"); // true  ✅
-checkLevel3("Password111"); // false (1が3回連続)
-checkLevel3("Paaassword1"); // false (aが4回連続)
-checkLevel3("Paaword11"); // true  (2回までOK)
-```
+- `^` : 文字列の開始
+- `(?!.*(.)\1\1)` : 連続3文字がないことを確認（否定先読み）
+- `(?=.*[a-z])` : 英小文字を含む（肯定先読み）
+- `.{8,}` : 8文字以上
+- `$` : 文字列の終了
 
 ---
 
@@ -427,33 +429,47 @@ checkLevel3("Paaword11"); // true  (2回までOK)
 - **英大文字を含む**
 - **数字を含む**
 
-### 正規表現
-
-```javascript
-/^(?!.*(.)\1\1)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-```
-
 ---
 
 ## レベル4: ポイント
 
 ### 文字クラスのショートハンド
 
+みじかく書けます。
+
 - `\d` : 数字 = `[0-9]`
 - `\w` : 英数字とアンダースコア = `[a-zA-Z0-9_]`
 - `\s` : 空白文字
 
-### 複数の先読みを組み合わせる
+---
+
+## レベル4: 実装してみよう
 
 ```javascript
-(?=.*[a-z])  // 英小文字
-(?=.*[A-Z])  // 英大文字
-(?=.*\d)     // 数字
+export function checkLevel4(password) {
+  return /(?!)/.test(password); // TODO
+}
 ```
 
 ---
 
-## レベル4: 実装
+## レベル4: テストしてみよう
+
+### ブラウザで確認
+
+1. `deno run --allow-read --allow-net server.deno.js`
+2. `localhost:8080/test-runner.html` にアクセス
+3. 「テスト実行」をクリック、レベル4のテストが通ること
+
+### または Deno でテスト
+
+```bash
+deno test project/password-checker.test.js -- --level=4
+```
+
+---
+
+## レベル4: 答え合わせ
 
 ```javascript
 export function checkLevel4(password) {
@@ -461,27 +477,9 @@ export function checkLevel4(password) {
 }
 ```
 
-### テストケース
-
-```javascript
-checkLevel4("Password1"); // true  ✅
-checkLevel4("Password"); // false (数字なし)
-checkLevel4("password1"); // false (大文字なし)
-checkLevel4("Password111"); // false (1が3回連続)
-```
-
----
-
-## 💻 ハンズオン (15分)
-
-### やること
-
-1. `checkLevel3` を実装
-   - キャプチャグループと後方参照に挑戦！
-2. `checkLevel4` を実装
-   - 複数の条件を組み合わせよう
-3. テストで確認
-4. `index.html` で動作確認
+- `(?=.*[A-Z])` : 英大文字を含む（肯定先読み）
+- `(?=.*\d)` : 数字を含む（肯定先読み）
+- `^(?!.*(.)\1\1)(?=.*[a-z]).{8,}$`: 他はレベル3と同様
 
 ---
 
@@ -542,7 +540,16 @@ checkLevel4("Password111"); // false (1が3回連続)
 
 ---
 
-## レベル5: 実装
+## レベル5: 実装してみよう
+
+```javascript
+export function checkLevel5(password) {
+  // TODO: ここに正規表現を実装
+  return false;
+}
+```
+
+### 実装
 
 ```javascript
 export function checkLevel5(password) {
@@ -550,6 +557,10 @@ export function checkLevel5(password) {
     .test(password);
 }
 ```
+
+---
+
+## レベル5: テストしてみよう
 
 ### テストケース
 
@@ -559,6 +570,12 @@ checkLevel5("P1@ssword"); // true  ✅
 checkLevel5("Password1!"); // true  ✅
 checkLevel5("!Password1"); // false (記号→数字の順)
 ```
+
+### ブラウザで確認
+
+1. `project/test-runner.html` を開く
+2. 「テスト実行」をクリック
+3. レベル5のテストが通るか確認
 
 ---
 
@@ -613,7 +630,16 @@ $     // 文字列の終了
 
 ---
 
-## レベル6: 実装
+## レベル6: 実装してみよう
+
+```javascript
+export function checkLevel6(password) {
+  // TODO: ここに正規表現を実装
+  return false;
+}
+```
+
+### 実装
 
 ```javascript
 export function checkLevel6(password) {
@@ -621,6 +647,10 @@ export function checkLevel6(password) {
     .test(password);
 }
 ```
+
+---
+
+## レベル6: テストしてみよう
 
 ### テストケース
 
@@ -630,6 +660,12 @@ checkLevel6("aPassword1!b"); // true  ✅
 checkLevel6("Password1!"); // false (末尾が記号)
 checkLevel6("!Password1"); // false (先頭が記号)
 ```
+
+### ブラウザで確認
+
+1. `project/test-runner.html` を開く
+2. 「テスト実行」をクリック
+3. レベル6のテストが通るか確認
 
 ---
 
