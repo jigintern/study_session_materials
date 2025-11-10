@@ -240,6 +240,8 @@ export function checkLevel1(password) {
 }
 ```
 
+- パスワードが8文字以上であること
+
 ---
 
 ## レベル1: テストしてみよう
@@ -377,13 +379,13 @@ export function checkLevel2(password) {
 
 ## レベル3: 実装してみよう
 
-- **連続する同じ文字が3つ以上ない**
-
 ```javascript
 export function checkLevel3(password) {
   return /(?!)/.test(password); // TODO
 }
 ```
+
+- **連続する同じ文字が3つ以上ない**
 
 ---
 
@@ -451,6 +453,10 @@ export function checkLevel4(password) {
 }
 ```
 
+- レベル3の条件に加えて
+- **英大文字を含む**
+- **数字を含む**
+
 ---
 
 ## レベル4: テストしてみよう
@@ -495,48 +501,25 @@ export function checkLevel4(password) {
 
 ### 条件
 
-- レベル4の全条件
+- 8文字以上
+- 英小文字を含む
+- 連続する同じ文字が3つ以上ない
+- 英大文字を含む
+- 数字を含む
 - **数字の直後に記号がある箇所を含む**
-
-### 例
-
-- `Pass1!word` ✅ (1の直後に!)
-- `P1@ssword` ✅ (1の直後に@)
-- `Password1!` ✅ (1の直後に!)
-- `!Password1` ❌ (記号の後に数字)
 
 ---
 
-## レベル5: 肯定後読み
+## レベル5: 新しいテクニック
 
-### 新しいテクニック: Lookbehind
-
-```javascript
-(?<=パターン)  // 直前が指定のパターンであることを確認
-```
-
-### 数字の直後に記号
+### 肯定後読み `(?<=パターン)`
 
 ```javascript
-(?<=\d)[!@#$%^&*]
+/(?<=\d)[$]/.test("5$"); // true (直前が数字)
 ```
 
 - `(?<=\d)` : 直前が数字であることを確認（後読み）
-- `[!@#$%^&*]` : 記号にマッチ
-
----
-
-## レベル5: 正規表現
-
-```javascript
-/^(?!.*(.)\1\1)(?=.*[a-z])(?=.*[A-Z])(?=.*(?<=\d)[!@#$%^&*]).{8,}$/;
-```
-
-### 各要素の解説
-
-- `(?=.*(?<=\d)[!@#$%^&*])` : 数字の直後に記号がある箇所を含む
-  - `(?=.*...)` : 先読みで存在確認
-  - `(?<=\d)[!@#$%^&*]` : 直前が数字の記号
+- `[$]` : 記号 `$`にマッチ
 
 ---
 
@@ -544,12 +527,31 @@ export function checkLevel4(password) {
 
 ```javascript
 export function checkLevel5(password) {
-  // TODO: ここに正規表現を実装
-  return false;
-}
+  return /(?!)/.test(password); // TODO
 ```
 
-### 実装
+- レベル4の条件に加えて
+- **数字の直後に記号がある箇所を含む**
+
+---
+
+## レベル5: テストしてみよう
+
+### ブラウザで確認
+
+1. `deno run --allow-read --allow-net server.deno.js`
+2. `localhost:8080/test-runner.html` にアクセス
+3. 「テスト実行」をクリック、レベル5のテストが通る
+
+### または Deno でテスト
+
+```bash
+deno test project/password-checker.test.js -- --level=5
+```
+
+---
+
+## レベル5: 答え合わせ
 
 ```javascript
 export function checkLevel5(password) {
@@ -558,30 +560,14 @@ export function checkLevel5(password) {
 }
 ```
 
----
-
-## レベル5: テストしてみよう
-
-### テストケース
-
-```javascript
-checkLevel5("Pass1!word"); // true  ✅
-checkLevel5("P1@ssword"); // true  ✅
-checkLevel5("Password1!"); // true  ✅
-checkLevel5("!Password1"); // false (記号→数字の順)
-```
-
-### ブラウザで確認
-
-1. `project/test-runner.html` を開く
-2. 「テスト実行」をクリック
-3. レベル5のテストが通るか確認
+- `(?=.*(?<=\d)[!@#$%^&*])` : 数字の直後に記号がある箇所を含む
+  - `(?=.*...)` : 先読みで存在確認
+  - `(?<=\d)[!@#$%^&*]` : 直前が数字の記号
+- 他はレベル4と同様
 
 ---
 
 ## レベル6: 先頭と末尾は英数字
-
-### 条件
 
 - レベル5の全条件
 - **先頭が英数字**
@@ -589,7 +575,6 @@ checkLevel5("!Password1"); // false (記号→数字の順)
 
 ### 例
 
-- `Pass1!word` ✅ (P...d)
 - `aPassword1!b` ✅ (a...b)
 - `!Password1` ❌ (先頭が記号)
 - `Password1!` ❌ (末尾が記号)
