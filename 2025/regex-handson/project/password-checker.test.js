@@ -10,14 +10,12 @@ if (isDeno) {
     checkLevel3,
     checkLevel4,
     checkLevel5,
-    checkLevel6,
   } = await import("./password-checker.js");
   globalThis.checkLevel1 = checkLevel1;
   globalThis.checkLevel2 = checkLevel2;
   globalThis.checkLevel3 = checkLevel3;
   globalThis.checkLevel4 = checkLevel4;
   globalThis.checkLevel5 = checkLevel5;
-  globalThis.checkLevel6 = checkLevel6;
 }
 
 // テスト結果を格納
@@ -193,35 +191,6 @@ const testCases = [
     },
   },
 
-  // レベル6: レベル5 AND 先頭と末尾は英数字
-  {
-    password: "Pass1!word",
-    description: "P...d",
-    expected: {
-      level6: true,
-    },
-  },
-  {
-    password: "aPassword1!b",
-    description: "a...b",
-    expected: {
-      level6: true,
-    },
-  },
-  {
-    password: "!Password1",
-    description: "先頭が記号",
-    expected: {
-      level6: false,
-    },
-  },
-  {
-    password: "Password1!",
-    description: "末尾が記号",
-    expected: {
-      level6: false,
-    },
-  },
 ];
 
 // ====================================
@@ -234,11 +203,10 @@ const checkFunctions = {
   level3: checkLevel3,
   level4: checkLevel4,
   level5: checkLevel5,
-  level6: checkLevel6,
 };
 
 // コマンドライン引数の解析（Deno環境のみ）
-let targetLevels = ["level1", "level2", "level3", "level4", "level5", "level6"];
+let targetLevels = ["level1", "level2", "level3", "level4", "level5"];
 if (isDeno && Deno.args.length > 0) {
   for (let i = 0; i < Deno.args.length; i++) {
     const arg = Deno.args[i];
