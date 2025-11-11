@@ -14,10 +14,10 @@ paginate: true
 
 正規表現が書けるようになる！
 
-以下の正規表現が読めるようになっているはず？！
+以下の正規表現が読めるようになるはず？！
 
 ```javascript
-/^(?!.*(.)\1\1)(?=.*[a-z])(?=.*[A-Z])(?=.*(?<=\d)[!@#$%^&*]).{8,}$/
+/^(?!.*(.)\1\1)(?=.*[a-z])(?=.*[A-Z])(?=.*(?<=\d)[!@#$%^&*]).{8,}$/;
 ```
 
 ---
@@ -27,9 +27,9 @@ paginate: true
 1. **導入** - 実装の流れ (5分)
 2. **正規表現の基礎** - 基本構文を学ぶ (15分)
 3. **レベル1-2実装** - 長さと英小文字 (15分)
-4. **レベル3-4実装** - 連続文字チェックと複数条件 (20分)
-5. **レベル5実装** - 後読みで完成！ (25分)
-6. **まとめと応用** (10分)
+4. **レベル3-4実装** - 連続文字チェックと複数条件 (15分)
+5. **レベル5実装** - 後読みで完成！ (15分)
+6. **まとめ** (10分)
 
 ---
 
@@ -115,19 +115,21 @@ const regex = /^[a-z]{3,}$/;
 console.log(regex.test("abc")); // true
 ```
 
+今回はスラッシュ表記`/`を使います。
+
 ---
 
 ## 基本的なメタ文字
 
-| メタ文字 | 意味              | 例                               |
-| -------- | ----------------- | -------------------------------- |
-| `.`      | 任意の1文字       | `/a.c/` → "abc", "a9c"           |
-| `*`      | 0回以上の繰り返し | `/ab*/` → "a", "ab", "abb"       |
-| `+`      | 1回以上の繰り返し | `/ab+/` → "ab", "abb"            |
-| `?`      | 0回または1回      | `/ab?/` → "a", "ab"              |
-| `{n}`    | ちょうどn回       | `/a{3}/` → "aaa"                 |
-| `{n,}`   | n回以上           | `/a{2,}/` → "aa", "aaa"          |
-| `{n,m}`  | n回以上m回以下    | `/a{2,4}/` → "aa", "aaa", "aaaa" |
+| メタ文字 | 意味           | 例                               |
+| -------- | -------------- | -------------------------------- |
+| `.`      | 任意の1文字    | `/a.c/` → "abc", "a9c"           |
+| `*`      | 〜が0回以上    | `/ab*/` → "a", "ab", "abb"       |
+| `+`      | 〜が1回以上    | `/ab+/` → "ab", "abb"            |
+| `?`      | 〜が0回か1回   | `/ab?/` → "a", "ab"              |
+| `{n}`    | ちょうどn回    | `/a{3}/` → "aaa"                 |
+| `{n,}`   | n回以上        | `/a{2,}/` → "aa", "aaa"          |
+| `{n,m}`  | n回以上m回以下 | `/a{2,4}/` → "aa", "aaa", "aaaa" |
 
 ---
 
@@ -246,10 +248,10 @@ export function checkLevel1(password) {
 ### ブラウザで確認
 
 1. `deno run --allow-read --allow-net server.deno.js`
-2. `localhost:8080/test-runner.html` にアクセス
-3. 「テスト実行」をクリック、レベル1のテストが通ること
+2. `localhost:8080` にアクセス
+3. パスワード入力欄に文字を入力
 
-### または Deno でテスト
+### Deno でテスト
 
 ```bash
 deno test project/password-checker.test.js -- --level=1
@@ -294,10 +296,10 @@ export function checkLevel2(password) {
 ### ブラウザで確認
 
 1. `deno run --allow-read --allow-net server.deno.js`
-2. `localhost:8080/test-runner.html` にアクセス
-3. 「テスト実行」をクリック、レベル2のテストが通ること
+2. `localhost:8080` にアクセス
+3. パスワード入力欄に文字を入力
 
-### または Deno でテスト
+### Deno でテスト
 
 ```bash
 deno test project/password-checker.test.js -- --level=2
@@ -406,10 +408,10 @@ export function checkLevel3(password) {
 ### ブラウザで確認
 
 1. `deno run --allow-read --allow-net server.deno.js`
-2. `localhost:8080/test-runner.html` にアクセス
-3. 「テスト実行」をクリック、レベル3のテストが通ること
+2. `localhost:8080` にアクセス
+3. パスワード入力欄に文字を入力
 
-### または Deno でテスト
+### Deno でテスト
 
 ```bash
 deno test project/password-checker.test.js -- --level=3
@@ -432,6 +434,16 @@ export function checkLevel3(password) {
 
 ---
 
+## レベル3: 答え合わせの解説
+
+アンカー`^`や`$`がない場合、「連続3文字を含まない英字8文字以上」の文字列にもマッチしてしまう。
+
+例えば、`Paaaasword11`は`aasword11`が条件を満たすためマッチしてしまう。
+
+**`^(?!.*(.)\1\1)` で文字列全体に連続3文字がないことを確認**
+
+---
+
 ## レベル4: 英大文字と数字を両方含む
 
 ### 条件
@@ -446,13 +458,15 @@ export function checkLevel3(password) {
 
 ## レベル4: ポイント
 
-### 文字クラスのショートハンド
+### メタ文字: 文字クラスのショートハンド
 
 みじかく書けます。
 
 - `\d` : 数字 = `[0-9]`
 - `\w` : 英数字とアンダースコア = `[a-zA-Z0-9_]`
 - `\s` : 空白文字
+
+他にもありますが省略。詳しくは末尾の参考資料へ。
 
 ---
 
@@ -475,10 +489,10 @@ export function checkLevel4(password) {
 ### ブラウザで確認
 
 1. `deno run --allow-read --allow-net server.deno.js`
-2. `localhost:8080/test-runner.html` にアクセス
-3. 「テスト実行」をクリック、レベル4のテストが通ること
+2. `localhost:8080` にアクセス
+3. パスワード入力欄に文字を入力
 
-### または Deno でテスト
+### Deno でテスト
 
 ```bash
 deno test project/password-checker.test.js -- --level=4
@@ -502,7 +516,7 @@ export function checkLevel4(password) {
 
 <!-- _class: lead -->
 
-# 5. レベル5-6実装
+# 5. レベル5実装
 
 ## 後読みと位置指定で完成
 
@@ -517,7 +531,7 @@ export function checkLevel4(password) {
 - 連続する同じ文字が3つ以上ない
 - 英大文字を含む
 - 数字を含む
-- **数字の直後に記号がある箇所を含む**
+- **数字の直後に記号(!@#$%^&*)がある箇所を含む**
 
 ---
 
@@ -542,7 +556,7 @@ export function checkLevel5(password) {
 ```
 
 - レベル4の条件に加えて
-- **数字の直後に記号がある箇所を含む**
+- **数字の直後に記号(!@#$%^&*)がある箇所を含む**
 
 ---
 
@@ -551,10 +565,10 @@ export function checkLevel5(password) {
 ### ブラウザで確認
 
 1. `deno run --allow-read --allow-net server.deno.js`
-2. `localhost:8080/test-runner.html` にアクセス
-3. 「テスト実行」をクリック、レベル5のテストが通る
+2. `localhost:8080` にアクセス
+3. パスワード入力欄に文字を入力
 
-### または Deno でテスト
+### Deno でテスト
 
 ```bash
 deno test project/password-checker.test.js -- --level=5
@@ -566,7 +580,7 @@ deno test project/password-checker.test.js -- --level=5
 
 ```javascript
 export function checkLevel5(password) {
-  return /^(?!.*(.)\1\1)(?=.*[a-z])(?=.*[A-Z])(?=.*(?<=\d)[!@#$%^&*]).{8,}$/
+  return /^(?!.*(.)\1\1)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(?<=\d)[!@#$%^&*]).{8,}$/
     .test(password);
 }
 ```
@@ -580,181 +594,58 @@ export function checkLevel5(password) {
 
 ## 完成したチェッカー
 
+収まらないので正規表現だけ抜粋
+
 ```javascript
-export function checkLevel1(password) {
-  return /.{8,}/.test(password);
-}
+ /.{8,}/ //  レベル1
 
-export function checkLevel2(password) {
-  return /(?=.*[a-z]).{8,}/.test(password);
-}
+ /(?=.*[a-z]).{8,}/ // レベル2
 
-export function checkLevel3(password) {
-  return /^(?!.*(.)\1\1)(?=.*[a-z]).{8,}$/.test(password);
-}
+ /^(?!.*(.)\1\1)(?=.*[a-z]).{8,}$/ // レベル3
 
-export function checkLevel4(password) {
-  return /^(?!.*(.)\1\1)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
-}
+ /^(?!.*(.)\1\1)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/ // レベル4
 
-export function checkLevel5(password) {
-  return /^(?!.*(.)\1\1)(?=.*[a-z])(?=.*[A-Z])(?=.*(?<=\d)[!@#$%^&*]).{8,}$/
-    .test(password);
-}
+ /^(?!.*(.)\1\1)(?=.*[a-z])(?=.*[A-Z])(?=.*(?<=\d)[!@#$%^&*]).{8,}$/ // レベル5
 ```
-
----
-
-## 💻 ハンズオン (20分)
-
-### やること
-
-1. `checkLevel5` を実装
-   - 後読みに挑戦！
-2. 全テストが通ることを確認
-3. `index.html` で色々なパスワードを試してみよう！
-   - 弱いパスワード → 強いパスワードへの変化
-   - どの条件が足りないか視覚的に確認
 
 ---
 
 <!-- _class: lead -->
 
-# 6. まとめと応用
+# 6. まとめ
 
 ---
 
 ## 今日学んだこと
 
-### 正規表現の基礎
+### 正規表現の構文
 
-- ✅ メタ文字と量指定子
-- ✅ 文字クラス `[a-z]`, `[0-9]`、ショートハンド `\d`
+- ✅ メタ文字と量指定子 `.`, `*`, `+`, `?`, `{n,m}`、 `\d`
+- ✅ 文字クラス `[a-z]`, `[0-9]`
+- ✅ アンカー `^` と `$`
 - ✅ 先読み `(?=...)` と否定先読み `(?!...)`
 - ✅ 後読み `(?<=...)`
-- ✅ キャプチャグループ `(.)` と後方参照 `\1`
-- ✅ アンカー `^` と `$`
-
-### パスワード強度チェッカー
-
-- ✅ 段階的な条件追加（6レベル）
-- ✅ 複数のアサーションの組み合わせ
-- ✅ 実践的なバリデーション
+- ✅ キャプチャグループ `()` と後方参照 `\1`
 
 ---
 
-## 応用例: パスワード強度の点数化
+## 応用例: パスワード以外にも、色々使える
 
-```javascript
-function getPasswordStrength(password) {
-  let score = 0;
-  if (/.{8,}/.test(password)) score++;
-  if (/(?=.*[a-z])/.test(password)) score++;
-  if (/(?=.*[A-Z])/.test(password)) score++;
-  if (/(?=.*[0-9])/.test(password)) score++;
-  if (/(?=.*[!@#$%^&*])/.test(password)) score++;
-
-  const labels = ["非常に弱い", "弱い", "普通", "強い", "非常に強い"];
-  return { score, label: labels[score] };
-}
-
-getPasswordStrength("password"); // { score: 1, label: '弱い' }
-getPasswordStrength("Password1!"); // { score: 5, label: '非常に強い' }
-```
-
----
-
-## 応用例: NGパターンのチェック
-
-```javascript
-// 連続した文字のチェック
-/(.)\1{2,}/.test("aaa")          // true (3文字以上連続)
-/(.)\1{2,}/.test("password")     // false
-
-// 連続した数字のチェック
-/012|123|234/.test("abc123def")  // true
-/012|123|234/.test("password")   // false
-
-// 辞書攻撃対策
-const commonPasswords = ['password', 'admin', '123456'];
-commonPasswords.includes(password.toLowerCase())
-```
+- 📧 メールアドレスのバリデーション
+  - `/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/`
+  - (英数字か記号1文字以上)@(英数字か.-1文字以上).(英字2文字以上)
+- 📱 日本の携帯電話番号
+  - `[0-9]{3}[-]?[0-9]{4}[-]?[0-9]{4}`
+  - 3桁-4桁-4桁 (ハイフンはありなし対応)
+- 🔍 ログファイルからのデータ抽出
+  - `/ERROR:\s(.*)/`
+  - "ERROR: "の後の任意の文字列
 
 ---
 
 ## さらに学ぶには
 
-### 📚 正規表現の学習リソース
-
 - [MDN Web Docs - 正規表現](https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_Expressions)
-- [regex101.com](https://regex101.com/) - 正規表現のテストツール
-- [正規表現チェッカー](https://regexper.com/) - 視覚化ツール
-
-### 🔐 セキュリティの学習
-
-- OWASP パスワード管理ガイドライン
-- 多要素認証 (MFA) の重要性
-
----
-
-## よくある質問
-
-### Q1: パスワードは何文字が適切？
-
-**A:** 最低8文字、推奨は12文字以上
-
-### Q2: 記号は必須？
-
-**A:** 強度を上げるため推奨。ただし覚えやすさも重要
-
-### Q3: 正規表現は難しい？
-
-**A:** 慣れです！今日のように段階的に学べば理解できます
-
----
-
-<!-- _class: lead -->
-
-# お疲れさまでした！ 🎉
-
-## 質問タイム
-
----
-
-## 参考: 正規表現クイックリファレンス
-
-| パターン  | 意味           |
-| --------- | -------------- |
-| `.`       | 任意の1文字    |
-| `*`       | 0回以上        |
-| `+`       | 1回以上        |
-| `?`       | 0回または1回   |
-| `{n,m}`   | n回以上m回以下 |
-| `[a-z]`   | 英小文字       |
-| `[A-Z]`   | 英大文字       |
-| `[0-9]`   | 数字           |
-| `(?=...)` | 肯定先読み     |
-
----
-
-## 次のステップ
-
-### 🚀 チャレンジ課題
-
-1. 最小文字数を変更できるようにする
-2. カスタム記号を許可する
-3. パスワードの複雑さをスコアで表示
-4. リアルタイムでヒントを表示
-
-### 📱 実践
-
-- 自分のプロジェクトに組み込んでみよう
-- フォーム入力のバリデーションに応用
-
----
-
-<!-- _class: lead -->
-
-# ありがとうございました
-
-**Happy Coding! 💻**
+- [正規表現視覚化ツール](https://regexper.com/)
+- [Qiita 正規表現入門](https://qiita.com/jnchito/items/893c887fbf19e17d3ff9) -
+  入門記事

@@ -47,15 +47,6 @@ export function checkLevel5(password) {
 }
 
 /**
- * レベル6: レベル5の条件 + 先頭と末尾は英数字
- * @param {string} password - チェックするパスワード
- * @returns {boolean} - 条件を満たす場合true
- */
-export function checkLevel6(password) {
-  return /(?!)/.test(password); // TODO
-}
-
-/**
  * 統合チェック: 全レベルの結果を返す
  * @param {string} password - チェックするパスワード
  * @returns {object} - 各レベルの結果
@@ -67,6 +58,5 @@ export function checkAllLevels(password) {
     level3: checkLevel3(password),
     level4: checkLevel4(password),
     level5: checkLevel5(password),
-    level6: checkLevel6(password),
   };
 }

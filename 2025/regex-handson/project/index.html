@@ -69,13 +69,11 @@
         }
 
         const results = checkAllLevels(password);
-        let passedCount = 0;
 
         Object.entries(results).forEach(([level, passed]) => {
           const element = levelElements[level];
           if (passed) {
             element.className = "level passed";
-            passedCount++;
           } else {
             element.className = "level failed";
           }
