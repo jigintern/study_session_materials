@@ -470,10 +470,10 @@ export function checkLevel3(password) {
 みじかく書けます。
 
 - `\d` : 数字 = `[0-9]`
-- `\w` : 英数字とアンダースコア = `[a-zA-Z0-9_]`
-- `\s` : 空白文字
+- `\w` : 英数字とアンダースコア = `[A-Za-z0-9_]`
+- `\s` : 空白を表す文字 = `[\f\n\r\t\v]` と、Unicodeの空白文字
 
-他にもありますが省略。詳しくは末尾の参考資料へ。
+他にもありますが省略。詳しくは末尾の参考資料 MDN 文字クラスへ
 
 ---
 
@@ -653,6 +653,7 @@ export function checkLevel5(password) {
 ## さらに学ぶには
 
 - [MDN Web Docs - 正規表現](https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_Expressions)
+- [MDN Web Docs - 文字クラス](https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_expressions/Character_classes)
 - [正規表現視覚化ツール](https://regexper.com/)
 - [Qiita 正規表現入門](https://qiita.com/jnchito/items/893c887fbf19e17d3ff9) -
   入門記事
