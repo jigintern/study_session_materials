@@ -3,21 +3,6 @@ import { assertEquals } from "jsr:@std/assert";
 const { checkLevel1, checkLevel2, checkLevel3, checkLevel4, checkLevel5 } =
   await import("./password-checker.js");
 
-// テスト結果を格納
-const testResults = [];
-
-function test(description, fn) {
-  try {
-    fn();
-    testResults.push({ description, passed: true, error: null });
-    console.log(`✓ ${description}`);
-  } catch (error) {
-    testResults.push({ description, passed: false, error: error.message });
-    console.error(`✗ ${description}`);
-    console.error(`  ${error.message}`);
-  }
-}
-
 // ====================================
 // パラメータ化テストケース定義
 // ====================================
@@ -133,7 +118,7 @@ targetLevels.forEach((level) => {
   const { cases, checkFunc } = suite;
 
   cases.forEach(({ password, description, expected }) => {
-    test(
+    Deno.test(
       `【レベル${levelNum}】"${password}" (${description}): ${
         expected ? "true" : "false"
       }`,
@@ -147,15 +132,3 @@ targetLevels.forEach((level) => {
     );
   });
 });
-
-const total = testResults.length;
-const passed = testResults.filter((r) => r.passed).length;
-const failed = total - passed;
-
-console.log("\n========================================");
-console.log(`テスト結果: ${passed}/${total} passed`);
-if (failed > 0) {
-  console.log(`Failed: ${failed}`);
-  Deno.exit(1);
-}
-console.log("========================================");
