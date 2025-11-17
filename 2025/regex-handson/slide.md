@@ -119,6 +119,10 @@ console.log(regex.test("abc")); // true
 
 ---
 
+<style scoped>
+  table { table-layout: fixed;   font-size: 0.9em; }
+</style>
+
 ## 基本的なメタ文字
 
 | メタ文字 | 意味           | 例                               |
@@ -128,8 +132,9 @@ console.log(regex.test("abc")); // true
 | `+`      | 〜が1回以上    | `/ab+/` → "ab", "abb"            |
 | `?`      | 〜が0回か1回   | `/ab?/` → "a", "ab"              |
 | `{n}`    | ちょうどn回    | `/a{3}/` → "aaa"                 |
-| `{n,}`   | n回以上        | `/a{2,}/` → "aa", "aaa"          |
-| `{n,m}`  | n回以上m回以下 | `/a{2,4}/` → "aa", "aaa", "aaaa" |
+| `{n,}`   | n以上          | `/a{2,}/` → "aa", "aaa"          |
+| `{,n}`   | n以下          | `/a{,4}/` → "aaa", "aaaa"        |
+| `{n,m}`  | n以上かつm以下 | `/a{2,4}/` → "aa", "aaa", "aaaa" |
 
 ---
 
