@@ -1,22 +1,7 @@
-// テストケース: パスワード強度チェッカー
-// Deno と ブラウザの両方で実行可能
+import { assertEquals } from "jsr:@std/assert";
 
-// Deno環境の場合のみimport
-const isDeno = typeof Deno !== "undefined";
-if (isDeno) {
-  const {
-    checkLevel1,
-    checkLevel2,
-    checkLevel3,
-    checkLevel4,
-    checkLevel5,
-  } = await import("./password-checker.js");
-  globalThis.checkLevel1 = checkLevel1;
-  globalThis.checkLevel2 = checkLevel2;
-  globalThis.checkLevel3 = checkLevel3;
-  globalThis.checkLevel4 = checkLevel4;
-  globalThis.checkLevel5 = checkLevel5;
-}
+const { checkLevel1, checkLevel2, checkLevel3, checkLevel4, checkLevel5 } =
+  await import("./password-checker.js");
 
 // テスト結果を格納
 const testResults = [];
@@ -25,21 +10,11 @@ function test(description, fn) {
   try {
     fn();
     testResults.push({ description, passed: true, error: null });
-    if (isDeno) {
-      console.log(`✓ ${description}`);
-    }
+    console.log(`✓ ${description}`);
   } catch (error) {
     testResults.push({ description, passed: false, error: error.message });
-    if (isDeno) {
-      console.error(`✗ ${description}`);
-      console.error(`  ${error.message}`);
-    }
-  }
-}
-
-function assertEquals(actual, expected, message = "") {
-  if (actual !== expected) {
-    throw new Error(`${message}\n  期待値: ${expected}\n  実際の値: ${actual}`);
+    console.error(`✗ ${description}`);
+    console.error(`  ${error.message}`);
   }
 }
 
@@ -135,7 +110,7 @@ const testSuites = {
 
 // コマンドライン引数の解析（Deno環境のみ）
 let targetLevels = ["level1", "level2", "level3", "level4", "level5"];
-if (isDeno && Deno.args.length > 0) {
+if (Deno.args.length > 0) {
   for (let i = 0; i < Deno.args.length; i++) {
     const arg = Deno.args[i];
     // --level=N の形式をチェック
@@ -158,36 +133,29 @@ targetLevels.forEach((level) => {
   const { cases, checkFunc } = suite;
 
   cases.forEach(({ password, description, expected }) => {
-    test(`【レベル${levelNum}】"${password}" (${description}): ${expected ? "true" : "false"}`, () => {
-      assertEquals(
-        checkFunc(password),
-        expected,
-        `"${password}" (${description}) のレベル${levelNum}チェック`,
-      );
-    });
+    test(
+      `【レベル${levelNum}】"${password}" (${description}): ${
+        expected ? "true" : "false"
+      }`,
+      () => {
+        assertEquals(
+          checkFunc(password),
+          expected,
+          `"${password}" (${description}) のレベル${levelNum}チェック`,
+        );
+      },
+    );
   });
 });
 
-// ブラウザ環境用にエクスポート
-if (typeof window !== "undefined") {
-  window.testResults = testResults;
-  window.runTests = () => {
-    testResults.length = 0; // リセット
-    // 全テストを再実行（上記のtestが自動的に実行される）
-  };
-}
+const total = testResults.length;
+const passed = testResults.filter((r) => r.passed).length;
+const failed = total - passed;
 
-// Deno環境: テスト結果のサマリーを表示
-if (isDeno) {
-  const total = testResults.length;
-  const passed = testResults.filter((r) => r.passed).length;
-  const failed = total - passed;
-
-  console.log("\n========================================");
-  console.log(`テスト結果: ${passed}/${total} passed`);
-  if (failed > 0) {
-    console.log(`Failed: ${failed}`);
-    Deno.exit(1);
-  }
-  console.log("========================================");
+console.log("\n========================================");
+console.log(`テスト結果: ${passed}/${total} passed`);
+if (failed > 0) {
+  console.log(`Failed: ${failed}`);
+  Deno.exit(1);
 }
+console.log("========================================");
