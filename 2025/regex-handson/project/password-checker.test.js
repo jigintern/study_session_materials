@@ -119,9 +119,7 @@ targetLevels.forEach((level) => {
 
   cases.forEach(({ password, description, expected }) => {
     Deno.test(
-      `【レベル${levelNum}】"${password}" (${description}): ${
-        expected ? "true" : "false"
-      }`,
+      `【レベル${levelNum}】"${password}" (${description}): ${expected}`,
       () => {
         assertEquals(
           checkFunc(password),
