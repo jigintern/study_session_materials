@@ -213,6 +213,8 @@ export function checkLevel1(password) {
 
 ```javascript
 /(?=.*[a])(?=.*[b])/.test("ab"); // true
+/(?=.*[a])(?=.*[b])/.test("ba"); // true
+
 /(?=.*[a])(?=.*[B])/.test("ab"); // false
 ```
 
