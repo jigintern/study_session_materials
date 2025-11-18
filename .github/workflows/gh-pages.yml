@@ -45,7 +45,7 @@ jobs:
         run: npm install -g @marp-team/marp-cli
 
       - name: Make Directory
-        run: mkdir dest && cp -r ./${{ matrix.slide }}/imgs ./dest/imgs
+        run: mkdir dest && cp -r ./${{ matrix.slide }}/imgs ./dest/imgs || true
 
       - name: Build Marp PDF
         run: marp ${{ matrix.slide }}/slide.md
