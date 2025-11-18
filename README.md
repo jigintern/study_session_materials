@@ -8,6 +8,9 @@
 
 ### 2025年作成
 
+* [正規表現を用いたパスワード強度チェッカーを作ってみよう！](./2025/regex-handson/README.md)
+  * 正規表現を使ってパスワードの強度をチェックする機能をゼロから実装するハンズオンです
+  * [スライド](https://jigintern.github.io/study_session_materials/regex-handson-2025/slide.html)
 * [ウェブコンポーネントを利用したSPAの開発手法](./2025/spa-with-web-component/README.md)
   * ウェブコンポーネントと呼ばれる一連の技術を活用して、効率的にウェブアプリケーションを開発する手法を学びます
 

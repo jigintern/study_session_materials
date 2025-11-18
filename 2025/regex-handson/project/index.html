@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>パスワード強度チェッカー</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>パスワード強度チェッカー</h1>
+      <p class="subtitle">正規表現を使ったバリデーション</p>
+
+      <div class="input-group">
+        <label for="password">パスワード</label>
+        <input
+          type="text"
+          id="password"
+          placeholder="Password123!"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="levels">
+        <div class="level pending" id="level1">
+          <div class="level-icon"></div>
+          <span>8文字以上</span>
+        </div>
+        <div class="level pending" id="level2">
+          <div class="level-icon"></div>
+          <span>英小文字を含む</span>
+        </div>
+        <div class="level pending" id="level3">
+          <div class="level-icon"></div>
+          <span>連続する同じ文字が3つ以上ない</span>
+        </div>
+        <div class="level pending" id="level4">
+          <div class="level-icon"></div>
+          <span>英大文字と数字を両方含む</span>
+        </div>
+        <div class="level pending" id="level5">
+          <div class="level-icon"></div>
+          <span>数字の直後に記号がある箇所を含む</span>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { checkAllLevels } from "./password-checker.js";
+
+      const passwordInput = document.getElementById("password");
+
+      const levelElements = {
+        level1: document.getElementById("level1"),
+        level2: document.getElementById("level2"),
+        level3: document.getElementById("level3"),
+        level4: document.getElementById("level4"),
+        level5: document.getElementById("level5"),
+      };
+
+      function updateChecker() {
+        const password = passwordInput.value;
+
+        if (password === "") {
+          Object.values(levelElements).forEach((el) => {
+            el.className = "level pending";
+          });
+          return;
+        }
+
+        const results = checkAllLevels(password);
+
+        Object.entries(results).forEach(([level, passed]) => {
+          const element = levelElements[level];
+          if (passed) {
+            element.className = "level passed";
+          } else {
+            element.className = "level failed";
+          }
+        });
+      }
+
+      // リアルタイムチェック
+      passwordInput.addEventListener("input", updateChecker);
+
+      // 初期表示
+      updateChecker();
+    </script>
+  </body>
+</html>

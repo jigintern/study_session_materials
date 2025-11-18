@@ -28,6 +28,8 @@ jobs:
             output_name: flutter-intro-2024
           - slide: 2024/flutter-memo
             output_name: flutter-memo-2024
+          - slide: 2025/regex-handson
+            output_name: regex-handson-2025
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
