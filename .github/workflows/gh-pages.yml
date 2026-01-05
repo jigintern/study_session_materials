@@ -30,6 +30,8 @@ jobs:
             output_name: flutter-memo-2024
           - slide: 2025/regex-handson
             output_name: regex-handson-2025
+          - slide: 2025/scrum-trial
+            output_name: scrum-trial-2025
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
