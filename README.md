@@ -8,6 +8,9 @@
 
 ### 2025年作成
 
+* [サイコロで学ぶスクラム開発](./2025/scrum-trial/README.md)
+  * サイコロを使ってスクラム開発の基本的な流れを体験するハンズオンです
+  * [スライド](https://jigintern.github.io/study_session_materials/scrum-trial-2025/slide.html)
 * [正規表現を用いたパスワード強度チェッカーを作ってみよう！](./2025/regex-handson/README.md)
   * 正規表現を使ってパスワードの強度をチェックする機能をゼロから実装するハンズオンです
   * [スライド](https://jigintern.github.io/study_session_materials/regex-handson-2025/slide.html)
