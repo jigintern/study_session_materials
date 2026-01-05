@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-      - add/flutter-2024
-      - scrum-trial
 
 permissions:
   contents: read
