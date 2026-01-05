@@ -42,7 +42,7 @@ jobs:
         uses: actions/configure-pages@v3
 
       - name: Setup Packages
-        run: sudo apt update && sudo apt install jq fonts-noto
+        run: sudo apt update -y && sudo apt install -y jq fonts-noto
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -52,8 +52,8 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
 
-      - name: Install Marp CLI
-        run: pnpm add -g @marp-team/marp-cli
+      - name: Install Dependencies
+        run: pnpm install
 
       - name: Make Directory
         run: mkdir dest && cp -r ./${{ matrix.slide }}/imgs ./dest/imgs || true
