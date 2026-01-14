@@ -1,0 +1,748 @@
+/* ============================================
+   CSS Animations & Keyframes
+   ============================================ */
+
+/* ============================================
+   Basic Keyframe Animations
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* ============================================
+   Scroll-driven Animations (Modern CSS)
+   ============================================ */
+
+/* Scroll Progress Bar - Native implementation */
+@supports (animation-timeline: scroll()) {
+
+  .scroll-progress,
+  .reading-progress {
+    animation: scroll-progress linear;
+    animation-timeline: scroll(root);
+  }
+
+  @keyframes scroll-progress {
+    from {
+      width: 0%;
+    }
+
+    to {
+      width: 100%;
+    }
+  }
+
+  /* Parallax Hero Image */
+  .parallax-image {
+    animation: parallax-hero linear;
+    animation-timeline: scroll(root);
+    animation-range: 0 500px;
+  }
+
+  @keyframes parallax-hero {
+    to {
+      transform: translateY(30%);
+      opacity: 0.5;
+    }
+  }
+
+  /* Fade in elements on scroll */
+  .fade-on-scroll {
+    animation: fade-in-scroll linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+
+  @keyframes fade-in-scroll {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* ============================================
+   Typing Animation
+   ============================================ */
+
+.typing-text {
+  overflow: hidden;
+}
+
+.typing-text .title-line {
+  display: block;
+  opacity: 0;
+  animation: typing-reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.typing-text .title-line:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.typing-text .title-line:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.typing-text .title-line:nth-child(3) {
+  animation-delay: 0.8s;
+}
+
+@keyframes typing-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   Scroll Indicator Animation
+   ============================================ */
+
+.scroll-indicator {
+  animation: fadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) 1.5s forwards;
+  opacity: 0;
+}
+
+.scroll-arrow {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+/* ============================================
+   Card Hover Animations
+   ============================================ */
+
+.article-card,
+.featured-card {
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ensure background-color transition works even when fade-in-on-scroll is applied */
+.article-card.fade-in-on-scroll,
+.featured-card.fade-in-on-scroll {
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Image zoom on hover - no position change */
+.card-image .image-placeholder,
+.featured-image .image-placeholder {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   Navigation Animations
+   ============================================ */
+
+.nav {
+  animation: slideInDown 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-menu a::after {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile menu animation */
+@media (max-width: 768px) {
+  .nav-menu {
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .nav-menu.active {
+    animation: slideInDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* ============================================
+   Button Animations
+   ============================================ */
+
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ripple effect */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* ============================================
+   Filter Button Animations
+   ============================================ */
+.filter-btn,
+.tab-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer effect on hover */
+.filter-btn::before,
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: inset-inline-start 0.5s;
+}
+
+.filter-btn:hover::before,
+.tab-btn:hover::before {
+  inset-inline-start: 100%;
+}
+
+/* ============================================
+   Skill Progress Animation
+   ============================================ */
+
+.skill-progress {
+  animation: skill-fill 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes skill-fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--progress, 0%);
+  }
+}
+
+.skill-item:nth-child(1) .skill-progress {
+  --progress: 95%;
+  animation-delay: 0.1s;
+}
+
+.skill-item:nth-child(2) .skill-progress {
+  --progress: 90%;
+  animation-delay: 0.2s;
+}
+
+.skill-item:nth-child(3) .skill-progress {
+  --progress: 85%;
+  animation-delay: 0.3s;
+}
+
+.skill-item:nth-child(4) .skill-progress {
+  --progress: 95%;
+  animation-delay: 0.4s;
+}
+
+.skill-item:nth-child(5) .skill-progress {
+  --progress: 80%;
+  animation-delay: 0.5s;
+}
+
+.skill-item:nth-child(6) .skill-progress {
+  --progress: 90%;
+  animation-delay: 0.6s;
+}
+
+/* ============================================
+   Timeline Animations
+   ============================================ */
+
+.timeline-item {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timeline-item.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.timeline-article {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timeline-article.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.timeline-marker {
+  animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.timeline-article-marker {
+  animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes scale-pulse {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ============================================
+   Search Modal Animations
+   ============================================ */
+
+.search-modal {
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-modal-content {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-modal.active {
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-modal.active .search-modal-content {
+  animation: slideInDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   Tag Cloud Animations
+   ============================================ */
+
+.tag {
+  animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tag:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.tag:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.tag:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.tag:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.tag:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.tag:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+.tag:nth-child(7) {
+  animation-delay: 0.35s;
+}
+
+.tag:nth-child(8) {
+  animation-delay: 0.4s;
+}
+
+.tag:nth-child(9) {
+  animation-delay: 0.45s;
+}
+
+.tag:nth-child(10) {
+  animation-delay: 0.5s;
+}
+
+/* ============================================
+   Social Links Animations
+   ============================================ */
+
+.social-link,
+.social-link-large {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.social-link:hover,
+.social-link-large:hover {
+  transform: scale(1.1);
+}
+
+/* ============================================
+   Avatar Animations
+   ============================================ */
+.avatar-large,
+.author-avatar {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   Loading Skeleton Animation
+   ============================================ */
+
+.skeleton {
+  background: linear-gradient(90deg,
+      var(--color-border) 0%,
+      var(--color-surface) 50%,
+      var(--color-border) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+   Stagger Animations for Lists
+   ============================================ */
+
+.stagger-animation > * {
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stagger-animation>*:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.stagger-animation>*:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.stagger-animation>*:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.stagger-animation>*:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.stagger-animation>*:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.stagger-animation>*:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+/* ============================================
+   CSS-only Scroll Animations
+   ============================================ */
+
+.fade-in-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-in-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.slide-in-left-on-scroll {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-in-left-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-in-right-on-scroll {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-in-right-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scale-in-on-scroll {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scale-in-on-scroll.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ============================================
+   Page Transition Classes
+   ============================================ */
+
+.page-transition-enter {
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-transition-exit {
+  animation: fadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   Theme Transition
+   ============================================ */
+
+body {
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   Focus Visible Animations
+   ============================================ */
+
+:focus-visible {
+  animation: focus-pulse 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes focus-pulse {
+  0% {
+    outline-offset: 2px;
+  }
+
+  50% {
+    outline-offset: 6px;
+  }
+
+  100% {
+    outline-offset: 4px;
+  }
+}
+
+/* ============================================
+   Micro-interactions
+   ============================================ */
+
+/* Link underline animation - exclude card links, buttons, nav logo, social links */
+a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo) {
+  position: relative;
+}
+
+a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo)::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo):hover::after {
+  width: 100%;
+}
+
+/* ============================================
+   Performance Optimizations
+   ============================================ */
+
+/* Use GPU acceleration for animations */
+.btn,
+.nav-menu a,
+.filter-btn,
+.tab-btn,
+.tag {
+  will-change: transform;
+}
+
+/* ============================================
+   Accessibility: Respect Reduced Motion
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .scroll-arrow,
+  .typing-text .title-line,
+  .skill-progress,
+  .timeline-item,
+  .timeline-article,
+  .tag,
+  .fade-in-on-scroll,
+  .slide-in-left-on-scroll,
+  .slide-in-right-on-scroll,
+  .scale-in-on-scroll {
+    animation: none;
+  }
+}
