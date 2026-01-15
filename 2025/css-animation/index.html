@@ -118,129 +118,66 @@
                     </div>
                 </div>
 
-                <div class="articles-grid">
-                    <!-- Article 1 -->
-                    <article class="article-card fade-in-on-scroll" data-category="development">
-                        <a href="article.html" class="card-link-wrapper">
-                            <div class="card-image">
-                                <div class="image-placeholder" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);" role="img" aria-label="記事のサムネイル"></div>
-                            </div>
-                            <div class="card-content">
-                                <div class="article-meta">
-                                    <span class="category">開発</span>
-                                    <time datetime="2026-01-08">2026年1月8日</time>
-                                </div>
-                                <h3 class="card-title">CSSアニメーションのパフォーマンス最適化</h3>
-                                <p class="card-excerpt">
-                                    スムーズなアニメーションを実現するための実践的なテクニックとベストプラクティス
-                                </p>
-                            </div>
-                        </a>
+                <div class="articles-grid" id="articlesGrid">
+                    <!-- Skeleton Cards -->
+                    <article class="article-card skeleton-card">
+                        <div class="card-image skeleton-image"></div>
+                        <div class="card-content">
+                            <div class="skeleton-meta"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-excerpt"></div>
+                            <div class="skeleton-excerpt"></div>
+                        </div>
                     </article>
 
-                    <!-- Article 2 -->
-                    <article class="article-card fade-in-on-scroll" data-category="design">
-                        <a href="article.html" class="card-link-wrapper">
-                            <div class="card-image">
-                                <div class="image-placeholder"
-                                    style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);" role="img"
-                                    aria-label="記事のサムネイル"></div>
-                            </div>
-                            <div class="card-content">
-                                <div class="article-meta">
-                                    <span class="category">デザイン</span>
-                                    <time datetime="2026-01-05">2026年1月5日</time>
-                                </div>
-                                <h3 class="card-title">タイポグラフィの基礎：読みやすさとデザイン性</h3>
-                                <p class="card-excerpt">
-                                    フォント選択から行間設定まで、美しく機能的なタイポグラフィを実現する方法
-                                </p>
-                            </div>
-                        </a>
+                    <article class="article-card skeleton-card">
+                        <div class="card-image skeleton-image"></div>
+                        <div class="card-content">
+                            <div class="skeleton-meta"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-excerpt"></div>
+                            <div class="skeleton-excerpt"></div>
+                        </div>
                     </article>
 
-                    <!-- Article 3 -->
-                    <article class="article-card fade-in-on-scroll" data-category="tutorial">
-                        <a href="article.html" class="card-link-wrapper">
-                            <div class="card-image">
-                                <div class="image-placeholder"
-                                    style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);" role="img"
-                                    aria-label="記事のサムネイル"></div>
-                            </div>
-                            <div class="card-content">
-                                <div class="article-meta">
-                                    <span class="category">チュートリアル</span>
-                                    <time datetime="2026-01-03">2026年1月3日</time>
-                                </div>
-                                <h3 class="card-title">レスポンシブデザインの実装ガイド</h3>
-                                <p class="card-excerpt">
-                                    モバイルファーストアプローチで、あらゆるデバイスに対応するサイトを構築
-                                </p>
-                            </div>
-                        </a>
+                    <article class="article-card skeleton-card">
+                        <div class="card-image skeleton-image"></div>
+                        <div class="card-content">
+                            <div class="skeleton-meta"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-excerpt"></div>
+                            <div class="skeleton-excerpt"></div>
+                        </div>
                     </article>
 
-                    <!-- Article 4 -->
-                    <article class="article-card fade-in-on-scroll" data-category="design">
-                        <a href="article.html" class="card-link-wrapper">
-                            <div class="card-image">
-                                <div class="image-placeholder"
-                                    style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);" role="img"
-                                    aria-label="記事のサムネイル"></div>
-                            </div>
-                            <div class="card-content">
-                                <div class="article-meta">
-                                    <span class="category">デザイン</span>
-                                    <time datetime="2025-12-28">2025年12月28日</time>
-                                </div>
-                                <h3 class="card-title">カラーパレットの選び方：理論と実践</h3>
-                                <p class="card-excerpt">
-                                    色彩理論を活用して、ブランドに最適な配色を見つける方法を解説
-                                </p>
-                            </div>
-                        </a>
+                    <article class="article-card skeleton-card">
+                        <div class="card-image skeleton-image"></div>
+                        <div class="card-content">
+                            <div class="skeleton-meta"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-excerpt"></div>
+                            <div class="skeleton-excerpt"></div>
+                        </div>
                     </article>
 
-                    <!-- Article 5 -->
-                    <article class="article-card fade-in-on-scroll" data-category="development">
-                        <a href="article.html" class="card-link-wrapper">
-                            <div class="card-image">
-                                <div class="image-placeholder"
-                                    style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);" role="img"
-                                    aria-label="記事のサムネイル"></div>
-                            </div>
-                            <div class="card-content">
-                                <div class="article-meta">
-                                    <span class="category">開発</span>
-                                    <time datetime="2025-12-25">2025年12月25日</time>
-                                </div>
-                                <h3 class="card-title">View Transitions APIで実現する滑らかなページ遷移</h3>
-                                <p class="card-excerpt">
-                                    最新のWeb APIを使って、ネイティブアプリのような体験を提供
-                                </p>
-                            </div>
-                        </a>
+                    <article class="article-card skeleton-card">
+                        <div class="card-image skeleton-image"></div>
+                        <div class="card-content">
+                            <div class="skeleton-meta"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-excerpt"></div>
+                            <div class="skeleton-excerpt"></div>
+                        </div>
                     </article>
 
-                    <!-- Article 6 -->
-                    <article class="article-card fade-in-on-scroll" data-category="tutorial">
-                        <a href="article.html" class="card-link-wrapper">
-                            <div class="card-image">
-                                <div class="image-placeholder"
-                                    style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);" role="img"
-                                    aria-label="記事のサムネイル"></div>
-                            </div>
-                            <div class="card-content">
-                                <div class="article-meta">
-                                    <span class="category">チュートリアル</span>
-                                    <time datetime="2025-12-20">2025年12月20日</time>
-                                </div>
-                                <h3 class="card-title">アクセシビリティを考慮したUI設計</h3>
-                                <p class="card-excerpt">
-                                    すべてのユーザーに優しいインターフェースを作るための実践的アプローチ
-                                </p>
-                            </div>
-                        </a>
+                    <article class="article-card skeleton-card">
+                        <div class="card-image skeleton-image"></div>
+                        <div class="card-content">
+                            <div class="skeleton-meta"></div>
+                            <div class="skeleton-title"></div>
+                            <div class="skeleton-excerpt"></div>
+                            <div class="skeleton-excerpt"></div>
+                        </div>
                     </article>
                 </div>
             </div>

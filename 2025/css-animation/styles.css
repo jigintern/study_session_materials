@@ -100,8 +100,6 @@ body {
   background-color: var(--color-bg);
   line-height: 1.6;
   overflow-x: hidden;
-  transition: background-color var(--duration-normal) var(--transition-smooth),
-    color var(--duration-normal) var(--transition-smooth);
 }
 
 /* Prevent transitions on page load */
@@ -410,11 +408,11 @@ strong {
   background: linear-gradient(90deg, var(--color-accent), #8b5cf6);
   width: 0%;
   z-index: 101;
-  transition: width 0.1s ease-out, top var(--duration-normal) var(--transition-smooth);
+  transition: top var(--duration-normal) var(--transition-smooth);
 }
 
-.nav.hidden~.scroll-progress,
-.nav.hidden~.reading-progress {
+.nav.hidden ~ .scroll-progress,
+.nav.hidden ~ .reading-progress {
   top: 0;
 }
 
@@ -458,25 +456,6 @@ strong {
   margin-inline: auto;
 }
 
-.scroll-indicator {
-  position: absolute;
-  bottom: var(--spacing-xl);
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  color: var(--color-text-secondary);
-  font-size: var(--text-sm);
-}
-
-.scroll-arrow {
-  width: 20px;
-  height: 20px;
-  border-inline-end: 2px solid var(--color-accent);
-  border-block-end: 2px solid var(--color-accent);
-  transform: rotate(45deg);
-  margin-block-start: var(--spacing-xs);
-  margin-inline: auto;
-}
 
 /* ============================================
    Buttons
@@ -856,37 +835,6 @@ section {
   font-size: var(--text-sm);
 }
 
-/* Scroll to Top Button */
-.scroll-to-top {
-  position: fixed;
-  bottom: var(--spacing-lg);
-  right: var(--spacing-lg);
-  width: 50px;
-  height: 50px;
-  background: var(--color-accent);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: all var(--duration-normal) var(--transition-smooth);
-  z-index: 99;
-  box-shadow: var(--shadow-md);
-}
-
-.scroll-to-top.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.scroll-to-top:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
 
 /* ============================================
    Article Page Styles
@@ -1544,6 +1492,97 @@ section {
 }
 
 /* ============================================
+   Skeleton Loading
+   ============================================ */
+
+.skeleton-card {
+  pointer-events: none;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-surface) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: 0;
+}
+
+.skeleton-meta {
+  height: 20px;
+  width: 60%;
+  margin-bottom: var(--spacing-sm);
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-surface) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: var(--border-radius-sm);
+}
+
+.skeleton-title {
+  height: 24px;
+  width: 90%;
+  margin-bottom: var(--spacing-sm);
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-surface) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: var(--border-radius-sm);
+}
+
+.skeleton-excerpt {
+  height: 16px;
+  width: 100%;
+  margin-bottom: var(--spacing-xs);
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-surface) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: var(--border-radius-sm);
+}
+
+.skeleton-excerpt:last-child {
+  width: 80%;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Disable skeleton animation for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-image,
+  .skeleton-meta,
+  .skeleton-title,
+  .skeleton-excerpt {
+    animation: none;
+    background: var(--color-border);
+  }
+}
+
+/* ============================================
    Responsive Styles
    ============================================ */
 
@@ -1703,12 +1742,6 @@ section {
     gap: var(--spacing-lg);
   }
 
-  .scroll-to-top {
-    width: 45px;
-    height: 45px;
-    bottom: var(--spacing-md);
-    right: var(--spacing-md);
-  }
 
   .avatar-large {
     width: 200px;

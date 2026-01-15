@@ -28,54 +28,6 @@
   }
 }
 
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 @keyframes bounce {
 
   0%,
@@ -85,40 +37,6 @@
 
   50% {
     transform: translateY(-10px);
-  }
-}
-
-@keyframes pulse {
-
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  50% {
-    transform: scale(1.05);
-    opacity: 0.9;
-  }
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-
-  100% {
-    background-position: 1000px 0;
   }
 }
 
@@ -234,20 +152,15 @@
    Card Hover Animations
    ============================================ */
 
+/* Unified transition for cards with fade-in-on-scroll */
 .article-card,
 .featured-card {
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Ensure background-color transition works even when fade-in-on-scroll is applied */
-.article-card.fade-in-on-scroll,
-.featured-card.fade-in-on-scroll {
   transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Image zoom on hover - no position change */
+/* Image zoom on hover */
 .card-image .image-placeholder,
 .featured-image .image-placeholder {
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -258,7 +171,7 @@
    ============================================ */
 
 .nav {
-  animation: slideInDown 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-menu a::after {
@@ -273,7 +186,7 @@
   }
 
   .nav-menu.active {
-    animation: slideInDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
@@ -407,17 +320,6 @@
   transform: translateX(0);
 }
 
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
 
 .timeline-marker {
   animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -459,7 +361,7 @@
 }
 
 .search-modal.active .search-modal-content {
-  animation: slideInDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ============================================
@@ -532,50 +434,6 @@
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ============================================
-   Loading Skeleton Animation
-   ============================================ */
-
-.skeleton {
-  background: linear-gradient(90deg,
-      var(--color-border) 0%,
-      var(--color-surface) 50%,
-      var(--color-border) 100%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
-}
-
-/* ============================================
-   Stagger Animations for Lists
-   ============================================ */
-
-.stagger-animation > * {
-  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.stagger-animation>*:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.stagger-animation>*:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.stagger-animation>*:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-.stagger-animation>*:nth-child(4) {
-  animation-delay: 0.4s;
-}
-
-.stagger-animation>*:nth-child(5) {
-  animation-delay: 0.5s;
-}
-
-.stagger-animation>*:nth-child(6) {
-  animation-delay: 0.6s;
-}
 
 /* ============================================
    CSS-only Scroll Animations
@@ -629,27 +487,6 @@
   transform: scale(1);
 }
 
-/* ============================================
-   Page Transition Classes
-   ============================================ */
-
-.page-transition-enter {
-  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.page-transition-exit {
-  animation: fadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-  }
-}
 
 /* ============================================
    Theme Transition
@@ -706,18 +543,6 @@ a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):no
   width: 100%;
 }
 
-/* ============================================
-   Performance Optimizations
-   ============================================ */
-
-/* Use GPU acceleration for animations */
-.btn,
-.nav-menu a,
-.filter-btn,
-.tab-btn,
-.tag {
-  will-change: transform;
-}
 
 /* ============================================
    Accessibility: Respect Reduced Motion
