@@ -199,12 +199,6 @@ p {
 a {
   color: var(--color-accent);
   text-decoration: none;
-  transition: color var(--duration-fast) var(--transition-smooth);
-}
-
-a:hover,
-a:focus {
-  color: var(--color-accent-hover);
 }
 
 strong {
@@ -320,7 +314,6 @@ strong {
   text-decoration: none;
   font-weight: 500;
   font-size: var(--text-base);
-  transition: color var(--duration-fast) var(--transition-smooth);
   position: relative;
   padding: var(--spacing-xs) 0;
 }
@@ -333,7 +326,6 @@ strong {
   width: 0;
   height: 2px;
   background: var(--color-accent);
-  transition: width var(--duration-normal) var(--transition-smooth);
 }
 
 .nav-menu a:hover::after,
@@ -342,14 +334,16 @@ strong {
   width: 100%;
 }
 
-.nav-menu a:hover,
-.nav-menu a:focus,
-.nav-menu a.active {
-  color: var(--color-accent);
+/* Nav Actions */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
 }
 
-/* Theme Toggle */
-.theme-toggle {
+/* Nav Actions (Search & Theme Toggle) */
+.nav-container .search-toggle,
+.nav-container .theme-toggle {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 50%;
@@ -359,8 +353,10 @@ strong {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  padding: 0;
 }
 
+.nav-container .search-toggle svg,
 .theme-toggle svg {
   stroke: var(--color-text);
 }
@@ -439,6 +435,25 @@ strong {
   margin-inline: auto;
 }
 
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: var(--spacing-xl);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--color-text-secondary);
+}
+
+.scroll-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 /* ============================================
    Buttons
@@ -452,7 +467,6 @@ strong {
   font-weight: 600;
   text-decoration: none;
   border-radius: var(--border-radius-sm);
-  transition: all var(--duration-normal) var(--transition-smooth);
   cursor: pointer;
   border: 2px solid transparent;
   position: relative;
@@ -464,23 +478,10 @@ strong {
   color: white;
 }
 
-.btn-primary:hover,
-.btn-primary:focus {
-  background: var(--color-accent-hover);
-  color: white;
-  box-shadow: var(--shadow-md);
-}
-
 .btn-secondary {
   background: transparent;
   color: var(--color-accent);
   border-color: var(--color-accent);
-}
-
-.btn-secondary:hover,
-.btn-secondary:focus {
-  background: var(--color-accent);
-  color: white;
 }
 
 /* ============================================
@@ -569,11 +570,6 @@ section {
 
 .featured-title a {
   color: var(--color-text);
-  transition: color var(--duration-fast) var(--transition-smooth);
-}
-
-.featured-title a:hover {
-  color: var(--color-accent);
 }
 
 .featured-excerpt {
@@ -628,10 +624,6 @@ section {
   border: 1px solid var(--color-border);
 }
 
-.article-card:hover {
-  background: var(--color-surface);
-}
-
 .card-link-wrapper {
   display: block;
   text-decoration: none;
@@ -639,11 +631,6 @@ section {
 
 /* Prevent text color changes on hover for card elements */
 .card-link-wrapper {
-  color: var(--color-text);
-}
-
-.card-link-wrapper:hover,
-.card-link-wrapper:focus {
   color: var(--color-text);
 }
 
@@ -706,13 +693,6 @@ section {
   font-weight: 500;
   color: var(--color-text);
   cursor: pointer;
-  transition: all var(--duration-fast) var(--transition-smooth);
-}
-
-.filter-btn:hover,
-.tab-btn:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
 }
 
 .filter-btn.active,
@@ -770,11 +750,6 @@ section {
 
 .footer-links a {
   color: var(--color-text-secondary);
-  transition: color var(--duration-fast) var(--transition-smooth);
-}
-
-.footer-links a:hover {
-  color: var(--color-accent);
 }
 
 .social-links {
@@ -792,13 +767,6 @@ section {
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-sm);
   font-size: var(--text-sm);
-  transition: all var(--duration-fast) var(--transition-smooth);
-}
-
-.social-link:hover {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: white;
 }
 
 .footer-bottom {
@@ -917,12 +885,10 @@ section {
 .toc-link {
   color: var(--color-text-secondary);
   font-size: var(--text-sm);
-  transition: color var(--duration-fast) var(--transition-smooth);
   display: block;
   padding: 0.25rem 0;
 }
 
-.toc-link:hover,
 .toc-link.active {
   color: var(--color-accent);
 }
@@ -1195,14 +1161,6 @@ section {
   font-weight: 600;
   font-size: var(--text-lg);
   color: var(--color-text);
-  transition: all var(--duration-normal) var(--transition-smooth);
-}
-
-.social-link-large:hover {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: white;
-  box-shadow: var(--shadow-md);
 }
 
 /* ============================================
@@ -1389,11 +1347,6 @@ section {
 .timeline-article-title a {
   color: var(--color-text);
   font-size: var(--text-xl);
-  transition: color var(--duration-fast) var(--transition-smooth);
-}
-
-.timeline-article-title a:hover {
-  color: var(--color-accent);
 }
 
 .timeline-article-excerpt {

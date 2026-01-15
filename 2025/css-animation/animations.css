@@ -3,104 +3,119 @@
    ============================================ */
 
 /* ============================================
-   Basic Keyframe Animations
+   Step 1: 基本的な Keyframe Animations
    ============================================ */
 
+/* TODO: fadeIn アニメーションを作成
+   - from で opacity: 0
+   - to で opacity: 1
+*/
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+  /* ここにコードを書く */
 }
 
+/* TODO: fadeInUp アニメーションを作成
+   - from で opacity: 0 と translateY(30px)
+   - to で opacity: 1 と translateY(0)
+*/
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  /* ここにコードを書く */
 }
 
+/* TODO: bounce アニメーションを作成
+   - 0%, 100% で translateY(0)
+   - 50% で translateY(-10px)
+*/
 @keyframes bounce {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
+  /* ここにコードを書く */
 }
 
 /* ============================================
-   Scroll-driven Animations (Modern CSS)
+   Step 2: Animation プロパティの適用
    ============================================ */
 
-/* Scroll Progress Bar - Native implementation */
-@supports (animation-timeline: scroll()) {
+/* Navigation Animations */
+.nav {
+  /* TODO: fadeInUp アニメーションを適用
+     - animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  */
+}
 
-  .scroll-progress,
-  .reading-progress {
-    animation: scroll-progress linear;
-    animation-timeline: scroll(root);
+.nav-logo {
+  /* TODO: color の transition を追加
+     - transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  */
+}
+
+.nav-logo:hover {
+  /* TODO: ホバー時の色を設定
+     - color: var(--color-accent);
+  */
+}
+
+.nav-menu a {
+  /* TODO: color の transition を追加
+     - transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  */
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus,
+.nav-menu a.active {
+  /* TODO: ホバー時の色を設定
+     - color: var(--color-accent);
+  */
+}
+
+.nav-menu a::after {
+  /* TODO: width の transition を追加
+     - transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  */
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  /* TODO: すべてのプロパティの transition を追加
+     - transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  */
+}
+
+.theme-toggle:hover {
+  /* TODO: ホバー時のスタイルを設定
+     - background: var(--color-accent);
+     - border-color: var(--color-accent);
+     - transform: rotate(180deg);
+  */
+}
+
+.theme-toggle:hover svg {
+  /* TODO: ホバー時のアイコン色を設定
+     - stroke: white;
+  */
+}
+
+.theme-toggle svg {
+  /* TODO: stroke の transition を追加
+     - transition: stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  */
+}
+
+/* Mobile menu animation */
+@media (max-width: 768px) {
+  .nav-menu {
+    /* TODO: max-height と opacity の transition を追加
+       - transition: max-height 0.3s, opacity 0.3s;
+    */
   }
 
-  @keyframes scroll-progress {
-    from {
-      width: 0%;
-    }
-
-    to {
-      width: 100%;
-    }
-  }
-
-  /* Parallax Hero Image */
-  .parallax-image {
-    animation: parallax-hero linear;
-    animation-timeline: scroll(root);
-    animation-range: 0 500px;
-  }
-
-  @keyframes parallax-hero {
-    to {
-      transform: translateY(30%);
-      opacity: 0.5;
-    }
-  }
-
-  /* Fade in elements on scroll */
-  .fade-on-scroll {
-    animation: fade-in-scroll linear;
-    animation-timeline: view();
-    animation-range: entry 0% cover 30%;
-  }
-
-  @keyframes fade-in-scroll {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .nav-menu.active {
+    /* TODO: fadeInUp アニメーションを適用
+       - animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    */
   }
 }
 
-/* ============================================
-   Typing Animation
-   ============================================ */
-
+/* Typing Animation */
 .typing-text {
   overflow: hidden;
 }
@@ -108,422 +123,202 @@
 .typing-text .title-line {
   display: block;
   opacity: 0;
-  animation: typing-reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  /* TODO: typing-reveal アニメーションを適用
+     - animation: typing-reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  */
 }
 
 .typing-text .title-line:nth-child(1) {
-  animation-delay: 0.2s;
+  /* TODO: animation-delay: 0.2s; を追加 */
 }
 
 .typing-text .title-line:nth-child(2) {
-  animation-delay: 0.5s;
+  /* TODO: animation-delay: 0.5s; を追加 */
 }
 
 .typing-text .title-line:nth-child(3) {
-  animation-delay: 0.8s;
+  /* TODO: animation-delay: 0.8s; を追加 */
 }
 
+/* TODO: typing-reveal keyframes を作成
+   - from で opacity: 0 と translateY(20px)
+   - to で opacity: 1 と translateY(0)
+*/
 @keyframes typing-reveal {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  /* ここにコードを書く */
 }
 
-/* ============================================
-   Scroll Indicator Animation
-   ============================================ */
-
+/* Scroll Indicator Animation */
 .scroll-indicator {
-  animation: fadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) 1.5s forwards;
-  opacity: 0;
+  /* TODO: fadeIn アニメーションを適用
+     - animation: fadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) 1.5s forwards;
+     - opacity: 0;
+  */
 }
 
 .scroll-arrow {
-  animation: bounce 2s ease-in-out infinite;
+  /* TODO: bounce アニメーションを適用
+     - animation: bounce 2s ease-in-out infinite;
+  */
 }
 
 /* ============================================
-   Card Hover Animations
+   Step 3: Transition の基本
    ============================================ */
 
-/* Unified transition for cards with fade-in-on-scroll */
+/* Card Hover Animations */
 .article-card,
 .featured-card {
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  /* TODO: transition を追加
+     - opacity, transform, background-color の3つのプロパティに
+     - 適切な duration と timing-function を設定
+  */
+}
+
+.featured-card:hover {
+  /* TODO: ホバー時の背景色を設定
+     - background: var(--color-surface);
+  */
+}
+
+.article-card:hover {
+  /* TODO: ホバー時の背景色を設定
+     - background: var(--color-surface);
+  */
 }
 
 /* Image zoom on hover */
 .card-image .image-placeholder,
 .featured-image .image-placeholder {
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  /* TODO: transform の transition を追加
+     - transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  */
 }
 
-/* ============================================
-   Navigation Animations
-   ============================================ */
-
-.nav {
-  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+.featured-card:hover .image-placeholder,
+.article-card:hover .card-image .image-placeholder {
+  /* TODO: ホバー時の画像拡大を設定
+     - transform: scale(1.05);
+  */
 }
 
-.nav-menu a::after {
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Card link hover */
+.card-link-wrapper {
+  /* TODO: color の transition を追加
+     - transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  */
 }
 
-/* Mobile menu animation */
-@media (max-width: 768px) {
-  .nav-menu {
-    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .nav-menu.active {
-    animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+.card-link-wrapper:hover,
+.card-link-wrapper:focus {
+  /* TODO: ホバー時の色を設定
+     - color: var(--color-text);
+  */
 }
 
-/* ============================================
-   Button Animations
-   ============================================ */
+/* Card title link hover */
+.featured-title a,
+.timeline-article-title a {
+  /* TODO: color の transition を追加
+     - transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  */
+}
 
+.featured-title a:hover,
+.timeline-article-title a:hover {
+  /* TODO: ホバー時の色を設定
+     - color: var(--color-accent);
+  */
+}
+
+/* Button Animations */
 .btn {
-  position: relative;
-  overflow: hidden;
+  /* TODO: transition を追加
+     - transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  */
 }
 
-/* Ripple effect */
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
+.btn-primary:hover,
+.btn-primary:focus {
+  /* TODO: ホバー時のスタイルを設定
+     - background: var(--color-accent-hover);
+     - color: white;
+     - box-shadow: var(--shadow-md);
+  */
 }
 
-.btn:active::before {
-  width: 300px;
-  height: 300px;
+.btn-secondary:hover,
+.btn-secondary:focus {
+  /* TODO: ホバー時のスタイルを設定
+     - background: var(--color-accent);
+     - color: white;
+  */
 }
 
-/* ============================================
-   Filter Button Animations
-   ============================================ */
-.filter-btn,
-.tab-btn {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Shimmer effect on hover */
-.filter-btn::before,
-.tab-btn::before {
-  content: '';
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline-start: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transition: inset-inline-start 0.5s;
-}
-
-.filter-btn:hover::before,
-.tab-btn:hover::before {
-  inset-inline-start: 100%;
-}
-
-/* ============================================
-   Skill Progress Animation
-   ============================================ */
-
-.skill-progress {
-  animation: skill-fill 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes skill-fill {
-  from {
-    width: 0;
-  }
-  to {
-    width: var(--progress, 0%);
-  }
-}
-
-.skill-item:nth-child(1) .skill-progress {
-  --progress: 95%;
-  animation-delay: 0.1s;
-}
-
-.skill-item:nth-child(2) .skill-progress {
-  --progress: 90%;
-  animation-delay: 0.2s;
-}
-
-.skill-item:nth-child(3) .skill-progress {
-  --progress: 85%;
-  animation-delay: 0.3s;
-}
-
-.skill-item:nth-child(4) .skill-progress {
-  --progress: 95%;
-  animation-delay: 0.4s;
-}
-
-.skill-item:nth-child(5) .skill-progress {
-  --progress: 80%;
-  animation-delay: 0.5s;
-}
-
-.skill-item:nth-child(6) .skill-progress {
-  --progress: 90%;
-  animation-delay: 0.6s;
-}
-
-/* ============================================
-   Timeline Animations
-   ============================================ */
-
-.timeline-item {
-  opacity: 0;
-  transform: translateX(-30px);
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.timeline-item.is-visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.timeline-article {
-  opacity: 0;
-  transform: translateX(-30px);
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.timeline-article.is-visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-
-.timeline-marker {
-  animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.timeline-article-marker {
-  animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-@keyframes scale-pulse {
-  0% {
-    transform: scale(0);
-  }
-
-  50% {
-    transform: scale(1.2);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* ============================================
-   Search Modal Animations
-   ============================================ */
-
-.search-modal {
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.search-modal-content {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.search-modal.active {
-  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.search-modal.active .search-modal-content {
-  animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ============================================
-   Tag Cloud Animations
-   ============================================ */
-
-.tag {
-  animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.tag:nth-child(1) {
-  animation-delay: 0.05s;
-}
-
-.tag:nth-child(2) {
-  animation-delay: 0.1s;
-}
-
-.tag:nth-child(3) {
-  animation-delay: 0.15s;
-}
-
-.tag:nth-child(4) {
-  animation-delay: 0.2s;
-}
-
-.tag:nth-child(5) {
-  animation-delay: 0.25s;
-}
-
-.tag:nth-child(6) {
-  animation-delay: 0.3s;
-}
-
-.tag:nth-child(7) {
-  animation-delay: 0.35s;
-}
-
-.tag:nth-child(8) {
-  animation-delay: 0.4s;
-}
-
-.tag:nth-child(9) {
-  animation-delay: 0.45s;
-}
-
-.tag:nth-child(10) {
-  animation-delay: 0.5s;
-}
-
-/* ============================================
-   Social Links Animations
-   ============================================ */
-
+/* Social Link Transitions */
 .social-link,
 .social-link-large {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* TODO: transition を追加
+     - transform, background, border-color, color の4つのプロパティに
+     - transition: transform 0.3s, background 0.3s, border-color 0.3s, color 0.3s;
+  */
 }
 
-.social-link:hover,
+.social-link:hover {
+  /* TODO: ホバー時のスタイルを設定
+     - background: var(--color-accent);
+     - border-color: var(--color-accent);
+     - color: white;
+     - transform: scale(1.1);
+  */
+}
+
 .social-link-large:hover {
-  transform: scale(1.1);
+  /* TODO: ホバー時のスタイルを設定
+     - background: var(--color-accent);
+     - border-color: var(--color-accent);
+     - color: white;
+     - transform: scale(1.1);
+     - box-shadow: var(--shadow-md);
+  */
 }
 
-/* ============================================
-   Avatar Animations
-   ============================================ */
-.avatar-large,
-.author-avatar {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Link Hover Animations */
+a {
+  /* TODO: color の transition を追加
+     - transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  */
 }
 
-
-/* ============================================
-   CSS-only Scroll Animations
-   ============================================ */
-
-.fade-in-on-scroll {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+a:hover,
+a:focus {
+  /* TODO: ホバー時の色を設定
+     - color: var(--color-accent-hover);
+  */
 }
 
-.fade-in-on-scroll.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+/* Footer links hover */
+.footer-links a:hover {
+  /* TODO: ホバー時の色を設定
+     - color: var(--color-accent);
+  */
 }
 
-.slide-in-left-on-scroll {
-  opacity: 0;
-  transform: translateX(-50px);
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+/* TOC link hover */
+.toc-link {
+  /* TODO: color の transition を追加
+     - transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  */
 }
 
-.slide-in-left-on-scroll.is-visible {
-  opacity: 1;
-  transform: translateX(0);
+.toc-link:hover,
+.toc-link.active {
+  /* TODO: ホバー時の色を設定
+     - color: var(--color-accent);
+  */
 }
 
-.slide-in-right-on-scroll {
-  opacity: 0;
-  transform: translateX(50px);
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.slide-in-right-on-scroll.is-visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.scale-in-on-scroll {
-  opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.scale-in-on-scroll.is-visible {
-  opacity: 1;
-  transform: scale(1);
-}
-
-
-/* ============================================
-   Theme Transition
-   ============================================ */
-
-body {
-  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ============================================
-   Focus Visible Animations
-   ============================================ */
-
-:focus-visible {
-  animation: focus-pulse 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes focus-pulse {
-  0% {
-    outline-offset: 2px;
-  }
-
-  50% {
-    outline-offset: 6px;
-  }
-
-  100% {
-    outline-offset: 4px;
-  }
-}
-
-/* ============================================
-   Micro-interactions
-   ============================================ */
-
-/* Link underline animation - exclude card links, buttons, nav logo, social links */
+/* Link Underline Animation */
 a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo) {
   position: relative;
 }
@@ -536,28 +331,423 @@ a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):no
   width: 0;
   height: 1px;
   background: currentColor;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* TODO: width の transition を追加
+     - transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  */
 }
 
 a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo):hover::after {
-  width: 100%;
+  /* TODO: ホバー時の width を設定
+     - width: 100%;
+  */
 }
 
+/* Tag Cloud Animations */
+.tag {
+  /* TODO: fadeIn アニメーションを適用
+     - animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  */
+  /* TODO: すべてのプロパティの transition を追加
+     - transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  */
+}
+
+.tag:hover {
+  /* TODO: ホバー時のスタイルを設定
+     - background: var(--color-accent);
+     - border-color: var(--color-accent);
+     - color: white;
+     - transform: translateY(-2px);
+  */
+}
+
+.tag:nth-child(1) {
+  /* TODO: animation-delay: 0.05s; を追加 */
+}
+
+.tag:nth-child(2) {
+  /* TODO: animation-delay: 0.1s; を追加 */
+}
+
+.tag:nth-child(3) {
+  /* TODO: animation-delay: 0.15s; を追加 */
+}
+
+.tag:nth-child(4) {
+  /* TODO: animation-delay: 0.2s; を追加 */
+}
+
+.tag:nth-child(5) {
+  /* TODO: animation-delay: 0.25s; を追加 */
+}
+
+.tag:nth-child(6) {
+  /* TODO: animation-delay: 0.3s; を追加 */
+}
+
+.tag:nth-child(7) {
+  /* TODO: animation-delay: 0.35s; を追加 */
+}
+
+.tag:nth-child(8) {
+  /* TODO: animation-delay: 0.4s; を追加 */
+}
+
+.tag:nth-child(9) {
+  /* TODO: animation-delay: 0.45s; を追加 */
+}
+
+.tag:nth-child(10) {
+  /* TODO: animation-delay: 0.5s; を追加 */
+}
+
+/* Avatar Animations */
+.avatar-large,
+.author-avatar {
+  /* TODO: transform の transition を追加
+     - transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  */
+}
+
+.avatar-large:hover {
+  /* TODO: ホバー時の変形を設定
+     - transform: scale(1.05) rotate(5deg);
+  */
+}
+
+/* Theme Transition */
+body {
+  /* TODO: background-color と color の transition を追加
+     - transition: background-color 0.3s, color 0.3s;
+  */
+}
+
+/* Focus Visible Animations */
+:focus-visible {
+  /* TODO: focus-pulse アニメーションを適用
+     - animation: focus-pulse 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  */
+}
+
+/* TODO: focus-pulse keyframes を作成
+   - 0% で outline-offset: 2px
+   - 50% で outline-offset: 6px
+   - 100% で outline-offset: 4px
+*/
+@keyframes focus-pulse {
+  /* ここにコードを書く */
+}
 
 /* ============================================
-   Accessibility: Respect Reduced Motion
+   Step 4: スクロール連動アニメーション
+   ============================================ */
+
+.fade-in-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  /* TODO: opacity と transform の transition を追加
+     - transition: opacity 0.6s, transform 0.6s;
+  */
+}
+
+.fade-in-on-scroll.is-visible {
+  /* TODO: 表示状態のスタイルを設定
+     - opacity: 1;
+     - transform: translateY(0);
+  */
+}
+
+.slide-in-left-on-scroll {
+  opacity: 0;
+  transform: translateX(-50px);
+  /* TODO: opacity と transform の transition を追加
+     - transition: opacity 0.6s, transform 0.6s;
+  */
+}
+
+.slide-in-left-on-scroll.is-visible {
+  /* TODO: 表示状態のスタイルを設定
+     - opacity: 1;
+     - transform: translateX(0);
+  */
+}
+
+.slide-in-right-on-scroll {
+  opacity: 0;
+  transform: translateX(50px);
+  /* TODO: opacity と transform の transition を追加
+     - transition: opacity 0.6s, transform 0.6s;
+  */
+}
+
+.slide-in-right-on-scroll.is-visible {
+  /* TODO: 表示状態のスタイルを設定
+     - opacity: 1;
+     - transform: translateX(0);
+  */
+}
+
+.scale-in-on-scroll {
+  opacity: 0;
+  transform: scale(0.9);
+  /* TODO: opacity と transform の transition を追加
+     - transition: opacity 0.6s, transform 0.6s;
+  */
+}
+
+.scale-in-on-scroll.is-visible {
+  /* TODO: 表示状態のスタイルを設定
+     - opacity: 1;
+     - transform: scale(1);
+  */
+}
+
+/* ============================================
+   Step 5: 高度なアニメーション
+   ============================================ */
+
+/* Skill Progress Animation */
+.skill-progress {
+  /* TODO: skill-fill アニメーションを適用
+     - animation: skill-fill 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  */
+}
+
+/* TODO: skill-fill keyframes を作成
+   - from で width: 0
+   - to で width: var(--progress, 0%)
+*/
+@keyframes skill-fill {
+  /* ここにコードを書く */
+}
+
+.skill-item:nth-child(1) .skill-progress {
+  --progress: 95%;
+  /* TODO: animation-delay: 0.1s; を追加 */
+}
+
+.skill-item:nth-child(2) .skill-progress {
+  --progress: 90%;
+  /* TODO: animation-delay: 0.2s; を追加 */
+}
+
+.skill-item:nth-child(3) .skill-progress {
+  --progress: 85%;
+  /* TODO: animation-delay: 0.3s; を追加 */
+}
+
+.skill-item:nth-child(4) .skill-progress {
+  --progress: 95%;
+  /* TODO: animation-delay: 0.4s; を追加 */
+}
+
+.skill-item:nth-child(5) .skill-progress {
+  --progress: 80%;
+  /* TODO: animation-delay: 0.5s; を追加 */
+}
+
+.skill-item:nth-child(6) .skill-progress {
+  --progress: 90%;
+  /* TODO: animation-delay: 0.6s; を追加 */
+}
+
+/* Ripple Effect */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  /* TODO: width と height の transition を追加
+     - transition: width 0.6s, height 0.6s;
+  */
+}
+
+.btn:active::before {
+  /* TODO: ボタンクリック時のサイズを設定
+     - width: 300px;
+     - height: 300px;
+  */
+}
+
+/* Filter Button Animations */
+.filter-btn,
+.tab-btn {
+  position: relative;
+  overflow: hidden;
+  /* TODO: transition を追加
+     - transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  */
+}
+
+.filter-btn:hover,
+.tab-btn:hover {
+  /* TODO: ホバー時のスタイルを設定
+     - border-color: var(--color-accent);
+     - color: var(--color-accent);
+  */
+}
+
+/* Shimmer Effect */
+.filter-btn::before,
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  /* TODO: inset-inline-start の transition を追加
+     - transition: inset-inline-start 0.5s;
+  */
+}
+
+.filter-btn:hover::before,
+.tab-btn:hover::before {
+  /* TODO: ホバー時の位置を設定
+     - inset-inline-start: 100%;
+  */
+}
+
+/* Timeline Animations */
+.timeline-item {
+  opacity: 0;
+  transform: translateX(-30px);
+  /* TODO: opacity と transform の transition を追加
+     - transition: opacity 0.6s, transform 0.6s;
+  */
+}
+
+.timeline-item.is-visible {
+  /* TODO: 表示状態のスタイルを設定
+     - opacity: 1;
+     - transform: translateX(0);
+  */
+}
+
+.timeline-article {
+  opacity: 0;
+  transform: translateX(-30px);
+  /* TODO: opacity と transform の transition を追加
+     - transition: opacity 0.6s, transform 0.6s;
+  */
+}
+
+.timeline-article.is-visible {
+  /* TODO: 表示状態のスタイルを設定
+     - opacity: 1;
+     - transform: translateX(0);
+  */
+}
+
+.timeline-marker {
+  /* TODO: scale-pulse アニメーションを適用
+     - animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  */
+}
+
+.timeline-article-marker {
+  /* TODO: scale-pulse アニメーションを適用
+     - animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  */
+}
+
+/* TODO: scale-pulse keyframes を作成
+   - 0% で transform: scale(0)
+   - 50% で transform: scale(1.2)
+   - 100% で transform: scale(1)
+*/
+@keyframes scale-pulse {
+  /* ここにコードを書く */
+}
+
+/* ============================================
+   Step 6: Scroll-driven Animations (Modern CSS)
+   ============================================ */
+
+/* Scroll Progress Bar - Native implementation */
+@supports (animation-timeline: scroll()) {
+
+  .scroll-progress,
+  .reading-progress {
+    /* TODO: scroll-progress アニメーションを適用
+       - animation: scroll-progress linear;
+       - animation-timeline: scroll(root);
+    */
+  }
+
+  /* TODO: scroll-progress keyframes を作成
+     - from で width: 0%
+     - to で width: 100%
+  */
+  @keyframes scroll-progress {
+    /* ここにコードを書く */
+  }
+
+  /* Parallax Hero Image */
+  .parallax-image {
+    /* TODO: parallax-hero アニメーションを適用
+       - animation: parallax-hero linear;
+       - animation-timeline: scroll(root);
+       - animation-range: 0 500px;
+    */
+  }
+
+  /* TODO: parallax-hero keyframes を作成
+     - to で transform: translateY(30%) と opacity: 0.5
+  */
+  @keyframes parallax-hero {
+    /* ここにコードを書く */
+  }
+
+  /* Fade in elements on scroll */
+  .fade-on-scroll {
+    /* TODO: fade-in-scroll アニメーションを適用
+       - animation: fade-in-scroll linear;
+       - animation-timeline: view();
+       - animation-range: entry 0% cover 30%;
+    */
+  }
+
+  /* TODO: fade-in-scroll keyframes を作成
+     - from で opacity: 0 と translateY(30px)
+     - to で opacity: 1 と translateY(0)
+  */
+  @keyframes fade-in-scroll {
+    /* ここにコードを書く */
+  }
+}
+
+/* ============================================
+   Step 7: アクセシビリティ対応
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
 
+  /* TODO: すべてのアニメーションを無効化
+     - animation-duration: 0.01ms !important;
+     - animation-iteration-count: 1 !important;
+     - transition-duration: 0.01ms !important;
+  */
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    /* ここにコードを書く */
   }
 
+  /* TODO: 特定のアニメーションを完全に無効化
+     - animation: none;
+  */
   .scroll-arrow,
   .typing-text .title-line,
   .skill-progress,
@@ -568,6 +758,6 @@ a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):no
   .slide-in-left-on-scroll,
   .slide-in-right-on-scroll,
   .scale-in-on-scroll {
-    animation: none;
+    /* ここにコードを書く */
   }
 }

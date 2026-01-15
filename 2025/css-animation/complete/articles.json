@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "category": "development",
+    "categoryLabel": "開発",
+    "date": "2026-01-08",
+    "dateLabel": "2026年1月8日",
+    "title": "CSSアニメーションのパフォーマンス最適化",
+    "excerpt": "スムーズなアニメーションを実現するための実践的なテクニックとベストプラクティス",
+    "gradient": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+    "link": "article.html"
+  },
+  {
+    "id": 2,
+    "category": "design",
+    "categoryLabel": "デザイン",
+    "date": "2026-01-05",
+    "dateLabel": "2026年1月5日",
+    "title": "タイポグラフィの基礎：読みやすさとデザイン性",
+    "excerpt": "フォント選択から行間設定まで、美しく機能的なタイポグラフィを実現する方法",
+    "gradient": "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+    "link": "article.html"
+  },
+  {
+    "id": 3,
+    "category": "tutorial",
+    "categoryLabel": "チュートリアル",
+    "date": "2026-01-03",
+    "dateLabel": "2026年1月3日",
+    "title": "レスポンシブデザインの実装ガイド",
+    "excerpt": "モバイルファーストアプローチで、あらゆるデバイスに対応するサイトを構築",
+    "gradient": "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+    "link": "article.html"
+  },
+  {
+    "id": 4,
+    "category": "design",
+    "categoryLabel": "デザイン",
+    "date": "2025-12-28",
+    "dateLabel": "2025年12月28日",
+    "title": "カラーパレットの選び方：理論と実践",
+    "excerpt": "色彩理論を活用して、ブランドに最適な配色を見つける方法を解説",
+    "gradient": "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
+    "link": "article.html"
+  },
+  {
+    "id": 5,
+    "category": "development",
+    "categoryLabel": "開発",
+    "date": "2025-12-25",
+    "dateLabel": "2025年12月25日",
+    "title": "View Transitions APIで実現する滑らかなページ遷移",
+    "excerpt": "最新のWeb APIを使って、ネイティブアプリのような体験を提供",
+    "gradient": "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
+    "link": "article.html"
+  },
+  {
+    "id": 6,
+    "category": "tutorial",
+    "categoryLabel": "チュートリアル",
+    "date": "2025-12-20",
+    "dateLabel": "2025年12月20日",
+    "title": "アクセシビリティを考慮したUI設計",
+    "excerpt": "すべてのユーザーに優しいインターフェースを作るための実践的アプローチ",
+    "gradient": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
+    "link": "article.html"
+  }
+]
