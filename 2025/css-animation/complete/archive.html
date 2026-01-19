@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="記事アーカイブ - Design Journal">
+    <meta name="theme-color" content="#3b82f6">
+    <title>アーカイブ - Design Journal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="animations.css">
+</head>
+<body data-theme="light" class="no-transition">
+    <a href="#main-content" class="skip-link">メインコンテンツへスキップ</a>
+    <nav class="nav" id="nav" role="navigation" aria-label="メインナビゲーション">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo" aria-label="ホームへ戻る">
+                Design<span class="accent">Journal</span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="メニューを開く" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu" role="list">
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="archive.html" class="active" aria-current="page">アーカイブ</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="ダークモード切り替え">
+                <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+                <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+    <main id="main-content">
+        <section class="archive-hero fade-in-on-scroll">
+            <div class="container">
+                <h1 class="page-title">アーカイブ</h1>
+                <p class="page-subtitle">
+                    これまでに公開した記事の一覧です
+                </p>
+            </div>
+        </section>
+        <div class="archive-controls">
+            <div class="container">
+                <div class="controls-wrapper">
+                    <div class="category-tabs" role="group" aria-label="カテゴリタブ">
+                        <button class="tab-btn active" data-category="all">すべて</button>
+                        <button class="tab-btn" data-category="design">デザイン</button>
+                        <button class="tab-btn" data-category="development">開発</button>
+                        <button class="tab-btn" data-category="tutorial">チュートリアル</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="archive-timeline" aria-labelledby="archive-title">
+            <div class="container">
+                <div class="timeline-list">
+                    <div class="timeline-main">
+                        <div class="timeline-group">
+                            <h2 class="timeline-group-title">2026年1月</h2>
+                            <div class="timeline-articles">
+                                <article class="timeline-article" data-category="design">
+                                    <div class="timeline-article-marker" aria-hidden="true"></div>
+                                    <time class="timeline-article-date" datetime="2026-01-10">1月10日</time>
+                                    <h3 class="timeline-article-title">
+                                        <a href="article.html">モダンWebデザインの新潮流：2026年のトレンド</a>
+                                    </h3>
+                                    <div class="article-meta">
+                                        <span class="category">デザイン</span>
+                                        <span class="read-time">8分で読める</span>
+                                    </div>
+                                    <p class="timeline-article-excerpt">
+                                        ユーザー体験を重視したデザインアプローチから、最新のビジュアルトレンドまで。
+                                        今年注目すべきWebデザインの方向性を徹底解説します。
+                                    </p>
+                                </article>
+                                <article class="timeline-article" data-category="development">
+                                    <div class="timeline-article-marker" aria-hidden="true"></div>
+                                    <time class="timeline-article-date" datetime="2026-01-08">1月8日</time>
+                                    <h3 class="timeline-article-title">
+                                        <a href="article.html">CSSアニメーションのパフォーマンス最適化</a>
+                                    </h3>
+                                    <div class="article-meta">
+                                        <span class="category">開発</span>
+                                        <span class="read-time">6分で読める</span>
+                                    </div>
+                                    <p class="timeline-article-excerpt">
+                                        スムーズなアニメーションを実現するための実践的なテクニックとベストプラクティス
+                                    </p>
+                                </article>
+                                <article class="timeline-article" data-category="design">
+                                    <div class="timeline-article-marker" aria-hidden="true"></div>
+                                    <time class="timeline-article-date" datetime="2026-01-05">1月5日</time>
+                                    <h3 class="timeline-article-title">
+                                        <a href="article.html">タイポグラフィの基礎：読みやすさとデザイン性</a>
+                                    </h3>
+                                    <div class="article-meta">
+                                        <span class="category">デザイン</span>
+                                        <span class="read-time">7分で読める</span>
+                                    </div>
+                                    <p class="timeline-article-excerpt">
+                                        フォント選択から行間設定まで、美しく機能的なタイポグラフィを実現する方法
+                                    </p>
+                                </article>
+                                <article class="timeline-article" data-category="tutorial">
+                                    <div class="timeline-article-marker" aria-hidden="true"></div>
+                                    <time class="timeline-article-date" datetime="2026-01-03">1月3日</time>
+                                    <h3 class="timeline-article-title">
+                                        <a href="article.html">レスポンシブデザインの実装ガイド</a>
+                                    </h3>
+                                    <div class="article-meta">
+                                        <span class="category">チュートリアル</span>
+                                        <span class="read-time">10分で読める</span>
+                                    </div>
+                                    <p class="timeline-article-excerpt">
+                                        モバイルファーストアプローチで、あらゆるデバイスに対応するサイトを構築
+                                    </p>
+                                </article>
+                            </div>
+                        </div>
+                        <div class="timeline-group">
+                            <h2 class="timeline-group-title">2025年12月</h2>
+                            <div class="timeline-articles">
+                                <article class="timeline-article" data-category="design">
+                                    <div class="timeline-article-marker" aria-hidden="true"></div>
+                                    <time class="timeline-article-date" datetime="2025-12-28">12月28日</time>
+                                    <h3 class="timeline-article-title">
+                                        <a href="article.html">カラーパレットの選び方：理論と実践</a>
+                                    </h3>
+                                    <div class="article-meta">
+                                        <span class="category">デザイン</span>
+                                        <span class="read-time">8分で読める</span>
+                                    </div>
+                                    <p class="timeline-article-excerpt">
+                                        色彩理論を活用して、ブランドに最適な配色を見つける方法を解説
+                                    </p>
+                                </article>
+                                <article class="timeline-article" data-category="development">
+                                    <div class="timeline-article-marker" aria-hidden="true"></div>
+                                    <time class="timeline-article-date" datetime="2025-12-25">12月25日</time>
+                                    <h3 class="timeline-article-title">
+                                        <a href="article.html">View Transitions APIで実現する滑らかなページ遷移</a>
+                                    </h3>
+                                    <div class="article-meta">
+                                        <span class="category">開発</span>
+                                        <span class="read-time">9分で読める</span>
+                                    </div>
+                                    <p class="timeline-article-excerpt">
+                                        最新のWeb APIを使って、ネイティブアプリのような体験を提供
+                                    </p>
+                                </article>
+                                <article class="timeline-article" data-category="tutorial">
+                                    <div class="timeline-article-marker" aria-hidden="true"></div>
+                                    <time class="timeline-article-date" datetime="2025-12-20">12月20日</time>
+                                    <h3 class="timeline-article-title">
+                                        <a href="article.html">アクセシビリティを考慮したUI設計</a>
+                                    </h3>
+                                    <div class="article-meta">
+                                        <span class="category">チュートリアル</span>
+                                        <span class="read-time">11分で読める</span>
+                                    </div>
+                                    <p class="timeline-article-excerpt">
+                                        すべてのユーザーに優しいインターフェースを作るための実践的アプローチ
+                                    </p>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="tag-cloud" aria-labelledby="tags-title">
+                        <h3 class="tag-cloud-title" id="tags-title">人気のタグ</h3>
+                        <div class="tags" role="list">
+                            <a href="#" class="tag" data-size="large" role="listitem">CSS</a>
+                            <a href="#" class="tag" data-size="large" role="listitem">デザイン</a>
+                            <a href="#" class="tag" data-size="medium" role="listitem">JavaScript</a>
+                            <a href="#" class="tag" data-size="medium" role="listitem">UI/UX</a>
+                            <a href="#" class="tag" data-size="medium" role="listitem">アニメーション</a>
+                            <a href="#" class="tag" data-size="small" role="listitem">レスポンシブ</a>
+                            <a href="#" class="tag" data-size="small" role="listitem">アクセシビリティ</a>
+                            <a href="#" class="tag" data-size="small" role="listitem">パフォーマンス</a>
+                            <a href="#" class="tag" data-size="small" role="listitem">タイポグラフィ</a>
+                            <a href="#" class="tag" data-size="small" role="listitem">カラー</a>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">Design<span class="accent">Journal</span></h3>
+                    <p class="footer-description">
+                        デザインとテクノロジーの最新情報を<br>
+                        わかりやすく、実践的にお届けします。
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-heading">ナビゲーション</h4>
+                    <ul class="footer-links" role="list">
+                        <li><a href="index.html">ホーム</a></li>
+                        <li><a href="archive.html">アーカイブ</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-heading">カテゴリー</h4>
+                    <ul class="footer-links" role="list">
+                        <li><a href="archive.html?category=design">デザイン</a></li>
+                        <li><a href="archive.html?category=development">開発</a></li>
+                        <li><a href="archive.html?category=tutorial">チュートリアル</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-heading">ソーシャル</h4>
+                    <ul class="social-links" role="list">
+                        <li><a href="#" class="social-link" aria-label="GitHub">GitHub</a></li>
+                        <li><a href="#" class="social-link" aria-label="Twitter">Twitter</a></li>
+                        <li><a href="#" class="social-link" aria-label="Dribbble">Dribbble</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Design Journal. 学習目的で作成されました。</p>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
