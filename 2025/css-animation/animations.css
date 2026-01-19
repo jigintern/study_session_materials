@@ -1,0 +1,590 @@
+/* ============================================
+   CSS Animations & Keyframes
+   ============================================ */
+
+/* ============================================
+   Step 1: 基本的な Keyframe Animations
+   ============================================ */
+
+/* 1-1. fadeIn アニメーション */
+@keyframes fadeIn {
+  /* from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  } */
+}
+
+/* 1-2. fadeInUp アニメーション */
+@keyframes fadeInUp {
+  /* from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  } */
+}
+
+/* 1-3. bounce アニメーション */
+@keyframes bounce {
+  /* 0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  } */
+}
+
+/* 1-4. typing-reveal アニメーション */
+@keyframes typing-reveal {
+  /* from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  } */
+}
+
+/* ============================================
+   Step 2: Navigation Animations
+   ============================================ */
+
+/* 2-1. ナビゲーションのアニメーション */
+/* コメントを外すと、ページを開いたときにナビゲーションがフェードインします */
+.nav {
+  /* animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+/* 2-2. ナビゲーションロゴのホバー */
+/* コメントを外すと、ロゴにマウスホバーしたときに色が変わります */
+.nav-logo {
+  /* transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.nav-logo:hover {
+  /* color: var(--color-accent); */
+}
+
+/* 2-3. ナビゲーションメニューリンクのホバー */
+/* コメントを外すと、メニューリンクにマウスホバーしたときに色が変わります */
+.nav-menu a {
+  /* transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus,
+.nav-menu a.active {
+  /* color: var(--color-accent); */
+}
+
+.nav-menu a::after {
+  /* transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+/* 2-4. テーマ切替ボタンのホバー */
+/* コメントを外すと、テーマ切替ボタンにマウスホバーしたときに回転します */
+.theme-toggle {
+  /* transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.theme-toggle:hover {
+  /* background: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: rotate(180deg); */
+}
+
+.theme-toggle:hover svg {
+  /* stroke: white; */
+}
+
+.theme-toggle svg {
+  /* transition: stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+/* 2-5. モバイルメニューのアニメーション */
+/* コメントを外すと、モバイルメニューが開くときにアニメーションします */
+@media (max-width: 768px) {
+  .nav-menu {
+    /* transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+  }
+
+  .nav-menu.active {
+    /* animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+  }
+}
+
+/* ============================================
+   Step 3: Hero Section Animations
+   ============================================ */
+
+/* 3-1. タイピングアニメーション */
+/* コメントを外すと、ヒーローセクションのタイトルが順番に表示されます */
+.typing-text {
+  /* overflow: hidden; */
+}
+
+.typing-text .title-line {
+  /* display: block;
+  opacity: 0;
+  animation: typing-reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; */
+}
+
+.typing-text .title-line:nth-child(1) {
+  /* animation-delay: 0.2s; */
+}
+
+.typing-text .title-line:nth-child(2) {
+  /* animation-delay: 0.5s; */
+}
+
+.typing-text .title-line:nth-child(3) {
+  /* animation-delay: 0.8s; */
+}
+
+/* 3-2. スクロールインジケーター */
+/* コメントを外すと、スクロールインジケーターがフェードインして跳ねます */
+.scroll-indicator {
+  /* animation: fadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) 1.5s forwards;
+  opacity: 0; */
+}
+
+.scroll-arrow {
+  /* animation: bounce 2s ease-in-out infinite; */
+}
+
+/* ============================================
+   Step 4: Button Animations
+   ============================================ */
+
+/* 4-1. ボタンの基本トランジション */
+/* コメントを外すと、ボタンにマウスホバーしたときにスムーズに変化します */
+.btn {
+  /* transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  /* background: var(--color-accent-hover);
+  color: white;
+  box-shadow: var(--shadow-md); */
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+  /* background: var(--color-accent);
+  color: white; */
+}
+
+/* 4-2. ボタンのリップルエフェクト */
+/* コメントを外すと、ボタンをクリックしたときに波紋が広がります */
+.btn::before {
+  /* content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s; */
+}
+
+.btn:active::before {
+  /* width: 300px;
+  height: 300px; */
+}
+
+/* ============================================
+   Step 5: Card Animations
+   ============================================ */
+
+/* 5-1. カードのホバーアニメーション */
+/* スクロールアニメーションと併用するため、transitionは有効にしています */
+.article-card,
+.featured-card {
+  /* transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+/* コメントを外すと、カードにマウスホバーしたときに背景色が変わります */
+.featured-card:hover {
+  /* background: var(--color-surface); */
+}
+
+.article-card:hover {
+  /* background: var(--color-surface); */
+}
+
+/* ============================================
+   Step 6: Link Animations
+   ============================================ */
+
+/* 6-1. 基本的なリンクのホバー */
+/* コメントを外すと、リンクにマウスホバーしたときに色が変わります */
+a {
+  /* transition: color 0.15s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+a:hover,
+a:focus {
+  /* color: var(--color-accent-hover); */
+}
+
+/* 6-2. フッターリンクのホバー */
+/* コメントを外すと、フッターリンクにマウスホバーしたときに色が変わります */
+.footer-links a:hover {
+  /* color: var(--color-accent); */
+}
+
+/* 6-3. リンクのアンダーラインアニメーション */
+/* コメントを外すと、リンクにマウスホバーしたときにアンダーラインが伸びます */
+a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo) {
+  /* position: relative; */
+}
+
+a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo)::after {
+  /* content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo):hover::after {
+  /* width: 100%; */
+}
+
+/* ============================================
+   Step 7: Scroll Animations
+   ============================================ */
+
+/* 7-1. フェードインアニメーション */
+/* スクロールして要素が画面に入ったときにフェードインします（デフォルトで有効） */
+.fade-in-on-scroll {
+  /* opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.fade-in-on-scroll.is-visible {
+  /* opacity: 1;
+  transform: translateY(0); */
+}
+
+/* 7-2. 左右からスライドイン */
+/* スクロールして要素が画面に入ったときに左右からスライドインします（デフォルトで有効） */
+.slide-in-left-on-scroll {
+  /* opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.slide-in-left-on-scroll.is-visible {
+  /* opacity: 1;
+  transform: translateX(0); */
+}
+
+.slide-in-right-on-scroll {
+  /* opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.slide-in-right-on-scroll.is-visible {
+  /* opacity: 1;
+  transform: translateX(0); */
+}
+
+/* 7-3. スケールアニメーション */
+/* スクロールして要素が画面に入ったときに拡大します（デフォルトで有効） */
+.scale-in-on-scroll {
+  /* opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.scale-in-on-scroll.is-visible {
+  /* opacity: 1;
+  transform: scale(1); */
+}
+
+/* ============================================
+   Step 8: Social Links & Avatar Animations
+   ============================================ */
+
+/* 8-1. ソーシャルリンクのホバー */
+/* コメントを外すと、ソーシャルリンクにマウスホバーしたときに拡大します */
+.social-link,
+.social-link-large {
+  /* transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.social-link:hover {
+  /* background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: white;
+  transform: scale(1.1); */
+}
+
+.social-link-large:hover {
+  /* background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: white;
+  transform: scale(1.1);
+  box-shadow: var(--shadow-md); */
+}
+
+/* 8-2. アバター画像のホバー */
+/* コメントを外すと、アバター画像にマウスホバーしたときに拡大・回転します */
+.avatar-large,
+.author-avatar {
+  /* transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.avatar-large:hover {
+  /* transform: scale(1.05) rotate(5deg); */
+}
+
+/* ============================================
+   Step 9: Skill Progress Animation
+   ============================================ */
+
+/* 9-1. スキルバーアニメーション */
+/* コメントを外すと、スキルバーが順番に伸びます */
+.skill-progress {
+  /* animation: skill-fill 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; */
+}
+
+@keyframes skill-fill {
+  /* from {
+    width: 0;
+  }
+
+  to {
+    width: var(--progress, 0%);
+  } */
+}
+
+.skill-item:nth-child(1) .skill-progress {
+  --progress: 95%;
+  /* animation-delay: 0.1s; */
+}
+
+.skill-item:nth-child(2) .skill-progress {
+  --progress: 90%;
+  /* animation-delay: 0.2s; */
+}
+
+.skill-item:nth-child(3) .skill-progress {
+  --progress: 85%;
+  /* animation-delay: 0.3s; */
+}
+
+.skill-item:nth-child(4) .skill-progress {
+  --progress: 95%;
+  /* animation-delay: 0.4s; */
+}
+
+.skill-item:nth-child(5) .skill-progress {
+  --progress: 80%;
+  /* animation-delay: 0.5s; */
+}
+
+.skill-item:nth-child(6) .skill-progress {
+  --progress: 90%;
+  /* animation-delay: 0.6s; */
+}
+
+/* ============================================
+   Step 10: Timeline Animations
+   ============================================ */
+
+/* 10-1. タイムラインアイテムのアニメーション */
+/* コメントを外すと、タイムラインアイテムがスクロールで表示されます */
+.timeline-item {
+  /* opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.timeline-item.is-visible {
+  /* opacity: 1;
+  transform: translateX(0); */
+}
+
+.timeline-article {
+  /* opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); */
+}
+
+.timeline-article.is-visible {
+  /* opacity: 1;
+  transform: translateX(0); */
+}
+
+/* 10-2. タイムラインマーカーのアニメーション */
+/* コメントを外すと、タイムラインマーカーが弾むように表示されます */
+.timeline-marker {
+  /* animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); */
+}
+
+.timeline-article-marker {
+  /* animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); */
+}
+
+@keyframes scale-pulse {
+  /* 0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  } */
+}
+
+/* ============================================
+   Step 11: Scroll-driven Animations (Modern CSS)
+   ============================================ */
+
+/* 11-1. スクロールプログレスバー */
+/* コメントを外すと、ページをスクロールしたときに進捗バーが伸びます */
+@supports (animation-timeline: scroll()) {
+
+  .scroll-progress,
+  .reading-progress {
+    /* animation: scroll-progress linear;
+    animation-timeline: scroll(root); */
+  }
+
+  @keyframes scroll-progress {
+    /* from {
+      width: 0%;
+    }
+
+    to {
+      width: 100%;
+    } */
+  }
+}
+
+/* 11-2. パララックス効果 */
+/* スクロールすると各要素が異なる速度で動きます（視差効果） */
+/* 背景画像はゆっくり、装飾の円は速く動くことで奥行きを表現します */
+@supports (animation-timeline: scroll()) {
+  /* 背景画像：ゆっくり動く（遠くにあるように見える） */
+  .parallax-image {
+    /* animation: parallax-bg linear;
+    animation-timeline: scroll(root);
+    animation-range: 0 600px; */
+  }
+
+  @keyframes parallax-bg {
+    /* to {
+      transform: translateY(100px);
+    } */
+  }
+
+  /* 装飾円1：速く動く（手前にあるように見える） */
+  .parallax-circle-1 {
+    /* animation: parallax-fast linear;
+    animation-timeline: scroll(root);
+    animation-range: 0 600px; */
+  }
+
+  @keyframes parallax-fast {
+    /* to {
+      transform: translateY(300px);
+    } */
+  }
+
+  /* 装飾円2：中くらいの速度で動く */
+  .parallax-circle-2 {
+    /* animation: parallax-medium linear;
+    animation-timeline: scroll(root);
+    animation-range: 0 600px; */
+  }
+
+  @keyframes parallax-medium {
+    /* to {
+      transform: translateY(200px);
+    } */
+  }
+
+  /* 装飾円3：とても速く動く（最も手前にあるように見える） */
+  .parallax-circle-3 {
+    /* animation: parallax-very-fast linear;
+    animation-timeline: scroll(root);
+    animation-range: 0 600px; */
+  }
+
+  @keyframes parallax-very-fast {
+    /* to {
+      transform: translateY(400px);
+    } */
+  }
+
+  /* 四角形：回転しながら動く */
+  .parallax-square {
+    /* animation: parallax-rotate linear;
+    animation-timeline: scroll(root);
+    animation-range: 0 600px; */
+  }
+
+  @keyframes parallax-rotate {
+    /* to {
+      transform: translateY(250px) rotate(225deg);
+    } */
+  }
+}
+
+/* 11-3. ビューポート連動アニメーション */
+/* コメントを外すと、要素が画面に入ったときに自動的にフェードインします */
+@supports (animation-timeline: scroll()) {
+  .fade-on-scroll {
+    /* animation: fade-in-scroll linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%; */
+  }
+
+  @keyframes fade-in-scroll {
+    /* from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    } */
+  }
+}
