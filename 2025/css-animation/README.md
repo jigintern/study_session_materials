@@ -337,6 +337,11 @@ linear
 #### 5-1. カードのホバー時の背景色変化
 
 ```css
+.article-card,
+.featured-card {
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .featured-card:hover {
   background: var(--color-surface);
 }
@@ -346,7 +351,7 @@ linear
 }
 ```
 
-**確認方法:** 記事カードにマウスをホバーすると背景色が変わります。
+**確認方法:** 記事カードにマウスをホバーすると背景色が滑らかに変わります。
 
 ### Step 6: リンクのアニメーション
 
@@ -426,10 +431,7 @@ about.html ページで確認できるアニメーションです。
 ```css
 .social-link,
 .social-link-large {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .social-link:hover {

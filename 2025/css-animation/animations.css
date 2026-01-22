@@ -200,9 +200,7 @@
 /* スクロールアニメーションと併用するため、transitionは有効にしています */
 .article-card,
 .featured-card {
-  /* transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1); */
+  /* transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1); */
 }
 
 /* コメントを外すと、カードにマウスホバーしたときに背景色が変わります */
@@ -319,10 +317,7 @@ a:not(.btn, .card-link-wrapper, .social-link, .social-link-large, .nav-logo):hov
 /* コメントを外すと、ソーシャルリンクにマウスホバーしたときに拡大します */
 .social-link,
 .social-link-large {
-  /* transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+  /* transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
 }
 
 .social-link:hover {
