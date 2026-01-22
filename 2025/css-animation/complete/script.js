@@ -57,7 +57,7 @@ class MobileNavigation {
 class ArticleLoader {
   constructor() {
     this.articlesGrid = document.getElementById('articlesGrid');
-    this.loadDelay = 5000; 
+    this.loadDelay = 5000;
     this.init();
   }
   async init() {
@@ -182,21 +182,6 @@ class ScrollAnimationObserver {
     });
   }
 }
-class ScrollProgress {
-  constructor() {
-    this.progressBar = document.querySelector('.scroll-progress, .reading-progress');
-    this.init();
-  }
-  init() {
-    if (!this.progressBar) return;
-    window.addEventListener('scroll', () => this.updateProgress(), { passive: true });
-  }
-  updateProgress() {
-    const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (window.scrollY / windowHeight) * 100;
-    this.progressBar.style.width = `${scrolled}%`;
-  }
-}
 class NavigationScroll {
   constructor() {
     this.nav = document.getElementById('nav');
@@ -249,7 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
   new MobileNavigation();
   window.categoryFilter = new CategoryFilter();
   new ScrollAnimationObserver();
-  new ScrollProgress();
   new NavigationScroll();
   new SkillProgressAnimation();
   new ArticleLoader();

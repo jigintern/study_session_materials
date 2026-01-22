@@ -153,6 +153,28 @@
 
 **確認方法:** ページをリロードすると、上部のナビゲーションバーがフェードインします。
 
+**💡 cubic-bezier() について**
+
+`cubic-bezier()` は、3次ベジェ曲線を使用してアニメーションのイージング（加速・減速）を制御する関数です。
+
+よく使われる値：
+
+```css
+/* スムーズな加速・減速 */
+cubic-bezier(0.4, 0, 0.2, 1)
+
+/* バウンス効果 */
+cubic-bezier(0.68, -0.55, 0.265, 1.55)
+
+/* 標準的なイージング */
+ease-in-out
+ease-in
+ease-out
+linear
+```
+
+カスタマイズ: [cubic-bezier.com](https://cubic-bezier.com/) で視覚的に調整できます。
+
 #### 2-2. ナビゲーションロゴのホバー
 
 ```css
@@ -223,7 +245,6 @@
 }
 
 .typing-text .title-line {
-  display: block;
   opacity: 0;
   animation: typing-reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -348,7 +369,7 @@ a:focus {
 
 ```css
 .footer-links a:hover {
-  color: var(--color-accent);
+  color: var(--color-footer-link-hover);
 }
 ```
 
@@ -357,11 +378,11 @@ a:focus {
 #### 6-3. リンクのアンダーラインアニメーション
 
 ```css
-a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo) {
+a:not(.btn, .card-link-wrapper, .social-link, .social-link-large, .nav-logo) {
   position: relative;
 }
 
-a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo)::after {
+a:not(.btn, .card-link-wrapper, .social-link, .social-link-large, .nav-logo)::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -372,7 +393,7 @@ a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):no
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo):hover::after {
+a:not(.btn, .card-link-wrapper, .social-link, .social-link-large, .nav-logo):hover::after {
   width: 100%;
 }
 ```
@@ -385,6 +406,16 @@ a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):no
 JavaScriptと連携してスクロール時に要素を表示します。
 
 コメントを外すと、ページをスクロールしたときに記事カードが順番にフェードインして表示されます。
+
+**💡 他のアニメーションを試してみよう！**
+
+現在のHTMLでは `.fade-in-on-scroll` のみが使用されていますが、他のスクロールアニメーションクラスも試すことができます：
+
+- `.slide-in-left-on-scroll` - 左からスライドイン
+- `.slide-in-right-on-scroll` - 右からスライドイン
+- `.scale-in-on-scroll` - 拡大しながら表示
+
+HTMLファイルの要素のクラスを変更して、異なるアニメーション効果を確認してみましょう！
 
 ### Step 8: ソーシャルリンクとアバターのアニメーション
 
@@ -427,12 +458,13 @@ about.html ページで確認できるアニメーションです。
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.avatar-large:hover {
-  transform: scale(1.05) rotate(5deg);
+.avatar-large:hover,
+.author-avatar:hover {
+  transform: scale(1.05) rotate(180deg);
 }
 ```
 
-**確認方法:** about.html のプロフィール画像にマウスをホバーすると、拡大して少し回転します。
+**確認方法:** about.html のプロフィール画像にマウスをホバーすると、拡大して回転します。
 
 ### Step 9: スキルバーのアニメーション
 
@@ -511,11 +543,11 @@ about.html と archive.html ページで確認できるアニメーションで�
 
 ```css
 .timeline-marker {
-  animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  animation: scale-pulse 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .timeline-article-marker {
-  animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  animation: scale-pulse 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 ```
 
@@ -527,7 +559,32 @@ about.html と archive.html ページで確認できるアニメーションで�
 
 #### 11-1. スクロールプログレスバー
 
+まず、プログレスバーの基本スタイルを設定します：
+
 ```css
+/* 基本スタイル */
+.scroll-progress,
+.reading-progress {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent), #8b5cf6);
+  width: 0%;
+  z-index: 101;
+  transition: top var(--duration-normal) var(--transition-smooth);
+}
+
+.nav.hidden ~ .scroll-progress,
+.nav.hidden ~ .reading-progress {
+  top: 0;
+}
+```
+
+次に、スクロール連動アニメーションを追加します：
+
+```css
+/* スクロール連動アニメーション（モダンCSS） */
 @supports (animation-timeline: scroll()) {
   .scroll-progress,
   .reading-progress {
@@ -642,30 +699,6 @@ about.html と archive.html ページで確認できるアニメーションで�
 ```
 
 **確認方法:** `.fade-on-scroll` クラスを任意の要素に追加すると、画面に入ったときに自動的にフェードインします。
-
-## 🎨 cubic-bezier() について
-
-`cubic-bezier()` はアニメーションのイージング（加速・減速）を制御する関数です。
-
-### よく使われる値
-
-```css
-/* スムーズな加速・減速 */
-cubic-bezier(0.4, 0, 0.2, 1)
-
-/* バウンス効果 */
-cubic-bezier(0.68, -0.55, 0.265, 1.55)
-
-/* 標準的なイージング */
-ease-in-out
-ease-in
-ease-out
-linear
-```
-
-### カスタマイズ
-
-[cubic-bezier.com](https://cubic-bezier.com/) で視覚的に調整できます。
 
 ## ⚡ パフォーマンスのヒント
 

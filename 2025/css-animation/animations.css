@@ -111,19 +111,6 @@
   /* transition: stroke 0.15s cubic-bezier(0.4, 0, 0.2, 1); */
 }
 
-/* 2-5. モバイルメニューのアニメーション */
-/* コメントを外すと、モバイルメニューが開くときにアニメーションします */
-@media (max-width: 768px) {
-  .nav-menu {
-    /* transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
-  }
-
-  .nav-menu.active {
-    /* animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
-  }
-}
-
 /* ============================================
    Step 3: Hero Section Animations
    ============================================ */
@@ -135,8 +122,7 @@
 }
 
 .typing-text .title-line {
-  /* display: block;
-  opacity: 0;
+  /* opacity: 0;
   animation: typing-reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; */
 }
 
@@ -246,16 +232,16 @@ a:focus {
 /* 6-2. フッターリンクのホバー */
 /* コメントを外すと、フッターリンクにマウスホバーしたときに色が変わります */
 .footer-links a:hover {
-  /* color: var(--color-accent); */
+  /* color: var(--color-footer-link-hover); */
 }
 
 /* 6-3. リンクのアンダーラインアニメーション */
 /* コメントを外すと、リンクにマウスホバーしたときにアンダーラインが伸びます */
-a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo) {
+a:not(.btn, .card-link-wrapper, .social-link, .social-link-large, .nav-logo) {
   /* position: relative; */
 }
 
-a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo)::after {
+a:not(.btn, .card-link-wrapper, .social-link, .social-link-large, .nav-logo)::after {
   /* content: '';
   position: absolute;
   bottom: -2px;
@@ -266,7 +252,7 @@ a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):no
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
 }
 
-a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):not(.nav-logo):hover::after {
+a:not(.btn, .card-link-wrapper, .social-link, .social-link-large, .nav-logo):hover::after {
   /* width: 100%; */
 }
 
@@ -275,7 +261,6 @@ a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):no
    ============================================ */
 
 /* 7-1. フェードインアニメーション */
-/* スクロールして要素が画面に入ったときにフェードインします（デフォルトで有効） */
 .fade-in-on-scroll {
   /* opacity: 0;
   transform: translateY(30px);
@@ -289,7 +274,6 @@ a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):no
 }
 
 /* 7-2. 左右からスライドイン */
-/* スクロールして要素が画面に入ったときに左右からスライドインします（デフォルトで有効） */
 .slide-in-left-on-scroll {
   /* opacity: 0;
   transform: translateX(-50px);
@@ -315,7 +299,6 @@ a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):no
 }
 
 /* 7-3. スケールアニメーション */
-/* スクロールして要素が画面に入ったときに拡大します（デフォルトで有効） */
 .scale-in-on-scroll {
   /* opacity: 0;
   transform: scale(0.9);
@@ -364,8 +347,9 @@ a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):no
   /* transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
 }
 
-.avatar-large:hover {
-  /* transform: scale(1.05) rotate(5deg); */
+.avatar-large:hover,
+.author-avatar:hover {
+  /* transform: scale(1.05) rotate(180deg); */
 }
 
 /* ============================================
@@ -451,11 +435,11 @@ a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):no
 /* 10-2. タイムラインマーカーのアニメーション */
 /* コメントを外すと、タイムラインマーカーが弾むように表示されます */
 .timeline-marker {
-  /* animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); */
+  /* animation: scale-pulse 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); */
 }
 
 .timeline-article-marker {
-  /* animation: scale-pulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); */
+  /* animation: scale-pulse 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); */
 }
 
 @keyframes scale-pulse {
@@ -478,6 +462,26 @@ a:not(.btn):not(.card-link-wrapper):not(.social-link):not(.social-link-large):no
 
 /* 11-1. スクロールプログレスバー */
 /* コメントを外すと、ページをスクロールしたときに進捗バーが伸びます */
+
+/* 基本スタイル */
+.scroll-progress,
+.reading-progress {
+  /* position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent), #8b5cf6);
+  width: 0%;
+  z-index: 101;
+  transition: top var(--duration-normal) var(--transition-smooth); */
+}
+
+.nav.hidden ~ .scroll-progress,
+.nav.hidden ~ .reading-progress {
+  /* top: 0; */
+}
+
+/* スクロール連動アニメーション（モダンCSS） */
 @supports (animation-timeline: scroll()) {
 
   .scroll-progress,

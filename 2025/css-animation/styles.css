@@ -10,6 +10,7 @@
   --color-text-secondary: #6b7280;
   --color-accent: #3b82f6;
   --color-accent-hover: #2563eb;
+  --color-footer-link-hover: #ec4899;
   --color-border: #e5e7eb;
   --color-shadow: rgba(0, 0, 0, 0.1);
 
@@ -367,24 +368,6 @@ strong {
 
 [data-theme="dark"] .moon-icon {
   display: block;
-}
-
-/* Scroll Progress */
-.scroll-progress,
-.reading-progress {
-  position: fixed;
-  top: var(--nav-height);
-  left: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--color-accent), #8b5cf6);
-  width: 0%;
-  z-index: 101;
-  transition: top var(--duration-normal) var(--transition-smooth);
-}
-
-.nav.hidden~.scroll-progress,
-.nav.hidden~.reading-progress {
-  top: 0;
 }
 
 /* ============================================
