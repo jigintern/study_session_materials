@@ -16,6 +16,8 @@
   * [スライド](https://jigintern.github.io/study_session_materials/regex-handson-2025/slide.html)
 * [ウェブコンポーネントを利用したSPAの開発手法](./2025/spa-with-web-component/README.md)
   * ウェブコンポーネントと呼ばれる一連の技術を活用して、効率的にウェブアプリケーションを開発する手法を学びます
+* [CSS Animation勉強会](./2025/css-animation/README.md)
+  * CSSのkeyframesやtransitionを使ったアニメーション実装をハンズオン形式で学びます
 
 ### 2024年作成
 
