@@ -1,0 +1,65 @@
+<!-- https://codepen.io/mocaffy/pen/YPWJRmQ -->
+
+<!-- ========== CSS ========== -->
+<style>
+body {
+  font-family: sans-serif;
+  padding: 40px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+#box {
+  width: 80px;
+  height: 80px;
+  background: skyblue;
+  margin-bottom: 20px;
+  border-radius: 20px;
+}
+
+button {
+  margin-right: 8px;
+  padding: 6px 12px;
+}
+</style>
+
+<!-- ========== HTML ========== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<h2>複数のプロパティを同時に変更</h2>
+
+<div id="box"></div>
+
+<div>
+  <button onclick="combo()">コンボアニメーション</button>
+  <button onclick="reset()">リセット</button>
+</div>
+
+<!-- ========== JS ========== -->
+<script>
+function combo() {
+  gsap.to("#box", {
+    x: 200,
+    y: 50,
+    scale: 1.5,
+    rotation: 360,
+    backgroundColor: "#e74c3c",
+    borderRadius: "50%",
+    duration: 2
+  });
+}
+
+function reset() {
+  gsap.to("#box", {
+    x: 0,
+    y: 0,
+    scale: 1,
+    rotation: 0,
+    backgroundColor: "skyblue",
+    borderRadius: "20px",
+    duration: 0.5
+  });
+}
+</script>

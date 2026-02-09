@@ -1,0 +1,84 @@
+<!-- https://codepen.io/mocaffy/pen/NPrwERj -->
+
+<!-- ========== CSS ========== -->
+<style>
+body {
+  font-family: sans-serif;
+  padding: 40px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+/* 動かす対象 */
+#box {
+  width: 80px;
+  height: 80px;
+  background: skyblue;
+  margin-bottom: 20px;
+  border-radius: 20px;
+}
+
+/* ボタン */
+button {
+  margin-right: 8px;
+  padding: 6px 12px;
+}
+</style>
+
+<!-- ========== HTML ========== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<h2>gsap.to() の基本</h2>
+
+<div id="box"></div>
+
+<div>
+  <button onclick="move()">移動</button>
+  <button onclick="scale()">拡大</button>
+  <button onclick="rotate()">回転</button>
+  <button onclick="fade()">フェード</button>
+  <button onclick="reset()">リセット</button>
+</div>
+
+<!-- ========== JS ========== -->
+<script>
+function move() {
+  gsap.to("#box", {
+    x: 200,
+    duration: 1
+  });
+}
+
+function scale() {
+  gsap.to("#box", {
+    scale: 1.5,
+    duration: 0.5
+  });
+}
+
+function rotate() {
+  gsap.to("#box", {
+    rotation: "+=360",
+    duration: 1
+  });
+}
+
+function fade() {
+  gsap.to("#box", {
+    opacity: 0.3,
+    duration: 0.5
+  });
+}
+
+function reset() {
+  gsap.to("#box", {
+    x: 0,
+    scale: 1,
+    rotation: 0,
+    opacity: 1,
+    duration: 0.5
+  });
+}
+</script>

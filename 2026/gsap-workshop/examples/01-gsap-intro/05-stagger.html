@@ -1,0 +1,83 @@
+<!-- https://codepen.io/mocaffy/pen/raLqoNN -->
+
+<!-- ========== CSS ========== -->
+<style>
+body {
+  font-family: sans-serif;
+  padding: 40px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+#boxes {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.box {
+  width: 60px;
+  height: 60px;
+  background: skyblue;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+button {
+  margin-right: 8px;
+  padding: 6px 12px;
+}
+</style>
+
+<!-- ========== HTML ========== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<h2>複数の要素をアニメーション</h2>
+
+<div id="boxes">
+  <div class="box">1</div>
+  <div class="box">2</div>
+  <div class="box">3</div>
+  <div class="box">4</div>
+</div>
+
+<div>
+  <button onclick="animateAll()">全部同時に</button>
+  <button onclick="animateStagger()">順番に (stagger)</button>
+  <button onclick="reset()">リセット</button>
+</div>
+
+<!-- ========== JS ========== -->
+<script>
+function animateAll() {
+  gsap.to(".box", {
+    y: -30,
+    duration: 0.5
+  });
+}
+
+function animateStagger() {
+  // まずリセット
+  gsap.set(".box", { y: 0 });
+
+  // stagger で順番にアニメーション
+  gsap.to(".box", {
+    y: -30,
+    stagger: 0.2,  // 0.2秒ずつずらす
+    duration: 0.5
+  });
+}
+
+function reset() {
+  gsap.to(".box", {
+    y: 0,
+    stagger: 0.1,
+    duration: 0.3
+  });
+}
+</script>

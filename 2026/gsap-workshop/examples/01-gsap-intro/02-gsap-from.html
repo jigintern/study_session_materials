@@ -1,0 +1,67 @@
+<!-- https://codepen.io/mocaffy/pen/OPXOrbv -->
+
+<!-- ========== CSS ========== -->
+<style>
+body {
+  font-family: sans-serif;
+  padding: 40px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+#box {
+  width: 80px;
+  height: 80px;
+  background: skyblue;
+  margin-bottom: 20px;
+  border-radius: 20px;
+}
+
+button {
+  margin-right: 8px;
+  padding: 6px 12px;
+}
+</style>
+
+<!-- ========== HTML ========== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<h2>gsap.from() - 指定した状態から現在の状態へ</h2>
+
+<div id="box"></div>
+
+<div>
+  <button onclick="fromLeft()">左から登場</button>
+  <button onclick="fromScale()">小さい状態から</button>
+  <button onclick="fromFade()">透明から</button>
+</div>
+
+<!-- ========== JS ========== -->
+<script>
+// gsap.from() は「指定した状態」から「現在の状態」へアニメーション
+
+function fromLeft() {
+  gsap.from("#box", {
+    x: -200,
+    duration: 1
+  });
+}
+
+function fromScale() {
+  gsap.from("#box", {
+    scale: 0,
+    duration: 0.8,
+    ease: "back.out(1.7)"
+  });
+}
+
+function fromFade() {
+  gsap.from("#box", {
+    opacity: 0,
+    y: -50,
+    duration: 1
+  });
+}
+</script>
