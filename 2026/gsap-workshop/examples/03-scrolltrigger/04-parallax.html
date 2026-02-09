@@ -1,0 +1,114 @@
+<!-- https://codepen.io/mocaffy/pen/JoKmwEE -->
+
+<!-- ========== CSS ========== -->
+<style>
+body {
+  font-family: sans-serif;
+  padding: 40px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+p {
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.spacer {
+  height: 80vh;
+}
+
+.parallax-container {
+  position: relative;
+  height: 400px;
+  max-width: 600px;
+}
+
+#layer1, #layer2, #layer3 {
+  position: absolute;
+  border-radius: 16px;
+}
+
+#layer1 {
+  width: 200px;
+  height: 200px;
+  background: skyblue;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#layer2 {
+  width: 120px;
+  height: 120px;
+  background: salmon;
+  top: 20%;
+  left: 20%;
+}
+
+#layer3 {
+  width: 80px;
+  height: 80px;
+  background: mediumseagreen;
+  bottom: 20%;
+  right: 20%;
+}
+</style>
+
+<!-- ========== HTML ========== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<h2>パララックス効果</h2>
+<p>↓ レイヤーごとに異なる速度で動く ↓</p>
+
+<div class="spacer"></div>
+
+<div class="parallax-container" id="parallax">
+  <div id="layer1"></div>
+  <div id="layer2"></div>
+  <div id="layer3"></div>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ========== JS ========== -->
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.to("#layer1", {
+  y: -100,
+  scrollTrigger: {
+    trigger: "#parallax",
+    start: "top bottom",
+    end: "bottom top",
+    scrub: true
+  }
+});
+
+gsap.to("#layer2", {
+  y: -200,
+  x: 50,
+  rotation: 45,
+  scrollTrigger: {
+    trigger: "#parallax",
+    start: "top bottom",
+    end: "bottom top",
+    scrub: true
+  }
+});
+
+gsap.to("#layer3", {
+  y: -150,
+  x: -30,
+  rotation: -30,
+  scrollTrigger: {
+    trigger: "#parallax",
+    start: "top bottom",
+    end: "bottom top",
+    scrub: true
+  }
+});
+</script>

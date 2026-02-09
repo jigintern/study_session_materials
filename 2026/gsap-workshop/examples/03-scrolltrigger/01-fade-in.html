@@ -1,0 +1,79 @@
+<!-- https://codepen.io/mocaffy/pen/PwzyXGB -->
+
+<!-- ========== CSS ========== -->
+<style>
+body {
+  font-family: sans-serif;
+  padding: 40px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+p {
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.spacer {
+  height: 80vh;
+}
+
+.boxes {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+#box1, #box2, #box3 {
+  width: 150px;
+  height: 150px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+}
+
+#box1 { background: skyblue; }
+#box2 { background: salmon; }
+#box3 { background: mediumseagreen; }
+</style>
+
+<!-- ========== HTML ========== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<h2>スクロールで登場（フェードイン）</h2>
+<p>↓ スクロールしてね ↓</p>
+
+<div class="spacer"></div>
+
+<div class="boxes" id="boxes">
+  <div id="box1">1</div>
+  <div id="box2">2</div>
+  <div id="box3">3</div>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ========== JS ========== -->
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.from("#box1, #box2, #box3", {
+  opacity: 0,
+  y: 80,
+  scale: 0.8,
+  stagger: 0.2,
+  duration: 0.8,
+  ease: "back.out(1.7)",
+  scrollTrigger: {
+    trigger: "#boxes",
+    start: "top 80%",
+    markers: true         // デバッグ用
+  }
+});
+</script>

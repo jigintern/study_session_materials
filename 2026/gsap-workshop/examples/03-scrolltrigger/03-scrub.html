@@ -1,0 +1,71 @@
+<!-- https://codepen.io/mocaffy/pen/NPrOebo -->
+
+<!-- ========== CSS ========== -->
+<style>
+body {
+  font-family: sans-serif;
+  padding: 40px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+p {
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.spacer {
+  height: 80vh;
+}
+
+.scrub-demo {
+  max-width: 600px;
+  height: 200px;
+  position: relative;
+}
+
+#box {
+  width: 80px;
+  height: 80px;
+  background: skyblue;
+  border-radius: 50%;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+</style>
+
+<!-- ========== HTML ========== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<h2>スクロール連動（Scrub）</h2>
+<p>↓ スクロール量に応じてアニメーションが進む ↓</p>
+
+<div class="spacer"></div>
+
+<div class="scrub-demo" id="scrub-area">
+  <div id="box"></div>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ========== JS ========== -->
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.to("#box", {
+  x: 500,
+  rotation: 360,
+  scrollTrigger: {
+    trigger: "#scrub-area",
+    start: "top center",
+    end: "bottom center",
+    scrub: 1,
+    markers: true         // デバッグ用
+  }
+});
+</script>
