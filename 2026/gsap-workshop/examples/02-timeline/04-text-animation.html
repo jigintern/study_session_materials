@@ -1,0 +1,89 @@
+<!-- https://codepen.io/mocaffy/pen/EaydGKK -->
+
+<!-- ========== CSS ========== -->
+<style>
+body {
+  font-family: sans-serif;
+  padding: 40px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+.text-demo {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  padding: 40px;
+}
+
+.text-demo span {
+  display: inline-block;
+  opacity: 0;
+}
+
+button {
+  margin-right: 8px;
+  padding: 6px 12px;
+}
+</style>
+
+<!-- ========== HTML ========== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<h2>テキストアニメーション</h2>
+
+<div class="text-demo" id="text">
+  <span>W</span><span>E</span><span>L</span><span>C</span><span>O</span><span>M</span><span>E</span><span>!</span>
+</div>
+
+<div>
+  <button onclick="animateText()">テキスト登場</button>
+  <button onclick="reset()">リセット</button>
+</div>
+
+<!-- ========== JS ========== -->
+<script>
+let textTl;
+
+function animateText() {
+  reset();
+
+  // Timeline を使って複数ステップのアニメーションを制御
+  textTl = gsap.timeline({
+    defaults: { ease: "power2.out" }
+  });
+
+  textTl
+    // Step 1: 文字を1文字ずつ下から登場
+    .to("#text span", {
+      opacity: 1,
+      y: 0,
+      stagger: 0.08,
+      duration: 0.6,
+      ease: "back.out(1.7)"
+    })
+    // Step 2: 全文字を少し上に跳ねさせる
+    .to("#text span", {
+      y: -15,
+      stagger: 0.05,
+      duration: 0.3
+    })
+    // Step 3: 元の位置に戻しつつ色を変更
+    .to("#text span", {
+      y: 0,
+      color: "#e74c3c",
+      stagger: 0.05,
+      duration: 0.3
+    });
+}
+
+function reset() {
+  if (textTl) textTl.kill();
+  gsap.set("#text span", { opacity: 0, y: 50, color: "inherit" });
+}
+
+// 初期状態を設定
+reset();
+</script>

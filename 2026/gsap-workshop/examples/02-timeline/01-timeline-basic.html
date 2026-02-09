@@ -1,0 +1,84 @@
+<!-- https://codepen.io/mocaffy/pen/MYePZWM -->
+
+<!-- ========== CSS ========== -->
+<style>
+body {
+  font-family: sans-serif;
+  padding: 40px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+.stage {
+  position: relative;
+  height: 150px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+#box1, #box2, #box3, #box4 {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  position: absolute;
+  top: 45px;
+}
+
+#box1 { background: skyblue; left: 20px; }
+#box2 { background: salmon; left: 100px; }
+#box3 { background: mediumseagreen; left: 180px; }
+#box4 { background: sandybrown; left: 260px; }
+
+button {
+  margin-right: 8px;
+  padding: 6px 12px;
+}
+</style>
+
+<!-- ========== HTML ========== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<h2>Timeline の基本 - 順番に実行</h2>
+
+<div class="stage">
+  <div id="box1">1</div>
+  <div id="box2">2</div>
+  <div id="box3">3</div>
+  <div id="box4">4</div>
+</div>
+
+<div>
+  <button onclick="play()">順番に移動</button>
+  <button onclick="reset()">リセット</button>
+</div>
+
+<!-- ========== JS ========== -->
+<script>
+let tl;
+
+function play() {
+  reset();
+
+  tl = gsap.timeline({
+    defaults: { duration: 0.5, ease: "power2.out" }
+  });
+
+  tl.to("#box1", { x: 200 })
+    .to("#box2", { x: 200 })
+    .to("#box3", { x: 200 })
+    .to("#box4", { x: 200 });
+}
+
+function reset() {
+  if (tl) tl.kill();
+  gsap.set(["#box1", "#box2", "#box3", "#box4"], { x: 0 });
+}
+</script>

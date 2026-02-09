@@ -1,0 +1,83 @@
+<!-- https://codepen.io/mocaffy/pen/RNReEWj -->
+
+<!-- ========== CSS ========== -->
+<style>
+body {
+  font-family: sans-serif;
+  padding: 40px;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+.loading-demo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.dot {
+  width: 20px;
+  height: 20px;
+  background: skyblue;
+  border-radius: 50%;
+}
+
+button {
+  margin-right: 8px;
+  padding: 6px 12px;
+}
+</style>
+
+<!-- ========== HTML ========== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<h2>ローディングアニメーション - repeat & yoyo</h2>
+
+<div class="loading-demo">
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</div>
+
+<div>
+  <button onclick="start()">ローディング開始</button>
+  <button onclick="stop()">停止</button>
+</div>
+
+<!-- ========== JS ========== -->
+<script>
+let loadingTl;
+
+function start() {
+  if (loadingTl) loadingTl.kill();
+  gsap.set(".dot", { y: 0 });
+
+  loadingTl = gsap.timeline({
+    repeat: -1,        // -1 = 無限ループ
+    yoyo: true,        // 往復
+    repeatDelay: 0.2,
+    defaults: { duration: 0.4, ease: "power2.inOut" }
+  });
+
+  loadingTl.to(".dot", {
+    y: -25,
+    stagger: 0.1
+  });
+}
+
+function stop() {
+  if (loadingTl) {
+    loadingTl.kill();
+    gsap.to(".dot", {
+      y: 0,
+      duration: 0.3,
+      stagger: 0.05
+    });
+  }
+}
+</script>
