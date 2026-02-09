@@ -1,0 +1,133 @@
+<!-- https://codepen.io/mocaffy/pen/VYjEqbr -->
+
+<!-- ========== CSS ========== -->
+<style>
+body {
+  font-family: sans-serif;
+  padding: 40px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+p {
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.spacer {
+  height: 80vh;
+}
+
+.demo-section {
+  padding: 80px 40px;
+  background: #f0f0f0;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.demo-section h3 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.demo-section .subtitle {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 40px;
+}
+
+.boxes {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.box {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+}
+
+#box1 { background: skyblue; }
+#box2 { background: salmon; }
+#box3 { background: mediumseagreen; }
+#box4 { background: sandybrown; }
+</style>
+
+<!-- ========== HTML ========== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<h2>Timeline + ScrollTrigger</h2>
+<p>↓ スクロールすると Timeline が発火し、複数の要素が順番にアニメーションする ↓</p>
+
+<div class="spacer"></div>
+
+<section class="demo-section" id="tl-section">
+  <h3 id="title">Hello GSAP!</h3>
+  <p class="subtitle" id="subtitle">Timeline と ScrollTrigger を組み合わせよう</p>
+  <div class="boxes">
+    <div class="box" id="box1"></div>
+    <div class="box" id="box2"></div>
+    <div class="box" id="box3"></div>
+    <div class="box" id="box4"></div>
+  </div>
+</section>
+
+<div class="spacer"></div>
+<div class="spacer"></div>
+
+<!-- ========== JS ========== -->
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Timeline に scrollTrigger オプションを追加する
+// → スクロールでトリガーされ、中のアニメーションが順番に実行される
+const tl = gsap.timeline({
+  scrollTrigger: {
+    trigger: "#tl-section",
+    start: "top 60%",       // セクションの上端が画面60%に来たら開始
+    markers: true            // デバッグ用（本番では削除）
+    // toggleActions: "play none none reverse"  // ← コメントを外すと、画面外に戻ったら逆再生
+  }
+});
+
+// Timeline で順番にアニメーション
+tl.from("#title", {
+    y: 30,
+    opacity: 0,
+    duration: 0.8,
+    ease: "power2.out"
+  })
+  .from("#subtitle", {
+    y: 20,
+    opacity: 0,
+    duration: 0.6,
+    ease: "power2.out"
+  }, "-=0.4")              // 前の終了より0.4秒前に開始（重ねる）
+  .from(".box", {
+    scale: 0,
+    rotation: 180,
+    stagger: 0.15,         // 0.15秒ずつずらして登場
+    duration: 0.6,
+    ease: "back.out(1.7)"
+  }, "-=0.2");
+
+// 💡 応用: scrub を使うパターン（コメントを外して試してみよう）
+// const scrubTl = gsap.timeline({
+//   scrollTrigger: {
+//     trigger: "#tl-section",
+//     start: "top top",
+//     end: "+=200%",
+//     pin: true,          // セクション固定
+//     scrub: 1            // スクロール量で Timeline の進行を制御
+//   }
+// });
+// scrubTl.from("#title", { y: 50, opacity: 0 })
+//   .from("#subtitle", { y: 30, opacity: 0 })
+//   .from(".box", { scale: 0, stagger: 0.1 });
+</script>
