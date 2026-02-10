@@ -489,9 +489,9 @@
     .access-container {
       max-width: 1200px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
       position: relative;
     }
 
@@ -507,7 +507,7 @@
 
     .access-routes {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       gap: 20px;
     }
 
@@ -545,15 +545,91 @@
       margin: 0;
     }
 
-    .access-map {
-      border-radius: 16px;
-      overflow: hidden;
-      height: 400px;
-      background: rgba(255, 255, 255, 0.1);
+    .rail-track {
+      padding: 40px 6vw 60px;
+    }
+
+    .rail-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 55%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.45);
+      border-radius: 999px;
+    }
+
+    .rail-line::after {
+      content: '';
+      position: absolute;
+      inset: 3px 0;
+      border-top: 2px dashed rgba(255, 255, 255, 0.85);
+      opacity: 0.8;
+    }
+
+    .rail-stations {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(55% + 3px);
+      height: 0;
+    }
+
+    .rail-station {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: white;
+      transform: translate(-50%, -50%);
+    }
+
+    .rail-station--osaka {
+      left: 0;
+    }
+
+    .rail-station--fukui {
+      left: 50%;
+    }
+
+    .rail-station--tokyo {
+      left: 100%;
+    }
+
+    .rail-train {
+      position: absolute;
+      top: 55%;
+      font-size: 30px;
+      filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.35));
+      will-change: transform;
+    }
+
+    .rail-train--osaka {
+      left: 0;
+      transform: translate(-50%, -50%);
+    }
+
+    .rail-train--tokyo {
+      right: 0;
+      transform: translate(50%, -50%);
+    }
+
+    .rail-labels {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 10px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 100px;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: #fff;
+      pointer-events: none;
+    }
+
+    .rail-labels span:last-child {
+      text-align: right;
     }
 
     /* ========================================
@@ -865,25 +941,39 @@
 
         <div class="access-routes">
           <div class="route-item">
-            <div class="route-icon">🚄</div>
-            <div class="route-info">
-              <h4>東京から</h4>
-              <p>北陸新幹線で約3時間（敦賀駅経由）</p>
-            </div>
-          </div>
-
-          <div class="route-item">
             <div class="route-icon">🚃</div>
             <div class="route-info">
               <h4>大阪から</h4>
               <p>特急サンダーバードで約1時間50分</p>
             </div>
           </div>
+
+          <div class="route-item">
+            <div class="route-icon">🚄</div>
+            <div class="route-info">
+              <h4>東京から</h4>
+              <p>北陸新幹線で約3時間</p>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="access-map">
-        🗾
+        <div class="rail-track">
+          <div class="rail-labels">
+            <span>大阪</span>
+            <span>福井</span>
+            <span>東京</span>
+          </div>
+          <div class="rail-line"></div>
+          <div class="rail-stations" aria-hidden="true">
+            <span class="rail-station rail-station--osaka"></span>
+            <span class="rail-station rail-station--fukui"></span>
+            <span class="rail-station rail-station--tokyo"></span>
+          </div>
+          <span class="rail-train rail-train--osaka">🚃</span>
+          <span class="rail-train rail-train--tokyo">🚄</span>
+        </div>
       </div>
     </div>
   </section>
