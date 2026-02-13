@@ -727,390 +727,41 @@
   </style>
 </head>
 <body>
+  <!-- GSAP & プラグイン CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
+
+  <!-- GSAP プラグインを登録 -->
+  <script>
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+  </script>
+
 
   <!-- ========================================
-       ローディング画面
-       学習ポイント: gsap.timeline() で連続アニメーション
+
+      1. ローディング画面
+      学習ポイント: gsap.timeline() で連続アニメーション
+
   ======================================== -->
   <div class="loader" id="loader">
     <div class="loader-text">
       <span>F</span><span>U</span><span>K</span><span>U</span><span>I</span>
     </div>
   </div>
-
-  <!-- プログレスバー -->
-  <div class="progress-bar" id="progress"></div>
-
-  <!-- ========================================
-       ナビゲーション
-  ======================================== -->
-  <nav class="nav">
-    <a href="#" class="nav-logo">FUKUI</a>
-    <ul class="nav-links">
-      <li><a href="#intro">About</a></li>
-      <li><a href="#slide-1">Spots</a></li>
-      <li><a href="#gourmet">Gourmet</a></li>
-      <li><a href="#access">Access</a></li>
-    </ul>
-  </nav>
-
-  <!-- ========================================
-       ヒーローセクション
-       学習ポイント: Timeline で複数要素を順番にアニメーション
-  ======================================== -->
-  <section class="hero" id="hero">
-    <div class="hero-bg">
-      <img src="https://images.unsplash.com/photo-1528164344705-47542687000d?w=1920&h=1080&fit=crop"
-           alt="福井県の海岸風景">
-      <div class="hero-overlay"></div>
-    </div>
-
-    <div class="hero-content">
-      <p class="hero-subtitle">DISCOVER</p>
-      <h1 class="hero-title">
-        <span class="hero-title-line">FUKUI</span>
-      </h1>
-      <p class="hero-description">
-        自然と歴史が織りなす、日本海に面した美しい県。<br>
-        恐竜、禅、そして海の幸が待っています。
-      </p>
-    </div>
-
-    <div class="scroll-indicator">
-      <span>SCROLL</span>
-      <div class="scroll-line"></div>
-    </div>
-  </section>
-
-  <!-- ========================================
-       イントロセクション
-       学習ポイント: gsap.from() と ScrollTrigger の組み合わせ
-  ======================================== -->
-  <section class="intro" id="intro">
-    <div class="intro-container">
-      <div class="intro-text">
-        <p class="intro-label">ABOUT FUKUI</p>
-        <h2 class="intro-heading">歴史と自然が<br>息づく地</h2>
-        <p class="intro-paragraph">
-          福井県は日本海に面し、豊かな自然と深い歴史を持つ県です。
-          世界三大恐竜博物館のひとつを有し、曹洞宗の大本山・永平寺、
-          そして雄大な東尋坊など、見どころが満載です。
-        </p>
-        <p class="intro-paragraph">
-          冬には新鮮な越前がにが楽しめ、伝統工芸の越前漆器や
-          越前和紙など、日本の文化を肌で感じることができます。
-        </p>
-
-        <div class="intro-stats">
-          <div class="stat-item">
-            <div class="stat-number" data-count="76">0</div>
-            <div class="stat-label">万人の人口</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number" data-count="4190">0</div>
-            <div class="stat-label">km² 面積</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="intro-image">
-        <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&h=1000&fit=crop"
-             alt="日本の禅寺">
-        <div class="intro-image-badge">
-          <span>Since</span>
-          1244
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================
-       観光スポットセクション
-       学習ポイント: ScrollTrigger + パララックス効果
-  ======================================== -->
-
-  <!-- スポット1: 恐竜博物館 -->
-  <section class="slide slide--1" id="slide-1">
-    <div class="col col--1">
-      <div class="col__content col__content--1">
-        <h2 class="col__content-title">
-          <span class="line__inner">恐竜</span><br>
-          <span class="line__inner">博物館</span>
-        </h2>
-        <div class="col__content-wrap">
-          <p class="col__content-txt">
-            世界三大恐竜博物館のひとつに数えられる、日本最大級の恐竜専門博物館。
-            44体以上の恐竜全身骨格や大型復元模型が展示され、
-            子どもから大人まで楽しめる迫力の空間が広がります。
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col col--2">
-      <div class="col__image-wrap">
-        <img class="img img--1"
-             src="https://images.unsplash.com/photo-1601182207230-1b165dea2212?w=1200&h=1600&fit=crop"
-             alt="恐竜博物館">
-      </div>
-    </div>
-
-    <!-- 円形ズームオーバーレイ
-         学習ポイント: ScrollTrigger + pin + scrub + CSS mask -->
-    <div class="zoom-overlay">
-      <h2 class="zoom-heading">さあ、福井の旅へ</h2>
-    </div>
-  </section>
-
-  <!-- スポット2: 東尋坊 -->
-  <section class="slide slide--2" id="slide-2">
-    <div class="col col--1">
-      <div class="col__content col__content--2">
-        <h2 class="col__content-title">
-          <span class="line__inner">東尋坊</span><br>
-          <span class="line__inner">絶景</span>
-        </h2>
-        <div class="col__content-wrap">
-          <p class="col__content-txt">
-            約1kmにわたって続く、高さ25mの断崖絶壁。
-            世界でも珍しい輝石安山岩の柱状節理が織りなす雄大な景観は、
-            国の天然記念物および名勝に指定されています。
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col col--2">
-      <div class="col__image-wrap">
-        <img class="img img--1"
-             src="https://images.unsplash.com/photo-1593892370074-ec754b1ac563?w=1200&h=1600&fit=crop"
-             alt="東尋坊">
-      </div>
-    </div>
-  </section>
-
-  <!-- スポット3: 永平寺 -->
-  <section class="slide slide--3" id="slide-3">
-    <div class="col col--1">
-      <div class="col__content col__content--3">
-        <h2 class="col__content-title">
-          <span class="line__inner">永平寺</span><br>
-          <span class="line__inner">禅の心</span>
-        </h2>
-        <div class="col__content-wrap">
-          <p class="col__content-txt">
-            1244年に道元禅師によって開かれた、曹洞宗の大本山。
-            樹齢700年を超える老杉に囲まれた境内には七堂伽藍が立ち並び、
-            今も約150名の修行僧が厳しい修行を続けています。
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col col--2">
-      <div class="col__image-wrap">
-        <img class="img img--1"
-             src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1200&h=1600&fit=crop"
-             alt="永平寺">
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================
-       グルメセクション - 横スクロール
-       学習ポイント: ScrollTrigger + pin + scrub で横スクロール
-  ======================================== -->
-  <div class="gourmet-container" id="gourmet">
-    <div class="gourmet-wrapper">
-      <div class="gourmet-scroller">
-
-        <!-- ヘッダーカード -->
-        <div class="gourmet-header-card">
-          <p class="gourmet-label">LOCAL GOURMET</p>
-          <h2 class="gourmet-title">福井の味覚</h2>
-          <p class="gourmet-description">
-            日本海の恵みと、山々に育まれた食材。
-            福井には、ここでしか味わえない
-            絶品グルメが揃っています。
-          </p>
-        </div>
-
-        <!-- グルメカード1: 越前がに -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=600&h=600&fit=crop"
-                 alt="カニ料理">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">越前がに</h3>
-            <p class="gourmet-card-description">
-              冬の味覚の王様。11月から3月にかけて解禁される越前がには、
-              身がぎっしり詰まり、甘みと旨味が凝縮された逸品です。
-            </p>
-          </div>
-        </article>
-
-        <!-- グルメカード2: 越前おろしそば -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=600&h=600&fit=crop"
-                 alt="そば">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">越前おろしそば</h3>
-            <p class="gourmet-card-description">
-              福井が誇る郷土料理。冷たいそばに大根おろしと出汁をかけて食べる、
-              シンプルながら奥深い味わいが特徴です。
-            </p>
-          </div>
-        </article>
-
-        <!-- グルメカード3: 海鮮丼 -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=600&h=600&fit=crop"
-                 alt="海鮮丼">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">海鮮丼</h3>
-            <p class="gourmet-card-description">
-              日本海で獲れた新鮮な魚介をふんだんに盛り付けた贅沢な一杯。
-              甘エビ、ブリ、イカなど、旬の味を堪能できます。
-            </p>
-          </div>
-        </article>
-
-        <!-- グルメカード4: ソースカツ丼 -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&h=600&fit=crop"
-                 alt="ソースカツ丼">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">ソースカツ丼</h3>
-            <p class="gourmet-card-description">
-              福井発祥のB級グルメ。サクサクの薄いカツに、
-              甘辛いソースが染み込んだ、ご飯が進む一品です。
-            </p>
-          </div>
-        </article>
-
-        <!-- グルメカード5: 焼き鯖寿司 -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=600&h=600&fit=crop"
-                 alt="焼き鯖寿司">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">焼き鯖寿司</h3>
-            <p class="gourmet-card-description">
-              若狭地方の名物。香ばしく焼いた鯖を酢飯で巻いた、
-              駅弁としても人気の郷土寿司です。
-            </p>
-          </div>
-        </article>
-
-        <!-- グルメカード6: 福井の地酒 -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&h=600&fit=crop"
-                 alt="日本酒">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">福井の地酒</h3>
-            <p class="gourmet-card-description">
-              白山水系の名水と、良質な米が育む福井の日本酒。
-              黒龍、梵など、全国的に評価の高い銘酒が揃います。
-            </p>
-          </div>
-        </article>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================
-       アクセスセクション
-       学習ポイント: Timeline で要素を順番に表示
-  ======================================== -->
-  <section class="access" id="access">
-    <div class="access-container">
-      <div class="access-text">
-        <h2>Access</h2>
-        <p>
-          2024年春、北陸新幹線が敦賀まで延伸。<br>
-          東京からのアクセスがさらに便利になりました。
-        </p>
-
-        <div class="access-routes">
-          <div class="route-item">
-            <div class="route-icon">🚃</div>
-            <div class="route-info">
-              <h4>大阪から</h4>
-              <p>特急サンダーバードで約1時間50分</p>
-            </div>
-          </div>
-
-          <div class="route-item">
-            <div class="route-icon">🚄</div>
-            <div class="route-info">
-              <h4>東京から</h4>
-              <p>北陸新幹線で約3時間</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="access-map">
-        <div class="rail-track">
-          <div class="rail-labels">
-            <span>大阪</span>
-            <span>福井</span>
-            <span>東京</span>
-          </div>
-          <div class="rail-line"></div>
-          <div class="rail-stations" aria-hidden="true">
-            <span class="rail-station rail-station--osaka"></span>
-            <span class="rail-station rail-station--fukui"></span>
-            <span class="rail-station rail-station--tokyo"></span>
-          </div>
-          <span class="rail-train rail-train--osaka">🚃</span>
-          <span class="rail-train rail-train--tokyo">🚄</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================
-       フッター
-  ======================================== -->
-  <footer class="footer">
-    <div class="footer-logo">FUKUI</div>
-    <div class="footer-links">
-      <a href="#">ホーム</a>
-      <a href="#intro">福井について</a>
-      <a href="#slide-1">観光スポット</a>
-      <a href="#gourmet">グルメ</a>
-      <a href="#access">アクセス</a>
-    </div>
-    <p class="footer-copyright">
-      © 2026 DISCOVER FUKUI - GSAP Workshop Sample<br>
-      このサイトはGSAP学習用のサンプルです
-    </p>
-  </footer>
-
-  <!-- GSAP & プラグイン CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
-
   <script>
-    // ========================================
-    // GSAP プラグインを登録
-    // ========================================
-    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+    // 各セクションのアニメーションを読み込む
+    function initPageAnimations() {
+      initHeroAnimation();
+      initProgressBar();
+      initIntroAnimation();
+      initZoomAnimation();
+      initSpotsAnimation();
+      initGourmetAnimation();
+      initAccessAnimation();
+      initSmoothScroll();
+    }
 
-    // ========================================
-    // 1. ローディングアニメーション
-    //    学習ポイント: Timeline + stagger
-    // ========================================
     function initLoader() {
       const loaderTl = gsap.timeline({
         onComplete: initPageAnimations  // ローディング完了後にメインアニメーション開始
@@ -1140,10 +791,104 @@
         });
     }
 
-    // ========================================
-    // 2. ヒーローセクションのアニメーション
-    //    学習ポイント: Timeline で複数要素を制御
-    // ========================================
+    // ページ読み込み時に実行
+    window.addEventListener('load', () => {
+      initLoader();
+    });
+  </script>
+
+  <!-- ========================================
+
+      3. プログレスバー
+      学習ポイント: ScrollTrigger + scrub
+
+  ======================================== -->
+  <div class="progress-bar" id="progress"></div>
+  <script>
+    function initProgressBar() {
+      gsap.to('#progress', {
+        scaleX: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: 'body',
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: true  // スクロール量に追従
+        }
+      });
+    }
+  </script>
+
+  <!-- ========================================
+
+      9. ナビゲーションのスムーススクロール
+      学習ポイント: ScrollToPlugin
+      メモ: footerのリンクも同様に動作します
+
+  ======================================== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">FUKUI</a>
+    <ul class="nav-links">
+      <li><a href="#intro">About</a></li>
+      <li><a href="#slide-1">Spots</a></li>
+      <li><a href="#gourmet">Gourmet</a></li>
+      <li><a href="#access">Access</a></li>
+    </ul>
+  </nav>
+  <script>
+    function initSmoothScroll() {
+      document.querySelectorAll('.nav-links a, .footer-links a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          const href = link.getAttribute('href');
+
+          // #で始まるリンクのみ処理
+          if (href.startsWith('#')) {
+            e.preventDefault();
+
+            gsap.to(window, {
+              duration: 1.5,
+              scrollTo: {
+                y: href,
+                offsetY: 0
+              },
+              ease: 'power2.inOut'
+            });
+          }
+        });
+      });
+    }
+  </script>
+
+  <!-- ========================================
+
+      2. ヒーローセクション
+      学習ポイント: Timeline で複数要素を順番にアニメーション
+
+  ======================================== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <img src="https://images.unsplash.com/photo-1528164344705-47542687000d?w=1920&h=1080&fit=crop"
+           alt="福井県の海岸風景">
+      <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+      <p class="hero-subtitle">DISCOVER</p>
+      <h1 class="hero-title">
+        <span class="hero-title-line">FUKUI</span>
+      </h1>
+      <p class="hero-description">
+        自然と歴史が織りなす、日本海に面した美しい県。<br>
+        恐竜、禅、そして海の幸が待っています。
+      </p>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+  <script>
     function initHeroAnimation() {
       const heroTl = gsap.timeline({ delay: 0.2 });
 
@@ -1187,28 +932,52 @@
         delay: 2
       });
     }
+  </script>
 
-    // ========================================
-    // 3. プログレスバー
-    //    学習ポイント: ScrollTrigger + scrub
-    // ========================================
-    function initProgressBar() {
-      gsap.to('#progress', {
-        scaleX: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: 'body',
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: true  // スクロール量に追従
-        }
-      });
-    }
+  <!-- ========================================
 
-    // ========================================
-    // 4. イントロセクションのアニメーション
-    //    学習ポイント: ScrollTrigger でスクロール時に発火
-    // ========================================
+      4. イントロセクションのアニメーション
+      学習ポイント: ScrollTrigger でスクロール時に発火
+
+  ======================================== -->
+  <section class="intro" id="intro">
+    <div class="intro-container">
+      <div class="intro-text">
+        <p class="intro-label">ABOUT FUKUI</p>
+        <h2 class="intro-heading">歴史と自然が<br>息づく地</h2>
+        <p class="intro-paragraph">
+          福井県は日本海に面し、豊かな自然と深い歴史を持つ県です。
+          世界三大恐竜博物館のひとつを有し、曹洞宗の大本山・永平寺、
+          そして雄大な東尋坊など、見どころが満載です。
+        </p>
+        <p class="intro-paragraph">
+          冬には新鮮な越前がにが楽しめ、伝統工芸の越前漆器や
+          越前和紙など、日本の文化を肌で感じることができます。
+        </p>
+
+        <div class="intro-stats">
+          <div class="stat-item">
+            <div class="stat-number" data-count="76">0</div>
+            <div class="stat-label">万人の人口</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="4190">0</div>
+            <div class="stat-label">km² 面積</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-image">
+        <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&h=1000&fit=crop"
+             alt="日本の禅寺">
+        <div class="intro-image-badge">
+          <span>Since</span>
+          1244
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
     function initIntroAnimation() {
       // テキスト部分
       gsap.from('.intro-text > *', {
@@ -1268,11 +1037,98 @@
         });
       });
     }
+  </script>
 
-    // ========================================
-    // 5. 観光スポットのパララックス効果
-    //    学習ポイント: ScrollTrigger + scrub でパララックス
-    // ========================================
+  <!-- ========================================
+
+      5. 観光スポットのパララックス効果
+      学習ポイント: ScrollTrigger + scrub でパララックス
+
+      8. 円形ズームアニメーション
+      学習ポイント: ScrollTrigger + pin + scrub + CSS mask 暗いオーバーレイの穴が広がり、観光スポットが現れる
+
+  ======================================== -->
+  <!-- スポット1: 恐竜博物館 -->
+  <section class="slide slide--1" id="slide-1">
+    <div class="col col--1">
+      <div class="col__content col__content--1">
+        <h2 class="col__content-title">
+          <span class="line__inner">恐竜</span><br>
+          <span class="line__inner">博物館</span>
+        </h2>
+        <div class="col__content-wrap">
+          <p class="col__content-txt">
+            世界三大恐竜博物館のひとつに数えられる、日本最大級の恐竜専門博物館。
+            44体以上の恐竜全身骨格や大型復元模型が展示され、
+            子どもから大人まで楽しめる迫力の空間が広がります。
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col--2">
+      <div class="col__image-wrap">
+        <img class="img img--1"
+             src="https://images.unsplash.com/photo-1601182207230-1b165dea2212?w=1200&h=1600&fit=crop"
+             alt="恐竜博物館">
+      </div>
+    </div>
+    <!-- 円形ズームオーバーレイ 学習ポイント: ScrollTrigger + pin + scrub + CSS mask -->
+    <div class="zoom-overlay">
+      <h2 class="zoom-heading">さあ、福井の旅へ</h2>
+    </div>
+  </section>
+  <!-- スポット2: 東尋坊 -->
+  <section class="slide slide--2" id="slide-2">
+    <div class="col col--1">
+      <div class="col__content col__content--2">
+        <h2 class="col__content-title">
+          <span class="line__inner">東尋坊</span><br>
+          <span class="line__inner">絶景</span>
+        </h2>
+        <div class="col__content-wrap">
+          <p class="col__content-txt">
+            約1kmにわたって続く、高さ25mの断崖絶壁。
+            世界でも珍しい輝石安山岩の柱状節理が織りなす雄大な景観は、
+            国の天然記念物および名勝に指定されています。
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col--2">
+      <div class="col__image-wrap">
+        <img class="img img--1"
+             src="https://images.unsplash.com/photo-1593892370074-ec754b1ac563?w=1200&h=1600&fit=crop"
+             alt="東尋坊">
+      </div>
+    </div>
+  </section>
+  <!-- スポット3: 永平寺 -->
+  <section class="slide slide--3" id="slide-3">
+    <div class="col col--1">
+      <div class="col__content col__content--3">
+        <h2 class="col__content-title">
+          <span class="line__inner">永平寺</span><br>
+          <span class="line__inner">禅の心</span>
+        </h2>
+        <div class="col__content-wrap">
+          <p class="col__content-txt">
+            1244年に道元禅師によって開かれた、曹洞宗の大本山。
+            樹齢700年を超える老杉に囲まれた境内には七堂伽藍が立ち並び、
+            今も約150名の修行僧が厳しい修行を続けています。
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col--2">
+      <div class="col__image-wrap">
+        <img class="img img--1"
+             src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1200&h=1600&fit=crop"
+             alt="永平寺">
+      </div>
+    </div>
+  </section>
+  <script>
+    // 5. 観光スポットのパララックス効果アニメーション
     function initSpotsAnimation() {
       const slides = document.querySelectorAll('.slide');
 
@@ -1330,10 +1186,131 @@
       });
     }
 
-    // ========================================
-    // 6. グルメセクションの横スクロール
-    //    学習ポイント: ScrollTrigger + pin + scrub で横スクロール
-    // ========================================
+    // 8. 円形ズームアニメーション
+    function initZoomAnimation() {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.slide--1',
+          scrub: true,
+          start: 'top top',
+          end: '+=200%',   // スクロール量
+          pin: true,        // セクションを固定
+        }
+      });
+
+      tl.to('.zoom-overlay', {
+        '--zoom-size': '150vw',  // CSS変数をアニメーション → 穴が拡大
+      })
+    }
+  </script>
+
+  <!-- ========================================
+
+      6. グルメセクション - 横スクロール
+      学習ポイント: ScrollTrigger + pin + scrub で横スクロール
+
+  ======================================== -->
+  <div class="gourmet-container" id="gourmet">
+    <div class="gourmet-wrapper">
+      <div class="gourmet-scroller">
+        <!-- ヘッダーカード -->
+        <div class="gourmet-header-card">
+          <p class="gourmet-label">LOCAL GOURMET</p>
+          <h2 class="gourmet-title">福井の味覚</h2>
+          <p class="gourmet-description">
+            日本海の恵みと、山々に育まれた食材。
+            福井には、ここでしか味わえない
+            絶品グルメが揃っています。
+          </p>
+        </div>
+        <!-- グルメカード1: 越前がに -->
+        <article class="gourmet-card">
+          <div class="gourmet-card-image">
+            <img src="https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=600&h=600&fit=crop"
+                 alt="カニ料理">
+          </div>
+          <div class="gourmet-card-content">
+            <h3 class="gourmet-card-name">越前がに</h3>
+            <p class="gourmet-card-description">
+              冬の味覚の王様。11月から3月にかけて解禁される越前がには、
+              身がぎっしり詰まり、甘みと旨味が凝縮された逸品です。
+            </p>
+          </div>
+        </article>
+        <!-- グルメカード2: 越前おろしそば -->
+        <article class="gourmet-card">
+          <div class="gourmet-card-image">
+            <img src="https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=600&h=600&fit=crop"
+                 alt="そば">
+          </div>
+          <div class="gourmet-card-content">
+            <h3 class="gourmet-card-name">越前おろしそば</h3>
+            <p class="gourmet-card-description">
+              福井が誇る郷土料理。冷たいそばに大根おろしと出汁をかけて食べる、
+              シンプルながら奥深い味わいが特徴です。
+            </p>
+          </div>
+        </article>
+        <!-- グルメカード3: 海鮮丼 -->
+        <article class="gourmet-card">
+          <div class="gourmet-card-image">
+            <img src="https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=600&h=600&fit=crop"
+                 alt="海鮮丼">
+          </div>
+          <div class="gourmet-card-content">
+            <h3 class="gourmet-card-name">海鮮丼</h3>
+            <p class="gourmet-card-description">
+              日本海で獲れた新鮮な魚介をふんだんに盛り付けた贅沢な一杯。
+              甘エビ、ブリ、イカなど、旬の味を堪能できます。
+            </p>
+          </div>
+        </article>
+        <!-- グルメカード4: ソースカツ丼 -->
+        <article class="gourmet-card">
+          <div class="gourmet-card-image">
+            <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&h=600&fit=crop"
+                 alt="ソースカツ丼">
+          </div>
+          <div class="gourmet-card-content">
+            <h3 class="gourmet-card-name">ソースカツ丼</h3>
+            <p class="gourmet-card-description">
+              福井発祥のB級グルメ。サクサクの薄いカツに、
+              甘辛いソースが染み込んだ、ご飯が進む一品です。
+            </p>
+          </div>
+        </article>
+        <!-- グルメカード5: 焼き鯖寿司 -->
+        <article class="gourmet-card">
+          <div class="gourmet-card-image">
+            <img src="https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=600&h=600&fit=crop"
+                 alt="焼き鯖寿司">
+          </div>
+          <div class="gourmet-card-content">
+            <h3 class="gourmet-card-name">焼き鯖寿司</h3>
+            <p class="gourmet-card-description">
+              若狭地方の名物。香ばしく焼いた鯖を酢飯で巻いた、
+              駅弁としても人気の郷土寿司です。
+            </p>
+          </div>
+        </article>
+        <!-- グルメカード6: 福井の地酒 -->
+        <article class="gourmet-card">
+          <div class="gourmet-card-image">
+            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&h=600&fit=crop"
+                 alt="日本酒">
+          </div>
+          <div class="gourmet-card-content">
+            <h3 class="gourmet-card-name">福井の地酒</h3>
+            <p class="gourmet-card-description">
+              白山水系の名水と、良質な米が育む福井の日本酒。
+              黒龍、梵など、全国的に評価の高い銘酒が揃います。
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+  <script>
     function initGourmetAnimation() {
       const container = document.querySelector('.gourmet-scroller');
       if (!container) return;
@@ -1369,11 +1346,61 @@
         }
       });
     }
+  </script>
 
-    // ========================================
-    // 7. アクセスセクションのアニメーション
-    //    学習ポイント: Timeline + ScrollTrigger
-    // ========================================
+  <!-- ========================================
+
+      7. アクセスセクションのアニメーション
+      学習ポイント: Timeline + ScrollTrigger
+
+  ======================================== -->
+  <section class="access" id="access">
+    <div class="access-container">
+      <div class="access-text">
+        <h2>Access</h2>
+        <p>
+          2024年春、北陸新幹線が敦賀まで延伸。<br>
+          東京からのアクセスがさらに便利になりました。
+        </p>
+
+        <div class="access-routes">
+          <div class="route-item">
+            <div class="route-icon">🚃</div>
+            <div class="route-info">
+              <h4>大阪から</h4>
+              <p>特急サンダーバードで約1時間50分</p>
+            </div>
+          </div>
+
+          <div class="route-item">
+            <div class="route-icon">🚄</div>
+            <div class="route-info">
+              <h4>東京から</h4>
+              <p>北陸新幹線で約3時間</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="access-map">
+        <div class="rail-track">
+          <div class="rail-labels">
+            <span>大阪</span>
+            <span>福井</span>
+            <span>東京</span>
+          </div>
+          <div class="rail-line"></div>
+          <div class="rail-stations" aria-hidden="true">
+            <span class="rail-station rail-station--osaka"></span>
+            <span class="rail-station rail-station--fukui"></span>
+            <span class="rail-station rail-station--tokyo"></span>
+          </div>
+          <span class="rail-train rail-train--osaka">🚃</span>
+          <span class="rail-train rail-train--tokyo">🚄</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
     function initAccessAnimation() {
       const accessTl = gsap.timeline({
         scrollTrigger: {
@@ -1441,74 +1468,22 @@
         }
       });
     }
-
-    // ========================================
-    // 8. 円形ズームアニメーション
-    //    学習ポイント: ScrollTrigger + pin + scrub + CSS mask
-    //    暗いオーバーレイの穴が広がり、観光スポットが現れる
-    // ========================================
-    function initZoomAnimation() {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.slide--1',
-          scrub: true,
-          start: 'top top',
-          end: '+=200%',   // スクロール量
-          pin: true,        // セクションを固定
-        }
-      });
-
-      tl.to('.zoom-overlay', {
-        '--zoom-size': '150vw',  // CSS変数をアニメーション → 穴が拡大
-      })
-    }
-
-    // ========================================
-    // 9. ナビゲーションのスムーススクロール
-    //    学習ポイント: ScrollToPlugin
-    // ========================================
-    function initSmoothScroll() {
-      document.querySelectorAll('.nav-links a, .footer-links a').forEach(link => {
-        link.addEventListener('click', (e) => {
-          const href = link.getAttribute('href');
-
-          // #で始まるリンクのみ処理
-          if (href.startsWith('#')) {
-            e.preventDefault();
-
-            gsap.to(window, {
-              duration: 1.5,
-              scrollTo: {
-                y: href,
-                offsetY: 0
-              },
-              ease: 'power2.inOut'
-            });
-          }
-        });
-      });
-    }
-
-    // ========================================
-    // メイン初期化関数
-    // ========================================
-    function initPageAnimations() {
-      initHeroAnimation();
-      initProgressBar();
-      initIntroAnimation();
-      initZoomAnimation();
-      initSpotsAnimation();
-      initGourmetAnimation();
-      initAccessAnimation();
-      initSmoothScroll();
-    }
-
-    // ========================================
-    // ページ読み込み時に実行
-    // ========================================
-    window.addEventListener('load', () => {
-      initLoader();
-    });
   </script>
+
+  <!-- フッター -->
+  <footer class="footer">
+    <div class="footer-logo">FUKUI</div>
+    <div class="footer-links">
+      <a href="#">ホーム</a>
+      <a href="#intro">福井について</a>
+      <a href="#slide-1">観光スポット</a>
+      <a href="#gourmet">グルメ</a>
+      <a href="#access">アクセス</a>
+    </div>
+    <p class="footer-copyright">
+      © 2026 DISCOVER FUKUI - GSAP Workshop Sample<br>
+      このサイトはGSAP学習用のサンプルです
+    </p>
+  </footer>
 </body>
 </html>
