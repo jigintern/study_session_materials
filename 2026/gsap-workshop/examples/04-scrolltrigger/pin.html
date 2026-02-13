@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScrollTrigger - pin</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; color: #333; }
+  .spacer {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+  .spacer-before {
+    background: #f5f5f5;
+  }
+  .spacer-after {
+    background: #f5f5f5;
+  }
+  .spacer h2 {
+    font-size: 1.3em;
+    color: #555;
+  }
+  .pin-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    background: #f0fdf4;
+  }
+  .pin-section h2 {
+    font-size: 1.5em;
+    color: #333;
+  }
+  .box {
+    width: 80px;
+    height: 80px;
+    background: #0ae448;
+    border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+  <div class="spacer spacer-before">
+    <h2>Before Pin Section</h2>
+  </div>
+
+  <div class="pin-section">
+    <h2>この要素は固定されます</h2>
+    <div class="box"></div>
+  </div>
+
+  <div class="spacer spacer-after">
+    <h2>After Pin Section</h2>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.to('.box', {
+      rotation: 360,
+      scrollTrigger: {
+        trigger: '.pin-section',
+        start: 'top top',
+        end: '+=200%',
+        pin: true,
+        scrub: 1,
+        markers: true
+      }
+    });
+  </script>
+</body>
+</html>

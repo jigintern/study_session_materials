@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>演習4: ScrollTrigger</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; color: #333; }
+
+  /* Task overview */
+  .task-overview {
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .task-overview h1 {
+    font-size: 1.5em; color: #333; margin-bottom: 32px;
+    padding-bottom: 8px; border-bottom: 3px solid #0ae448;
+  }
+  .task-list { margin-bottom: 32px; }
+  .task-list li {
+    font-size: 0.95em; color: #555; margin-bottom: 8px; line-height: 1.6;
+  }
+  .task-list li strong { color: #0ae448; }
+
+  /* Hero spacer */
+  .hero {
+    height: 60vh; display: flex; align-items: center; justify-content: center;
+    background: #f0fdf4;
+  }
+  .hero p { font-size: 1.3em; color: #888; letter-spacing: 0.05em; }
+
+  /* 課題1: Fade-in sections */
+  .fade-section {
+    padding: 80px 40px;
+  }
+  .fade-section:nth-child(odd) { background: #fff; }
+  .fade-section:nth-child(even) { background: #f9f9f9; }
+  .fade-section h2 {
+    font-size: 1.2em; margin-bottom: 24px; color: #333;
+  }
+  .fade-boxes { display: flex; gap: 20px; }
+  .fade-box {
+    width: 80px; height: 80px; background: #0ae448; border-radius: 8px;
+  }
+
+  /* 課題2: Parallax */
+  .parallax-section {
+    position: relative; height: 100vh; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .parallax-bg {
+    position: absolute; top: -30%; left: 0; width: 100%; height: 160%;
+    background: linear-gradient(135deg, #0ae448 0%, #06b835 50%, #048a28 100%);
+    z-index: 0;
+  }
+  .parallax-text {
+    position: relative; z-index: 1; color: #fff; text-align: center;
+  }
+  .parallax-text h2 { font-size: 2.5em; margin-bottom: 16px; }
+  .parallax-text p { font-size: 1.1em; opacity: 0.9; }
+
+  /* 課題3: Horizontal scroll */
+  .horizontal-wrapper {
+    overflow: hidden;
+  }
+  .horizontal-container {
+    display: flex; width: 300vw; /* 3 panels x 100vw */
+  }
+  .panel {
+    width: 100vw; height: 100vh; display: flex; align-items: center;
+    justify-content: center; font-size: 2em; font-weight: bold;
+  }
+  .panel:nth-child(1) { background: #f0fdf4; color: #0ae448; }
+  .panel:nth-child(2) { background: #0ae448; color: #fff; }
+  .panel:nth-child(3) { background: #333; color: #0ae448; }
+
+  /* Footer spacer */
+  .footer-spacer {
+    height: 50vh; display: flex; align-items: center; justify-content: center;
+    background: #f9f9f9;
+  }
+  .footer-spacer p { font-size: 1em; color: #aaa; }
+</style>
+</head>
+<body>
+
+  <!-- Task Overview -->
+  <div class="task-overview">
+    <h1>演習4: ScrollTrigger</h1>
+    <ol class="task-list">
+      <li><strong>課題1:</strong> フェードインセクション — 3つのセクションがスクロールで順番にフェードイン（markers: true で確認）</li>
+      <li><strong>課題2:</strong> パララックス — 背景がスクロールに連動してゆっくり動く（scrub を使用）</li>
+      <li><strong>課題3:</strong> 横スクロール — 3枚のパネルが横にスクロール（pin + scrub を使用）</li>
+    </ol>
+  </div>
+
+  <!-- Hero spacer -->
+  <div class="hero">
+    <p>↓ スクロールしてね ↓</p>
+  </div>
+
+  <!-- 課題1: フェードインセクション -->
+  <div class="fade-section" id="section1">
+    <h2>セクション 1</h2>
+    <div class="fade-boxes">
+      <div class="fade-box"></div>
+      <div class="fade-box"></div>
+      <div class="fade-box"></div>
+    </div>
+  </div>
+
+  <div class="fade-section" id="section2">
+    <h2>セクション 2</h2>
+    <div class="fade-boxes">
+      <div class="fade-box"></div>
+      <div class="fade-box"></div>
+      <div class="fade-box"></div>
+    </div>
+  </div>
+
+  <div class="fade-section" id="section3">
+    <h2>セクション 3</h2>
+    <div class="fade-boxes">
+      <div class="fade-box"></div>
+      <div class="fade-box"></div>
+      <div class="fade-box"></div>
+    </div>
+  </div>
+
+  <!-- 課題2: パララックス -->
+  <div class="parallax-section" id="parallax">
+    <div class="parallax-bg" id="parallax-bg"></div>
+    <div class="parallax-text">
+      <h2>パララックス効果</h2>
+      <p>背景がゆっくり動くのを感じてみよう</p>
+    </div>
+  </div>
+
+  <!-- 課題3: 横スクロール -->
+  <div class="horizontal-wrapper" id="horizontal-wrapper">
+    <div class="horizontal-container" id="horizontal-container">
+      <div class="panel">Panel 1</div>
+      <div class="panel">Panel 2</div>
+      <div class="panel">Panel 3</div>
+    </div>
+  </div>
+
+  <!-- Footer spacer -->
+  <div class="footer-spacer">
+    <p>おわり</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // --- 課題1: フェードインセクション ---
+    // TODO: #section1, #section2, #section3 それぞれの .fade-box に対して
+    // gsap.from() で opacity:0, y:60, stagger:0.2 を設定
+    // scrollTrigger: { trigger: セクション, start: "top 80%", markers: true }
+
+
+    // --- 課題2: パララックス ---
+    // TODO: #parallax-bg を gsap.to() で y: 100 にアニメーション
+    // scrollTrigger: { trigger: "#parallax", start: "top bottom", end: "bottom top", scrub: true }
+
+
+    // --- 課題3: 横スクロール ---
+    // TODO: #horizontal-container を gsap.to() で x に移動量を設定
+    // scrollTrigger: {
+    //   trigger: "#horizontal-wrapper",
+    //   pin: true,
+    //   scrub: 1,
+    //   end: () => "+=" + document.getElementById("horizontal-container").offsetWidth
+    // }
+
+  </script>
+</body>
+</html>

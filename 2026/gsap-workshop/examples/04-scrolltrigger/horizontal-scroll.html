@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScrollTrigger - 横スクロール</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; color: #333; }
+  .intro {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0fdf4;
+  }
+  .intro p {
+    font-size: 1.4em;
+    color: #555;
+    letter-spacing: 0.05em;
+  }
+  .panels-wrapper {
+    overflow: hidden;
+  }
+  .panels {
+    display: flex;
+    width: 400vw;
+  }
+  .panel {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .panel h2 {
+    font-size: 2em;
+    color: #333;
+  }
+  .panel-1 { background: #e8f5e9; }
+  .panel-2 { background: #e3f2fd; }
+  .panel-3 { background: #fff3e0; }
+  .panel-4 { background: #fce4ec; }
+  .outro {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+  }
+  .outro p {
+    font-size: 1.2em;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+  <div class="intro">
+    <p>↓ スクロールで横に進みます ↓</p>
+  </div>
+
+  <div class="panels-wrapper">
+    <div class="panels">
+      <div class="panel panel-1"><h2>Panel 1</h2></div>
+      <div class="panel panel-2"><h2>Panel 2</h2></div>
+      <div class="panel panel-3"><h2>Panel 3</h2></div>
+      <div class="panel panel-4"><h2>Panel 4</h2></div>
+    </div>
+  </div>
+
+  <div class="outro">
+    <p>横スクロール完了！</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    const panels = document.querySelector('.panels');
+
+    gsap.to('.panels', {
+      x: () => -(panels.scrollWidth - window.innerWidth),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.panels-wrapper',
+        start: 'top top',
+        end: () => '+=' + (panels.scrollWidth - window.innerWidth),
+        pin: true,
+        scrub: 1,
+        invalidateOnRefresh: true
+      }
+    });
+  </script>
+</body>
+</html>

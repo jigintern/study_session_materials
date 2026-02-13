@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control UI Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; gap: 36px; }
+  .stage { position: relative; width: 500px; height: 200px; }
+  .box { width: 80px; height: 80px; background: #3b82f6; border-radius: 8px; position: absolute; top: 0; left: 0; }
+  .controls { display: flex; gap: 12px; align-items: center; }
+  .controls button {
+    padding: 10px 24px; border: none; border-radius: 6px; font-size: 1em;
+    font-weight: 600; cursor: pointer; color: #fff; transition: opacity 0.2s;
+  }
+  .controls button:hover { opacity: 0.85; }
+  .btn-play { background: #22c55e; }
+  .btn-pause { background: #f59e0b; }
+  .btn-reverse { background: #8b5cf6; }
+  .btn-restart { background: #ef4444; }
+  .slider-wrap { display: flex; align-items: center; gap: 12px; }
+  .slider-wrap label { font-size: 0.95em; font-weight: 600; color: #555; }
+  input[type="range"] {
+    width: 320px; height: 6px; -webkit-appearance: none; appearance: none;
+    background: #e0e0e0; border-radius: 3px; outline: none; cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px; background: #3b82f6;
+    border-radius: 50%; cursor: pointer;
+  }
+  .progress-label { font-size: 0.95em; font-weight: 600; color: #3b82f6; min-width: 40px; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="box" id="box"></div>
+  </div>
+  <div class="controls">
+    <button class="btn-play" onclick="tl.play()">Play</button>
+    <button class="btn-pause" onclick="tl.pause()">Pause</button>
+    <button class="btn-reverse" onclick="tl.reverse()">Reverse</button>
+    <button class="btn-restart" onclick="tl.restart()">Restart</button>
+  </div>
+  <div class="slider-wrap">
+    <label>Progress</label>
+    <input type="range" id="slider" min="0" max="1" step="0.01" value="0">
+    <span class="progress-label" id="progressLabel">0%</span>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+    const slider = document.getElementById('slider');
+    const progressLabel = document.getElementById('progressLabel');
+    let dragging = false;
+
+    const tl = gsap.timeline({
+      paused: true,
+      onUpdate() {
+        if (!dragging) {
+          slider.value = tl.progress();
+          progressLabel.textContent = Math.round(tl.progress() * 100) + '%';
+        }
+      }
+    });
+
+    tl.to('#box', { x: 300, duration: 1, ease: 'power2.inOut' })
+      .to('#box', { y: 150, duration: 1, ease: 'power2.inOut' })
+      .to('#box', { rotation: 360, duration: 1, ease: 'power2.inOut' });
+
+    slider.addEventListener('mousedown', () => { dragging = true; tl.pause(); });
+    slider.addEventListener('input', () => {
+      const v = parseFloat(slider.value);
+      tl.progress(v);
+      progressLabel.textContent = Math.round(v * 100) + '%';
+    });
+    slider.addEventListener('mouseup', () => { dragging = false; });
+    slider.addEventListener('touchstart', () => { dragging = true; tl.pause(); });
+    slider.addEventListener('touchend', () => { dragging = false; });
+  </script>
+</body>
+</html>

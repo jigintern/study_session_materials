@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Load Animation Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: 'Segoe UI', sans-serif; }
+  nav {
+    background: #333; height: 50px; display: flex; align-items: center;
+    padding: 0 30px; color: #fff; font-weight: 600; font-size: 1.1em;
+  }
+  nav span { opacity: 0.9; }
+  .hero {
+    max-width: 600px; margin: 80px auto; text-align: center;
+    padding: 0 20px;
+  }
+  .hero h1 { font-size: 2.5em; color: #222; margin-bottom: 16px; }
+  .hero p { font-size: 1.15em; color: #666; line-height: 1.6; margin-bottom: 32px; }
+  .cta {
+    display: inline-block; padding: 14px 40px; background: #3b82f6; color: #fff;
+    border: none; border-radius: 8px; font-size: 1.1em; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+  }
+</style>
+</head>
+<body>
+  <nav id="nav"><span>MyBrand</span></nav>
+  <div class="hero">
+    <h1 id="heading">Welcome</h1>
+    <p id="desc">美しいアニメーションで、<br>ユーザー体験を向上させましょう。</p>
+    <a class="cta" id="cta">Get Started</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+    function buildTimeline() {
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
+
+      // set initial states
+      gsap.set('#nav', { y: -100 });
+      gsap.set('#heading', { opacity: 0, y: 50 });
+      gsap.set('#desc', { opacity: 0, y: 30 });
+      gsap.set('#cta', { opacity: 0, scale: 0.8 });
+
+      tl.to('#nav', { y: 0, duration: 0.6, ease: 'power3.out' })
+        .to('#heading', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.2')
+        .to('#desc', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+        .to('#cta', { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.7)' }, '-=0.2');
+
+      return tl;
+    }
+
+    buildTimeline();
+  </script>
+</body>
+</html>

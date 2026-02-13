@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScrollTrigger - scrub</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; color: #333; }
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #0ae448;
+    transform-origin: left;
+    transform: scaleX(0);
+    z-index: 100;
+  }
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f0fdf4;
+    gap: 16px;
+  }
+  .hero h1 {
+    font-size: 1.6em;
+    color: #333;
+  }
+  .hero p {
+    font-size: 1.1em;
+    color: #555;
+  }
+  .track-section {
+    padding: 80px 40px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    background: #fff;
+  }
+  .track-section h2 {
+    font-size: 1.3em;
+    color: #333;
+  }
+  .track {
+    width: 560px;
+    height: 80px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .track-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #ddd;
+    transform: translateY(-50%);
+  }
+  .box {
+    width: 80px;
+    height: 80px;
+    background: #0ae448;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-spacer {
+    height: 80vh;
+    background: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .footer-spacer p {
+    color: #888;
+    font-size: 1em;
+  }
+</style>
+</head>
+<body>
+  <div class="progress-bar"></div>
+
+  <div class="hero">
+    <h1>scrub デモ</h1>
+    <p>↓ スクロール量に連動してアニメーション ↓</p>
+  </div>
+
+  <div class="track-section">
+    <h2>スクロールでボックスが移動＆回転</h2>
+    <div class="track">
+      <div class="track-line"></div>
+      <div class="box"></div>
+    </div>
+  </div>
+
+  <div class="footer-spacer">
+    <p>↑ 上にスクロールして戻すとアニメーションも戻ります</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Progress bar
+    gsap.to('.progress-bar', {
+      scaleX: 1,
+      scrollTrigger: {
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: true
+      }
+    });
+
+    // Box on track
+    gsap.to('.box', {
+      x: 400,
+      rotation: 360,
+      scrollTrigger: {
+        trigger: '.track-section',
+        start: 'top center',
+        end: 'bottom center',
+        scrub: 1,
+        markers: true
+      }
+    });
+  </script>
+</body>
+</html>

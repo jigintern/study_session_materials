@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>演習3: Timeline</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; padding: 40px; }
+  h1 { font-size: 1.5em; color: #333; margin-bottom: 32px; padding-bottom: 8px; border-bottom: 3px solid #0ae448; }
+  .task { margin-bottom: 40px; padding: 24px; border: 1px solid #e0e0e0; border-radius: 12px; }
+  .task h2 { font-size: 1.1em; color: #0ae448; margin-bottom: 8px; }
+  .task p { font-size: 0.85em; color: #888; margin-bottom: 16px; }
+  .controls { margin-top: 12px; display: flex; gap: 8px; }
+  button {
+    padding: 8px 20px; border: none; border-radius: 6px; font-size: 0.9em;
+    font-weight: 600; cursor: pointer; color: #fff; background: #0ae448;
+  }
+  button.reset { background: #999; }
+
+  /* 課題1: loading dots */
+  .dots { display: flex; gap: 16px; padding: 20px 0; }
+  .dot { width: 20px; height: 20px; border-radius: 50%; background: #0ae448; }
+
+  /* 課題2: cards */
+  .cards { display: flex; gap: 16px; }
+  .card {
+    width: 150px; height: 100px; border: 1px solid #e0e0e0; border-radius: 12px;
+    padding: 20px; display: flex; align-items: center; justify-content: center;
+    font-size: 0.9em; font-weight: 600; color: #333; background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  /* 課題3: label jump */
+  .stage { padding: 20px 0; min-height: 120px; position: relative; }
+  .stage .circle {
+    width: 60px; height: 60px; border-radius: 50%; background: #0ae448;
+    position: absolute; top: 20px; left: 0;
+  }
+  .stage .square {
+    width: 60px; height: 60px; background: #333; border-radius: 8px;
+    position: absolute; top: 20px; left: 80px;
+  }
+  .stage .triangle {
+    width: 0; height: 0;
+    border-left: 30px solid transparent; border-right: 30px solid transparent;
+    border-bottom: 52px solid #0ae448;
+    position: absolute; top: 24px; left: 160px; opacity: 0.8;
+  }
+</style>
+</head>
+<body>
+  <h1>演習3: Timeline</h1>
+
+  <!-- 課題1 -->
+  <div class="task">
+    <h2>課題1: ローディングドット</h2>
+    <p>ヒント: timeline({ repeat: -1 }) で .dot を stagger で scale アニメーション</p>
+    <div class="dots" id="loading-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="controls">
+      <button onclick="task1()">実行</button>
+      <button class="reset" onclick="if(tl1) tl1.kill(); gsap.set('#loading-dots .dot',{scale:1,y:0})">リセット</button>
+    </div>
+  </div>
+
+  <!-- 課題2 -->
+  <div class="task">
+    <h2>課題2: 3枚のカード順次フェードイン</h2>
+    <p>ヒント: timeline で .from() を使い、"-=0.3" で少し重ねる</p>
+    <div class="cards" id="card-group">
+      <div class="card">Card 1</div>
+      <div class="card">Card 2</div>
+      <div class="card">Card 3</div>
+    </div>
+    <div class="controls">
+      <button onclick="task2()">実行</button>
+      <button class="reset" onclick="if(tl2) tl2.kill(); gsap.set('#card-group .card',{opacity:1,y:0})">リセット</button>
+    </div>
+  </div>
+
+  <!-- 課題3 -->
+  <div class="task">
+    <h2>課題3: ラベルでジャンプ</h2>
+    <p>ヒント: tl.addLabel("名前") でラベルを追加し、tl.play("名前") でジャンプ</p>
+    <div class="stage" id="label-stage">
+      <div class="circle"></div>
+      <div class="square"></div>
+      <div class="triangle"></div>
+    </div>
+    <div class="controls">
+      <button onclick="jumpIntro()">イントロ</button>
+      <button onclick="jumpMain()">メイン</button>
+      <button class="reset" onclick="if(tl3) { tl3.pause(0); }">リセット</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+    let tl1, tl2, tl3;
+
+    // --- 課題1: ローディングドット ---
+    function task1() {
+      // TODO: gsap.timeline({ repeat: -1, yoyo: true }) を作成
+      // .dot を y: -20, stagger: 0.15, duration: 0.4 でアニメーション
+
+    }
+
+    // --- 課題2: 3枚のカード順次フェードイン ---
+    function task2() {
+      // TODO: gsap.timeline() を作成
+      // 各 #card-group .card に .from() で opacity:0, y:20 を設定
+      // 2枚目以降は "-=0.3" のポジションパラメータで重ねる
+
+    }
+
+    // --- 課題3: ラベルでジャンプ ---
+    // TODO: gsap.timeline({ paused: true }) を作成して tl3 に代入
+    // 1) .addLabel("intro")
+    // 2) .circle を x:300 に移動
+    // 3) .addLabel("main")
+    // 4) .square を x:300, rotation:360 に移動
+    // 5) .triangle を x:300, opacity:1 に移動
+
+
+    function jumpIntro() {
+      // TODO: tl3.play("intro")
+
+    }
+
+    function jumpMain() {
+      // TODO: tl3.play("main")
+
+    }
+  </script>
+</body>
+</html>
