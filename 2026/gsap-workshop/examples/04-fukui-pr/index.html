@@ -12,10 +12,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 
+  <!-- リセット & 基本設定 -->
   <style>
-    /* ========================================
-       リセット & 基本設定
-       ======================================== */
     * {
       margin: 0;
       padding: 0;
@@ -48,10 +46,27 @@
       font-family: 'Playfair Display', 'Noto Sans JP', serif;
       font-weight: 700;
     }
+  </style>
+</head>
+<body>
+  <!-- GSAP & プラグイン CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
 
-    /* ========================================
-       ローディング画面
-       ======================================== */
+  <!-- GSAP プラグインを登録 -->
+  <script>
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+  </script>
+
+
+  <!-- ========================================
+
+      1. ローディング画面
+      学習ポイント: gsap.timeline() で連続アニメーション
+
+  ======================================== -->
+  <style>
     .loader {
       position: fixed;
       inset: 0;
@@ -72,10 +87,102 @@
     .loader-text span {
       display: inline-block;
     }
+  </style>
+  <div class="loader" id="loader">
+    <div class="loader-text">
+      <span>F</span><span>U</span><span>K</span><span>U</span><span>I</span>
+    </div>
+  </div>
+  <script>
+    // 各セクションのアニメーションを読み込む
+    function initPageAnimations() {
+      initHeroAnimation();
+      initProgressBar();
+      initIntroAnimation();
+      initZoomAnimation();
+      initSpotsAnimation();
+      initGourmetAnimation();
+      initAccessAnimation();
+      initSmoothScroll();
+    }
 
-    /* ========================================
-       ナビゲーション
-       ======================================== */
+    function initLoader() {
+      const loaderTl = gsap.timeline({
+        onComplete: initPageAnimations  // ローディング完了後にメインアニメーション開始
+      });
+
+      // 文字を順番にアニメーション (stagger)
+      loaderTl
+        .from('.loader-text span', {
+          y: 100,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.1,        // 0.1秒ずつずらして実行
+          ease: 'back.out(1.7)'  // バウンド効果
+        })
+        .to('.loader-text span', {
+          y: -100,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.05,
+          ease: 'power2.in',
+          delay: 0.5
+        })
+        .to('.loader', {
+          yPercent: -100,      // 上に100%移動
+          duration: 1,
+          ease: 'power4.inOut'
+        });
+    }
+
+    // ページ読み込み時に実行
+    window.addEventListener('load', () => {
+      initLoader();
+    });
+  </script>
+
+  <!-- ========================================
+
+      3. プログレスバー
+      学習ポイント: ScrollTrigger + scrub
+
+  ======================================== -->
+  <style>
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+      transform-origin: left;
+      transform: scaleX(0);
+      z-index: 1000;
+    }
+  </style>
+  <div class="progress-bar" id="progress"></div>
+  <script>
+    function initProgressBar() {
+      gsap.to('#progress', {
+        scaleX: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: 'body',
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: true  // スクロール量に追従
+        }
+      });
+    }
+  </script>
+
+  <!-- ========================================
+
+      9. ナビゲーションのスムーススクロール
+      学習ポイント: ScrollToPlugin
+      メモ: footerのリンクも同様に動作します
+
+  ======================================== -->
+  <style>
     .nav {
       position: fixed;
       top: 0;
@@ -108,10 +215,47 @@
       text-decoration: none;
       font-size: 14px;
     }
+  </style>
+  <nav class="nav">
+    <a href="#" class="nav-logo">FUKUI</a>
+    <ul class="nav-links">
+      <li><a href="#intro">About</a></li>
+      <li><a href="#slide-1">Spots</a></li>
+      <li><a href="#gourmet">Gourmet</a></li>
+      <li><a href="#access">Access</a></li>
+    </ul>
+  </nav>
+  <script>
+    function initSmoothScroll() {
+      document.querySelectorAll('.nav-links a, .footer-links a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          const href = link.getAttribute('href');
 
-    /* ========================================
-       ヒーローセクション
-       ======================================== */
+          // #で始まるリンクのみ処理
+          if (href.startsWith('#')) {
+            e.preventDefault();
+
+            gsap.to(window, {
+              duration: 1.5,
+              scrollTo: {
+                y: href,
+                offsetY: 0
+              },
+              ease: 'power2.inOut'
+            });
+          }
+        });
+      });
+    }
+  </script>
+
+  <!-- ========================================
+
+      2. ヒーローセクション
+      学習ポイント: Timeline で複数要素を順番にアニメーション
+
+  ======================================== -->
+  <style>
     .hero {
       height: 100vh;
       position: relative;
@@ -200,10 +344,83 @@
       background: white;
       transform-origin: top;
     }
+  </style>
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <img src="https://images.unsplash.com/photo-1528164344705-47542687000d?w=1920&h=1080&fit=crop"
+           alt="福井県の海岸風景">
+      <div class="hero-overlay"></div>
+    </div>
 
-    /* ========================================
-       イントロセクション
-       ======================================== */
+    <div class="hero-content">
+      <p class="hero-subtitle">DISCOVER</p>
+      <h1 class="hero-title">
+        <span class="hero-title-line">FUKUI</span>
+      </h1>
+      <p class="hero-description">
+        自然と歴史が織りなす、日本海に面した美しい県。<br>
+        恐竜、禅、そして海の幸が待っています。
+      </p>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+  <script>
+    function initHeroAnimation() {
+      const heroTl = gsap.timeline({ delay: 0.2 });
+
+      heroTl
+        // タイトルを下から登場
+        .to('.hero-title-line', {
+          y: 0,
+          duration: 1.2,
+          ease: 'power4.out'
+        })
+        // サブタイトルをフェードイン（前の終了より0.6秒前に開始）
+        .to('.hero-subtitle', {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power2.out'
+        }, '-=0.6')  // タイミング制御: 前のアニメーション終了の0.6秒前
+        // 説明文をフェードイン
+        .to('.hero-description', {
+          opacity: 1,
+          duration: 1,
+          ease: 'power2.out'
+        }, '-=0.5')
+        // スクロールインジケーターの線をアニメーション
+        .from('.scroll-line', {
+          scaleY: 0,
+          transformOrigin: 'top',
+          duration: 1,
+          ease: 'power2.out'
+        }, '-=0.3');
+
+      // スクロールインジケーターの繰り返しアニメーション
+      // 学習ポイント: repeat と yoyo でループ
+      gsap.to('.scroll-line', {
+        scaleY: 0.3,
+        transformOrigin: 'top',
+        duration: 1.5,
+        repeat: -1,        // 無限ループ
+        yoyo: true,        // 往復
+        ease: 'power1.inOut',
+        delay: 2
+      });
+    }
+  </script>
+
+  <!-- ========================================
+
+      4. イントロセクションのアニメーション
+      学習ポイント: ScrollTrigger でスクロール時に発火
+
+  ======================================== -->
+  <style>
     .intro {
       padding: 150px 40px;
       background: var(--color-light);
@@ -295,11 +512,116 @@
       font-size: 32px;
       font-weight: 700;
     }
+  </style>
+  <section class="intro" id="intro">
+    <div class="intro-container">
+      <div class="intro-text">
+        <p class="intro-label">ABOUT FUKUI</p>
+        <h2 class="intro-heading">歴史と自然が<br>息づく地</h2>
+        <p class="intro-paragraph">
+          福井県は日本海に面し、豊かな自然と深い歴史を持つ県です。
+          世界三大恐竜博物館のひとつを有し、曹洞宗の大本山・永平寺、
+          そして雄大な東尋坊など、見どころが満載です。
+        </p>
+        <p class="intro-paragraph">
+          冬には新鮮な越前がにが楽しめ、伝統工芸の越前漆器や
+          越前和紙など、日本の文化を肌で感じることができます。
+        </p>
 
-    /* ========================================
-       円形ズームオーバーレイ
-       ScrollTrigger + pin + scrub + CSS mask
-       ======================================== */
+        <div class="intro-stats">
+          <div class="stat-item">
+            <div class="stat-number" data-count="76">0</div>
+            <div class="stat-label">万人の人口</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-count="4190">0</div>
+            <div class="stat-label">km² 面積</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-image">
+        <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&h=1000&fit=crop"
+             alt="日本の禅寺">
+        <div class="intro-image-badge">
+          <span>Since</span>
+          1244
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    function initIntroAnimation() {
+      // テキスト部分
+      gsap.from('.intro-text > *', {
+        x: -50,
+        opacity: 0,
+        stagger: 0.2,
+        duration: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.intro',
+          start: 'top 70%',  // 画面の70%位置に来たら開始
+        }
+      });
+
+      // 画像部分
+      gsap.from('.intro-image img', {
+        scale: 1.2,
+        opacity: 0,
+        duration: 1.5,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.intro-image',
+          start: 'top 70%'
+        }
+      });
+
+      // バッジ（回転しながら登場）
+      gsap.from('.intro-image-badge', {
+        scale: 0,
+        rotation: -180,
+        opacity: 0,
+        duration: 1,
+        ease: 'back.out(1.7)',
+        scrollTrigger: {
+          trigger: '.intro-image',
+          start: 'top 50%'
+        }
+      });
+
+      // カウントアップアニメーション
+      // 学習ポイント: カスタムのTweenでonUpdateを使用
+      document.querySelectorAll('.stat-number').forEach(stat => {
+        const target = parseInt(stat.dataset.count);
+        const obj = { value: 0 };
+
+        gsap.to(obj, {
+          value: target,
+          duration: 2,
+          ease: 'power1.out',
+          scrollTrigger: {
+            trigger: stat,
+            start: 'top 80%'
+          },
+          onUpdate: () => {
+            stat.textContent = Math.round(obj.value);
+          }
+        });
+      });
+    }
+  </script>
+
+  <!-- ========================================
+
+      5. 観光スポットのパララックス効果
+      学習ポイント: ScrollTrigger + scrub でパララックス
+
+      8. 円形ズームアニメーション
+      学習ポイント: ScrollTrigger + pin + scrub + CSS mask 暗いオーバーレイの穴が広がり、観光スポットが現れる
+
+  ======================================== -->
+  <style>
     .zoom-overlay {
       position: absolute;
       inset: 0;
@@ -319,10 +641,6 @@
       letter-spacing: 0.2em;
     }
 
-    /* ========================================
-       観光スポットセクション
-       ScrollTrigger & パララックス
-       ======================================== */
     .slide {
       display: flex;
       align-items: stretch;
@@ -410,11 +728,170 @@
       width: 100%;
       height: 100%;
     }
+  </style>
+  <!-- スポット1: 恐竜博物館 -->
+  <section class="slide slide--1" id="slide-1">
+    <div class="col col--1">
+      <div class="col__content col__content--1">
+        <h2 class="col__content-title">
+          <span class="line__inner">恐竜</span><br>
+          <span class="line__inner">博物館</span>
+        </h2>
+        <div class="col__content-wrap">
+          <p class="col__content-txt">
+            世界三大恐竜博物館のひとつに数えられる、日本最大級の恐竜専門博物館。
+            44体以上の恐竜全身骨格や大型復元模型が展示され、
+            子どもから大人まで楽しめる迫力の空間が広がります。
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col--2">
+      <div class="col__image-wrap">
+        <img class="img img--1"
+             src="https://images.unsplash.com/photo-1601182207230-1b165dea2212?w=1200&h=1600&fit=crop"
+             alt="恐竜博物館">
+      </div>
+    </div>
+    <!-- 円形ズームオーバーレイ 学習ポイント: ScrollTrigger + pin + scrub + CSS mask -->
+    <div class="zoom-overlay">
+      <h2 class="zoom-heading">さあ、福井の旅へ</h2>
+    </div>
+  </section>
+  <!-- スポット2: 東尋坊 -->
+  <section class="slide slide--2" id="slide-2">
+    <div class="col col--1">
+      <div class="col__content col__content--2">
+        <h2 class="col__content-title">
+          <span class="line__inner">東尋坊</span><br>
+          <span class="line__inner">絶景</span>
+        </h2>
+        <div class="col__content-wrap">
+          <p class="col__content-txt">
+            約1kmにわたって続く、高さ25mの断崖絶壁。
+            世界でも珍しい輝石安山岩の柱状節理が織りなす雄大な景観は、
+            国の天然記念物および名勝に指定されています。
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col--2">
+      <div class="col__image-wrap">
+        <img class="img img--1"
+             src="https://images.unsplash.com/photo-1593892370074-ec754b1ac563?w=1200&h=1600&fit=crop"
+             alt="東尋坊">
+      </div>
+    </div>
+  </section>
+  <!-- スポット3: 永平寺 -->
+  <section class="slide slide--3" id="slide-3">
+    <div class="col col--1">
+      <div class="col__content col__content--3">
+        <h2 class="col__content-title">
+          <span class="line__inner">永平寺</span><br>
+          <span class="line__inner">禅の心</span>
+        </h2>
+        <div class="col__content-wrap">
+          <p class="col__content-txt">
+            1244年に道元禅師によって開かれた、曹洞宗の大本山。
+            樹齢700年を超える老杉に囲まれた境内には七堂伽藍が立ち並び、
+            今も約150名の修行僧が厳しい修行を続けています。
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col col--2">
+      <div class="col__image-wrap">
+        <img class="img img--1"
+             src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1200&h=1600&fit=crop"
+             alt="永平寺">
+      </div>
+    </div>
+  </section>
+  <script>
+    // 5. 観光スポットのパララックス効果アニメーション
+    function initSpotsAnimation() {
+      const slides = document.querySelectorAll('.slide');
 
-    /* ========================================
-       グルメセクション - 横スクロール
-       ScrollTrigger + pin + scrub
-       ======================================== */
+      // 各スライドのアニメーション
+      slides.forEach((slide) => {
+        // スライドが画面に入った時のアニメーション
+        let tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: slide,
+            start: '40% 50%'  // スライドの40%が画面の50%に来たら発火
+          }
+        });
+
+        // タイトルのアニメーション
+        tl.from(slide.querySelectorAll('.col__content-title'), {
+          ease: 'power4',
+          y: '+=5vh',
+          duration: 2.5
+        })
+        // タイトル内の文字を下から登場
+        .from(slide.querySelectorAll('.line__inner'), {
+          y: 200,
+          duration: 2,
+          ease: 'power4',
+          stagger: 0.1
+        }, 0)
+        // テキストを横からフェードイン
+        .from(slide.querySelectorAll('.col__content-txt'), {
+          x: 100,
+          y: 50,
+          opacity: 0,
+          duration: 2,
+          ease: 'power4'
+        }, 0.4);
+
+        // 画像のパララックス効果
+        // 学習ポイント: fromTo + scrub でスクロールに追従するパララックス
+        gsap.fromTo(slide.querySelector('.col__image-wrap'), {
+          y: '-30vh'  // 開始位置
+        }, {
+          y: '30vh',   // 終了位置（計60vhの移動）
+          scrollTrigger: {
+            trigger: slide,
+            scrub: true,  // スクロール量に完全追従
+            start: 'top bottom',
+            end: 'bottom top',
+            snap: {
+              snapTo: 0.5,
+              duration: 1,
+              ease: 'power4.inOut'
+            }
+          },
+          ease: 'none'
+        });
+      });
+    }
+
+    // 8. 円形ズームアニメーション
+    function initZoomAnimation() {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.slide--1',
+          scrub: true,
+          start: 'top top',
+          end: '+=200%',   // スクロール量
+          pin: true,        // セクションを固定
+        }
+      });
+
+      tl.to('.zoom-overlay', {
+        '--zoom-size': '150vw',  // CSS変数をアニメーション → 穴が拡大
+      })
+    }
+  </script>
+
+  <!-- ========================================
+
+      6. グルメセクション - 横スクロール
+      学習ポイント: ScrollTrigger + pin + scrub で横スクロール
+
+  ======================================== -->
+  <style>
     .gourmet-container {
       position: relative;
       overflow: hidden;
@@ -506,10 +983,152 @@
       color: #666;
       line-height: 1.8;
     }
+  </style>
+  <div class="gourmet-container" id="gourmet">
+    <div class="gourmet-wrapper">
+      <div class="gourmet-scroller">
+        <!-- ヘッダーカード -->
+        <div class="gourmet-header-card">
+          <p class="gourmet-label">LOCAL GOURMET</p>
+          <h2 class="gourmet-title">福井の味覚</h2>
+          <p class="gourmet-description">
+            日本海の恵みと、山々に育まれた食材。
+            福井には、ここでしか味わえない
+            絶品グルメが揃っています。
+          </p>
+        </div>
+        <!-- グルメカード1: 越前がに -->
+        <article class="gourmet-card">
+          <div class="gourmet-card-image">
+            <img src="https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=600&h=600&fit=crop"
+                 alt="カニ料理">
+          </div>
+          <div class="gourmet-card-content">
+            <h3 class="gourmet-card-name">越前がに</h3>
+            <p class="gourmet-card-description">
+              冬の味覚の王様。11月から3月にかけて解禁される越前がには、
+              身がぎっしり詰まり、甘みと旨味が凝縮された逸品です。
+            </p>
+          </div>
+        </article>
+        <!-- グルメカード2: 越前おろしそば -->
+        <article class="gourmet-card">
+          <div class="gourmet-card-image">
+            <img src="https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=600&h=600&fit=crop"
+                 alt="そば">
+          </div>
+          <div class="gourmet-card-content">
+            <h3 class="gourmet-card-name">越前おろしそば</h3>
+            <p class="gourmet-card-description">
+              福井が誇る郷土料理。冷たいそばに大根おろしと出汁をかけて食べる、
+              シンプルながら奥深い味わいが特徴です。
+            </p>
+          </div>
+        </article>
+        <!-- グルメカード3: 海鮮丼 -->
+        <article class="gourmet-card">
+          <div class="gourmet-card-image">
+            <img src="https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=600&h=600&fit=crop"
+                 alt="海鮮丼">
+          </div>
+          <div class="gourmet-card-content">
+            <h3 class="gourmet-card-name">海鮮丼</h3>
+            <p class="gourmet-card-description">
+              日本海で獲れた新鮮な魚介をふんだんに盛り付けた贅沢な一杯。
+              甘エビ、ブリ、イカなど、旬の味を堪能できます。
+            </p>
+          </div>
+        </article>
+        <!-- グルメカード4: ソースカツ丼 -->
+        <article class="gourmet-card">
+          <div class="gourmet-card-image">
+            <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&h=600&fit=crop"
+                 alt="ソースカツ丼">
+          </div>
+          <div class="gourmet-card-content">
+            <h3 class="gourmet-card-name">ソースカツ丼</h3>
+            <p class="gourmet-card-description">
+              福井発祥のB級グルメ。サクサクの薄いカツに、
+              甘辛いソースが染み込んだ、ご飯が進む一品です。
+            </p>
+          </div>
+        </article>
+        <!-- グルメカード5: 焼き鯖寿司 -->
+        <article class="gourmet-card">
+          <div class="gourmet-card-image">
+            <img src="https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=600&h=600&fit=crop"
+                 alt="焼き鯖寿司">
+          </div>
+          <div class="gourmet-card-content">
+            <h3 class="gourmet-card-name">焼き鯖寿司</h3>
+            <p class="gourmet-card-description">
+              若狭地方の名物。香ばしく焼いた鯖を酢飯で巻いた、
+              駅弁としても人気の郷土寿司です。
+            </p>
+          </div>
+        </article>
+        <!-- グルメカード6: 福井の地酒 -->
+        <article class="gourmet-card">
+          <div class="gourmet-card-image">
+            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&h=600&fit=crop"
+                 alt="日本酒">
+          </div>
+          <div class="gourmet-card-content">
+            <h3 class="gourmet-card-name">福井の地酒</h3>
+            <p class="gourmet-card-description">
+              白山水系の名水と、良質な米が育む福井の日本酒。
+              黒龍、梵など、全国的に評価の高い銘酒が揃います。
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+  <script>
+    function initGourmetAnimation() {
+      const container = document.querySelector('.gourmet-scroller');
+      if (!container) return;
 
-    /* ========================================
-       アクセスセクション
-       ======================================== */
+      // スクローラーの幅を計算（画面幅を引いた分だけスクロール）
+      const containerWidth = container.scrollWidth - window.innerWidth;
+
+      // 横スクロールアニメーション
+      // 学習ポイント: gsap.to() + ScrollTrigger でx軸に移動
+      gsap.to(container, {
+        x: () => -containerWidth,  // 左方向に移動（マイナス値）
+        ease: 'none',              // スクロールに完全に追従
+        scrollTrigger: {
+          trigger: '.gourmet-wrapper',
+          start: 'top top',        // 画面上部に来たら開始
+          end: () => '+=' + containerWidth,  // スクロール量 = コンテナ幅
+          scrub: 0.5,              // 0.5秒かけて追従（滑らかさ）
+          pin: '.gourmet-container',  // コンテナをピン留め（固定）
+          invalidateOnRefresh: true,  // リサイズ時に再計算
+        }
+      });
+
+      // カードの登場アニメーション
+      gsap.from('.gourmet-card', {
+        y: 50,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.gourmet-wrapper',
+          start: 'top 80%'
+        }
+      });
+    }
+  </script>
+
+  <!-- ========================================
+
+      7. アクセスセクションのアニメーション
+      学習ポイント: Timeline + ScrollTrigger
+
+  ======================================== -->
+  <style>
     .access {
       padding: 150px 40px;
       background: var(--color-ocean);
@@ -674,686 +1293,7 @@
     .rail-labels span:last-child {
       text-align: right;
     }
-
-    /* ========================================
-       フッター
-       ======================================== */
-    .footer {
-      padding: 80px 40px;
-      background: var(--color-dark);
-      color: white;
-      text-align: center;
-    }
-
-    .footer-logo {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: #888;
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    .footer-copyright {
-      font-size: 12px;
-      color: #666;
-    }
-
-    /* ========================================
-       プログレスバー
-       ScrollTrigger: scrub でスクロール連動
-       ======================================== */
-    .progress-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
-      transform-origin: left;
-      transform: scaleX(0);
-      z-index: 1000;
-    }
   </style>
-</head>
-<body>
-  <!-- GSAP & プラグイン CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
-
-  <!-- GSAP プラグインを登録 -->
-  <script>
-    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-  </script>
-
-
-  <!-- ========================================
-
-      1. ローディング画面
-      学習ポイント: gsap.timeline() で連続アニメーション
-
-  ======================================== -->
-  <div class="loader" id="loader">
-    <div class="loader-text">
-      <span>F</span><span>U</span><span>K</span><span>U</span><span>I</span>
-    </div>
-  </div>
-  <script>
-    // 各セクションのアニメーションを読み込む
-    function initPageAnimations() {
-      initHeroAnimation();
-      initProgressBar();
-      initIntroAnimation();
-      initZoomAnimation();
-      initSpotsAnimation();
-      initGourmetAnimation();
-      initAccessAnimation();
-      initSmoothScroll();
-    }
-
-    function initLoader() {
-      const loaderTl = gsap.timeline({
-        onComplete: initPageAnimations  // ローディング完了後にメインアニメーション開始
-      });
-
-      // 文字を順番にアニメーション (stagger)
-      loaderTl
-        .from('.loader-text span', {
-          y: 100,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.1,        // 0.1秒ずつずらして実行
-          ease: 'back.out(1.7)'  // バウンド効果
-        })
-        .to('.loader-text span', {
-          y: -100,
-          opacity: 0,
-          duration: 0.5,
-          stagger: 0.05,
-          ease: 'power2.in',
-          delay: 0.5
-        })
-        .to('.loader', {
-          yPercent: -100,      // 上に100%移動
-          duration: 1,
-          ease: 'power4.inOut'
-        });
-    }
-
-    // ページ読み込み時に実行
-    window.addEventListener('load', () => {
-      initLoader();
-    });
-  </script>
-
-  <!-- ========================================
-
-      3. プログレスバー
-      学習ポイント: ScrollTrigger + scrub
-
-  ======================================== -->
-  <div class="progress-bar" id="progress"></div>
-  <script>
-    function initProgressBar() {
-      gsap.to('#progress', {
-        scaleX: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: 'body',
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: true  // スクロール量に追従
-        }
-      });
-    }
-  </script>
-
-  <!-- ========================================
-
-      9. ナビゲーションのスムーススクロール
-      学習ポイント: ScrollToPlugin
-      メモ: footerのリンクも同様に動作します
-
-  ======================================== -->
-  <nav class="nav">
-    <a href="#" class="nav-logo">FUKUI</a>
-    <ul class="nav-links">
-      <li><a href="#intro">About</a></li>
-      <li><a href="#slide-1">Spots</a></li>
-      <li><a href="#gourmet">Gourmet</a></li>
-      <li><a href="#access">Access</a></li>
-    </ul>
-  </nav>
-  <script>
-    function initSmoothScroll() {
-      document.querySelectorAll('.nav-links a, .footer-links a').forEach(link => {
-        link.addEventListener('click', (e) => {
-          const href = link.getAttribute('href');
-
-          // #で始まるリンクのみ処理
-          if (href.startsWith('#')) {
-            e.preventDefault();
-
-            gsap.to(window, {
-              duration: 1.5,
-              scrollTo: {
-                y: href,
-                offsetY: 0
-              },
-              ease: 'power2.inOut'
-            });
-          }
-        });
-      });
-    }
-  </script>
-
-  <!-- ========================================
-
-      2. ヒーローセクション
-      学習ポイント: Timeline で複数要素を順番にアニメーション
-
-  ======================================== -->
-  <section class="hero" id="hero">
-    <div class="hero-bg">
-      <img src="https://images.unsplash.com/photo-1528164344705-47542687000d?w=1920&h=1080&fit=crop"
-           alt="福井県の海岸風景">
-      <div class="hero-overlay"></div>
-    </div>
-
-    <div class="hero-content">
-      <p class="hero-subtitle">DISCOVER</p>
-      <h1 class="hero-title">
-        <span class="hero-title-line">FUKUI</span>
-      </h1>
-      <p class="hero-description">
-        自然と歴史が織りなす、日本海に面した美しい県。<br>
-        恐竜、禅、そして海の幸が待っています。
-      </p>
-    </div>
-
-    <div class="scroll-indicator">
-      <span>SCROLL</span>
-      <div class="scroll-line"></div>
-    </div>
-  </section>
-  <script>
-    function initHeroAnimation() {
-      const heroTl = gsap.timeline({ delay: 0.2 });
-
-      heroTl
-        // タイトルを下から登場
-        .to('.hero-title-line', {
-          y: 0,
-          duration: 1.2,
-          ease: 'power4.out'
-        })
-        // サブタイトルをフェードイン（前の終了より0.6秒前に開始）
-        .to('.hero-subtitle', {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'power2.out'
-        }, '-=0.6')  // タイミング制御: 前のアニメーション終了の0.6秒前
-        // 説明文をフェードイン
-        .to('.hero-description', {
-          opacity: 1,
-          duration: 1,
-          ease: 'power2.out'
-        }, '-=0.5')
-        // スクロールインジケーターの線をアニメーション
-        .from('.scroll-line', {
-          scaleY: 0,
-          transformOrigin: 'top',
-          duration: 1,
-          ease: 'power2.out'
-        }, '-=0.3');
-
-      // スクロールインジケーターの繰り返しアニメーション
-      // 学習ポイント: repeat と yoyo でループ
-      gsap.to('.scroll-line', {
-        scaleY: 0.3,
-        transformOrigin: 'top',
-        duration: 1.5,
-        repeat: -1,        // 無限ループ
-        yoyo: true,        // 往復
-        ease: 'power1.inOut',
-        delay: 2
-      });
-    }
-  </script>
-
-  <!-- ========================================
-
-      4. イントロセクションのアニメーション
-      学習ポイント: ScrollTrigger でスクロール時に発火
-
-  ======================================== -->
-  <section class="intro" id="intro">
-    <div class="intro-container">
-      <div class="intro-text">
-        <p class="intro-label">ABOUT FUKUI</p>
-        <h2 class="intro-heading">歴史と自然が<br>息づく地</h2>
-        <p class="intro-paragraph">
-          福井県は日本海に面し、豊かな自然と深い歴史を持つ県です。
-          世界三大恐竜博物館のひとつを有し、曹洞宗の大本山・永平寺、
-          そして雄大な東尋坊など、見どころが満載です。
-        </p>
-        <p class="intro-paragraph">
-          冬には新鮮な越前がにが楽しめ、伝統工芸の越前漆器や
-          越前和紙など、日本の文化を肌で感じることができます。
-        </p>
-
-        <div class="intro-stats">
-          <div class="stat-item">
-            <div class="stat-number" data-count="76">0</div>
-            <div class="stat-label">万人の人口</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number" data-count="4190">0</div>
-            <div class="stat-label">km² 面積</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="intro-image">
-        <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&h=1000&fit=crop"
-             alt="日本の禅寺">
-        <div class="intro-image-badge">
-          <span>Since</span>
-          1244
-        </div>
-      </div>
-    </div>
-  </section>
-  <script>
-    function initIntroAnimation() {
-      // テキスト部分
-      gsap.from('.intro-text > *', {
-        x: -50,
-        opacity: 0,
-        stagger: 0.2,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.intro',
-          start: 'top 70%',  // 画面の70%位置に来たら開始
-        }
-      });
-
-      // 画像部分
-      gsap.from('.intro-image img', {
-        scale: 1.2,
-        opacity: 0,
-        duration: 1.5,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.intro-image',
-          start: 'top 70%'
-        }
-      });
-
-      // バッジ（回転しながら登場）
-      gsap.from('.intro-image-badge', {
-        scale: 0,
-        rotation: -180,
-        opacity: 0,
-        duration: 1,
-        ease: 'back.out(1.7)',
-        scrollTrigger: {
-          trigger: '.intro-image',
-          start: 'top 50%'
-        }
-      });
-
-      // カウントアップアニメーション
-      // 学習ポイント: カスタムのTweenでonUpdateを使用
-      document.querySelectorAll('.stat-number').forEach(stat => {
-        const target = parseInt(stat.dataset.count);
-        const obj = { value: 0 };
-
-        gsap.to(obj, {
-          value: target,
-          duration: 2,
-          ease: 'power1.out',
-          scrollTrigger: {
-            trigger: stat,
-            start: 'top 80%'
-          },
-          onUpdate: () => {
-            stat.textContent = Math.round(obj.value);
-          }
-        });
-      });
-    }
-  </script>
-
-  <!-- ========================================
-
-      5. 観光スポットのパララックス効果
-      学習ポイント: ScrollTrigger + scrub でパララックス
-
-      8. 円形ズームアニメーション
-      学習ポイント: ScrollTrigger + pin + scrub + CSS mask 暗いオーバーレイの穴が広がり、観光スポットが現れる
-
-  ======================================== -->
-  <!-- スポット1: 恐竜博物館 -->
-  <section class="slide slide--1" id="slide-1">
-    <div class="col col--1">
-      <div class="col__content col__content--1">
-        <h2 class="col__content-title">
-          <span class="line__inner">恐竜</span><br>
-          <span class="line__inner">博物館</span>
-        </h2>
-        <div class="col__content-wrap">
-          <p class="col__content-txt">
-            世界三大恐竜博物館のひとつに数えられる、日本最大級の恐竜専門博物館。
-            44体以上の恐竜全身骨格や大型復元模型が展示され、
-            子どもから大人まで楽しめる迫力の空間が広がります。
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col col--2">
-      <div class="col__image-wrap">
-        <img class="img img--1"
-             src="https://images.unsplash.com/photo-1601182207230-1b165dea2212?w=1200&h=1600&fit=crop"
-             alt="恐竜博物館">
-      </div>
-    </div>
-    <!-- 円形ズームオーバーレイ 学習ポイント: ScrollTrigger + pin + scrub + CSS mask -->
-    <div class="zoom-overlay">
-      <h2 class="zoom-heading">さあ、福井の旅へ</h2>
-    </div>
-  </section>
-  <!-- スポット2: 東尋坊 -->
-  <section class="slide slide--2" id="slide-2">
-    <div class="col col--1">
-      <div class="col__content col__content--2">
-        <h2 class="col__content-title">
-          <span class="line__inner">東尋坊</span><br>
-          <span class="line__inner">絶景</span>
-        </h2>
-        <div class="col__content-wrap">
-          <p class="col__content-txt">
-            約1kmにわたって続く、高さ25mの断崖絶壁。
-            世界でも珍しい輝石安山岩の柱状節理が織りなす雄大な景観は、
-            国の天然記念物および名勝に指定されています。
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col col--2">
-      <div class="col__image-wrap">
-        <img class="img img--1"
-             src="https://images.unsplash.com/photo-1593892370074-ec754b1ac563?w=1200&h=1600&fit=crop"
-             alt="東尋坊">
-      </div>
-    </div>
-  </section>
-  <!-- スポット3: 永平寺 -->
-  <section class="slide slide--3" id="slide-3">
-    <div class="col col--1">
-      <div class="col__content col__content--3">
-        <h2 class="col__content-title">
-          <span class="line__inner">永平寺</span><br>
-          <span class="line__inner">禅の心</span>
-        </h2>
-        <div class="col__content-wrap">
-          <p class="col__content-txt">
-            1244年に道元禅師によって開かれた、曹洞宗の大本山。
-            樹齢700年を超える老杉に囲まれた境内には七堂伽藍が立ち並び、
-            今も約150名の修行僧が厳しい修行を続けています。
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col col--2">
-      <div class="col__image-wrap">
-        <img class="img img--1"
-             src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1200&h=1600&fit=crop"
-             alt="永平寺">
-      </div>
-    </div>
-  </section>
-  <script>
-    // 5. 観光スポットのパララックス効果アニメーション
-    function initSpotsAnimation() {
-      const slides = document.querySelectorAll('.slide');
-
-      // 各スライドのアニメーション
-      slides.forEach((slide) => {
-        // スライドが画面に入った時のアニメーション
-        let tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: slide,
-            start: '40% 50%'  // スライドの40%が画面の50%に来たら発火
-          }
-        });
-
-        // タイトルのアニメーション
-        tl.from(slide.querySelectorAll('.col__content-title'), {
-          ease: 'power4',
-          y: '+=5vh',
-          duration: 2.5
-        })
-        // タイトル内の文字を下から登場
-        .from(slide.querySelectorAll('.line__inner'), {
-          y: 200,
-          duration: 2,
-          ease: 'power4',
-          stagger: 0.1
-        }, 0)
-        // テキストを横からフェードイン
-        .from(slide.querySelectorAll('.col__content-txt'), {
-          x: 100,
-          y: 50,
-          opacity: 0,
-          duration: 2,
-          ease: 'power4'
-        }, 0.4);
-
-        // 画像のパララックス効果
-        // 学習ポイント: fromTo + scrub でスクロールに追従するパララックス
-        gsap.fromTo(slide.querySelector('.col__image-wrap'), {
-          y: '-30vh'  // 開始位置
-        }, {
-          y: '30vh',   // 終了位置（計60vhの移動）
-          scrollTrigger: {
-            trigger: slide,
-            scrub: true,  // スクロール量に完全追従
-            start: 'top bottom',
-            end: 'bottom top',
-            snap: {
-              snapTo: 0.5,
-              duration: 1,
-              ease: 'power4.inOut'
-            }
-          },
-          ease: 'none'
-        });
-      });
-    }
-
-    // 8. 円形ズームアニメーション
-    function initZoomAnimation() {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.slide--1',
-          scrub: true,
-          start: 'top top',
-          end: '+=200%',   // スクロール量
-          pin: true,        // セクションを固定
-        }
-      });
-
-      tl.to('.zoom-overlay', {
-        '--zoom-size': '150vw',  // CSS変数をアニメーション → 穴が拡大
-      })
-    }
-  </script>
-
-  <!-- ========================================
-
-      6. グルメセクション - 横スクロール
-      学習ポイント: ScrollTrigger + pin + scrub で横スクロール
-
-  ======================================== -->
-  <div class="gourmet-container" id="gourmet">
-    <div class="gourmet-wrapper">
-      <div class="gourmet-scroller">
-        <!-- ヘッダーカード -->
-        <div class="gourmet-header-card">
-          <p class="gourmet-label">LOCAL GOURMET</p>
-          <h2 class="gourmet-title">福井の味覚</h2>
-          <p class="gourmet-description">
-            日本海の恵みと、山々に育まれた食材。
-            福井には、ここでしか味わえない
-            絶品グルメが揃っています。
-          </p>
-        </div>
-        <!-- グルメカード1: 越前がに -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=600&h=600&fit=crop"
-                 alt="カニ料理">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">越前がに</h3>
-            <p class="gourmet-card-description">
-              冬の味覚の王様。11月から3月にかけて解禁される越前がには、
-              身がぎっしり詰まり、甘みと旨味が凝縮された逸品です。
-            </p>
-          </div>
-        </article>
-        <!-- グルメカード2: 越前おろしそば -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=600&h=600&fit=crop"
-                 alt="そば">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">越前おろしそば</h3>
-            <p class="gourmet-card-description">
-              福井が誇る郷土料理。冷たいそばに大根おろしと出汁をかけて食べる、
-              シンプルながら奥深い味わいが特徴です。
-            </p>
-          </div>
-        </article>
-        <!-- グルメカード3: 海鮮丼 -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=600&h=600&fit=crop"
-                 alt="海鮮丼">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">海鮮丼</h3>
-            <p class="gourmet-card-description">
-              日本海で獲れた新鮮な魚介をふんだんに盛り付けた贅沢な一杯。
-              甘エビ、ブリ、イカなど、旬の味を堪能できます。
-            </p>
-          </div>
-        </article>
-        <!-- グルメカード4: ソースカツ丼 -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&h=600&fit=crop"
-                 alt="ソースカツ丼">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">ソースカツ丼</h3>
-            <p class="gourmet-card-description">
-              福井発祥のB級グルメ。サクサクの薄いカツに、
-              甘辛いソースが染み込んだ、ご飯が進む一品です。
-            </p>
-          </div>
-        </article>
-        <!-- グルメカード5: 焼き鯖寿司 -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=600&h=600&fit=crop"
-                 alt="焼き鯖寿司">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">焼き鯖寿司</h3>
-            <p class="gourmet-card-description">
-              若狭地方の名物。香ばしく焼いた鯖を酢飯で巻いた、
-              駅弁としても人気の郷土寿司です。
-            </p>
-          </div>
-        </article>
-        <!-- グルメカード6: 福井の地酒 -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&h=600&fit=crop"
-                 alt="日本酒">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">福井の地酒</h3>
-            <p class="gourmet-card-description">
-              白山水系の名水と、良質な米が育む福井の日本酒。
-              黒龍、梵など、全国的に評価の高い銘酒が揃います。
-            </p>
-          </div>
-        </article>
-      </div>
-    </div>
-  </div>
-  <script>
-    function initGourmetAnimation() {
-      const container = document.querySelector('.gourmet-scroller');
-      if (!container) return;
-
-      // スクローラーの幅を計算（画面幅を引いた分だけスクロール）
-      const containerWidth = container.scrollWidth - window.innerWidth;
-
-      // 横スクロールアニメーション
-      // 学習ポイント: gsap.to() + ScrollTrigger でx軸に移動
-      gsap.to(container, {
-        x: () => -containerWidth,  // 左方向に移動（マイナス値）
-        ease: 'none',              // スクロールに完全に追従
-        scrollTrigger: {
-          trigger: '.gourmet-wrapper',
-          start: 'top top',        // 画面上部に来たら開始
-          end: () => '+=' + containerWidth,  // スクロール量 = コンテナ幅
-          scrub: 0.5,              // 0.5秒かけて追従（滑らかさ）
-          pin: '.gourmet-container',  // コンテナをピン留め（固定）
-          invalidateOnRefresh: true,  // リサイズ時に再計算
-        }
-      });
-
-      // カードの登場アニメーション
-      gsap.from('.gourmet-card', {
-        y: 50,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.gourmet-wrapper',
-          start: 'top 80%'
-        }
-      });
-    }
-  </script>
-
-  <!-- ========================================
-
-      7. アクセスセクションのアニメーション
-      学習ポイント: Timeline + ScrollTrigger
-
-  ======================================== -->
   <section class="access" id="access">
     <div class="access-container">
       <div class="access-text">
@@ -1471,6 +1411,39 @@
   </script>
 
   <!-- フッター -->
+  <style>
+    .footer {
+      padding: 80px 40px;
+      background: var(--color-dark);
+      color: white;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #888;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .footer-copyright {
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
   <footer class="footer">
     <div class="footer-logo">FUKUI</div>
     <div class="footer-links">
