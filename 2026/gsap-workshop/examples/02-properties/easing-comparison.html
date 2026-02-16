@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Easing Comparison</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; padding: 30px 60px; }
+  .row { display: flex; align-items: center; margin-bottom: 16px; }
+  .label { width: 140px; font-size: 16px; font-weight: bold; color: #333; }
+  .box { width: 80px; height: 80px; background: #0ae448; border-radius: 8px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <span class="label">power1.out</span>
+    <div class="box" id="b1"></div>
+  </div>
+  <div class="row">
+    <span class="label">power3.in</span>
+    <div class="box" id="b2"></div>
+  </div>
+  <div class="row">
+    <span class="label">bounce.out</span>
+    <div class="box" id="b3"></div>
+  </div>
+  <div class="row">
+    <span class="label">elastic.out</span>
+    <div class="box" id="b4"></div>
+  </div>
+  <div class="row">
+    <span class="label">back.out</span>
+    <div class="box" id="b5"></div>
+  </div>
+  <div class="row">
+    <span class="label">steps(5)</span>
+    <div class="box" id="b6"></div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script>
+  gsap.to("#b1", { x: 400, duration: 2, ease: "power1.out",  repeat: -1, repeatDelay: 1 });
+  gsap.to("#b2", { x: 400, duration: 2, ease: "power3.in",   repeat: -1, repeatDelay: 1 });
+  gsap.to("#b3", { x: 400, duration: 2, ease: "bounce.out",  repeat: -1, repeatDelay: 1 });
+  gsap.to("#b4", { x: 400, duration: 2, ease: "elastic.out", repeat: -1, repeatDelay: 1 });
+  gsap.to("#b5", { x: 400, duration: 2, ease: "back.out",    repeat: -1, repeatDelay: 1 });
+  gsap.to("#b6", { x: 400, duration: 2, ease: "steps(5)",    repeat: -1, repeatDelay: 1 });
+</script>
+</body>
+</html>

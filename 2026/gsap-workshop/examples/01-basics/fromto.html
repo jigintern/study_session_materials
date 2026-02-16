@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gsap.fromTo()</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; }
+  .stage { position: relative; width: 500px; height: 120px; }
+  .box { width: 80px; height: 80px; background: #0ae448; border-radius: 8px; position: absolute; top: 20px; left: 50%; margin-left: -40px; }
+  .label { position: absolute; top: 0; font-size: 14px; color: #555; font-weight: bold; }
+  .label-start { left: calc(50% - 200px - 40px); text-align: center; width: 80px; }
+  .label-end   { left: calc(50% + 200px - 40px); text-align: center; width: 80px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="label label-start">x: -200</div>
+  <div class="label label-end">x: 200</div>
+  <div class="box"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script>
+  gsap.fromTo(".box", { x: -200 }, { x: 200, duration: 1.2, ease: "power1.inOut", yoyo: true, repeat: -1 });
+</script>
+</body>
+</html>

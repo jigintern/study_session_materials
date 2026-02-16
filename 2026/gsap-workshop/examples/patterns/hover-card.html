@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hover Card Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #f5f5f5; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; gap: 24px; }
+  .card {
+    width: 150px; padding: 32px 20px; background: #fff; border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; cursor: pointer;
+  }
+  .card .icon { font-size: 2.5em; display: block; margin-bottom: 12px; }
+  .card .label { font-size: 0.95em; font-weight: 600; color: #444; }
+</style>
+</head>
+<body>
+  <div class="card" id="card0">
+    <span class="icon" id="icon0">🚀</span>
+    <span class="label">Speed</span>
+  </div>
+  <div class="card" id="card1">
+    <span class="icon" id="icon1">🎨</span>
+    <span class="label">Design</span>
+  </div>
+  <div class="card" id="card2">
+    <span class="icon" id="icon2">⚡</span>
+    <span class="label">Power</span>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+    const cards = [
+      { card: document.getElementById('card0'), icon: document.getElementById('icon0') },
+      { card: document.getElementById('card1'), icon: document.getElementById('icon1') },
+      { card: document.getElementById('card2'), icon: document.getElementById('icon2') }
+    ];
+
+    function hoverIn(item) {
+      gsap.to(item.card, { y: -10, boxShadow: '0 12px 28px rgba(0,0,0,0.18)', duration: 0.3, ease: 'power2.out' });
+      gsap.to(item.icon, { scale: 1.2, rotation: 10, duration: 0.3, ease: 'power2.out' });
+    }
+
+    function hoverOut(item) {
+      gsap.to(item.card, { y: 0, boxShadow: '0 2px 8px rgba(0,0,0,0.1)', duration: 0.3, ease: 'power2.out' });
+      gsap.to(item.icon, { scale: 1, rotation: 0, duration: 0.3, ease: 'power2.out' });
+    }
+
+    // Real mouse events
+    cards.forEach(item => {
+      item.card.addEventListener('mouseenter', () => hoverIn(item));
+      item.card.addEventListener('mouseleave', () => hoverOut(item));
+    });
+
+    // Auto-demo: cycle through cards
+    let currentIndex = 0;
+    function autoDemo() {
+      const item = cards[currentIndex];
+      hoverIn(item);
+      setTimeout(() => {
+        hoverOut(item);
+        currentIndex = (currentIndex + 1) % cards.length;
+      }, 1200);
+    }
+
+    setInterval(autoDemo, 2000);
+    setTimeout(autoDemo, 500);
+  </script>
+</body>
+</html>

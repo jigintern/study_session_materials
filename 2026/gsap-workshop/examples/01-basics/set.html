@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gsap.set()</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; }
+  .stage { position: relative; width: 500px; height: 140px; }
+  .box { width: 80px; height: 80px; background: #0ae448; border-radius: 8px; position: absolute; top: 40px; left: 0; }
+  .label { position: absolute; font-size: 13px; color: #555; font-weight: bold; }
+  .label-set { top: 18px; left: 100px; transform: translateX(-50%); }
+  .label-to  { top: 18px; left: 300px; transform: translateX(-50%); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="label label-set">set() → x:100, opacity:0</div>
+  <div class="label label-to">to() → x:300, opacity:1</div>
+  <div class="box"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script>
+  const tl = gsap.timeline({ repeat: -1, repeatDelay: 0.5 });
+  tl.set(".box", { x: 0, opacity: 1 })
+    .to({}, { duration: 0.4 })
+    .set(".box", { x: 100, opacity: 0 })
+    .to({}, { duration: 0.6 })
+    .to(".box", { x: 300, opacity: 1, duration: 1, ease: "power2.out" })
+    .to({}, { duration: 0.6 });
+</script>
+</body>
+</html>

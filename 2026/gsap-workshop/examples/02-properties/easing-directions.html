@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Easing Directions</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; padding: 40px 60px; }
+  .row { display: flex; align-items: center; margin-bottom: 24px; }
+  .label { width: 100px; font-size: 18px; font-weight: bold; color: #333; }
+  .box { width: 80px; height: 80px; background: #0ae448; border-radius: 8px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <span class="label">.in</span>
+    <div class="box" id="box-in"></div>
+  </div>
+  <div class="row">
+    <span class="label">.out</span>
+    <div class="box" id="box-out"></div>
+  </div>
+  <div class="row">
+    <span class="label">.inOut</span>
+    <div class="box" id="box-inout"></div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script>
+  gsap.to("#box-in",    { x: 400, duration: 1.5, ease: "power3.in",    repeat: -1, repeatDelay: 1 });
+  gsap.to("#box-out",   { x: 400, duration: 1.5, ease: "power3.out",   repeat: -1, repeatDelay: 1 });
+  gsap.to("#box-inout", { x: 400, duration: 1.5, ease: "power3.inOut", repeat: -1, repeatDelay: 1 });
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>opacity vs autoAlpha</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; padding: 40px 60px; }
+  h1 { font-size: 1.4em; color: #333; margin-bottom: 32px; padding-bottom: 8px; border-bottom: 3px solid #0ae448; }
+  .row { display: flex; align-items: flex-start; margin-bottom: 32px; gap: 24px; }
+  .label { width: 140px; font-size: 16px; font-weight: bold; color: #333; padding-top: 28px; }
+  .box-wrapper { display: flex; flex-direction: column; align-items: center; }
+  .box { width: 80px; height: 80px; background: #0ae448; border-radius: 8px; }
+  .click-test {
+    margin-top: 8px; font-size: 0.8em; color: #0ae448; cursor: pointer;
+    text-decoration: underline; user-select: none;
+  }
+  .note {
+    margin-top: 24px; padding: 16px 20px; background: #f0fdf4; border-left: 4px solid #0ae448;
+    font-size: 0.9em; color: #555; border-radius: 0 8px 8px 0;
+  }
+</style>
+</head>
+<body>
+  <h1>opacity vs autoAlpha</h1>
+
+  <div class="row">
+    <span class="label">opacity: 0</span>
+    <div class="box-wrapper">
+      <div class="box" id="box1"></div>
+      <span class="click-test" onclick="alert('opacity: 0 でもクリックできた！')">クリックしてみて</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <span class="label">autoAlpha: 0</span>
+    <div class="box-wrapper">
+      <div class="box" id="box2"></div>
+      <span class="click-test" onclick="alert('autoAlpha: 0 ではこのアラートは出ないはず')">クリックしてみて</span>
+    </div>
+  </div>
+
+  <div class="note">
+    autoAlpha: 0 は opacity: 0 + visibility: hidden。非表示時にクリックできなくなります
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script>
+  // opacity: 0 — element stays clickable even when invisible
+  gsap.timeline({ repeat: -1, yoyo: true, repeatDelay: 1.5 })
+    .to("#box1", { opacity: 0, duration: 1 });
+
+  // autoAlpha: 0 — element becomes visibility:hidden, NOT clickable
+  gsap.timeline({ repeat: -1, yoyo: true, repeatDelay: 1.5 })
+    .to("#box2", { autoAlpha: 0, duration: 1 });
+</script>
+</body>
+</html>

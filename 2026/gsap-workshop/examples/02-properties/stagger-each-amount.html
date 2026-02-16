@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stagger: each vs amount</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; padding: 40px 60px; }
+  .section { margin-bottom: 40px; }
+  .section-label { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 12px; }
+  .row { display: flex; gap: 12px; }
+  .box { width: 80px; height: 80px; background: #0ae448; border-radius: 8px; }
+</style>
+</head>
+<body>
+  <div class="section">
+    <div class="section-label">each: 0.2</div>
+    <div class="row" id="each-row">
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">amount: 1</div>
+    <div class="row" id="amount-row">
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script>
+  const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+  tl.to("#each-row .box", {
+    x: 300, duration: 0.8, ease: "power2.out",
+    stagger: { each: 0.2 }
+  }, 0)
+  .to("#amount-row .box", {
+    x: 300, duration: 0.8, ease: "power2.out",
+    stagger: { amount: 1 }
+  }, 0);
+</script>
+</body>
+</html>

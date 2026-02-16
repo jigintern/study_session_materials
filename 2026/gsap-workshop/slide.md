@@ -1,12 +1,107 @@
 ---
 marp: true
-theme: academic
+theme: default
 paginate: true
+size: 16:9
+style: |
+  section {
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    font-size: 24px;
+    color: #1a1a1a;
+  }
+  section.title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #0a0a0a;
+    color: #fff;
+  }
+  section.title h1 {
+    font-size: 2.8em;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.15em;
+    color: #0ae448;
+  }
+  section.title h2 {
+    font-size: 1.2em;
+    font-weight: 300;
+    color: #ccc;
+  }
+  section.chapter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #f4f4f5;
+    color: #1a1a1a;
+  }
+  section.chapter h1 {
+    font-size: 2.4em;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  section.chapter h2 {
+    font-weight: 300;
+    color: #0ae448;
+  }
+  section.exercise {
+    border-top: 4px solid #0ae448;
+  }
+  section.exercise h2 {
+    color: #0ae448;
+  }
+  section.break {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #fafafa;
+    color: #888;
+  }
+  section.break h1 {
+    font-size: 2.5em;
+    font-weight: 300;
+  }
+  code {
+    background: #f4f4f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+  pre code {
+    background: none;
+    padding: 0;
+  }
+  table {
+    font-size: 0.85em;
+  }
+  table th {
+    background: #f4f4f5;
+  }
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+  }
+  .highlight {
+    color: #0ae448;
+    font-weight: bold;
+  }
+  .small {
+    font-size: 0.75em;
+  }
 ---
 
-<!-- _class: lead -->
+<!-- _class: title -->
 
 # GSAPから始めるWebアニメーション入門
+
+## GreenSock Animation Platform で学ぶ Web アニメーション
 
 ---
 
@@ -14,41 +109,40 @@ paginate: true
 
 GSAP を使って Web アニメーションが作れるようになる！
 
-最終的に、こんなページが作れるようになります👇
-
+最終的に、**観光PRサイト**をアニメーション付きで作ります。
 
 ---
 
 ## もくじ
 
-1. **オープニング** - GSAP とは？ (15分)
-2. **GSAP 入門** - 基本的なアニメーション (35分)
-3. **☕ 休憩** (10分)
-4. **Timeline** - 複数アニメーションの制御 (25分)
-5. **ScrollTrigger** - スクロール連動 (40分)
-6. **☕ 休憩** (10分)
-7. **観光PRサイト作成** - コードウォークスルー & カスタマイズ (55分)
-8. **まとめ & 事例紹介** (15分)
+| # | 内容 |
+|---|------|
+| 1 | **GSAP とは？** |
+| 2 | **基本の Tween** — to / from / fromTo / set |
+| 3 | **プロパティ & イージング** |
+| 4 | **Timeline** — アニメーションの連結と制御 |
+| 5 | **Stagger** — 時間差アニメーション |
+| 6 | **コールバック & 制御メソッド** |
+| 7 | **ScrollTrigger** — スクロール連動 |
+| 8 | **観光PRサイト作成** |
+| 9 | **まとめ & 事例紹介** |
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: chapter -->
 
-# 1. オープニング
-
+# Chapter 1
 ## GSAP とは？
 
-**GreenSock Animation Platform**
+---
 
-- 世界で最も使われている JavaScript アニメーションライブラリ
-- 高いパフォーマンス
-- 直感的な API
-- 豊富なプラグイン
+## GSAP (GreenSock Animation Platform) とは
 
-### 使用サイト例
-Nike, Google, Microsoft, Apple...
+- **Web 上で最も広く使われるアニメーションライブラリ**
+- CSS アニメーション・`requestAnimationFrame` のラッパーではなく、独自の高精度タイマーで動作
+- 使用サイト例: Nike, Google, Microsoft, Apple...
 
-### 🎉 2025年〜 すべてのプラグインが無料に！
+### 🎉 2024年〜 すべてのプラグインが無料に！
 
 Webflow による買収で、ScrollTrigger・SplitText・MorphSVG など
 **すべてのプラグインが無料**で使えるようになりました。
@@ -57,51 +151,84 @@ Webflow による買収で、ScrollTrigger・SplitText・MorphSVG など
 
 ## なぜ GSAP を学ぶ？
 
-| CSS アニメーション | GSAP |
-|---|---|
-| シンプルな動きに最適 | 複雑なアニメーションも簡単 |
-| スクロール連動は難しい | ScrollTrigger で簡単 |
-| 複数の動きの同期が困難 | Timeline で自在に制御 |
+| 比較項目 | CSS Animation | Web Animations API | GSAP |
+|---------|--------------|-------------------|------|
+| 学習コスト | 低 | 中 | 中 |
+| 制御性 | 低 | 中 | **高** |
+| 順番に実行 | 困難 | やや困難 | **簡単** |
+| ScrollTrigger | なし | なし | **内蔵** |
+| ブラウザ互換 | 高 | 中 | **高** |
 
 **業界標準として広く使われている！**
 
 ---
 
-<!-- _class: lead -->
+## セットアップ
 
-# 2. GSAP 入門
-
-## 基本的なアニメーションを作ろう
-
----
-
-## GSAP を使う準備
+### CDN（最も手軽）
 
 ```html
-<!-- CDN から読み込み -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 ```
 
 これだけで GSAP が使えるようになります！
 
+> 📁 `examples/01-basics/setup-basic.html`
+
 ---
 
-## 最初のアニメーション
+<!-- _class: chapter -->
 
-```javascript
-gsap.to('.box', {
-  x: 200,        // 右に200px移動
-  duration: 1    // 1秒かけて
+# Chapter 2
+## 基本の Tween
+
+---
+
+## Tween とは
+
+**Tween** = 2 つの状態の間（between）を補間するアニメーションのこと
+
+GSAP には **4 つの基本メソッド** がある：
+
+| メソッド | 説明 |
+|---------|------|
+| `gsap.to()` | **現在の状態 → 指定した状態** へ |
+| `gsap.from()` | **指定した状態 → 現在の状態** へ |
+| `gsap.fromTo()` | **開始値と終了値の両方を指定** |
+| `gsap.set()` | **即座に値をセット**（duration: 0 の to） |
+
+基本構文:
+
+```js
+gsap.to(ターゲット, { プロパティ: 値, ... });
+```
+
+---
+
+## gsap.to() — 現在 → 目標値
+
+**現在の状態から目標値に向かってアニメーション**
+
+```js
+// .box を右に 300px 移動（1秒かけて）
+gsap.to(".box", {
+  x: 300,
+  duration: 1
 });
 ```
 
-### 構文
+```js
+// 複数プロパティを同時にアニメーション
+gsap.to(".box", {
+  x: 200,
+  rotation: 360,
+  scale: 1.2,
+  borderRadius: "50%",
+  duration: 2
+});
+```
 
-- `gsap.to()` = 現在の状態から指定した状態へ
-- 第1引数 = アニメーション対象（セレクタ or 要素）
-- 第2引数 = アニメーションの設定
-
-> 📁 `examples/01-gsap-intro/01-gsap-to.html` | [CodePen](https://codepen.io/mocaffy/pen/NPrwERj)
+> 📁 `examples/01-basics/gsap-to.html`
 
 ---
 
@@ -128,275 +255,517 @@ gsap.to('.box', {
 });
 ```
 
-> 📁 `examples/01-gsap-intro/03-combo.html` | [CodePen](https://codepen.io/mocaffy/pen/YPWJRmQ)
+---
+
+## gsap.from() — 指定値 → 現在
+
+**指定した状態から現在の状態に向かってアニメーション**（逆方向）
+
+```js
+// 左から飛んでくる演出
+gsap.from(".box", {
+  x: -300,
+  opacity: 0,
+  duration: 1
+});
+```
+
+### よくある使い方：ページ読み込み時のフェードイン
+
+```js
+gsap.from(".hero-title", {
+  y: 50,
+  opacity: 0,
+  duration: 1,
+  delay: 0.3
+});
+```
+
+> `from()` は「初期状態を一時的に変更 → 元に戻す」イメージ
+
+> 📁 `examples/01-basics/gsap-from.html`
 
 ---
 
-## gsap.to vs gsap.from
+## gsap.fromTo() — 開始値と終了値を両方指定
 
-```javascript
-// to: 現在 → 指定した状態
-gsap.to('.box', { x: 200 });
-
-// from: 指定した状態 → 現在
-gsap.from('.box', { x: -200 });
-
-// fromTo: 開始状態 → 終了状態
-gsap.fromTo('.box',
-  { x: -200 },  // from
-  { x: 200 }    // to
+```js
+gsap.fromTo(".box",
+  { x: -200, opacity: 0 },    // from（開始値）
+  { x: 200,  opacity: 1, duration: 1 }  // to（終了値）
 );
 ```
 
-> 📁 `examples/01-gsap-intro/02-gsap-from.html` | [CodePen](https://codepen.io/mocaffy/pen/OPXOrbv)
+### いつ使う？
+
+- `to()` や `from()` では **現在の状態に依存** する
+- `fromTo()` なら **開始と終了を完全にコントロール** できる
+- 繰り返し実行しても常に同じ結果になる
+
+> 📁 `examples/01-basics/fromto.html`
 
 ---
 
-## イージング（Easing）
+## gsap.set() — 即座にセット
 
-```javascript
-gsap.to('.box', {
-  x: 200,
-  ease: 'power2.out'  // イージング
-});
+**アニメーションなしで値をセット**する（`duration: 0` の `to()` と同等）
+
+```js
+// 初期位置を設定
+gsap.set(".box", { x: 100, opacity: 0 });
+
+// その後アニメーション
+gsap.to(".box", { x: 300, opacity: 1, duration: 1 });
 ```
 
-| イージング | 動き |
-|-----------|------|
-| `none` / `linear` | 一定速度 |
-| `power1` ~ `power4` | 加速/減速の強さ |
-| `bounce.out` | バウンド |
-| `elastic.out` | 弾性 |
-| `back.out` | 少し戻る |
+### 使いどころ
 
-💡 [Ease Visualizer](https://greensock.com/docs/v3/Eases) で確認しよう！
+- アニメーション前の **初期状態の設定**
+- 複数要素を **一括でリセット**
+- **条件分岐** による即時切り替え
 
-> 📁 `examples/01-gsap-intro/04-easing.html` | [CodePen](https://codepen.io/mocaffy/pen/VYjEqZb)
+> 📁 `examples/01-basics/set.html`
 
 ---
 
-## 複数の要素をアニメーション
+## ターゲットの指定方法
 
-```javascript
-// stagger で順番にアニメーション
-gsap.to('.box', {
-  y: -30,
-  stagger: 0.2,  // 0.2秒ずつずらす
-  duration: 0.5
-});
+GSAP では **CSS セレクタ**（文字列）で動かす要素を指定します。
+
+| HTML | セレクタ | ルール |
+|------|---------|--------|
+| `<div class="box">` | `".box"` | **class** には **`.`（ドット）** を付ける |
+| `<div id="hero">` | `"#hero"` | **id** には **`#`（シャープ）** を付ける |
+| `<h1>` | `"h1"` | **タグ名** はそのまま |
+
+```js
+gsap.to(".box", { x: 100 });    // class="box" の要素を動かす
+gsap.to("#hero", { opacity: 0 }); // id="hero" の要素を動かす
+gsap.to("h1", { y: -20 });      // すべての <h1> を動かす
 ```
 
-- `stagger` を使うと要素が順番にアニメーション
-- 数値が大きいほど間隔が長くなる
-
-> 📁 `examples/01-gsap-intro/05-stagger.html` | [CodePen](https://codepen.io/mocaffy/pen/raLqoNN)
+> 💡 `document.querySelector()` と同じ書き方です
 
 ---
 
-## gsap.set() - 即座にプロパティを設定
+<!-- _class: exercise -->
 
-```javascript
-// アニメーションなしで即座にプロパティを設定
-gsap.set('.box', {
-  x: 0,
-  opacity: 1,
-  scale: 1
-});
-```
+## 演習 1：基本の Tween
 
-- `gsap.to()` の `duration: 0` と同じ
-- 初期状態のリセットや初期配置に便利
-- サンプルコードの `reset()` 関数で多用しています
+### `examples/exercises/01-basic-tween.html` を開こう
 
-```javascript
-// 使用例: ボタンクリックでリセット
-function reset() {
-  gsap.set('#box', { x: 0, scale: 1, rotation: 0 });
-}
-```
+1. `gsap.to()` で `.box` を **右に 400px** 移動させる（2秒）
+2. `gsap.from()` で `.box` を **上から降ってくる** 演出にする（opacity も 0 → 1）
+3. `gsap.fromTo()` で `.box` を **x: -200 から x: 400** まで移動させる
+4. `gsap.set()` で **背景色を赤に変更** し、その後 `to()` で **回転 360°** させる
+
+> 📁 `examples/exercises/01-basic-tween.html`
 
 ---
 
-## ハンズオン: GSAP を使ってみよう
-
-### `examples/01-gsap-intro/` のファイルを開こう
-
-1. `01-gsap-to.html` で様々なプロパティを試そう
-2. `04-easing.html` でイージングを変えてみよう
-3. `05-stagger.html` で複数の要素をアニメーションさせてみよう
-
----
-
-<!-- _class: lead -->
+<!-- _class: break -->
 
 # ☕ 休憩（10分）
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: chapter -->
 
-# 3. Timeline
-
-## 複数のアニメーションを組み合わせよう
-
----
-
-## Timeline とは？
-
-**複数のアニメーションの流れを管理**
-
-- 順番に実行
-- 同時に実行
-- タイミングをずらして実行
-
-これが簡単にできる！
+# Chapter 3
+## プロパティ & イージング
 
 ---
 
-## Timeline の基本
+## duration / delay / repeat / yoyo
 
-```javascript
-// Timeline を作成
-const tl = gsap.timeline();
+| プロパティ | 型 | デフォルト | 説明 |
+|-----------|------|-----------|------|
+| `duration` | number | `0.5` | アニメーション時間（秒） |
+| `delay` | number | `0` | 開始までの待機時間（秒） |
+| `repeat` | number | `0` | 繰り返し回数（`-1` で無限） |
+| `repeatDelay` | number | `0` | 繰り返し間の待機時間 |
+| `yoyo` | boolean | `false` | 繰り返し時に逆再生する |
+| `ease` | string | `"power1.out"` | イージング関数 |
 
-// アニメーションを追加
-tl.to('.box1', { x: 200, duration: 1 })
-  .to('.box2', { x: 200, duration: 1 })
-  .to('.box3', { x: 200, duration: 1 });
-
-// → 順番に実行される
+```js
+// 無限ループ + 往復
+gsap.to(".box", {
+  x: 300, duration: 1,
+  repeat: -1, yoyo: true, repeatDelay: 0.5
+});
 ```
 
-> 📁 `examples/02-timeline/01-timeline-basic.html` | [CodePen](https://codepen.io/mocaffy/pen/MYePZWM)
+> 📁 `examples/02-properties/duration-delay.html`
+> 📁 `examples/02-properties/repeat-yoyo.html`
 
 ---
 
-## タイミングの制御
+## イージング（Easing）
 
-```javascript
+**アニメーションの加速・減速カーブ** を決める関数
+
+```
+ease: "power1.out"
+       ~~~~~~~~ ~~~
+       種類     方向
+```
+
+### 3 つの方向
+
+| 方向 | 説明 | イメージ |
+|------|------|---------|
+| `.in` | ゆっくり始まる → 加速 | 🐢→🚀 |
+| `.out` | 速く始まる → 減速 | 🚀→🐢 |
+| `.inOut` | ゆっくり → 速く → ゆっくり | 🐢→🚀→🐢 |
+
+> デフォルトは `"power1.out"`（自然な減速）
+
+> 📁 `examples/02-properties/easing-directions.html`
+
+---
+
+## イージングの種類
+
+| ease | 特徴 | 使いどころ |
+|------|------|-----------|
+| `"none"` / `"linear"` | 等速 | プログレスバー |
+| `"power1"` ~ `"power4"` | 加速/減速の強さ | UI 全般 |
+| `"back"` | 行き過ぎて戻る | ボタン押下 |
+| `"bounce"` | バウンド | 落下・着地 |
+| `"elastic"` | ゴムのような弾性 | 注目させたい要素 |
+| `"circ"` | 円弧的な動き | 回転系 |
+| `"expo"` | 指数的な緩急 | 高速な切り替え |
+| `"steps(n)"` | n ステップで切り替え | スプライトアニメ |
+
+💡 [Ease Visualizer](https://gsap.com/docs/v3/Eases/) で確認しよう！
+
+> 📁 `examples/02-properties/easing-comparison.html`
+
+---
+
+## Elastic / Back の調整
+
+`()` の中の数値で **動きの強さ** を変えられる
+
+### elastic — ゴムのような弾み
+
+```js
+ease: "elastic.out(1, 0.3)"
+//                 ↑    ↑
+//          振れ幅の大きさ  振動の速さ（小さいほど速い）
+
+ease: "elastic.out(2, 0.3)"   // 振れ幅 大
+ease: "elastic.out(1, 0.8)"   // ゆっくり振動
+```
+
+### back — 行き過ぎて戻る
+
+```js
+ease: "back.out(1.7)"
+//              ↑
+//        行き過ぎる量（大きいほど大きく行き過ぎる）
+
+ease: "back.out(3)"           // もっと行き過ぎる
+```
+
+> 📁 `examples/02-properties/elastic-params.html`
+
+---
+
+<!-- _class: exercise -->
+
+## 演習 2：プロパティ & イージング
+
+### `examples/exercises/02-easing.html` を開こう
+
+1. **パルスアニメーション**: `.box` を `scale: 1.3` → 元に戻すを **無限ループ**（yoyo を使用）
+2. **イージング比較**: 5 つの `.box` にそれぞれ異なる ease で `x: 400` へ移動させる
+   - `linear`, `power2.out`, `bounce.out`, `elastic.out`, `back.out`
+3. **カード登場**: ボタンクリックで `.card` が `scale: 0` → `scale: 1` で登場。最も自然に見える ease を探す
+
+> 📁 `examples/exercises/02-easing.html`
+
+---
+
+<!-- _class: chapter -->
+
+# Chapter 4
+## Timeline
+
+---
+
+## Timeline とは
+
+**複数のアニメーションを順番に並べて管理** できるコンテナ
+
+### Timeline を使わない場合（delay で管理）
+
+```js
+gsap.to(".box1", { x: 100, duration: 1 });
+gsap.to(".box2", { x: 100, duration: 1, delay: 1 });    // ← 計算が必要
+gsap.to(".box3", { x: 100, duration: 1, delay: 2 });    // ← 計算が必要
+```
+
+### Timeline を使う場合
+
+```js
+const tl = gsap.timeline();
+tl.to(".box1", { x: 100, duration: 1 })
+  .to(".box2", { x: 100, duration: 1 })   // 自動で前のアニメの後に配置
+  .to(".box3", { x: 100, duration: 1 });
+```
+
+> Timeline なら **順番の変更・挿入・削除が簡単**
+
+> 📁 `examples/03-timeline/timeline-basic.html`
+
+---
+
+## Position パラメータ
+
+Timeline で **アニメーションの開始位置を細かく制御** する
+
+```js
 const tl = gsap.timeline();
 
-tl.to('.box1', { x: 200 })
-  .to('.box2', { x: 200 }, '<')      // 直前と同時
-  .to('.box3', { x: 200 }, '<0.2')   // 直前の0.2秒後
-  .to('.box4', { x: 200 }, '+=0.5'); // 直前の終了から0.5秒後
+tl.to(".a", { x: 100, duration: 1 })        // デフォルト: 前の直後
+  .to(".b", { x: 100, duration: 1 }, "<")     // 前と同時に開始
+  .to(".c", { x: 100, duration: 1 }, "<0.5")  // 前の開始0.5秒後
+  .to(".d", { x: 100, duration: 1 }, "-=0.5") // 前の終了0.5秒前
+  .to(".e", { x: 100, duration: 1 }, "+=1");  // 前の終了1秒後
 ```
 
 | 指定 | 意味 |
 |------|------|
-| `'<'` | 直前と同時に開始 |
-| `'<0.5'` | 直前の開始から0.5秒後 |
-| `'+=0.5'` | 直前の終了から0.5秒後 |
-| `'-=0.5'` | 直前の終了より0.5秒前 |
+| `"<"` | 直前の**開始と同時** |
+| `"<0.5"` | 直前の開始 + 0.5秒後 |
+| `"-=0.5"` | 直前の終了 - 0.5秒（オーバーラップ） |
+| `"+=1"` | 直前の終了 + 1秒（間を空ける） |
+| `2` | タイムラインの2秒地点（絶対位置） |
 
-> 📁 `examples/02-timeline/02-position-parameter.html` | [CodePen](https://codepen.io/mocaffy/pen/GgqYPgQ)
+> 📁 `examples/03-timeline/position-params.html`
 
 ---
 
-## ループアニメーション
+## ラベル（Labels）
 
-```javascript
+**タイムライン上に名前付きのマーカー** を設定できる
+
+```js
+const tl = gsap.timeline();
+
+tl.to(".box1", { x: 100, duration: 1 })
+  .addLabel("middle")                      // ← ラベルを追加
+  .to(".box2", { y: 100, duration: 1 })
+  .to(".box3", { x: 100, duration: 1 }, "middle")      // ← ラベル位置に配置
+  .to(".box4", { y: 100, duration: 1 }, "middle+=0.5"); // ← ラベル + 0.5秒
+```
+
+### ラベルの便利な使い方
+
+```js
+// ラベル位置へジャンプ
+tl.play("middle");
+
+// ラベル位置から逆再生
+tl.reverse("middle");
+```
+
+---
+
+## Timeline のデフォルト設定 & ループ
+
+### defaults で共通プロパティをまとめる
+
+```js
 const tl = gsap.timeline({
-  repeat: -1,        // -1 = 無限ループ
-  yoyo: true,        // 往復
-  repeatDelay: 0.5   // ループ間の待機時間
+  defaults: { duration: 0.5, ease: "power2.out" }
 });
 
-tl.to('.dot', {
-  y: -20,
-  stagger: 0.1
+tl.to(".a", { x: 100 })    // duration, ease を省略できる
+  .to(".b", { y: 100 })
+  .to(".c", { x: 200 });
+```
+
+### ループアニメーション
+
+```js
+const tl = gsap.timeline({
+  repeat: -1,        // 無限ループ
+  yoyo: true,        // 往復
+  repeatDelay: 0.5
 });
+
+tl.to(".dot", { y: -20, stagger: 0.1 });
 ```
 
 ローディングアニメーションに最適！
 
-> 📁 `examples/02-timeline/03-loading.html` | [CodePen](https://codepen.io/mocaffy/pen/RNReEWj)
+> 📁 `examples/03-timeline/loading-loop.html`
 
 ---
 
-## Timeline のデフォルト設定
+<!-- _class: exercise -->
 
-```javascript
-const tl = gsap.timeline({
-  defaults: {
-    duration: 0.5,
-    ease: 'power2.out'
-  }
+## 演習 3：Timeline
+
+### `examples/exercises/03-timeline.html` を開こう
+
+1. **ローディングアニメーション**: 3 つのドットが順番に `scale: 1.5` → 元に戻る Timeline を `repeat: -1` で作る
+2. **ステップ表示**: 3 枚の `.card` を順番にフェードイン。2 枚目は 1 枚目の終了 **0.3 秒前**に開始させる（`"-=0.3"` を使用）
+3. **ラベルの活用**: ボタン 2 つ（「イントロ」「メイン」）を用意し、クリックで Timeline の該当ラベルへジャンプさせる
+
+> 📁 `examples/exercises/03-timeline.html`
+
+---
+
+<!-- _class: break -->
+
+# ☕ 休憩（10分）
+
+---
+
+<!-- _class: chapter -->
+
+# Chapter 5
+## Stagger
+
+---
+
+## Stagger とは
+
+**複数要素のアニメーション開始を時間差で並べる** 機能
+
+```js
+gsap.to(".box", {
+  x: 300,
+  duration: 1,
+  stagger: 0.2   // 各要素 0.2 秒間隔
 });
-
-// 各アニメーションで duration を省略できる
-tl.to('.box1', { x: 200 })
-  .to('.box2', { x: 200 })
-  .to('.box3', { x: 200 });
 ```
 
+### `each` vs `amount`
+
+| プロパティ | 説明 |
+|-----------|------|
+| `stagger: 0.2` or `each: 0.2` | 各要素間の間隔が **0.2 秒固定** |
+| `amount: 1` | 全要素の合計が **1 秒**（要素数で割る） |
+
+> 📁 `examples/02-properties/stagger-each-amount.html`
+
 ---
 
-## コールバック - アニメーションのイベント
+## Stagger の from（開始位置）
 
-```javascript
-gsap.to('.box', {
-  x: 200,
-  duration: 1,
-  onStart: () => {
-    console.log('アニメーション開始！');
-  },
-  onComplete: () => {
-    console.log('アニメーション完了！');
-  },
-  onUpdate: () => {
-    console.log('更新中...');
+```js
+stagger: { each: 0.1, from: "start" }   // 先頭から（デフォルト）
+stagger: { each: 0.1, from: "end" }     // 末尾から
+stagger: { each: 0.1, from: "center" }  // 中央から外へ
+stagger: { each: 0.1, from: "edges" }   // 両端から中央へ
+stagger: { each: 0.1, from: "random" }  // ランダム
+```
+
+> 📁 `examples/02-properties/stagger-from.html`
+
+---
+
+## Stagger の repeat / yoyo（波のドット）
+
+各要素が **独立して** 繰り返し / 往復する
+
+```js
+gsap.to(".dot", {
+  y: -30,
+  duration: 0.5,
+  stagger: {
+    each: 0.15,
+    repeat: -1,       // 各要素が独立して無限ループ
+    yoyo: true         // 各要素が独立して往復
   }
+});
+```
+
+> これで「波のように動くドット」が簡単に作れる
+
+> 📁 `examples/02-properties/stagger-wave.html`
+
+---
+
+<!-- _class: chapter -->
+
+# Chapter 6
+## コールバック & 制御メソッド
+
+---
+
+## コールバック
+
+**アニメーションのイベントに応じて関数を実行** できる
+
+```js
+gsap.to(".box", {
+  x: 300,
+  duration: 2,
+  onStart: () => console.log("開始！"),
+  onUpdate: () => console.log("更新中..."),
+  onComplete: () => console.log("完了！")
 });
 ```
 
 | コールバック | タイミング |
-|---|---|
-| `onStart` | アニメーション開始時（1回） |
-| `onComplete` | アニメーション完了時（1回） |
-| `onUpdate` | 毎フレーム更新時 |
+|-------------|----------|
+| `onStart` | アニメーション開始時（初回のみ） |
+| `onUpdate` | フレームごと（毎フレーム実行） |
+| `onComplete` | アニメーション完了時 |
+| `onRepeat` | 各繰り返し完了時 |
+| `onReverseComplete` | 逆再生が完了した時 |
 
 💡 Timeline にも使えます（例: ローディング完了後にメイン表示）
 
----
-
-## ハンズオン: Timeline を使ってみよう
-
-### `examples/02-timeline/` のファイルを開こう
-
-1. `01-timeline-basic.html` で複数のボックスを順番に動かそう
-2. `02-position-parameter.html` でタイミングを調整してみよう
-3. `03-loading.html` でループアニメーションを作ってみよう
+> 📁 `examples/03-timeline/callbacks.html`
 
 ---
 
-<!-- _class: lead -->
+## 制御メソッド
 
-# 4. ScrollTrigger
+Tween や Timeline の **再生を自在にコントロール** する
 
-## スクロールでアニメーションを制御しよう
+```js
+const tween = gsap.to(".box", { x: 300, duration: 2, paused: true });
+
+tween.play();            // 再生
+tween.pause();           // 一時停止
+tween.reverse();         // 逆再生
+tween.restart();         // 最初から再生
+tween.seek(1);           // 1秒地点にジャンプ
+tween.progress(0.5);     // 50% 地点にジャンプ
+tween.timeScale(2);      // 2倍速
+tween.kill();            // 破棄
+```
+
+> 📁 `examples/03-timeline/control-methods.html` ・ `examples/03-timeline/control-ui.html`
 
 ---
 
-## ScrollTrigger とは？
+<!-- _class: chapter -->
 
-**スクロールでアニメーションを制御**
-
-- 要素が画面に入ったらアニメーション開始
-- スクロール量に連動してアニメーション
-- パララックス効果
-- スクロールピン（固定）
+# Chapter 7
+## ScrollTrigger
 
 ---
 
-## ScrollTrigger を使う準備
+## ScrollTrigger とは
+
+**スクロール位置に応じてアニメーションを発火・制御** するプラグイン
+
+### セットアップ
 
 ```html
 <!-- GSAP本体 -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 
 <!-- ScrollTrigger プラグイン -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
 
 <script>
   // プラグインを登録（重要！）
@@ -420,69 +789,32 @@ gsap.from('.box', {
 });
 ```
 
-要素が画面の80%位置に来たらアニメーション開始！
-
-> 📁 `examples/03-scrolltrigger/01-fade-in.html` | [CodePen](https://codepen.io/mocaffy/pen/PwzyXGB)
-
----
-
-## start と end の指定
+### start / end の指定
 
 ```
 start: 'トリガー要素の位置  画面上の位置'
 
 例:
-start: 'top center'    → 要素の上端が画面中央に来たら
 start: 'top 80%'       → 要素の上端が画面の80%位置に来たら
+start: 'top center'    → 要素の上端が画面中央に来たら
 start: 'center center' → 要素の中央が画面中央に来たら
 ```
 
-使える値: `top`, `center`, `bottom`, 数値(px), 割合(%)
-
-> 📁 `examples/03-scrolltrigger/02-slide-in.html` | [CodePen](https://codepen.io/mocaffy/pen/myEzaOx)
+> 📁 `examples/04-scrolltrigger/fade-in.html`
 
 ---
 
-## スクロール連動アニメーション（scrub）
+## toggleActions — スクロール方向で動作を変える
 
 ```javascript
-gsap.to('.box', {
-  x: 500,
-  rotation: 360,
-  scrollTrigger: {
-    trigger: '.section',
-    start: 'top center',
-    end: 'bottom center',
-    scrub: true  // スクロールに連動
-  }
-});
-```
-
-| scrub の値 | 動作 |
-|-----------|------|
-| `false` | トリガーで1回再生 |
-| `true` | スクロールに完全連動 |
-| `1` | 1秒かけて追従 |
-
-> 📁 `examples/03-scrolltrigger/03-scrub.html` | [CodePen](https://codepen.io/mocaffy/pen/NPrOebo)
-
----
-
-## toggleActions - スクロール方向で動作を変える
-
-```javascript
-gsap.from('.box', {
-  opacity: 0,
-  y: 50,
-  scrollTrigger: {
-    trigger: '.box',
-    start: 'top 80%',
-    end: 'bottom 20%',
-    toggleActions: 'play none none reverse'
-    //              ↑    ↑    ↑    ↑
-    // onEnter  onLeave  onEnterBack  onLeaveBack
-  }
-});
+scrollTrigger: {
+  trigger: '.box',
+  start: 'top 80%',
+  end: 'bottom 20%',
+  toggleActions: 'play none none reverse'
+  //              ↑    ↑    ↑    ↑
+  // onEnter  onLeave  onEnterBack  onLeaveBack
+}
 ```
 
 | 値 | 動作 |
@@ -495,25 +827,48 @@ gsap.from('.box', {
 
 💡 **よく使うパターン**: `"play none none reverse"`（画面外に出たら元に戻る）
 
+> 📁 `examples/04-scrolltrigger/toggle-actions.html`
+
 ---
 
-## markers でデバッグしよう
+## markers でデバッグ & scrub でスクロール連動
 
-```javascript
+### markers
+
+```js
 scrollTrigger: {
   trigger: '.box',
   start: 'top 80%',
-  markers: true    // 開始・終了位置を画面に表示
+  markers: true    // 緑（start）と赤（end）のラインが表示
 }
 ```
 
-- `markers: true` で緑（start）と赤（end）のラインが表示される
-- 位置の調整に便利！
-- **本番では必ず `false` にするか削除すること**
+**本番では必ず `false` にするか削除すること**
+
+### scrub — スクロール量に連動
+
+```js
+gsap.to('.box', {
+  x: 500, rotation: 360,
+  scrollTrigger: {
+    trigger: '.section',
+    start: 'top center',
+    end: 'bottom center',
+    scrub: true       // スクロールに完全連動
+  }
+});
+```
+
+| scrub の値 | 動作 |
+|-----------|------|
+| `true` | スクロール位置に即座に追従 |
+| `1` | 1秒かけてスムーズに追従 |
+
+> 📁 `examples/04-scrolltrigger/scrub.html`
 
 ---
 
-## pin - 要素を固定する
+## pin — 要素を固定する
 
 ```javascript
 gsap.to('.box', {
@@ -532,21 +887,21 @@ gsap.to('.box', {
 - スクロールしても要素は動かず、アニメーションだけ進む
 - 横スクロールや複雑な演出の基盤になる重要な機能
 
-> 📁 `examples/03-scrolltrigger/06-pin.html` | [CodePen](https://codepen.io/mocaffy/pen/RNReEpM)
+> 📁 `examples/04-scrolltrigger/pin.html`
 
 ---
 
 ## 横スクロール（pin + scrub の応用）
 
 ```javascript
-const scroller = document.querySelector('.scroller');
-const scrollAmount = scroller.scrollWidth - window.innerWidth;
+const panels = document.querySelector('.panels');
+const scrollAmount = panels.scrollWidth - window.innerWidth;
 
-gsap.to('.scroller', {
+gsap.to('.panels', {
   x: () => -scrollAmount,   // 関数形式で値を返す
   ease: 'none',
   scrollTrigger: {
-    trigger: '.container',
+    trigger: '.panels-wrapper',
     start: 'top top',
     end: () => '+=' + scrollAmount,
     pin: true,               // 固定して
@@ -556,7 +911,7 @@ gsap.to('.scroller', {
 });
 ```
 
-> 📁 `examples/03-scrolltrigger/07-horizontal-scroll.html` | [CodePen](https://codepen.io/mocaffy/pen/yyJRGbL)
+> 📁 `examples/04-scrolltrigger/horizontal-scroll.html`
 
 ---
 
@@ -566,7 +921,10 @@ gsap.to('.scroller', {
 const tl = gsap.timeline({
   scrollTrigger: {
     trigger: '.section',
-    start: 'top 60%'
+    start: 'top center',
+    end: 'bottom center',
+    scrub: 1,
+    markers: true
   }
 });
 
@@ -578,33 +936,34 @@ tl.from('.title', { y: 30, opacity: 0 })
 - Timeline のオプションに `scrollTrigger` を追加するだけ！
 - スクロールで発火し、中のアニメーションが順番に実行される
 
-> 📁 `examples/03-scrolltrigger/08-timeline-scroll.html` | [CodePen](https://codepen.io/mocaffy/pen/VYjEqbr)
+> 📁 `examples/04-scrolltrigger/timeline-scroll.html`
 
 ---
 
-## ハンズオン: ScrollTrigger を使ってみよう
+<!-- _class: exercise -->
 
-### `examples/03-scrolltrigger/` のファイルを開こう
+## 演習 4：ScrollTrigger
 
-1. `01-fade-in.html` でスクロールでアニメーションを発火させよう
-2. `03-scrub.html` で scrub を試してみよう
-3. `06-pin.html` で要素の固定を体験しよう
-4. `07-horizontal-scroll.html` で横スクロールを作ろう
-5. `08-timeline-scroll.html` で Timeline + ScrollTrigger を組み合わせよう
+### `examples/exercises/04-scrolltrigger.html` を開こう
+
+1. **フェードインセクション**: 3 つのセクションの要素が **画面の 80% に入った時** にフェードインする。`markers: true` でデバッグ
+2. **パララックス効果**: 背景を `scrub: true` で `y: -100` 移動させる
+3. **横スクロール**: `pin: true` と `scrub` を使って、縦スクロールで横方向にパネルが流れるセクションを作る
+
+> 📁 `examples/exercises/04-scrolltrigger.html`
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: break -->
 
 # ☕ 休憩（10分）
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: chapter -->
 
-# 5. 観光PRサイト作成
-
-## 自分の出身地をPRしよう！
+# Chapter 8
+## 観光PRサイト作成
 
 ---
 
@@ -612,8 +971,11 @@ tl.from('.title', { y: 30, opacity: 0 })
 
 **自分の出身地（都道府県・市区町村）のPRサイト**
 
-`examples/04-fukui-pr/index.html` をベースに、
+`examples/05-fukui-pr/index.html` をベースに、
 あなたの地元をPRするサイトを作ってみよう！
+
+> 📁 `examples/05-fukui-pr/index.html`（フル版）
+> 📁 `examples/05-fukui-pr/index-simple.html`（簡易版）
 
 ---
 
@@ -634,9 +996,7 @@ tl.from('.title', { y: 30, opacity: 0 })
 
 ## コードウォークスルー
 
-カスタマイズの前に、サンプルコードを一緒に読み解きましょう。
-
-`examples/04-fukui-pr/index.html` の JS は **9つの関数** に分かれています。
+サンプルコードの JS は **9つの関数** に分かれています。
 
 ```
 initLoader()          → ローディング画面
@@ -682,7 +1042,7 @@ initSmoothScroll()    → スムーススクロール
 - 観光スポット（3つ程度）
 - 名物・グルメ
 - アクセス情報
-- 画像（Unsplash などで探す）
+- 画像（[Unsplash](https://unsplash.com/) などで探す）
 
 ---
 
@@ -695,15 +1055,8 @@ initSmoothScroll()    → スムーススクロール
   --color-primary: #1a5f4a;    /* メインカラー */
   --color-secondary: #d4a373;  /* サブカラー */
   --color-accent: #e63946;     /* アクセントカラー */
-  --color-ocean: #2a6f97;      /* 特徴的な色 */
 }
 ```
-
-地域の特色に合わせた配色を考えよう！
-
----
-
-## カスタマイズのポイント
 
 ### テキストの変更
 
@@ -711,41 +1064,15 @@ initSmoothScroll()    → スムーススクロール
 <h1 class="hero-title">
   <span class="hero-title-line">FUKUI</span>  <!-- ← 地域名 -->
 </h1>
-<p class="hero-description">
-  自然と歴史が織りなす...  <!-- ← キャッチコピー -->
-</p>
 ```
 
 ### 画像の変更
 
 ```html
-<img src="https://images.unsplash.com/..." alt="...">
+<img src="https://images.unsplash.com/photo-xxxx?w=1200&h=800&fit=crop" alt="...">
 ```
 
-Unsplash で地域にちなんだ画像を探そう！
-
----
-
-## 画像の探し方
-
-### Unsplash
-
-https://unsplash.com/
-
-1. 検索ワードを入力（例: "Kyoto temple", "Tokyo night"）
-2. 気に入った画像をクリック
-3. 画像URLをコピー
-
-⚠️ 「Unsplash+」マークが付いた画像は有料なので、マークの無い画像を選びましょう
-
-### 画像URLの使い方
-
-```html
-<img src="https://images.unsplash.com/photo-xxxx?w=1200&h=800&fit=crop" 
-     alt="説明文">
-```
-
-`w=1200&h=800` でサイズを指定できる！
+⚠️ 「Unsplash+」マークの無い画像を選びましょう
 
 ---
 
@@ -753,23 +1080,22 @@ https://unsplash.com/
 
 ### 必須チャレンジ 🎯
 
-1. 地域名とキャッチコピーを変更
-2. 配色を変更（最低3色）
-3. 観光スポットを3つ変更
-4. 画像を差し替え
+1. 地域名・キャッチコピー・画像を自分の地元に変更
+2. 配色を変更（CSS カスタムプロパティで最低3色）
+3. `initHeroAnimation()` の `ease` を好きなものに変える
+4. 観光スポットの `stagger` の値を変えて、登場の間隔を調整する
 
 ### 追加チャレンジ ⭐
 
-- グルメセクションの内容を変更
-- アクセス情報を更新
-- 新しいアニメーションを追加
-- オリジナルのセクションを追加
+- イージングを変えてサイト全体の印象を変える
+- stagger の `from` を変えて登場演出を工夫する
+- オリジナルのセクションを追加して新しいアニメーションを付ける
 
 ---
 
 ## 作業時間
 
-### 🕐 約45分（ウォークスルー除く）
+### 🕐 約45分
 
 - 最初の10分：テーマ決め＆情報収集
 - 次の25分：コードの編集
@@ -789,29 +1115,28 @@ https://unsplash.com/
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: chapter -->
 
-# 6. まとめ
+# Chapter 9
+## まとめ & ベストプラクティス
 
 ---
 
 ## 今日学んだこと
 
 ### ✅ GSAP の基本
-- `gsap.to` / `gsap.from` / `gsap.fromTo`
+- `gsap.to` / `gsap.from` / `gsap.fromTo` / `gsap.set`
 - プロパティ（x, y, scale, rotation, opacity...）
 - イージング（ease）
-- 複数要素のアニメーション（stagger）
 
-### ✅ Timeline
-- 複数アニメーションの制御
-- タイミングの調整（`<`, `+=`, `-=`）
+### ✅ Timeline & Stagger
+- 複数アニメーションの制御 / タイミングの調整（`<`, `+=`, `-=`）
 - ループアニメーション（repeat, yoyo）
+- Stagger（時間差アニメーション）
 
-### ✅ ScrollTrigger
-- スクロール連動アニメーション
-- パララックス効果（scrub）
-- ピン留め（pin）と横スクロール
+### ✅ コールバック & ScrollTrigger
+- onStart / onComplete / onUpdate
+- スクロール連動（scrub）/ ピン留め（pin）/ 横スクロール
 - Timeline + ScrollTrigger の組み合わせ
 
 ### ✅ 実践
@@ -821,7 +1146,7 @@ https://unsplash.com/
 
 ## パフォーマンスのコツ
 
-### ✅ 推奨: transform プロパティを使う
+### ✅ 推奨: Transform プロパティを使う
 
 ```javascript
 // GPU アクセラレーションが効く（高速）
@@ -838,7 +1163,14 @@ gsap.to('.box', { autoAlpha: 0 });
 gsap.to('.box', { width: '200px', top: '100px' });
 ```
 
-**`x`, `y`, `scale`, `rotation` は GPU で高速処理されます！**
+### 不要な Tween は kill()
+
+```js
+ScrollTrigger.getAll().forEach(st => st.kill());
+gsap.killTweensOf(".box");
+```
+
+> 📁 `examples/patterns/autoalpha.html`
 
 ---
 
@@ -852,7 +1184,6 @@ const prefersReducedMotion = window.matchMedia(
 ).matches;
 
 if (prefersReducedMotion) {
-  // アニメーションを無効化
   gsap.globalTimeline.timeScale(100);
 }
 ```
@@ -861,57 +1192,91 @@ if (prefersReducedMotion) {
 
 ---
 
-## gsap.utils - 便利なユーティリティ
+## gsap.utils & gsap.matchMedia
+
+### ユーティリティメソッド
 
 ```javascript
-// ランダムな値を生成
-gsap.utils.random(0, 500);           // 0〜500のランダム値
-gsap.utils.random(['red', 'blue']);   // 配列からランダムに選択
-
-// NodeList を配列に変換
-const boxes = gsap.utils.toArray('.box');
-
-// 値の範囲を制限
-gsap.utils.clamp(0, 100, 150);       // → 100（0〜100に制限）
+gsap.utils.random(0, 500);           // ランダムな値
+gsap.utils.random(['red', 'blue']);   // 配列からランダム選択
+gsap.utils.toArray('.box');           // NodeList を配列に変換
+gsap.utils.clamp(0, 100, 150);       // → 100（範囲制限）
 ```
 
-詳しくは [公式ドキュメント](https://greensock.com/docs/v3/GSAP/UtilityMethods) で！
-
----
-
-## GSAP クイックリファレンス
+### レスポンシブ対応
 
 ```javascript
-// 基本
-gsap.to('.box', { x: 200, duration: 1 });
-gsap.from('.box', { opacity: 0 });
+const mm = gsap.matchMedia();
 
-// Timeline
-const tl = gsap.timeline();
-tl.to('.box1', { x: 200 })
-  .to('.box2', { x: 200 }, '<');
+mm.add("(min-width: 768px)", () => {
+  // デスクトップ用アニメーション
+  gsap.to(".sidebar", { x: 0, duration: 0.5 });
+});
 
-// ScrollTrigger
-gsap.to('.box', {
-  y: 100,
-  scrollTrigger: { trigger: '.box', start: 'top 80%' }
+mm.add("(max-width: 767px)", () => {
+  // モバイル用アニメーション
+  gsap.to(".sidebar", { y: 0, duration: 0.5 });
 });
 ```
 
 ---
 
+## GSAP 学習ロードマップ
+
+| ステップ | 内容 | 重要度 |
+|---------|------|-------|
+| 1 | `to()` / `from()` / `fromTo()` / `set()` | ★★★ |
+| 2 | duration / delay / repeat / yoyo | ★★★ |
+| 3 | Easing の使い分け | ★★★ |
+| 4 | Timeline + Position パラメータ | ★★★ |
+| 5 | Stagger | ★★☆ |
+| 6 | コールバック + 制御メソッド | ★★☆ |
+| 7 | ScrollTrigger | ★★★ |
+| 8 | matchMedia / context | ★★☆ |
+| 9 | SplitText / MotionPath 等のプラグイン | ★☆☆ |
+
+---
+
 ## さらに学びたい人へ
 
-- [GSAP 公式ドキュメント](https://greensock.com/docs/)
-- [GSAP Cheat Sheet](https://greensock.com/cheatsheet/)
-- [Ease Visualizer](https://greensock.com/docs/v3/Eases)
+- [GSAP 公式ドキュメント](https://gsap.com/docs/v3/)
+- [Ease Visualizer](https://gsap.com/docs/v3/Eases/)
+- [GSAP Cheat Sheet](https://gsap.com/community/cheatsheet/)
+- [ScrollTrigger デモ](https://gsap.com/scroll/)
 - [CodePen で作例を見る](https://codepen.io/GreenSock)
 
 **実際に作って試すのが一番！**
 
 ---
 
-<!-- _class: lead -->
+## よくあるパターン集
+
+### ページロードアニメーション
+
+```js
+const tl = gsap.timeline();
+tl.from("nav", { y: -100, duration: 0.5 })
+  .from(".hero h1", { opacity: 0, y: 50 }, "-=0.2")
+  .from(".hero .cta", { opacity: 0, scale: 0.8 }, "-=0.2");
+```
+
+### テキストカウンター
+
+```js
+const counter = { value: 0 };
+gsap.to(counter, {
+  value: 12345, duration: 2,
+  onUpdate: () => {
+    el.textContent = Math.round(counter.value).toLocaleString();
+  }
+});
+```
+
+> 📁 `examples/patterns/page-load.html` ・ `examples/patterns/hover-card.html` ・ `examples/patterns/text-counter.html`
+
+---
+
+<!-- _class: chapter -->
 
 # 弊社の事例紹介
 
@@ -921,8 +1286,8 @@ gsap.to('.box', {
 
 - **プロジェクト名**: ふわっち
 - **URL**: https://whowatch.tv/s/snack/
-- **使用技術**: GSAP, 〇〇プラグイン
-- **課題・狙い・工夫・**: 
+- **使用技術**: GSAP, ScrollTrigger
+- **課題・狙い・工夫**:
 
 ---
 
@@ -930,16 +1295,15 @@ gsap.to('.box', {
 
 - **プロジェクト名**: VTuber登竜門
 - **URL**: https://www.vmon.jp/
-- **使用技術**: GSAP, 〇〇プラグイン
-- **課題・狙い・工夫・**: 
+- **使用技術**: GSAP, ScrollTrigger
+- **課題・狙い・工夫**:
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: title -->
 
 # 質疑応答
 
 技術的な質問でも
 会社についての質問でも
 何でもどうぞ！
-
