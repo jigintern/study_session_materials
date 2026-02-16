@@ -7,6 +7,7 @@ style: |
   section {
     font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
     font-size: 24px;
+    padding: 0px 60px;
     color: #1a1a1a;
   }
   section.title {
@@ -843,7 +844,7 @@ scrollTrigger: {
 
 ---
 
-## markers でデバッグ & scrub でスクロール連動
+## markers でデバッグ
 
 ### markers
 
@@ -856,6 +857,8 @@ scrollTrigger: {
 ```
 
 **本番では必ず `false` にするか削除すること**
+
+---
 
 ### scrub — スクロール量に連動
 
@@ -1068,7 +1071,6 @@ initSmoothScroll()    → スムーススクロール
 :root {
   --color-primary: #1a5f4a; /* メインカラー */
   --color-secondary: #d4a373; /* サブカラー */
-  --color-accent: #e63946; /* アクセントカラー */
 }
 ```
 
@@ -1161,10 +1163,6 @@ initSmoothScroll()    → スムーススクロール
 - スクロール連動（scrub）/ ピン留め（pin）/ 横スクロール
 - Timeline + ScrollTrigger の組み合わせ
 
-### ✅ 実践
-
-- 観光PRサイトの作成
-
 ---
 
 ## パフォーマンスのコツ
@@ -1174,7 +1172,6 @@ initSmoothScroll()    → スムーススクロール
 ```javascript
 // GPU アクセラレーションが効く（高速）
 gsap.to(".box", { x: 100, y: 50, scale: 1.5, rotation: 45 });
-
 // autoAlpha で opacity + visibility を同時制御
 gsap.to(".box", { autoAlpha: 0 });
 ```
