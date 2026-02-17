@@ -7,6 +7,7 @@ style: |
   section {
     font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
     font-size: 24px;
+    padding: 0px 60px;
     color: #1a1a1a;
   }
   section.title {
@@ -98,8 +99,9 @@ style: |
 ---
 
 <!-- _class: title -->
-
-# GSAPから始めるWebアニメーション入門
+<h1>
+GSAPから始める<br />Webアニメーション入門
+</h1>
 
 ## GreenSock Animation Platform で学ぶ Web アニメーション
 
@@ -115,23 +117,24 @@ GSAP を使って Web アニメーションが作れるようになる！
 
 ## もくじ
 
-| # | 内容 |
-|---|------|
-| 1 | **GSAP とは？** |
-| 2 | **基本の Tween** — to / from / fromTo / set |
-| 3 | **プロパティ & イージング** |
-| 4 | **Timeline** — アニメーションの連結と制御 |
-| 5 | **Stagger** — 時間差アニメーション |
-| 6 | **コールバック & 制御メソッド** |
-| 7 | **ScrollTrigger** — スクロール連動 |
-| 8 | **観光PRサイト作成** |
-| 9 | **まとめ & 事例紹介** |
+| #   | 内容                                        |
+| --- | ------------------------------------------- |
+| 1   | **GSAP とは？**                             |
+| 2   | **基本の Tween** — to / from / fromTo / set |
+| 3   | **プロパティ & イージング**                 |
+| 4   | **Timeline** — アニメーションの連結と制御   |
+| 5   | **Stagger** — 時間差アニメーション          |
+| 6   | **コールバック & 制御メソッド**             |
+| 7   | **ScrollTrigger** — スクロール連動          |
+| 8   | **観光PRサイト作成**                        |
+| 9   | **まとめ & 事例紹介**                       |
 
 ---
 
 <!-- _class: chapter -->
 
 # Chapter 1
+
 ## GSAP とは？
 
 ---
@@ -151,13 +154,13 @@ Webflow による買収で、ScrollTrigger・SplitText・MorphSVG など
 
 ## なぜ GSAP を学ぶ？
 
-| 比較項目 | CSS Animation | Web Animations API | GSAP |
-|---------|--------------|-------------------|------|
-| 学習コスト | 低 | 中 | 中 |
-| 制御性 | 低 | 中 | **高** |
-| 順番に実行 | 困難 | やや困難 | **簡単** |
-| ScrollTrigger | なし | なし | **内蔵** |
-| ブラウザ互換 | 高 | 中 | **高** |
+| 比較項目      | CSS Animation | Web Animations API | GSAP     |
+| ------------- | ------------- | ------------------ | -------- |
+| 学習コスト    | 低            | 中                 | 中       |
+| 制御性        | 低            | 中                 | **高**   |
+| 順番に実行    | 困難          | やや困難           | **簡単** |
+| ScrollTrigger | なし          | なし               | **内蔵** |
+| ブラウザ互換  | 高            | 中                 | **高**   |
 
 **業界標準として広く使われている！**
 
@@ -180,6 +183,7 @@ Webflow による買収で、ScrollTrigger・SplitText・MorphSVG など
 <!-- _class: chapter -->
 
 # Chapter 2
+
 ## 基本の Tween
 
 ---
@@ -190,12 +194,12 @@ Webflow による買収で、ScrollTrigger・SplitText・MorphSVG など
 
 GSAP には **4 つの基本メソッド** がある：
 
-| メソッド | 説明 |
-|---------|------|
-| `gsap.to()` | **現在の状態 → 指定した状態** へ |
-| `gsap.from()` | **指定した状態 → 現在の状態** へ |
-| `gsap.fromTo()` | **開始値と終了値の両方を指定** |
-| `gsap.set()` | **即座に値をセット**（duration: 0 の to） |
+| メソッド        | 説明                                      |
+| --------------- | ----------------------------------------- |
+| `gsap.to()`     | **現在の状態 → 指定した状態** へ          |
+| `gsap.from()`   | **指定した状態 → 現在の状態** へ          |
+| `gsap.fromTo()` | **開始値と終了値の両方を指定**            |
+| `gsap.set()`    | **即座に値をセット**（duration: 0 の to） |
 
 基本構文:
 
@@ -213,7 +217,7 @@ gsap.to(ターゲット, { プロパティ: 値, ... });
 // .box を右に 300px 移動（1秒かけて）
 gsap.to(".box", {
   x: 300,
-  duration: 1
+  duration: 1,
 });
 ```
 
@@ -224,7 +228,7 @@ gsap.to(".box", {
   rotation: 360,
   scale: 1.2,
   borderRadius: "50%",
-  duration: 2
+  duration: 2,
 });
 ```
 
@@ -235,23 +239,23 @@ gsap.to(".box", {
 ## よく使うプロパティ
 
 ```javascript
-gsap.to('.box', {
+gsap.to(".box", {
   // 位置
-  x: 100,           // 水平移動
-  y: 50,            // 垂直移動
+  x: 100, // 水平移動
+  y: 50, // 垂直移動
 
   // サイズ・回転
-  scale: 1.5,       // 拡大縮小
-  rotation: 360,    // 回転（度）
+  scale: 1.5, // 拡大縮小
+  rotation: 360, // 回転（度）
 
   // 見た目
-  opacity: 0.5,     // 透明度
-  autoAlpha: 0,     // opacity + visibility を同時制御
-  backgroundColor: '#e74c3c',
+  opacity: 0.5, // 透明度
+  autoAlpha: 0, // opacity + visibility を同時制御
+  backgroundColor: "#e74c3c",
 
   // 時間
-  duration: 2,      // 秒数
-  delay: 0.5        // 遅延
+  duration: 2, // 秒数
+  delay: 0.5, // 遅延
 });
 ```
 
@@ -266,7 +270,7 @@ gsap.to('.box', {
 gsap.from(".box", {
   x: -300,
   opacity: 0,
-  duration: 1
+  duration: 1,
 });
 ```
 
@@ -277,7 +281,7 @@ gsap.from(".hero-title", {
   y: 50,
   opacity: 0,
   duration: 1,
-  delay: 0.3
+  delay: 0.3,
 });
 ```
 
@@ -290,9 +294,10 @@ gsap.from(".hero-title", {
 ## gsap.fromTo() — 開始値と終了値を両方指定
 
 ```js
-gsap.fromTo(".box",
-  { x: -200, opacity: 0 },    // from（開始値）
-  { x: 200,  opacity: 1, duration: 1 }  // to（終了値）
+gsap.fromTo(
+  ".box",
+  { x: -200, opacity: 0 }, // from（開始値）
+  { x: 200, opacity: 1, duration: 1 }, // to（終了値）
 );
 ```
 
@@ -332,16 +337,16 @@ gsap.to(".box", { x: 300, opacity: 1, duration: 1 });
 
 GSAP では **CSS セレクタ**（文字列）で動かす要素を指定します。
 
-| HTML | セレクタ | ルール |
-|------|---------|--------|
-| `<div class="box">` | `".box"` | **class** には **`.`（ドット）** を付ける |
-| `<div id="hero">` | `"#hero"` | **id** には **`#`（シャープ）** を付ける |
-| `<h1>` | `"h1"` | **タグ名** はそのまま |
+| HTML                | セレクタ  | ルール                                    |
+| ------------------- | --------- | ----------------------------------------- |
+| `<div class="box">` | `".box"`  | **class** には **`.`（ドット）** を付ける |
+| `<div id="hero">`   | `"#hero"` | **id** には **`#`（シャープ）** を付ける  |
+| `<h1>`              | `"h1"`    | **タグ名** はそのまま                     |
 
 ```js
-gsap.to(".box", { x: 100 });    // class="box" の要素を動かす
+gsap.to(".box", { x: 100 }); // class="box" の要素を動かす
 gsap.to("#hero", { opacity: 0 }); // id="hero" の要素を動かす
-gsap.to("h1", { y: -20 });      // すべての <h1> を動かす
+gsap.to("h1", { y: -20 }); // すべての <h1> を動かす
 ```
 
 > 💡 `document.querySelector()` と同じ書き方です
@@ -372,26 +377,30 @@ gsap.to("h1", { y: -20 });      // すべての <h1> を動かす
 <!-- _class: chapter -->
 
 # Chapter 3
+
 ## プロパティ & イージング
 
 ---
 
 ## duration / delay / repeat / yoyo
 
-| プロパティ | 型 | デフォルト | 説明 |
-|-----------|------|-----------|------|
-| `duration` | number | `0.5` | アニメーション時間（秒） |
-| `delay` | number | `0` | 開始までの待機時間（秒） |
-| `repeat` | number | `0` | 繰り返し回数（`-1` で無限） |
-| `repeatDelay` | number | `0` | 繰り返し間の待機時間 |
-| `yoyo` | boolean | `false` | 繰り返し時に逆再生する |
-| `ease` | string | `"power1.out"` | イージング関数 |
+| プロパティ    | 型      | デフォルト     | 説明                        |
+| ------------- | ------- | -------------- | --------------------------- |
+| `duration`    | number  | `0.5`          | アニメーション時間（秒）    |
+| `delay`       | number  | `0`            | 開始までの待機時間（秒）    |
+| `repeat`      | number  | `0`            | 繰り返し回数（`-1` で無限） |
+| `repeatDelay` | number  | `0`            | 繰り返し間の待機時間        |
+| `yoyo`        | boolean | `false`        | 繰り返し時に逆再生する      |
+| `ease`        | string  | `"power1.out"` | イージング関数              |
 
 ```js
 // 無限ループ + 往復
 gsap.to(".box", {
-  x: 300, duration: 1,
-  repeat: -1, yoyo: true, repeatDelay: 0.5
+  x: 300,
+  duration: 1,
+  repeat: -1,
+  yoyo: true,
+  repeatDelay: 0.5,
 });
 ```
 
@@ -412,10 +421,10 @@ ease: "power1.out"
 
 ### 3 つの方向
 
-| 方向 | 説明 | イメージ |
-|------|------|---------|
-| `.in` | ゆっくり始まる → 加速 | 🐢→🚀 |
-| `.out` | 速く始まる → 減速 | 🚀→🐢 |
+| 方向     | 説明                       | イメージ |
+| -------- | -------------------------- | -------- |
+| `.in`    | ゆっくり始まる → 加速      | 🐢→🚀    |
+| `.out`   | 速く始まる → 減速          | 🚀→🐢    |
 | `.inOut` | ゆっくり → 速く → ゆっくり | 🐢→🚀→🐢 |
 
 > デフォルトは `"power1.out"`（自然な減速）
@@ -426,16 +435,16 @@ ease: "power1.out"
 
 ## イージングの種類
 
-| ease | 特徴 | 使いどころ |
-|------|------|-----------|
-| `"none"` / `"linear"` | 等速 | プログレスバー |
-| `"power1"` ~ `"power4"` | 加速/減速の強さ | UI 全般 |
-| `"back"` | 行き過ぎて戻る | ボタン押下 |
-| `"bounce"` | バウンド | 落下・着地 |
-| `"elastic"` | ゴムのような弾性 | 注目させたい要素 |
-| `"circ"` | 円弧的な動き | 回転系 |
-| `"expo"` | 指数的な緩急 | 高速な切り替え |
-| `"steps(n)"` | n ステップで切り替え | スプライトアニメ |
+| ease                    | 特徴                 | 使いどころ       |
+| ----------------------- | -------------------- | ---------------- |
+| `"none"` / `"linear"`   | 等速                 | プログレスバー   |
+| `"power1"` ~ `"power4"` | 加速/減速の強さ      | UI 全般          |
+| `"back"`                | 行き過ぎて戻る       | ボタン押下       |
+| `"bounce"`              | バウンド             | 落下・着地       |
+| `"elastic"`             | ゴムのような弾性     | 注目させたい要素 |
+| `"circ"`                | 円弧的な動き         | 回転系           |
+| `"expo"`                | 指数的な緩急         | 高速な切り替え   |
+| `"steps(n)"`            | n ステップで切り替え | スプライトアニメ |
 
 💡 [Ease Visualizer](https://gsap.com/docs/v3/Eases/) で確認しよう！
 
@@ -450,22 +459,22 @@ ease: "power1.out"
 ### elastic — ゴムのような弾み
 
 ```js
-ease: "elastic.out(1, 0.3)"
+ease: "elastic.out(1, 0.3)";
 //                 ↑    ↑
 //          振れ幅の大きさ  振動の速さ（小さいほど速い）
 
-ease: "elastic.out(2, 0.3)"   // 振れ幅 大
-ease: "elastic.out(1, 0.8)"   // ゆっくり振動
+ease: "elastic.out(2, 0.3)"; // 振れ幅 大
+ease: "elastic.out(1, 0.8)"; // ゆっくり振動
 ```
 
 ### back — 行き過ぎて戻る
 
 ```js
-ease: "back.out(1.7)"
+ease: "back.out(1.7)";
 //              ↑
 //        行き過ぎる量（大きいほど大きく行き過ぎる）
 
-ease: "back.out(3)"           // もっと行き過ぎる
+ease: "back.out(3)"; // もっと行き過ぎる
 ```
 
 > 📁 `examples/02-properties/elastic-params.html`
@@ -490,6 +499,7 @@ ease: "back.out(3)"           // もっと行き過ぎる
 <!-- _class: chapter -->
 
 # Chapter 4
+
 ## Timeline
 
 ---
@@ -502,16 +512,17 @@ ease: "back.out(3)"           // もっと行き過ぎる
 
 ```js
 gsap.to(".box1", { x: 100, duration: 1 });
-gsap.to(".box2", { x: 100, duration: 1, delay: 1 });    // ← 計算が必要
-gsap.to(".box3", { x: 100, duration: 1, delay: 2 });    // ← 計算が必要
+gsap.to(".box2", { x: 100, duration: 1, delay: 1 }); // ← 計算が必要
+gsap.to(".box3", { x: 100, duration: 1, delay: 2 }); // ← 計算が必要
 ```
 
 ### Timeline を使う場合
 
 ```js
 const tl = gsap.timeline();
+
 tl.to(".box1", { x: 100, duration: 1 })
-  .to(".box2", { x: 100, duration: 1 })   // 自動で前のアニメの後に配置
+  .to(".box2", { x: 100, duration: 1 }) // 自動で前のアニメの後に配置
   .to(".box3", { x: 100, duration: 1 });
 ```
 
@@ -527,21 +538,20 @@ Timeline で **アニメーションの開始位置を細かく制御** する
 
 ```js
 const tl = gsap.timeline();
-
-tl.to(".a", { x: 100, duration: 1 })        // デフォルト: 前の直後
-  .to(".b", { x: 100, duration: 1 }, "<")     // 前と同時に開始
-  .to(".c", { x: 100, duration: 1 }, "<0.5")  // 前の開始0.5秒後
+tl.to(".a", { x: 100, duration: 1 }) // デフォルト: 前の直後
+  .to(".b", { x: 100, duration: 1 }, "<") // 前と同時に開始
+  .to(".c", { x: 100, duration: 1 }, "<0.5") // 前の開始0.5秒後
   .to(".d", { x: 100, duration: 1 }, "-=0.5") // 前の終了0.5秒前
-  .to(".e", { x: 100, duration: 1 }, "+=1");  // 前の終了1秒後
+  .to(".e", { x: 100, duration: 1 }, "+=1"); // 前の終了1秒後
 ```
 
-| 指定 | 意味 |
-|------|------|
-| `"<"` | 直前の**開始と同時** |
-| `"<0.5"` | 直前の開始 + 0.5秒後 |
+| 指定      | 意味                                 |
+| --------- | ------------------------------------ |
+| `"<"`     | 直前の**開始と同時**                 |
+| `"<0.5"`  | 直前の開始 + 0.5秒後                 |
 | `"-=0.5"` | 直前の終了 - 0.5秒（オーバーラップ） |
-| `"+=1"` | 直前の終了 + 1秒（間を空ける） |
-| `2` | タイムラインの2秒地点（絶対位置） |
+| `"+=1"`   | 直前の終了 + 1秒（間を空ける）       |
+| `2`       | タイムラインの2秒地点（絶対位置）    |
 
 > 📁 `examples/03-timeline/position-params.html`
 
@@ -555,9 +565,9 @@ tl.to(".a", { x: 100, duration: 1 })        // デフォルト: 前の直後
 const tl = gsap.timeline();
 
 tl.to(".box1", { x: 100, duration: 1 })
-  .addLabel("middle")                      // ← ラベルを追加
+  .addLabel("middle") // ← ラベルを追加
   .to(".box2", { y: 100, duration: 1 })
-  .to(".box3", { x: 100, duration: 1 }, "middle")      // ← ラベル位置に配置
+  .to(".box3", { x: 100, duration: 1 }, "middle") // ← ラベル位置に配置
   .to(".box4", { y: 100, duration: 1 }, "middle+=0.5"); // ← ラベル + 0.5秒
 ```
 
@@ -579,10 +589,10 @@ tl.reverse("middle");
 
 ```js
 const tl = gsap.timeline({
-  defaults: { duration: 0.5, ease: "power2.out" }
+  defaults: { duration: 0.5, ease: "power2.out" },
 });
 
-tl.to(".a", { x: 100 })    // duration, ease を省略できる
+tl.to(".a", { x: 100 }) // duration, ease を省略できる
   .to(".b", { y: 100 })
   .to(".c", { x: 200 });
 ```
@@ -591,9 +601,9 @@ tl.to(".a", { x: 100 })    // duration, ease を省略できる
 
 ```js
 const tl = gsap.timeline({
-  repeat: -1,        // 無限ループ
-  yoyo: true,        // 往復
-  repeatDelay: 0.5
+  repeat: -1, // 無限ループ
+  yoyo: true, // 往復
+  repeatDelay: 0.5,
 });
 
 tl.to(".dot", { y: -20, stagger: 0.1 });
@@ -628,6 +638,7 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
 <!-- _class: chapter -->
 
 # Chapter 5
+
 ## Stagger
 
 ---
@@ -640,16 +651,16 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
 gsap.to(".box", {
   x: 300,
   duration: 1,
-  stagger: 0.2   // 各要素 0.2 秒間隔
+  stagger: 0.2, // 各要素 0.2 秒間隔
 });
 ```
 
 ### `each` vs `amount`
 
-| プロパティ | 説明 |
-|-----------|------|
-| `stagger: 0.2` or `each: 0.2` | 各要素間の間隔が **0.2 秒固定** |
-| `amount: 1` | 全要素の合計が **1 秒**（要素数で割る） |
+| プロパティ                    | 説明                                    |
+| ----------------------------- | --------------------------------------- |
+| `stagger: 0.2` or `each: 0.2` | 各要素間の間隔が **0.2 秒固定**         |
+| `amount: 1`                   | 全要素の合計が **1 秒**（要素数で割る） |
 
 > 📁 `examples/02-properties/stagger-each-amount.html`
 
@@ -679,9 +690,9 @@ gsap.to(".dot", {
   duration: 0.5,
   stagger: {
     each: 0.15,
-    repeat: -1,       // 各要素が独立して無限ループ
-    yoyo: true         // 各要素が独立して往復
-  }
+    repeat: -1, // 各要素が独立して無限ループ
+    yoyo: true, // 各要素が独立して往復
+  },
 });
 ```
 
@@ -694,6 +705,7 @@ gsap.to(".dot", {
 <!-- _class: chapter -->
 
 # Chapter 6
+
 ## コールバック & 制御メソッド
 
 ---
@@ -708,17 +720,17 @@ gsap.to(".box", {
   duration: 2,
   onStart: () => console.log("開始！"),
   onUpdate: () => console.log("更新中..."),
-  onComplete: () => console.log("完了！")
+  onComplete: () => console.log("完了！"),
 });
 ```
 
-| コールバック | タイミング |
-|-------------|----------|
-| `onStart` | アニメーション開始時（初回のみ） |
-| `onUpdate` | フレームごと（毎フレーム実行） |
-| `onComplete` | アニメーション完了時 |
-| `onRepeat` | 各繰り返し完了時 |
-| `onReverseComplete` | 逆再生が完了した時 |
+| コールバック        | タイミング                       |
+| ------------------- | -------------------------------- |
+| `onStart`           | アニメーション開始時（初回のみ） |
+| `onUpdate`          | フレームごと（毎フレーム実行）   |
+| `onComplete`        | アニメーション完了時             |
+| `onRepeat`          | 各繰り返し完了時                 |
+| `onReverseComplete` | 逆再生が完了した時               |
 
 💡 Timeline にも使えます（例: ローディング完了後にメイン表示）
 
@@ -733,14 +745,14 @@ Tween や Timeline の **再生を自在にコントロール** する
 ```js
 const tween = gsap.to(".box", { x: 300, duration: 2, paused: true });
 
-tween.play();            // 再生
-tween.pause();           // 一時停止
-tween.reverse();         // 逆再生
-tween.restart();         // 最初から再生
-tween.seek(1);           // 1秒地点にジャンプ
-tween.progress(0.5);     // 50% 地点にジャンプ
-tween.timeScale(2);      // 2倍速
-tween.kill();            // 破棄
+tween.play(); // 再生
+tween.pause(); // 一時停止
+tween.reverse(); // 逆再生
+tween.restart(); // 最初から再生
+tween.seek(1); // 1秒地点にジャンプ
+tween.progress(0.5); // 50% 地点にジャンプ
+tween.timeScale(2); // 2倍速
+tween.kill(); // 破棄
 ```
 
 > 📁 `examples/03-timeline/control-methods.html` ・ `examples/03-timeline/control-ui.html`
@@ -750,6 +762,7 @@ tween.kill();            // 破棄
 <!-- _class: chapter -->
 
 # Chapter 7
+
 ## ScrollTrigger
 
 ---
@@ -778,14 +791,14 @@ tween.kill();            // 破棄
 ## 基本的な使い方
 
 ```javascript
-gsap.from('.box', {
+gsap.from(".box", {
   opacity: 0,
   y: 50,
   scrollTrigger: {
-    trigger: '.box',      // トリガー要素
-    start: 'top 80%',     // 開始位置
-    markers: true         // デバッグ用
-  }
+    trigger: ".box", // トリガー要素
+    start: "top 80%", // 開始位置
+    markers: true, // デバッグ用
+  },
 });
 ```
 
@@ -817,13 +830,13 @@ scrollTrigger: {
 }
 ```
 
-| 値 | 動作 |
-|---|---|
-| `play` | 再生 |
-| `pause` | 一時停止 |
-| `resume` | 再開 |
-| `reverse` | 逆再生 |
-| `none` | 何もしない |
+| 値        | 動作       |
+| --------- | ---------- |
+| `play`    | 再生       |
+| `pause`   | 一時停止   |
+| `resume`  | 再開       |
+| `reverse` | 逆再生     |
+| `none`    | 何もしない |
 
 💡 **よく使うパターン**: `"play none none reverse"`（画面外に出たら元に戻る）
 
@@ -831,7 +844,7 @@ scrollTrigger: {
 
 ---
 
-## markers でデバッグ & scrub でスクロール連動
+## markers でデバッグ
 
 ### markers
 
@@ -845,24 +858,27 @@ scrollTrigger: {
 
 **本番では必ず `false` にするか削除すること**
 
+---
+
 ### scrub — スクロール量に連動
 
 ```js
-gsap.to('.box', {
-  x: 500, rotation: 360,
+gsap.to(".box", {
+  x: 500,
+  rotation: 360,
   scrollTrigger: {
-    trigger: '.section',
-    start: 'top center',
-    end: 'bottom center',
-    scrub: true       // スクロールに完全連動
-  }
+    trigger: ".section",
+    start: "top center",
+    end: "bottom center",
+    scrub: true, // スクロールに完全連動
+  },
 });
 ```
 
-| scrub の値 | 動作 |
-|-----------|------|
-| `true` | スクロール位置に即座に追従 |
-| `1` | 1秒かけてスムーズに追従 |
+| scrub の値 | 動作                       |
+| ---------- | -------------------------- |
+| `true`     | スクロール位置に即座に追従 |
+| `1`        | 1秒かけてスムーズに追従    |
 
 > 📁 `examples/04-scrolltrigger/scrub.html`
 
@@ -871,15 +887,15 @@ gsap.to('.box', {
 ## pin — 要素を固定する
 
 ```javascript
-gsap.to('.box', {
+gsap.to(".box", {
   rotation: 360,
   scrollTrigger: {
-    trigger: '.section',
-    start: 'top top',
-    end: '+=200%',    // スクロール量（画面2個分）
-    pin: true,        // セクションを固定！
-    scrub: true
-  }
+    trigger: ".section",
+    start: "top top",
+    end: "+=200%", // スクロール量（画面2個分）
+    pin: true, // セクションを固定！
+    scrub: true,
+  },
 });
 ```
 
@@ -894,20 +910,20 @@ gsap.to('.box', {
 ## 横スクロール（pin + scrub の応用）
 
 ```javascript
-const panels = document.querySelector('.panels');
+const panels = document.querySelector(".panels");
 const scrollAmount = panels.scrollWidth - window.innerWidth;
 
-gsap.to('.panels', {
-  x: () => -scrollAmount,   // 関数形式で値を返す
-  ease: 'none',
+gsap.to(".panels", {
+  x: () => -scrollAmount, // 関数形式で値を返す
+  ease: "none",
   scrollTrigger: {
-    trigger: '.panels-wrapper',
-    start: 'top top',
-    end: () => '+=' + scrollAmount,
-    pin: true,               // 固定して
-    scrub: 1,                // スクロールに追従
-    invalidateOnRefresh: true // リサイズ時に再計算
-  }
+    trigger: ".panels-wrapper",
+    start: "top top",
+    end: () => "+=" + scrollAmount,
+    pin: true, // 固定して
+    scrub: 1, // スクロールに追従
+    invalidateOnRefresh: true, // リサイズ時に再計算
+  },
 });
 ```
 
@@ -920,17 +936,17 @@ gsap.to('.panels', {
 ```javascript
 const tl = gsap.timeline({
   scrollTrigger: {
-    trigger: '.section',
-    start: 'top center',
-    end: 'bottom center',
+    trigger: ".section",
+    start: "top center",
+    end: "bottom center",
     scrub: 1,
-    markers: true
-  }
+    markers: true,
+  },
 });
 
-tl.from('.title', { y: 30, opacity: 0 })
-  .from('.text',  { y: 20, opacity: 0 }, '-=0.4')
-  .from('.box',   { scale: 0, stagger: 0.15 }, '-=0.2');
+tl.from(".title", { y: 30, opacity: 0 })
+  .from(".text", { y: 20, opacity: 0 }, "-=0.4")
+  .from(".box", { scale: 0, stagger: 0.15 }, "-=0.2");
 ```
 
 - Timeline のオプションに `scrollTrigger` を追加するだけ！
@@ -963,6 +979,7 @@ tl.from('.title', { y: 30, opacity: 0 })
 <!-- _class: chapter -->
 
 # Chapter 8
+
 ## 観光PRサイト作成
 
 ---
@@ -983,14 +1000,14 @@ tl.from('.title', { y: 30, opacity: 0 })
 
 福井県PRサイトで使われている GSAP の技術：
 
-| セクション | 使用技術 |
-|-----------|---------|
-| ローディング | Timeline + stagger |
-| ヒーロー | Timeline（順番に登場） |
-| イントロ | ScrollTrigger + カウントアップ |
-| 観光スポット | パララックス効果（scrub） |
-| グルメ | 横スクロール（pin + scrub） |
-| アクセス | Timeline + ScrollTrigger |
+| セクション   | 使用技術                       |
+| ------------ | ------------------------------ |
+| ローディング | Timeline + stagger             |
+| ヒーロー     | Timeline（順番に登場）         |
+| イントロ     | ScrollTrigger + カウントアップ |
+| 観光スポット | パララックス効果（scrub）      |
+| グルメ       | 横スクロール（pin + scrub）    |
+| アクセス     | Timeline + ScrollTrigger       |
 
 ---
 
@@ -1014,17 +1031,17 @@ initSmoothScroll()    → スムーススクロール
 
 ## 学んだ技術との対応
 
-| 関数 | 学んだ技術 ✅ | 新しい要素 ⭐ |
-|------|-------------|-------------|
-| initLoader | Timeline + stagger | onComplete コールバック |
-| initHeroAnimation | Timeline + `-=` | − |
-| initProgressBar | scrub | − |
-| initIntroAnimation | ScrollTrigger | ⭐ カウントアップ（onUpdate） |
-| initSpotsAnimation | パララックス（scrub） | ⭐ fromTo |
-| initGourmetAnimation | **pin + scrub** | ⭐ 横スクロール + 関数値 |
-| initAccessAnimation | **Timeline + ScrollTrigger** | − |
-| initZoomAnimation | **pin + scrub** | ⭐ CSS変数アニメーション |
-| initSmoothScroll | − | ⭐ ScrollToPlugin |
+| 関数                 | 学んだ技術 ✅                | 新しい要素 ⭐                 |
+| -------------------- | ---------------------------- | ----------------------------- |
+| initLoader           | Timeline + stagger           | onComplete コールバック       |
+| initHeroAnimation    | Timeline + `-=`              | −                             |
+| initProgressBar      | scrub                        | −                             |
+| initIntroAnimation   | ScrollTrigger                | ⭐ カウントアップ（onUpdate） |
+| initSpotsAnimation   | パララックス（scrub）        | ⭐ fromTo                     |
+| initGourmetAnimation | **pin + scrub**              | ⭐ 横スクロール + 関数値      |
+| initAccessAnimation  | **Timeline + ScrollTrigger** | −                             |
+| initZoomAnimation    | **pin + scrub**              | ⭐ CSS変数アニメーション      |
+| initSmoothScroll     | −                            | ⭐ ScrollToPlugin             |
 
 **9つ中6つは学んだ技術の応用です！** ⭐ の部分はそのまま使ってOK。
 
@@ -1052,9 +1069,8 @@ initSmoothScroll()    → スムーススクロール
 
 ```css
 :root {
-  --color-primary: #1a5f4a;    /* メインカラー */
-  --color-secondary: #d4a373;  /* サブカラー */
-  --color-accent: #e63946;     /* アクセントカラー */
+  --color-primary: #1a5f4a; /* メインカラー */
+  --color-secondary: #d4a373; /* サブカラー */
 }
 ```
 
@@ -1062,14 +1078,15 @@ initSmoothScroll()    → スムーススクロール
 
 ```html
 <h1 class="hero-title">
-  <span class="hero-title-line">FUKUI</span>  <!-- ← 地域名 -->
+  <span class="hero-title-line">FUKUI</span>
+  <!-- ↑ 地域名 -->
 </h1>
 ```
 
 ### 画像の変更
 
 ```html
-<img src="https://images.unsplash.com/photo-xxxx?w=1200&h=800&fit=crop" alt="...">
+<img src="https://images.unsplash.com/photo-xxxx?w=1200&h=800&fit=crop" alt="..." />
 ```
 
 ⚠️ 「Unsplash+」マークの無い画像を選びましょう
@@ -1118,6 +1135,7 @@ initSmoothScroll()    → スムーススクロール
 <!-- _class: chapter -->
 
 # Chapter 9
+
 ## まとめ & ベストプラクティス
 
 ---
@@ -1125,22 +1143,22 @@ initSmoothScroll()    → スムーススクロール
 ## 今日学んだこと
 
 ### ✅ GSAP の基本
+
 - `gsap.to` / `gsap.from` / `gsap.fromTo` / `gsap.set`
 - プロパティ（x, y, scale, rotation, opacity...）
 - イージング（ease）
 
 ### ✅ Timeline & Stagger
+
 - 複数アニメーションの制御 / タイミングの調整（`<`, `+=`, `-=`）
 - ループアニメーション（repeat, yoyo）
 - Stagger（時間差アニメーション）
 
 ### ✅ コールバック & ScrollTrigger
+
 - onStart / onComplete / onUpdate
 - スクロール連動（scrub）/ ピン留め（pin）/ 横スクロール
 - Timeline + ScrollTrigger の組み合わせ
-
-### ✅ 実践
-- 観光PRサイトの作成
 
 ---
 
@@ -1150,23 +1168,22 @@ initSmoothScroll()    → スムーススクロール
 
 ```javascript
 // GPU アクセラレーションが効く（高速）
-gsap.to('.box', { x: 100, y: 50, scale: 1.5, rotation: 45 });
-
+gsap.to(".box", { x: 100, y: 50, scale: 1.5, rotation: 45 });
 // autoAlpha で opacity + visibility を同時制御
-gsap.to('.box', { autoAlpha: 0 });
+gsap.to(".box", { autoAlpha: 0 });
 ```
 
 ### ❌ 避ける: レイアウトを変更するプロパティ
 
 ```javascript
 // リフロー（再計算）が発生する（低速）
-gsap.to('.box', { width: '200px', top: '100px' });
+gsap.to(".box", { width: "200px", top: "100px" });
 ```
 
 ### 不要な Tween は kill()
 
 ```js
-ScrollTrigger.getAll().forEach(st => st.kill());
+ScrollTrigger.getAll().forEach((st) => st.kill());
 gsap.killTweensOf(".box");
 ```
 
@@ -1179,9 +1196,7 @@ gsap.killTweensOf(".box");
 ユーザーが「視覚効果を減らす」設定にしている場合への対応：
 
 ```javascript
-const prefersReducedMotion = window.matchMedia(
-  '(prefers-reduced-motion: reduce)'
-).matches;
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 if (prefersReducedMotion) {
   gsap.globalTimeline.timeScale(100);
@@ -1197,10 +1212,10 @@ if (prefersReducedMotion) {
 ### ユーティリティメソッド
 
 ```javascript
-gsap.utils.random(0, 500);           // ランダムな値
-gsap.utils.random(['red', 'blue']);   // 配列からランダム選択
-gsap.utils.toArray('.box');           // NodeList を配列に変換
-gsap.utils.clamp(0, 100, 150);       // → 100（範囲制限）
+gsap.utils.random(0, 500); // ランダムな値
+gsap.utils.random(["red", "blue"]); // 配列からランダム選択
+gsap.utils.toArray(".box"); // NodeList を配列に変換
+gsap.utils.clamp(0, 100, 150); // → 100（範囲制限）
 ```
 
 ### レスポンシブ対応
@@ -1223,17 +1238,17 @@ mm.add("(max-width: 767px)", () => {
 
 ## GSAP 学習ロードマップ
 
-| ステップ | 内容 | 重要度 |
-|---------|------|-------|
-| 1 | `to()` / `from()` / `fromTo()` / `set()` | ★★★ |
-| 2 | duration / delay / repeat / yoyo | ★★★ |
-| 3 | Easing の使い分け | ★★★ |
-| 4 | Timeline + Position パラメータ | ★★★ |
-| 5 | Stagger | ★★☆ |
-| 6 | コールバック + 制御メソッド | ★★☆ |
-| 7 | ScrollTrigger | ★★★ |
-| 8 | matchMedia / context | ★★☆ |
-| 9 | SplitText / MotionPath 等のプラグイン | ★☆☆ |
+| ステップ | 内容                                     | 重要度 |
+| -------- | ---------------------------------------- | ------ |
+| 1        | `to()` / `from()` / `fromTo()` / `set()` | ★★★    |
+| 2        | duration / delay / repeat / yoyo         | ★★★    |
+| 3        | Easing の使い分け                        | ★★★    |
+| 4        | Timeline + Position パラメータ           | ★★★    |
+| 5        | Stagger                                  | ★★☆    |
+| 6        | コールバック + 制御メソッド              | ★★☆    |
+| 7        | ScrollTrigger                            | ★★★    |
+| 8        | matchMedia / context                     | ★★☆    |
+| 9        | SplitText / MotionPath 等のプラグイン    | ★☆☆    |
 
 ---
 
@@ -1265,10 +1280,11 @@ tl.from("nav", { y: -100, duration: 0.5 })
 ```js
 const counter = { value: 0 };
 gsap.to(counter, {
-  value: 12345, duration: 2,
+  value: 12345,
+  duration: 2,
   onUpdate: () => {
     el.textContent = Math.round(counter.value).toLocaleString();
-  }
+  },
 });
 ```
 

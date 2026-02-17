@@ -1,0 +1,10 @@
+{
+  "overrides": [
+    {
+      "files": "slide.md",
+      "options": {
+        "printWidth": 100
+      }
+    }
+  ]
+}
