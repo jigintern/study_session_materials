@@ -1,618 +1,644 @@
 <!-- https://codepen.io/mocaffy/pen/qENpdLM -->
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>福井県 - DISCOVER FUKUI</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>福井県 - DISCOVER FUKUI</title>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Playfair+Display:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- リセット & 基本設定 -->
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <!-- リセット & 基本設定 -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    :root {
-      /* 福井県をイメージした配色 */
-      --color-primary: #1a5f4a;    /* 深緑（越前の自然） */
-      --color-secondary: #d4a373;  /* 和のベージュ */
-      --color-accent: #e63946;     /* 朱色（神社・鳥居） */
-      --color-dark: #1a1a1a;
-      --color-light: #f8f4f0;
-      --color-ocean: #2a6f97;      /* 日本海 */
-    }
+      :root {
+        /* 福井県をイメージした配色 */
+        --color-primary: #1a5f4a; /* 深緑（越前の自然） */
+        --color-secondary: #d4a373; /* 和のベージュ */
+        --color-accent: #e63946; /* 朱色（神社・鳥居） */
+        --color-dark: #1a1a1a;
+        --color-light: #f8f4f0;
+        --color-ocean: #2a6f97; /* 日本海 */
+      }
 
-    html {
-      scroll-behavior: smooth;
-    }
+      html {
+        scroll-behavior: smooth;
+      }
 
-    body {
-      font-family: 'Noto Sans JP', sans-serif;
-      background: var(--color-light);
-      color: var(--color-dark);
-      line-height: 1.8;
-      overflow-x: hidden;
-    }
+      body {
+        font-family: "Noto Sans JP", sans-serif;
+        background: var(--color-light);
+        color: var(--color-dark);
+        line-height: 1.8;
+        overflow-x: hidden;
+      }
 
-    h1, h2, h3 {
-      font-family: 'Playfair Display', 'Noto Sans JP', serif;
-      font-weight: 700;
-    }
-  </style>
-</head>
-<body>
-  <!-- GSAP & プラグイン CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
+      h1,
+      h2,
+      h3 {
+        font-family: "Playfair Display", "Noto Sans JP", serif;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- GSAP & プラグイン CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
 
-  <!-- GSAP プラグインを登録 -->
-  <script>
-    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-  </script>
+    <!-- GSAP プラグインを登録 -->
+    <script>
+      gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+    </script>
 
-
-  <!-- ========================================
+    <!-- ========================================
 
       1. ローディング画面
       学習ポイント: gsap.timeline() で連続アニメーション
 
   ======================================== -->
-  <style>
-    .loader {
-      position: fixed;
-      inset: 0;
-      background: var(--color-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
+    <style>
+      .loader {
+        position: fixed;
+        inset: 0;
+        background: var(--color-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
 
-    .loader-text {
-      font-size: 24px;
-      color: white;
-      font-weight: 700;
-      letter-spacing: 0.3em;
-    }
+      .loader-text {
+        font-size: 24px;
+        color: white;
+        font-weight: 700;
+        letter-spacing: 0.3em;
+      }
 
-    .loader-text span {
-      display: inline-block;
-    }
-  </style>
-  <div class="loader" id="loader">
-    <div class="loader-text">
-      <span>F</span><span>U</span><span>K</span><span>U</span><span>I</span>
+      .loader-text span {
+        display: inline-block;
+      }
+    </style>
+    <div class="loader" id="loader">
+      <div class="loader-text">
+        <span>F</span><span>U</span><span>K</span><span>U</span><span>I</span>
+      </div>
     </div>
-  </div>
-  <script>
-    // 各セクションのアニメーションを読み込む
-    function initPageAnimations() {
-      initHeroAnimation();
-      initProgressBar();
-      initIntroAnimation();
-      initZoomAnimation();
-      initSpotsAnimation();
-      initGourmetAnimation();
-      initAccessAnimation();
-      initSmoothScroll();
-    }
+    <script>
+      // 各セクションのアニメーションを読み込む
+      function initPageAnimations() {
+        initHeroAnimation();
+        initProgressBar();
+        initIntroAnimation();
+        initZoomAnimation();
+        initSpotsAnimation();
+        initGourmetAnimation();
+        initAccessAnimation();
+        initSmoothScroll();
+      }
 
-    function initLoader() {
-      const loaderTl = gsap.timeline({
-        onComplete: initPageAnimations  // ローディング完了後にメインアニメーション開始
-      });
-
-      // 文字を順番にアニメーション (stagger)
-      loaderTl
-        .from('.loader-text span', {
-          y: 100,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.1,        // 0.1秒ずつずらして実行
-          ease: 'back.out(1.7)'  // バウンド効果
-        })
-        .to('.loader-text span', {
-          y: -100,
-          opacity: 0,
-          duration: 0.5,
-          stagger: 0.05,
-          ease: 'power2.in',
-          delay: 0.5
-        })
-        .to('.loader', {
-          yPercent: -100,      // 上に100%移動
-          duration: 1,
-          ease: 'power4.inOut'
+      function initLoader() {
+        const loaderTl = gsap.timeline({
+          onComplete: initPageAnimations, // ローディング完了後にメインアニメーション開始
         });
-    }
 
-    // ページ読み込み時に実行
-    window.addEventListener('load', () => {
-      initLoader();
-    });
-  </script>
+        // 文字を順番にアニメーション (stagger)
+        loaderTl
+          .from(".loader-text span", {
+            y: 100,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.1, // 0.1秒ずつずらして実行
+            ease: "back.out(1.7)", // バウンド効果
+          })
+          .to(".loader-text span", {
+            y: -100,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.05,
+            ease: "power2.in",
+            delay: 0.5,
+          })
+          .to(".loader", {
+            yPercent: -100, // 上に100%移動
+            duration: 1,
+            ease: "power4.inOut",
+          });
+      }
 
-  <!-- ========================================
+      // ページ読み込み時に実行
+      window.addEventListener("load", () => {
+        initLoader();
+      });
+    </script>
+
+    <!-- ========================================
 
       3. プログレスバー
       学習ポイント: ScrollTrigger + scrub
 
   ======================================== -->
-  <style>
-    .progress-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
-      transform-origin: left;
-      transform: scaleX(0);
-      z-index: 1000;
-    }
-  </style>
-  <div class="progress-bar" id="progress"></div>
-  <script>
-    function initProgressBar() {
-      gsap.to('#progress', {
-        scaleX: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: 'body',
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: true  // スクロール量に追従
-        }
-      });
-    }
-  </script>
+    <style>
+      .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          var(--color-primary),
+          var(--color-accent)
+        );
+        transform-origin: left;
+        transform: scaleX(0);
+        z-index: 1000;
+      }
+    </style>
+    <div class="progress-bar" id="progress"></div>
+    <script>
+      function initProgressBar() {
+        gsap.to("#progress", {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: "body",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: true, // スクロール量に追従
+          },
+        });
+      }
+    </script>
 
-  <!-- ========================================
+    <!-- ========================================
 
       9. ナビゲーションのスムーススクロール
       学習ポイント: ScrollToPlugin
       メモ: footerのリンクも同様に動作します
 
   ======================================== -->
-  <style>
-    .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      mix-blend-mode: difference;
-    }
+    <style>
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        mix-blend-mode: difference;
+      }
 
-    .nav-logo {
-      font-size: 20px;
-      font-weight: 700;
-      color: white;
-      text-decoration: none;
-      letter-spacing: 0.1em;
-    }
+      .nav-logo {
+        font-size: 20px;
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+        letter-spacing: 0.1em;
+      }
 
-    .nav-links {
-      display: flex;
-      gap: 30px;
-      list-style: none;
-    }
+      .nav-links {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+      }
 
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-      font-size: 14px;
-    }
-  </style>
-  <nav class="nav">
-    <a href="#" class="nav-logo">FUKUI</a>
-    <ul class="nav-links">
-      <li><a href="#intro">About</a></li>
-      <li><a href="#slide-1">Spots</a></li>
-      <li><a href="#gourmet">Gourmet</a></li>
-      <li><a href="#access">Access</a></li>
-    </ul>
-  </nav>
-  <script>
-    function initSmoothScroll() {
-      document.querySelectorAll('.nav-links a, .footer-links a').forEach(link => {
-        link.addEventListener('click', (e) => {
-          const href = link.getAttribute('href');
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+      }
+    </style>
+    <nav class="nav">
+      <a href="#" class="nav-logo">FUKUI</a>
+      <ul class="nav-links">
+        <li><a href="#intro">About</a></li>
+        <li><a href="#slide-1">Spots</a></li>
+        <li><a href="#gourmet">Gourmet</a></li>
+        <li><a href="#access">Access</a></li>
+      </ul>
+    </nav>
+    <script>
+      function initSmoothScroll() {
+        document
+          .querySelectorAll(".nav-links a, .footer-links a")
+          .forEach((link) => {
+            link.addEventListener("click", (e) => {
+              const href = link.getAttribute("href");
 
-          // #で始まるリンクのみ処理
-          if (href.startsWith('#')) {
-            e.preventDefault();
+              // #で始まるリンクのみ処理
+              if (href.startsWith("#")) {
+                e.preventDefault();
 
-            gsap.to(window, {
-              duration: 1.5,
-              scrollTo: {
-                y: href,
-                offsetY: 0
-              },
-              ease: 'power2.inOut'
+                gsap.to(window, {
+                  duration: 1.5,
+                  scrollTo: {
+                    y: href,
+                    offsetY: 0,
+                  },
+                  ease: "power2.inOut",
+                });
+              }
             });
-          }
-        });
-      });
-    }
-  </script>
+          });
+      }
+    </script>
 
-  <!-- ========================================
+    <!-- ========================================
 
       2. ヒーローセクション
       学習ポイント: Timeline で複数要素を順番にアニメーション
 
   ======================================== -->
-  <style>
-    .hero {
-      height: 100vh;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    <style>
+      .hero {
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-    }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+      }
 
-    .hero-bg img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+      .hero-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0.3) 0%,
-        rgba(0, 0, 0, 0.1) 50%,
-        rgba(0, 0, 0, 0.5) 100%
-      );
-    }
+      .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.3) 0%,
+          rgba(0, 0, 0, 0.1) 50%,
+          rgba(0, 0, 0, 0.5) 100%
+        );
+      }
 
-    .hero-content {
-      text-align: center;
-      color: white;
-      z-index: 1;
-      padding: 20px;
-    }
+      .hero-content {
+        text-align: center;
+        color: white;
+        z-index: 1;
+        padding: 20px;
+      }
 
-    .hero-subtitle {
-      font-size: clamp(14px, 2vw, 18px);
-      letter-spacing: 0.5em;
-      margin-bottom: 20px;
-      opacity: 0;
-    }
+      .hero-subtitle {
+        font-size: clamp(14px, 2vw, 18px);
+        letter-spacing: 0.5em;
+        margin-bottom: 20px;
+        opacity: 0;
+      }
 
-    .hero-title {
-      font-size: clamp(48px, 12vw, 120px);
-      letter-spacing: 0.1em;
-      margin-bottom: 30px;
-      overflow: hidden;
-    }
+      .hero-title {
+        font-size: clamp(48px, 12vw, 120px);
+        letter-spacing: 0.1em;
+        margin-bottom: 30px;
+        overflow: hidden;
+      }
 
-    .hero-title-line {
-      display: block;
-      transform: translateY(100%);
-    }
+      .hero-title-line {
+        display: block;
+        transform: translateY(100%);
+      }
 
-    .hero-description {
-      font-size: clamp(14px, 1.5vw, 16px);
-      max-width: 600px;
-      margin: 0 auto;
-      opacity: 0;
-    }
+      .hero-description {
+        font-size: clamp(14px, 1.5vw, 16px);
+        max-width: 600px;
+        margin: 0 auto;
+        opacity: 0;
+      }
 
-    .scroll-indicator {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      color: white;
-    }
+      .scroll-indicator {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        color: white;
+      }
 
-    .scroll-indicator span {
-      font-size: 12px;
-      letter-spacing: 0.2em;
-    }
+      .scroll-indicator span {
+        font-size: 12px;
+        letter-spacing: 0.2em;
+      }
 
-    .scroll-line {
-      width: 1px;
-      height: 60px;
-      background: white;
-      transform-origin: top;
-    }
-  </style>
-  <section class="hero" id="hero">
-    <div class="hero-bg">
-      <img src="https://images.unsplash.com/photo-1528164344705-47542687000d?w=1920&h=1080&fit=crop"
-           alt="福井県の海岸風景">
-      <div class="hero-overlay"></div>
-    </div>
+      .scroll-line {
+        width: 1px;
+        height: 60px;
+        background: white;
+        transform-origin: top;
+      }
+    </style>
+    <section class="hero" id="hero">
+      <div class="hero-bg">
+        <img
+          src="https://images.unsplash.com/photo-1528164344705-47542687000d?w=1920&h=1080&fit=crop"
+          alt="福井県の海岸風景"
+        />
+        <div class="hero-overlay"></div>
+      </div>
 
-    <div class="hero-content">
-      <p class="hero-subtitle">DISCOVER</p>
-      <h1 class="hero-title">
-        <span class="hero-title-line">FUKUI</span>
-      </h1>
-      <p class="hero-description">
-        自然と歴史が織りなす、日本海に面した美しい県。<br>
-        恐竜、禅、そして海の幸が待っています。
-      </p>
-    </div>
+      <div class="hero-content">
+        <p class="hero-subtitle">DISCOVER</p>
+        <h1 class="hero-title">
+          <span class="hero-title-line">FUKUI</span>
+        </h1>
+        <p class="hero-description">
+          自然と歴史が織りなす、日本海に面した美しい県。<br />
+          恐竜、禅、そして海の幸が待っています。
+        </p>
+      </div>
 
-    <div class="scroll-indicator">
-      <span>SCROLL</span>
-      <div class="scroll-line"></div>
-    </div>
-  </section>
-  <script>
-    function initHeroAnimation() {
-      const heroTl = gsap.timeline({ delay: 0.2 });
+      <div class="scroll-indicator">
+        <span>SCROLL</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+    <script>
+      function initHeroAnimation() {
+        const heroTl = gsap.timeline({ delay: 0.2 });
 
-      heroTl
-        // タイトルを下から登場
-        .to('.hero-title-line', {
-          y: 0,
-          duration: 1.2,
-          ease: 'power4.out'
-        })
-        // サブタイトルをフェードイン（前の終了より0.6秒前に開始）
-        .to('.hero-subtitle', {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'power2.out'
-        }, '-=0.6')  // タイミング制御: 前のアニメーション終了の0.6秒前
-        // 説明文をフェードイン
-        .to('.hero-description', {
-          opacity: 1,
-          duration: 1,
-          ease: 'power2.out'
-        }, '-=0.5')
-        // スクロールインジケーターの線をアニメーション
-        .from('.scroll-line', {
-          scaleY: 0,
-          transformOrigin: 'top',
-          duration: 1,
-          ease: 'power2.out'
-        }, '-=0.3');
+        heroTl
+          // タイトルを下から登場
+          .to(".hero-title-line", {
+            y: 0,
+            duration: 1.2,
+            ease: "power4.out",
+          })
+          // サブタイトルをフェードイン（前の終了より0.6秒前に開始）
+          .to(
+            ".hero-subtitle",
+            {
+              opacity: 1,
+              y: 0,
+              duration: 1,
+              ease: "power2.out",
+            },
+            "-=0.6",
+          ) // タイミング制御: 前のアニメーション終了の0.6秒前
+          // 説明文をフェードイン
+          .to(
+            ".hero-description",
+            {
+              opacity: 1,
+              duration: 1,
+              ease: "power2.out",
+            },
+            "-=0.5",
+          )
+          // スクロールインジケーターの線をアニメーション
+          .from(
+            ".scroll-line",
+            {
+              scaleY: 0,
+              transformOrigin: "top",
+              duration: 1,
+              ease: "power2.out",
+            },
+            "-=0.3",
+          );
 
-      // スクロールインジケーターの繰り返しアニメーション
-      // 学習ポイント: repeat と yoyo でループ
-      gsap.to('.scroll-line', {
-        scaleY: 0.3,
-        transformOrigin: 'top',
-        duration: 1.5,
-        repeat: -1,        // 無限ループ
-        yoyo: true,        // 往復
-        ease: 'power1.inOut',
-        delay: 2
-      });
-    }
-  </script>
+        // スクロールインジケーターの繰り返しアニメーション
+        // 学習ポイント: repeat と yoyo でループ
+        gsap.to(".scroll-line", {
+          scaleY: 0.3,
+          transformOrigin: "top",
+          duration: 1.5,
+          repeat: -1, // 無限ループ
+          yoyo: true, // 往復
+          ease: "power1.inOut",
+          delay: 2,
+        });
+      }
+    </script>
 
-  <!-- ========================================
+    <!-- ========================================
 
       4. イントロセクションのアニメーション
       学習ポイント: ScrollTrigger でスクロール時に発火
 
   ======================================== -->
-  <style>
-    .intro {
-      padding: 150px 40px;
-      background: var(--color-light);
-      position: relative;
-    }
+    <style>
+      .intro {
+        padding: 150px 40px;
+        background: var(--color-light);
+        position: relative;
+      }
 
-    .intro-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
+      .intro-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+      }
 
-    .intro-text {
-      padding-right: 40px;
-    }
+      .intro-text {
+        padding-right: 40px;
+      }
 
-    .intro-label {
-      font-size: 12px;
-      letter-spacing: 0.3em;
-      color: var(--color-primary);
-      margin-bottom: 20px;
-    }
+      .intro-label {
+        font-size: 12px;
+        letter-spacing: 0.3em;
+        color: var(--color-primary);
+        margin-bottom: 20px;
+      }
 
-    .intro-heading {
-      font-size: clamp(32px, 5vw, 48px);
-      margin-bottom: 30px;
-      line-height: 1.3;
-    }
+      .intro-heading {
+        font-size: clamp(32px, 5vw, 48px);
+        margin-bottom: 30px;
+        line-height: 1.3;
+      }
 
-    .intro-paragraph {
-      color: #666;
-      margin-bottom: 20px;
-    }
+      .intro-paragraph {
+        color: #666;
+        margin-bottom: 20px;
+      }
 
-    .intro-stats {
-      display: flex;
-      gap: 40px;
-      margin-top: 40px;
-    }
+      .intro-stats {
+        display: flex;
+        gap: 40px;
+        margin-top: 40px;
+      }
 
-    .stat-item {
-      text-align: center;
-    }
+      .stat-item {
+        text-align: center;
+      }
 
-    .stat-number {
-      font-size: 48px;
-      font-weight: 700;
-      color: var(--color-primary);
-      line-height: 1;
-    }
+      .stat-number {
+        font-size: 48px;
+        font-weight: 700;
+        color: var(--color-primary);
+        line-height: 1;
+      }
 
-    .stat-label {
-      font-size: 12px;
-      color: #888;
-      margin-top: 8px;
-    }
+      .stat-label {
+        font-size: 12px;
+        color: #888;
+        margin-top: 8px;
+      }
 
-    .intro-image {
-      position: relative;
-    }
+      .intro-image {
+        position: relative;
+      }
 
-    .intro-image img {
-      width: 100%;
-      height: 500px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
+      .intro-image img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
 
-    .intro-image-badge {
-      position: absolute;
-      bottom: -30px;
-      right: -30px;
-      width: 150px;
-      height: 150px;
-      background: var(--color-accent);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-    }
+      .intro-image-badge {
+        position: absolute;
+        bottom: -30px;
+        right: -30px;
+        width: 150px;
+        height: 150px;
+        background: var(--color-accent);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+      }
 
-    .intro-image-badge span {
-      font-size: 32px;
-      font-weight: 700;
-    }
-  </style>
-  <section class="intro" id="intro">
-    <div class="intro-container">
-      <div class="intro-text">
-        <p class="intro-label">ABOUT FUKUI</p>
-        <h2 class="intro-heading">歴史と自然が<br>息づく地</h2>
-        <p class="intro-paragraph">
-          福井県は日本海に面し、豊かな自然と深い歴史を持つ県です。
-          世界三大恐竜博物館のひとつを有し、曹洞宗の大本山・永平寺、
-          そして雄大な東尋坊など、見どころが満載です。
-        </p>
-        <p class="intro-paragraph">
-          冬には新鮮な越前がにが楽しめ、伝統工芸の越前漆器や
-          越前和紙など、日本の文化を肌で感じることができます。
-        </p>
+      .intro-image-badge span {
+        font-size: 32px;
+        font-weight: 700;
+      }
+    </style>
+    <section class="intro" id="intro">
+      <div class="intro-container">
+        <div class="intro-text">
+          <p class="intro-label">ABOUT FUKUI</p>
+          <h2 class="intro-heading">歴史と自然が<br />息づく地</h2>
+          <p class="intro-paragraph">
+            福井県は日本海に面し、豊かな自然と深い歴史を持つ県です。
+            世界三大恐竜博物館のひとつを有し、曹洞宗の大本山・永平寺、
+            そして雄大な東尋坊など、見どころが満載です。
+          </p>
+          <p class="intro-paragraph">
+            冬には新鮮な越前がにが楽しめ、伝統工芸の越前漆器や
+            越前和紙など、日本の文化を肌で感じることができます。
+          </p>
 
-        <div class="intro-stats">
-          <div class="stat-item">
-            <div class="stat-number" data-count="76">0</div>
-            <div class="stat-label">万人の人口</div>
+          <div class="intro-stats">
+            <div class="stat-item">
+              <div class="stat-number" data-count="76">0</div>
+              <div class="stat-label">万人の人口</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" data-count="4190">0</div>
+              <div class="stat-label">km² 面積</div>
+            </div>
           </div>
-          <div class="stat-item">
-            <div class="stat-number" data-count="4190">0</div>
-            <div class="stat-label">km² 面積</div>
+        </div>
+
+        <div class="intro-image">
+          <img
+            src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&h=1000&fit=crop"
+            alt="日本の禅寺"
+          />
+          <div class="intro-image-badge">
+            <span>Since</span>
+            1244
           </div>
         </div>
       </div>
-
-      <div class="intro-image">
-        <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&h=1000&fit=crop"
-             alt="日本の禅寺">
-        <div class="intro-image-badge">
-          <span>Since</span>
-          1244
-        </div>
-      </div>
-    </div>
-  </section>
-  <script>
-    function initIntroAnimation() {
-      // テキスト部分
-      gsap.from('.intro-text > *', {
-        x: -50,
-        opacity: 0,
-        stagger: 0.2,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.intro',
-          start: 'top 70%',  // 画面の70%位置に来たら開始
-        }
-      });
-
-      // 画像部分
-      gsap.from('.intro-image img', {
-        scale: 1.2,
-        opacity: 0,
-        duration: 1.5,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.intro-image',
-          start: 'top 70%'
-        }
-      });
-
-      // バッジ（回転しながら登場）
-      gsap.from('.intro-image-badge', {
-        scale: 0,
-        rotation: -180,
-        opacity: 0,
-        duration: 1,
-        ease: 'back.out(1.7)',
-        scrollTrigger: {
-          trigger: '.intro-image',
-          start: 'top 50%'
-        }
-      });
-
-      // カウントアップアニメーション
-      // 学習ポイント: カスタムのTweenでonUpdateを使用
-      document.querySelectorAll('.stat-number').forEach(stat => {
-        const target = parseInt(stat.dataset.count);
-        const obj = { value: 0 };
-
-        gsap.to(obj, {
-          value: target,
-          duration: 2,
-          ease: 'power1.out',
+    </section>
+    <script>
+      function initIntroAnimation() {
+        // テキスト部分
+        gsap.from(".intro-text > *", {
+          x: -50,
+          opacity: 0,
+          stagger: 0.2,
+          duration: 1,
+          ease: "power2.out",
           scrollTrigger: {
-            trigger: stat,
-            start: 'top 80%'
+            trigger: ".intro",
+            start: "top 70%", // 画面の70%位置に来たら開始
           },
-          onUpdate: () => {
-            stat.textContent = Math.round(obj.value);
-          }
         });
-      });
-    }
-  </script>
 
-  <!-- ========================================
+        // 画像部分
+        gsap.from(".intro-image img", {
+          scale: 1.2,
+          opacity: 0,
+          duration: 1.5,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".intro-image",
+            start: "top 70%",
+          },
+        });
+
+        // バッジ（回転しながら登場）
+        gsap.from(".intro-image-badge", {
+          scale: 0,
+          rotation: -180,
+          opacity: 0,
+          duration: 1,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: ".intro-image",
+            start: "top 50%",
+          },
+        });
+
+        // カウントアップアニメーション
+        // 学習ポイント: カスタムのTweenでonUpdateを使用
+        document.querySelectorAll(".stat-number").forEach((stat) => {
+          const target = parseInt(stat.dataset.count);
+          const obj = { value: 0 };
+
+          gsap.to(obj, {
+            value: target,
+            duration: 2,
+            ease: "power1.out",
+            scrollTrigger: {
+              trigger: stat,
+              start: "top 80%",
+            },
+            onUpdate: () => {
+              stat.textContent = Math.round(obj.value);
+            },
+          });
+        });
+      }
+    </script>
+
+    <!-- ========================================
 
       5. 観光スポットのパララックス効果
       学習ポイント: ScrollTrigger + scrub でパララックス
@@ -621,846 +647,895 @@
       学習ポイント: ScrollTrigger + pin + scrub + CSS mask 暗いオーバーレイの穴が広がり、観光スポットが現れる
 
   ======================================== -->
-  <style>
-    .zoom-overlay {
-      position: absolute;
-      inset: 0;
-      background: var(--color-dark);
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      --zoom-size: 0px;
-      -webkit-mask: radial-gradient(circle var(--zoom-size) at 50% 50%, transparent 98%, black 100%);
-      mask: radial-gradient(circle var(--zoom-size) at 50% 50%, transparent 98%, black 100%);
-    }
+    <style>
+      .zoom-overlay {
+        position: absolute;
+        inset: 0;
+        background: var(--color-dark);
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        --zoom-size: 0px;
+        -webkit-mask: radial-gradient(
+          circle var(--zoom-size) at 50% 50%,
+          transparent 98%,
+          black 100%
+        );
+        mask: radial-gradient(
+          circle var(--zoom-size) at 50% 50%,
+          transparent 98%,
+          black 100%
+        );
+      }
 
-    .zoom-heading {
-      color: white;
-      font-size: clamp(24px, 5vw, 48px);
-      letter-spacing: 0.2em;
-    }
+      .zoom-heading {
+        color: white;
+        font-size: clamp(24px, 5vw, 48px);
+        letter-spacing: 0.2em;
+      }
 
-    .slide {
-      display: flex;
-      align-items: stretch;
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
-    }
+      .slide {
+        display: flex;
+        align-items: stretch;
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+      }
 
-    .col {
-      flex-basis: 50%;
-    }
+      .col {
+        flex-basis: 50%;
+      }
 
-    .col--1 {
-      position: relative;
-      z-index: 1;
-    }
+      .col--1 {
+        position: relative;
+        z-index: 1;
+      }
 
-    .col--2 {
-      position: relative;
-      overflow: hidden;
-    }
+      .col--2 {
+        position: relative;
+        overflow: hidden;
+      }
 
-    .col__content {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      overflow: hidden;
-      height: 100%;
-      padding: 6vw 6vw 10vw;
-    }
+      .col__content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        overflow: hidden;
+        height: 100%;
+        padding: 6vw 6vw 10vw;
+      }
 
-    .col__content--1 {
-      background: #c8d5c8;  /* 越前の自然・緑 */
-    }
+      .col__content--1 {
+        background: #c8d5c8; /* 越前の自然・緑 */
+      }
 
-    .col__content--2 {
-      background: #c0d7d8;  /* 日本海・青 */
-    }
+      .col__content--2 {
+        background: #c0d7d8; /* 日本海・青 */
+      }
 
-    .col__content--3 {
-      background: #d8c0c0;  /* 禅寺・落ち着いた色 */
-    }
+      .col__content--3 {
+        background: #d8c0c0; /* 禅寺・落ち着いた色 */
+      }
 
-    .col__content-title {
-      margin: 0 0 2vw;
-      font-size: 11vw;
-      letter-spacing: -0.8vw;
-      line-height: 1;
-      font-family: 'Playfair Display', serif;
-      font-weight: 400;
-      color: var(--color-dark);
-    }
+      .col__content-title {
+        margin: 0 0 2vw;
+        font-size: 11vw;
+        letter-spacing: -0.8vw;
+        line-height: 1;
+        font-family: "Playfair Display", serif;
+        font-weight: 400;
+        color: var(--color-dark);
+      }
 
-    .line {
-      overflow: hidden;
-    }
+      .line {
+        overflow: hidden;
+      }
 
-    .line__inner {
-      display: block;
-    }
+      .line__inner {
+        display: block;
+      }
 
-    .col__content-wrap {
-      display: flex;
-      justify-content: flex-end;
-    }
+      .col__content-wrap {
+        display: flex;
+        justify-content: flex-end;
+      }
 
-    .col__content-txt {
-      max-width: 22vw;
-      margin-left: 32px;
-      font-size: 14px;
-      line-height: 1.6;
-      color: var(--color-dark);
-    }
+      .col__content-txt {
+        max-width: 22vw;
+        margin-left: 32px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--color-dark);
+      }
 
-    .col__image-wrap {
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 160vh;
-    }
+      .col__image-wrap {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 160vh;
+      }
 
-    .slide--1 .col__image-wrap {
-      top: -30vh;
-    }
+      .slide--1 .col__image-wrap {
+        top: -30vh;
+      }
 
-    .col__image-wrap .img {
-      object-fit: cover;
-      width: 100%;
-      height: 100%;
-    }
-  </style>
-  <!-- スポット1: 恐竜博物館 -->
-  <section class="slide slide--1" id="slide-1">
-    <div class="col col--1">
-      <div class="col__content col__content--1">
-        <h2 class="col__content-title">
-          <span class="line__inner">恐竜</span><br>
-          <span class="line__inner">博物館</span>
-        </h2>
-        <div class="col__content-wrap">
-          <p class="col__content-txt">
-            世界三大恐竜博物館のひとつに数えられる、日本最大級の恐竜専門博物館。
-            44体以上の恐竜全身骨格や大型復元模型が展示され、
-            子どもから大人まで楽しめる迫力の空間が広がります。
-          </p>
+      .col__image-wrap .img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <!-- スポット1: 恐竜博物館 -->
+    <section class="slide slide--1" id="slide-1">
+      <div class="col col--1">
+        <div class="col__content col__content--1">
+          <h2 class="col__content-title">
+            <span class="line__inner">恐竜</span><br />
+            <span class="line__inner">博物館</span>
+          </h2>
+          <div class="col__content-wrap">
+            <p class="col__content-txt">
+              世界三大恐竜博物館のひとつに数えられる、日本最大級の恐竜専門博物館。
+              44体以上の恐竜全身骨格や大型復元模型が展示され、
+              子どもから大人まで楽しめる迫力の空間が広がります。
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col col--2">
-      <div class="col__image-wrap">
-        <img class="img img--1"
-             src="https://images.unsplash.com/photo-1601182207230-1b165dea2212?w=1200&h=1600&fit=crop"
-             alt="恐竜博物館">
-      </div>
-    </div>
-    <!-- 円形ズームオーバーレイ 学習ポイント: ScrollTrigger + pin + scrub + CSS mask -->
-    <div class="zoom-overlay">
-      <h2 class="zoom-heading">さあ、福井の旅へ</h2>
-    </div>
-  </section>
-  <!-- スポット2: 東尋坊 -->
-  <section class="slide slide--2" id="slide-2">
-    <div class="col col--1">
-      <div class="col__content col__content--2">
-        <h2 class="col__content-title">
-          <span class="line__inner">東尋坊</span><br>
-          <span class="line__inner">絶景</span>
-        </h2>
-        <div class="col__content-wrap">
-          <p class="col__content-txt">
-            約1kmにわたって続く、高さ25mの断崖絶壁。
-            世界でも珍しい輝石安山岩の柱状節理が織りなす雄大な景観は、
-            国の天然記念物および名勝に指定されています。
-          </p>
+      <div class="col col--2">
+        <div class="col__image-wrap">
+          <img
+            class="img img--1"
+            src="https://images.unsplash.com/photo-1601182207230-1b165dea2212?w=1200&h=1600&fit=crop"
+            alt="恐竜博物館"
+          />
         </div>
       </div>
-    </div>
-    <div class="col col--2">
-      <div class="col__image-wrap">
-        <img class="img img--1"
-             src="https://images.unsplash.com/photo-1593892370074-ec754b1ac563?w=1200&h=1600&fit=crop"
-             alt="東尋坊">
+      <!-- 円形ズームオーバーレイ 学習ポイント: ScrollTrigger + pin + scrub + CSS mask -->
+      <div class="zoom-overlay">
+        <h2 class="zoom-heading">さあ、福井の旅へ</h2>
       </div>
-    </div>
-  </section>
-  <!-- スポット3: 永平寺 -->
-  <section class="slide slide--3" id="slide-3">
-    <div class="col col--1">
-      <div class="col__content col__content--3">
-        <h2 class="col__content-title">
-          <span class="line__inner">永平寺</span><br>
-          <span class="line__inner">禅の心</span>
-        </h2>
-        <div class="col__content-wrap">
-          <p class="col__content-txt">
-            1244年に道元禅師によって開かれた、曹洞宗の大本山。
-            樹齢700年を超える老杉に囲まれた境内には七堂伽藍が立ち並び、
-            今も約150名の修行僧が厳しい修行を続けています。
-          </p>
+    </section>
+    <!-- スポット2: 東尋坊 -->
+    <section class="slide slide--2" id="slide-2">
+      <div class="col col--1">
+        <div class="col__content col__content--2">
+          <h2 class="col__content-title">
+            <span class="line__inner">東尋坊</span><br />
+            <span class="line__inner">絶景</span>
+          </h2>
+          <div class="col__content-wrap">
+            <p class="col__content-txt">
+              約1kmにわたって続く、高さ25mの断崖絶壁。
+              世界でも珍しい輝石安山岩の柱状節理が織りなす雄大な景観は、
+              国の天然記念物および名勝に指定されています。
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col col--2">
-      <div class="col__image-wrap">
-        <img class="img img--1"
-             src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1200&h=1600&fit=crop"
-             alt="永平寺">
+      <div class="col col--2">
+        <div class="col__image-wrap">
+          <img
+            class="img img--1"
+            src="https://images.unsplash.com/photo-1593892370074-ec754b1ac563?w=1200&h=1600&fit=crop"
+            alt="東尋坊"
+          />
+        </div>
       </div>
-    </div>
-  </section>
-  <script>
-    // 5. 観光スポットのパララックス効果アニメーション
-    function initSpotsAnimation() {
-      const slides = document.querySelectorAll('.slide');
+    </section>
+    <!-- スポット3: 永平寺 -->
+    <section class="slide slide--3" id="slide-3">
+      <div class="col col--1">
+        <div class="col__content col__content--3">
+          <h2 class="col__content-title">
+            <span class="line__inner">永平寺</span><br />
+            <span class="line__inner">禅の心</span>
+          </h2>
+          <div class="col__content-wrap">
+            <p class="col__content-txt">
+              1244年に道元禅師によって開かれた、曹洞宗の大本山。
+              樹齢700年を超える老杉に囲まれた境内には七堂伽藍が立ち並び、
+              今も約150名の修行僧が厳しい修行を続けています。
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col col--2">
+        <div class="col__image-wrap">
+          <img
+            class="img img--1"
+            src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1200&h=1600&fit=crop"
+            alt="永平寺"
+          />
+        </div>
+      </div>
+    </section>
+    <script>
+      // 5. 観光スポットのパララックス効果アニメーション
+      function initSpotsAnimation() {
+        const slides = document.querySelectorAll(".slide");
 
-      // 各スライドのアニメーション
-      slides.forEach((slide) => {
-        // スライドが画面に入った時のアニメーション
-        let tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: slide,
-            start: '40% 50%'  // スライドの40%が画面の50%に来たら発火
-          }
+        // 各スライドのアニメーション
+        slides.forEach((slide) => {
+          // スライドが画面に入った時のアニメーション
+          let tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: slide,
+              start: "40% 50%", // スライドの40%が画面の50%に来たら発火
+            },
+          });
+
+          // タイトルのアニメーション
+          tl.from(slide.querySelectorAll(".col__content-title"), {
+            ease: "power4",
+            y: "+=5vh",
+            duration: 2.5,
+          })
+            // タイトル内の文字を下から登場
+            .from(
+              slide.querySelectorAll(".line__inner"),
+              {
+                y: 200,
+                duration: 2,
+                ease: "power4",
+                stagger: 0.1,
+              },
+              0,
+            )
+            // テキストを横からフェードイン
+            .from(
+              slide.querySelectorAll(".col__content-txt"),
+              {
+                x: 100,
+                y: 50,
+                opacity: 0,
+                duration: 2,
+                ease: "power4",
+              },
+              0.4,
+            );
+
+          // 画像のパララックス効果
+          // 学習ポイント: fromTo + scrub でスクロールに追従するパララックス
+          gsap.fromTo(
+            slide.querySelector(".col__image-wrap"),
+            {
+              y: "-30vh", // 開始位置
+            },
+            {
+              y: "30vh", // 終了位置（計60vhの移動）
+              scrollTrigger: {
+                trigger: slide,
+                scrub: true, // スクロール量に完全追従
+                start: "top bottom",
+                end: "bottom top",
+                snap: {
+                  snapTo: 0.5,
+                  duration: 1,
+                  ease: "power4.inOut",
+                },
+              },
+              ease: "none",
+            },
+          );
         });
+      }
 
-        // タイトルのアニメーション
-        tl.from(slide.querySelectorAll('.col__content-title'), {
-          ease: 'power4',
-          y: '+=5vh',
-          duration: 2.5
-        })
-        // タイトル内の文字を下から登場
-        .from(slide.querySelectorAll('.line__inner'), {
-          y: 200,
-          duration: 2,
-          ease: 'power4',
-          stagger: 0.1
-        }, 0)
-        // テキストを横からフェードイン
-        .from(slide.querySelectorAll('.col__content-txt'), {
-          x: 100,
-          y: 50,
-          opacity: 0,
-          duration: 2,
-          ease: 'power4'
-        }, 0.4);
-
-        // 画像のパララックス効果
-        // 学習ポイント: fromTo + scrub でスクロールに追従するパララックス
-        gsap.fromTo(slide.querySelector('.col__image-wrap'), {
-          y: '-30vh'  // 開始位置
-        }, {
-          y: '30vh',   // 終了位置（計60vhの移動）
+      // 8. 円形ズームアニメーション
+      function initZoomAnimation() {
+        const tl = gsap.timeline({
           scrollTrigger: {
-            trigger: slide,
-            scrub: true,  // スクロール量に完全追従
-            start: 'top bottom',
-            end: 'bottom top',
-            snap: {
-              snapTo: 0.5,
-              duration: 1,
-              ease: 'power4.inOut'
-            }
+            trigger: ".slide--1",
+            scrub: true,
+            start: "top top",
+            end: "+=200%", // スクロール量
+            pin: true, // セクションを固定
           },
-          ease: 'none'
         });
-      });
-    }
 
-    // 8. 円形ズームアニメーション
-    function initZoomAnimation() {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.slide--1',
-          scrub: true,
-          start: 'top top',
-          end: '+=200%',   // スクロール量
-          pin: true,        // セクションを固定
-        }
-      });
+        tl.to(".zoom-overlay", {
+          "--zoom-size": "150vw", // CSS変数をアニメーション → 穴が拡大
+        });
+      }
+    </script>
 
-      tl.to('.zoom-overlay', {
-        '--zoom-size': '150vw',  // CSS変数をアニメーション → 穴が拡大
-      })
-    }
-  </script>
-
-  <!-- ========================================
+    <!-- ========================================
 
       6. グルメセクション - 横スクロール
       学習ポイント: ScrollTrigger + pin + scrub で横スクロール
 
   ======================================== -->
-  <style>
-    .gourmet-container {
-      position: relative;
-      overflow: hidden;
-    }
+    <style>
+      .gourmet-container {
+        position: relative;
+        overflow: hidden;
+      }
 
-    .gourmet-wrapper {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      background: var(--color-dark);
-    }
+      .gourmet-wrapper {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        background: var(--color-dark);
+      }
 
-    .gourmet-scroller {
-      display: flex;
-      gap: 40px;
-      padding: 0 100px;
-      will-change: transform;
-    }
+      .gourmet-scroller {
+        display: flex;
+        gap: 40px;
+        padding: 0 100px;
+        will-change: transform;
+      }
 
-    .gourmet-header-card {
-      flex-shrink: 0;
-      width: 400px;
-      height: 70vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 40px;
-    }
+      .gourmet-header-card {
+        flex-shrink: 0;
+        width: 400px;
+        height: 70vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 40px;
+      }
 
-    .gourmet-label {
-      font-size: 12px;
-      letter-spacing: 0.3em;
-      color: var(--color-accent);
-      margin-bottom: 20px;
-    }
+      .gourmet-label {
+        font-size: 12px;
+        letter-spacing: 0.3em;
+        color: var(--color-accent);
+        margin-bottom: 20px;
+      }
 
-    .gourmet-title {
-      font-size: clamp(36px, 5vw, 56px);
-      color: white;
-      margin-bottom: 20px;
-    }
+      .gourmet-title {
+        font-size: clamp(36px, 5vw, 56px);
+        color: white;
+        margin-bottom: 20px;
+      }
 
-    .gourmet-description {
-      font-size: 14px;
-      color: #888;
-      line-height: 1.8;
-    }
+      .gourmet-description {
+        font-size: 14px;
+        color: #888;
+        line-height: 1.8;
+      }
 
-    .gourmet-card {
-      flex-shrink: 0;
-      width: 350px;
-      height: 70vh;
-      background: var(--color-light);
-      border-radius: 20px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
+      .gourmet-card {
+        flex-shrink: 0;
+        width: 350px;
+        height: 70vh;
+        background: var(--color-light);
+        border-radius: 20px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
 
-    .gourmet-card-image {
-      height: 55%;
-      overflow: hidden;
-    }
+      .gourmet-card-image {
+        height: 55%;
+        overflow: hidden;
+      }
 
-    .gourmet-card-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+      .gourmet-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
-    .gourmet-card-content {
-      flex: 1;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+      .gourmet-card-content {
+        flex: 1;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
 
-    .gourmet-card-name {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 15px;
-      color: var(--color-dark);
-      font-family: 'Playfair Display', serif;
-    }
+      .gourmet-card-name {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--color-dark);
+        font-family: "Playfair Display", serif;
+      }
 
-    .gourmet-card-description {
-      font-size: 14px;
-      color: #666;
-      line-height: 1.8;
-    }
-  </style>
-  <div class="gourmet-container" id="gourmet">
-    <div class="gourmet-wrapper">
-      <div class="gourmet-scroller">
-        <!-- ヘッダーカード -->
-        <div class="gourmet-header-card">
-          <p class="gourmet-label">LOCAL GOURMET</p>
-          <h2 class="gourmet-title">福井の味覚</h2>
-          <p class="gourmet-description">
-            日本海の恵みと、山々に育まれた食材。
-            福井には、ここでしか味わえない
-            絶品グルメが揃っています。
-          </p>
+      .gourmet-card-description {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.8;
+      }
+    </style>
+    <div class="gourmet-container" id="gourmet">
+      <div class="gourmet-wrapper">
+        <div class="gourmet-scroller">
+          <!-- ヘッダーカード -->
+          <div class="gourmet-header-card">
+            <p class="gourmet-label">LOCAL GOURMET</p>
+            <h2 class="gourmet-title">福井の味覚</h2>
+            <p class="gourmet-description">
+              日本海の恵みと、山々に育まれた食材。
+              福井には、ここでしか味わえない 絶品グルメが揃っています。
+            </p>
+          </div>
+          <!-- グルメカード1: 越前がに -->
+          <article class="gourmet-card">
+            <div class="gourmet-card-image">
+              <img
+                src="https://raw.githubusercontent.com/jigintern/study_session_materials/f0a9c56ea6836bdd1fae796d864990381c61c635/2026/gsap-workshop/examples/05-fukui-pr/images/kani.jpg"
+                alt="カニ料理"
+              />
+            </div>
+            <div class="gourmet-card-content">
+              <h3 class="gourmet-card-name">越前がに</h3>
+              <p class="gourmet-card-description">
+                冬の味覚の王様。11月から3月にかけて解禁される越前がには、
+                身がぎっしり詰まり、甘みと旨味が凝縮された逸品です。
+              </p>
+            </div>
+          </article>
+          <!-- グルメカード2: 越前おろしそば -->
+          <article class="gourmet-card">
+            <div class="gourmet-card-image">
+              <img
+                src="https://raw.githubusercontent.com/jigintern/study_session_materials/f0a9c56ea6836bdd1fae796d864990381c61c635/2026/gsap-workshop/examples/05-fukui-pr/images/soba.jpg"
+                alt="そば"
+              />
+            </div>
+            <div class="gourmet-card-content">
+              <h3 class="gourmet-card-name">越前おろしそば</h3>
+              <p class="gourmet-card-description">
+                福井が誇る郷土料理。冷たいそばに大根おろしと出汁をかけて食べる、
+                シンプルながら奥深い味わいが特徴です。
+              </p>
+            </div>
+          </article>
+          <!-- グルメカード3: 海鮮丼 -->
+          <article class="gourmet-card">
+            <div class="gourmet-card-image">
+              <img
+                src="https://raw.githubusercontent.com/jigintern/study_session_materials/f0a9c56ea6836bdd1fae796d864990381c61c635/2026/gsap-workshop/examples/05-fukui-pr/images/kaisen.jpg"
+                alt="海鮮丼"
+              />
+            </div>
+            <div class="gourmet-card-content">
+              <h3 class="gourmet-card-name">海鮮丼</h3>
+              <p class="gourmet-card-description">
+                日本海で獲れた新鮮な魚介をふんだんに盛り付けた贅沢な一杯。
+                甘エビ、ブリ、イカなど、旬の味を堪能できます。
+              </p>
+            </div>
+          </article>
+          <!-- グルメカード4: ソースカツ丼 -->
+          <article class="gourmet-card">
+            <div class="gourmet-card-image">
+              <img
+                src="https://raw.githubusercontent.com/jigintern/study_session_materials/f0a9c56ea6836bdd1fae796d864990381c61c635/2026/gsap-workshop/examples/05-fukui-pr/images/source.jpg"
+                alt="ソースカツ丼"
+              />
+            </div>
+            <div class="gourmet-card-content">
+              <h3 class="gourmet-card-name">ソースカツ丼</h3>
+              <p class="gourmet-card-description">
+                福井発祥のB級グルメ。サクサクの薄いカツに、
+                甘辛いソースが染み込んだ、ご飯が進む一品です。
+              </p>
+            </div>
+          </article>
+          <!-- グルメカード5: 焼き鯖寿司 -->
+          <article class="gourmet-card">
+            <div class="gourmet-card-image">
+              <img
+                src="https://raw.githubusercontent.com/jigintern/study_session_materials/f0a9c56ea6836bdd1fae796d864990381c61c635/2026/gsap-workshop/examples/05-fukui-pr/images/saba.jpg"
+                alt="焼き鯖寿司"
+              />
+            </div>
+            <div class="gourmet-card-content">
+              <h3 class="gourmet-card-name">焼き鯖寿司</h3>
+              <p class="gourmet-card-description">
+                若狭地方の名物。香ばしく焼いた鯖を酢飯で巻いた、
+                駅弁としても人気の郷土寿司です。
+              </p>
+            </div>
+          </article>
+          <!-- グルメカード6: 福井の地酒 -->
+          <article class="gourmet-card">
+            <div class="gourmet-card-image">
+              <img
+                src="https://raw.githubusercontent.com/jigintern/study_session_materials/f0a9c56ea6836bdd1fae796d864990381c61c635/2026/gsap-workshop/examples/05-fukui-pr/images/sake.jpg"
+                alt="日本酒"
+              />
+            </div>
+            <div class="gourmet-card-content">
+              <h3 class="gourmet-card-name">福井の地酒</h3>
+              <p class="gourmet-card-description">
+                白山水系の名水と、良質な米が育む福井の日本酒。
+                黒龍、梵など、全国的に評価の高い銘酒が揃います。
+              </p>
+            </div>
+          </article>
         </div>
-        <!-- グルメカード1: 越前がに -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://raw.githubusercontent.com/jigintern/study_session_materials/f0a9c56ea6836bdd1fae796d864990381c61c635/2026/gsap-workshop/examples/05-fukui-pr/images/kani.jpg"
-                 alt="カニ料理">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">越前がに</h3>
-            <p class="gourmet-card-description">
-              冬の味覚の王様。11月から3月にかけて解禁される越前がには、
-              身がぎっしり詰まり、甘みと旨味が凝縮された逸品です。
-            </p>
-          </div>
-        </article>
-        <!-- グルメカード2: 越前おろしそば -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://raw.githubusercontent.com/jigintern/study_session_materials/f0a9c56ea6836bdd1fae796d864990381c61c635/2026/gsap-workshop/examples/05-fukui-pr/images/soba.jpg"
-                 alt="そば">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">越前おろしそば</h3>
-            <p class="gourmet-card-description">
-              福井が誇る郷土料理。冷たいそばに大根おろしと出汁をかけて食べる、
-              シンプルながら奥深い味わいが特徴です。
-            </p>
-          </div>
-        </article>
-        <!-- グルメカード3: 海鮮丼 -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://raw.githubusercontent.com/jigintern/study_session_materials/f0a9c56ea6836bdd1fae796d864990381c61c635/2026/gsap-workshop/examples/05-fukui-pr/images/kaisen.jpg"
-                 alt="海鮮丼">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">海鮮丼</h3>
-            <p class="gourmet-card-description">
-              日本海で獲れた新鮮な魚介をふんだんに盛り付けた贅沢な一杯。
-              甘エビ、ブリ、イカなど、旬の味を堪能できます。
-            </p>
-          </div>
-        </article>
-        <!-- グルメカード4: ソースカツ丼 -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://raw.githubusercontent.com/jigintern/study_session_materials/f0a9c56ea6836bdd1fae796d864990381c61c635/2026/gsap-workshop/examples/05-fukui-pr/images/source.jpg"
-                 alt="ソースカツ丼">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">ソースカツ丼</h3>
-            <p class="gourmet-card-description">
-              福井発祥のB級グルメ。サクサクの薄いカツに、
-              甘辛いソースが染み込んだ、ご飯が進む一品です。
-            </p>
-          </div>
-        </article>
-        <!-- グルメカード5: 焼き鯖寿司 -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://raw.githubusercontent.com/jigintern/study_session_materials/f0a9c56ea6836bdd1fae796d864990381c61c635/2026/gsap-workshop/examples/05-fukui-pr/images/saba.jpg"
-                 alt="焼き鯖寿司">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">焼き鯖寿司</h3>
-            <p class="gourmet-card-description">
-              若狭地方の名物。香ばしく焼いた鯖を酢飯で巻いた、
-              駅弁としても人気の郷土寿司です。
-            </p>
-          </div>
-        </article>
-        <!-- グルメカード6: 福井の地酒 -->
-        <article class="gourmet-card">
-          <div class="gourmet-card-image">
-            <img src="https://raw.githubusercontent.com/jigintern/study_session_materials/f0a9c56ea6836bdd1fae796d864990381c61c635/2026/gsap-workshop/examples/05-fukui-pr/images/sake.jpg"
-                 alt="日本酒">
-          </div>
-          <div class="gourmet-card-content">
-            <h3 class="gourmet-card-name">福井の地酒</h3>
-            <p class="gourmet-card-description">
-              白山水系の名水と、良質な米が育む福井の日本酒。
-              黒龍、梵など、全国的に評価の高い銘酒が揃います。
-            </p>
-          </div>
-        </article>
       </div>
     </div>
-  </div>
-  <script>
-    function initGourmetAnimation() {
-      const container = document.querySelector('.gourmet-scroller');
-      if (!container) return;
+    <script>
+      function initGourmetAnimation() {
+        const container = document.querySelector(".gourmet-scroller");
+        if (!container) return;
 
-      // スクローラーの幅を計算（画面幅を引いた分だけスクロール）
-      const containerWidth = container.scrollWidth - window.innerWidth;
+        // スクローラーの幅を計算（画面幅を引いた分だけスクロール）
+        const containerWidth = container.scrollWidth - window.innerWidth;
 
-      // 横スクロールアニメーション
-      // 学習ポイント: gsap.to() + ScrollTrigger でx軸に移動
-      gsap.to(container, {
-        x: () => -containerWidth,  // 左方向に移動（マイナス値）
-        ease: 'none',              // スクロールに完全に追従
-        scrollTrigger: {
-          trigger: '.gourmet-wrapper',
-          start: 'top top',        // 画面上部に来たら開始
-          end: () => '+=' + containerWidth,  // スクロール量 = コンテナ幅
-          scrub: 0.5,              // 0.5秒かけて追従（滑らかさ）
-          pin: '.gourmet-container',  // コンテナをピン留め（固定）
-          invalidateOnRefresh: true,  // リサイズ時に再計算
-        }
-      });
+        // 横スクロールアニメーション
+        // 学習ポイント: gsap.to() + ScrollTrigger でx軸に移動
+        gsap.to(container, {
+          x: () => -containerWidth, // 左方向に移動（マイナス値）
+          ease: "none", // スクロールに完全に追従
+          scrollTrigger: {
+            trigger: ".gourmet-wrapper",
+            start: "top top", // 画面上部に来たら開始
+            end: () => "+=" + containerWidth, // スクロール量 = コンテナ幅
+            scrub: 0.5, // 0.5秒かけて追従（滑らかさ）
+            pin: ".gourmet-container", // コンテナをピン留め（固定）
+            invalidateOnRefresh: true, // リサイズ時に再計算
+          },
+        });
 
-      // カードの登場アニメーション
-      gsap.from('.gourmet-card', {
-        y: 50,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.gourmet-wrapper',
-          start: 'top 80%'
-        }
-      });
-    }
-  </script>
+        // カードの登場アニメーション
+        gsap.from(".gourmet-card", {
+          y: 50,
+          opacity: 0,
+          stagger: 0.1,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".gourmet-wrapper",
+            start: "top 80%",
+          },
+        });
+      }
+    </script>
 
-  <!-- ========================================
+    <!-- ========================================
 
       7. アクセスセクションのアニメーション
       学習ポイント: Timeline + ScrollTrigger
 
   ======================================== -->
-  <style>
-    .access {
-      padding: 150px 40px;
-      background: var(--color-ocean);
-      color: white;
-      position: relative;
-      overflow: hidden;
-    }
+    <style>
+      .access {
+        padding: 150px 40px;
+        background: var(--color-ocean);
+        color: white;
+        position: relative;
+        overflow: hidden;
+      }
 
-    .access::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 600px;
-      height: 600px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 50%;
-    }
+      .access::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 600px;
+        height: 600px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+      }
 
-    .access-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 40px;
-      position: relative;
-    }
+      .access-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        position: relative;
+      }
 
-    .access-text h2 {
-      font-size: clamp(36px, 6vw, 56px);
-      margin-bottom: 30px;
-    }
+      .access-text h2 {
+        font-size: clamp(36px, 6vw, 56px);
+        margin-bottom: 30px;
+      }
 
-    .access-text p {
-      color: rgba(255, 255, 255, 0.8);
-      margin-bottom: 40px;
-    }
+      .access-text p {
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 40px;
+      }
 
-    .access-routes {
-      display: flex;
-      flex-direction: row;
-      gap: 20px;
-    }
+      .access-routes {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+      }
 
-    .route-item {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      backdrop-filter: blur(10px);
-    }
+      .route-item {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+      }
 
-    .route-icon {
-      width: 50px;
-      height: 50px;
-      background: white;
-      color: var(--color-ocean);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      flex-shrink: 0;
-    }
+      .route-icon {
+        width: 50px;
+        height: 50px;
+        background: white;
+        color: var(--color-ocean);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+      }
 
-    .route-info h4 {
-      font-size: 16px;
-      margin-bottom: 5px;
-    }
+      .route-info h4 {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
 
-    .route-info p {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.7);
-      margin: 0;
-    }
+      .route-info p {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+        margin: 0;
+      }
 
-    .rail-track {
-      padding: 40px 6vw 60px;
-    }
+      .rail-track {
+        padding: 40px 6vw 60px;
+      }
 
-    .rail-line {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 55%;
-      height: 8px;
-      background: rgba(255, 255, 255, 0.45);
-      border-radius: 999px;
-    }
+      .rail-line {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 55%;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.45);
+        border-radius: 999px;
+      }
 
-    .rail-line::after {
-      content: '';
-      position: absolute;
-      inset: 3px 0;
-      border-top: 2px dashed rgba(255, 255, 255, 0.85);
-      opacity: 0.8;
-    }
+      .rail-line::after {
+        content: "";
+        position: absolute;
+        inset: 3px 0;
+        border-top: 2px dashed rgba(255, 255, 255, 0.85);
+        opacity: 0.8;
+      }
 
-    .rail-stations {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: calc(55% + 3px);
-      height: 0;
-    }
+      .rail-stations {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(55% + 3px);
+        height: 0;
+      }
 
-    .rail-station {
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: white;
-      transform: translate(-50%, -50%);
-    }
+      .rail-station {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: white;
+        transform: translate(-50%, -50%);
+      }
 
-    .rail-station--osaka {
-      left: 0;
-    }
+      .rail-station--osaka {
+        left: 0;
+      }
 
-    .rail-station--fukui {
-      left: 50%;
-    }
+      .rail-station--fukui {
+        left: 50%;
+      }
 
-    .rail-station--tokyo {
-      left: 100%;
-    }
+      .rail-station--tokyo {
+        left: 100%;
+      }
 
-    .rail-train {
-      position: absolute;
-      top: 55%;
-      font-size: 30px;
-      filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.35));
-      will-change: transform;
-    }
+      .rail-train {
+        position: absolute;
+        top: 55%;
+        font-size: 30px;
+        filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.35));
+        will-change: transform;
+      }
 
-    .rail-train--osaka {
-      left: 0;
-      transform: translate(-50%, -50%);
-    }
+      .rail-train--osaka {
+        left: 0;
+        transform: translate(-50%, -50%);
+      }
 
-    .rail-train--tokyo {
-      right: 0;
-      transform: translate(50%, -50%);
-    }
+      .rail-train--tokyo {
+        right: 0;
+        transform: translate(50%, -50%);
+      }
 
-    .rail-labels {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 10px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      color: #fff;
-      pointer-events: none;
-    }
+      .rail-labels {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 10px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        color: #fff;
+        pointer-events: none;
+      }
 
-    .rail-labels span:last-child {
-      text-align: right;
-    }
-  </style>
-  <section class="access" id="access">
-    <div class="access-container">
-      <div class="access-text">
-        <h2>Access</h2>
-        <p>
-          2024年春、北陸新幹線が敦賀まで延伸。<br>
-          東京からのアクセスがさらに便利になりました。
-        </p>
+      .rail-labels span:last-child {
+        text-align: right;
+      }
+    </style>
+    <section class="access" id="access">
+      <div class="access-container">
+        <div class="access-text">
+          <h2>Access</h2>
+          <p>
+            2024年春、北陸新幹線が敦賀まで延伸。<br />
+            東京からのアクセスがさらに便利になりました。
+          </p>
 
-        <div class="access-routes">
-          <div class="route-item">
-            <div class="route-icon">🚃</div>
-            <div class="route-info">
-              <h4>大阪から</h4>
-              <p>特急サンダーバードで約1時間50分</p>
+          <div class="access-routes">
+            <div class="route-item">
+              <div class="route-icon">🚃</div>
+              <div class="route-info">
+                <h4>大阪から</h4>
+                <p>特急サンダーバードで約1時間50分</p>
+              </div>
             </div>
-          </div>
 
-          <div class="route-item">
-            <div class="route-icon">🚄</div>
-            <div class="route-info">
-              <h4>東京から</h4>
-              <p>北陸新幹線で約3時間</p>
+            <div class="route-item">
+              <div class="route-icon">🚄</div>
+              <div class="route-info">
+                <h4>東京から</h4>
+                <p>北陸新幹線で約3時間</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="access-map">
-        <div class="rail-track">
-          <div class="rail-labels">
-            <span>大阪</span>
-            <span>福井</span>
-            <span>東京</span>
+        <div class="access-map">
+          <div class="rail-track">
+            <div class="rail-labels">
+              <span>大阪</span>
+              <span>福井</span>
+              <span>東京</span>
+            </div>
+            <div class="rail-line"></div>
+            <div class="rail-stations" aria-hidden="true">
+              <span class="rail-station rail-station--osaka"></span>
+              <span class="rail-station rail-station--fukui"></span>
+              <span class="rail-station rail-station--tokyo"></span>
+            </div>
+            <span class="rail-train rail-train--osaka">🚃</span>
+            <span class="rail-train rail-train--tokyo">🚄</span>
           </div>
-          <div class="rail-line"></div>
-          <div class="rail-stations" aria-hidden="true">
-            <span class="rail-station rail-station--osaka"></span>
-            <span class="rail-station rail-station--fukui"></span>
-            <span class="rail-station rail-station--tokyo"></span>
-          </div>
-          <span class="rail-train rail-train--osaka">🚃</span>
-          <span class="rail-train rail-train--tokyo">🚄</span>
         </div>
       </div>
-    </div>
-  </section>
-  <script>
-    function initAccessAnimation() {
-      const accessTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.access',
-          start: 'top 60%'
-        }
-      });
+    </section>
+    <script>
+      function initAccessAnimation() {
+        const accessTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: ".access",
+            start: "top 60%",
+          },
+        });
 
-      accessTl
-        .from('.access-text h2', {
-          y: 50,
-          opacity: 0,
-          duration: 1,
-          ease: 'power2.out'
-        })
-        .from('.access-text > p', {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power2.out'
-        }, '-=0.5')
-        .from('.route-item', {
-          x: -50,
-          opacity: 0,
-          stagger: 0.2,
-          duration: 0.8,
-          ease: 'power2.out'
-        }, '-=0.3')
-        .from('.access-map', {
-          scale: 0.8,
-          opacity: 0,
-          duration: 1,
-          ease: 'back.out(1.7)'
-        }, '-=0.6');
+        accessTl
+          .from(".access-text h2", {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            ease: "power2.out",
+          })
+          .from(
+            ".access-text > p",
+            {
+              y: 30,
+              opacity: 0,
+              duration: 0.8,
+              ease: "power2.out",
+            },
+            "-=0.5",
+          )
+          .from(
+            ".route-item",
+            {
+              x: -50,
+              opacity: 0,
+              stagger: 0.2,
+              duration: 0.8,
+              ease: "power2.out",
+            },
+            "-=0.3",
+          )
+          .from(
+            ".access-map",
+            {
+              scale: 0.8,
+              opacity: 0,
+              duration: 1,
+              ease: "back.out(1.7)",
+            },
+            "-=0.6",
+          );
 
-      const railTrack = document.querySelector('.rail-track');
-      const osakaTrain = railTrack?.querySelector('.rail-train--osaka');
-      const tokyoTrain = railTrack?.querySelector('.rail-train--tokyo');
+        const railTrack = document.querySelector(".rail-track");
+        const osakaTrain = railTrack?.querySelector(".rail-train--osaka");
+        const tokyoTrain = railTrack?.querySelector(".rail-train--tokyo");
 
-      const osakaTween = gsap.to(osakaTrain, {
-        duration: 1.5 * 5,
-        repeat: -1,
-        ease: 'power1.inOut',
-        repeatRefresh: true,
-        left: '50%',
-        paused: true,
-        scrollTrigger: {
-          trigger: '.access',
-          start: 'top 70%',
-          end: 'bottom 20%'
-        }
-      });
+        const osakaTween = gsap.to(osakaTrain, {
+          duration: 1.5 * 5,
+          repeat: -1,
+          ease: "power1.inOut",
+          repeatRefresh: true,
+          left: "50%",
+          paused: true,
+          scrollTrigger: {
+            trigger: ".access",
+            start: "top 70%",
+            end: "bottom 20%",
+          },
+        });
 
-      const tokyoTween = gsap.to(tokyoTrain, {
-        duration: 3 * 5,
-        repeat: -1,
-        ease: 'power1.inOut',
-        repeatRefresh: true,
-        right: '50%',
-        paused: true,
-        scrollTrigger: {
-          trigger: '.access',
-          start: 'top 70%',
-          end: 'bottom 20%'
-        }
-      });
-    }
-  </script>
+        const tokyoTween = gsap.to(tokyoTrain, {
+          duration: 3 * 5,
+          repeat: -1,
+          ease: "power1.inOut",
+          repeatRefresh: true,
+          right: "50%",
+          paused: true,
+          scrollTrigger: {
+            trigger: ".access",
+            start: "top 70%",
+            end: "bottom 20%",
+          },
+        });
+      }
+    </script>
 
-  <!-- フッター -->
-  <style>
-    .footer {
-      padding: 80px 40px;
-      background: var(--color-dark);
-      color: white;
-      text-align: center;
-    }
+    <!-- フッター -->
+    <style>
+      .footer {
+        padding: 80px 40px;
+        background: var(--color-dark);
+        color: white;
+        text-align: center;
+      }
 
-    .footer-logo {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
+      .footer-logo {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
 
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+      }
 
-    .footer-links a {
-      color: #888;
-      text-decoration: none;
-      font-size: 14px;
-    }
+      .footer-links a {
+        color: #888;
+        text-decoration: none;
+        font-size: 14px;
+      }
 
-    .footer-copyright {
-      font-size: 12px;
-      color: #666;
-    }
-  </style>
-  <footer class="footer">
-    <div class="footer-logo">FUKUI</div>
-    <div class="footer-links">
-      <a href="#">ホーム</a>
-      <a href="#intro">福井について</a>
-      <a href="#slide-1">観光スポット</a>
-      <a href="#gourmet">グルメ</a>
-      <a href="#access">アクセス</a>
-    </div>
-    <p class="footer-copyright">
-      © 2026 DISCOVER FUKUI - GSAP Workshop Sample<br>
-      このサイトはGSAP学習用のサンプルです
-    </p>
-  </footer>
-</body>
+      .footer-copyright {
+        font-size: 12px;
+        color: #666;
+      }
+    </style>
+    <footer class="footer">
+      <div class="footer-logo">FUKUI</div>
+      <div class="footer-links">
+        <a href="#">ホーム</a>
+        <a href="#intro">福井について</a>
+        <a href="#slide-1">観光スポット</a>
+        <a href="#gourmet">グルメ</a>
+        <a href="#access">アクセス</a>
+      </div>
+      <p class="footer-copyright">
+        © 2026 DISCOVER FUKUI - GSAP Workshop Sample<br />
+        このサイトはGSAP学習用のサンプルです
+      </p>
+    </footer>
+  </body>
 </html>
