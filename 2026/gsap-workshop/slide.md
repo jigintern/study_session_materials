@@ -1079,7 +1079,7 @@ initSmoothScroll()    → スムーススクロール
 ```html
 <h1 class="hero-title">
   <span class="hero-title-line">FUKUI</span>
-  <!-- ← 地域名 -->
+  <!-- ↑ 地域名 -->
 </h1>
 ```
 
