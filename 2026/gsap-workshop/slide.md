@@ -1086,10 +1086,7 @@ initSmoothScroll()    → スムーススクロール
 ### 画像の変更
 
 ```html
-<img
-  src="https://images.unsplash.com/photo-xxxx?w=1200&h=800&fit=crop"
-  alt="..."
-/>
+<img src="https://images.unsplash.com/photo-xxxx?w=1200&h=800&fit=crop" alt="..." />
 ```
 
 ⚠️ 「Unsplash+」マークの無い画像を選びましょう
@@ -1199,9 +1196,7 @@ gsap.killTweensOf(".box");
 ユーザーが「視覚効果を減らす」設定にしている場合への対応：
 
 ```javascript
-const prefersReducedMotion = window.matchMedia(
-  "(prefers-reduced-motion: reduce)",
-).matches;
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 if (prefersReducedMotion) {
   gsap.globalTimeline.timeScale(100);
