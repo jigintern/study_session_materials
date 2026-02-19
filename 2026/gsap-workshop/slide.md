@@ -432,6 +432,18 @@ gsap.to("h1", { y: -20 }); // すべての <h1> を動かす
 3. `gsap.fromTo()` で `.box` を **x: -200 から x: 400** まで移動させる
 4. `gsap.set()` で **背景色を赤に変更** し、その後 `to()` で **回転 360°** させる
 
+---
+
+<!-- _class: demo -->
+
+## 演習 1
+
+<iframe scrolling="no" title="演習1: 基本のTween" src="https://codepen.io/mocaffy/embed/WbxBOKN?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/WbxBOKN">演習1: 基本のTween</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
 > 📁 `examples/exercises/01-basic-tween.html`
 
 ---
@@ -621,6 +633,18 @@ ease: "back.out(3)"; // もっと行き過ぎる
    - `linear`, `power2.out`, `bounce.out`, `elastic.out`, `back.out`
 3. **カード登場**: ボタンクリックで `.card` が `scale: 0` → `scale: 1` で登場。最も自然に見える ease を探す
 
+---
+
+<!-- _class: demo -->
+
+## 演習 2
+
+<iframe scrolling="no" title="演習2: プロパティ & イージング" src="https://codepen.io/mocaffy/embed/MYedoBe?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/MYedoBe">演習2: プロパティ & イージング</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
 > 📁 `examples/exercises/02-easing.html`
 
 ---
@@ -789,6 +813,18 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
 1. **ローディングアニメーション**: 3 つのドットが順番に `scale: 1.5` → 元に戻る Timeline を `repeat: -1` で作る
 2. **ステップ表示**: 3 枚の `.card` を順番にフェードイン。2 枚目は 1 枚目の終了 **0.3 秒前**に開始させる（`"-=0.3"` を使用）
 3. **ラベルの活用**: ボタン 2 つ（「イントロ」「メイン」）を用意し、クリックで Timeline の該当ラベルへジャンプさせる
+
+---
+
+<!-- _class: demo -->
+
+## 演習 3
+
+<iframe scrolling="no" title="演習3: Timeline" src="https://codepen.io/mocaffy/embed/XJKwgBM?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/XJKwgBM">演習3: Timeline</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
 
 > 📁 `examples/exercises/03-timeline.html`
 
@@ -1261,6 +1297,18 @@ tl.from(".title", { y: 30, opacity: 0 })
 
 1. **フェードインセクション**: 3 つのセクションの要素が **画面の 80% に入った時** にフェードインする。`markers: true` でデバッグ
 2. **パララックス効果**: 背景を `scrub: true` で `y: -100` 移動させる
+
+---
+
+<!-- _class: demo -->
+
+## 演習 4
+
+<iframe scrolling="no" title="演習4: ScrollTrigger" src="https://codepen.io/mocaffy/embed/dPXERje?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/dPXERje">演習4: ScrollTrigger</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
 
 > 📁 `examples/exercises/04-scrolltrigger.html`
 
