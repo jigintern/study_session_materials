@@ -190,7 +190,7 @@ Webflow による買収で、ScrollTrigger・SplitText・MorphSVG など
 
 ## デモ：セットアップ確認
 
-<iframe scrolling="no" title="GSAP セットアップ確認" src="https://codepen.io/mocaffy/embed/ByzeZwb?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+<iframe scrolling="no" title="GSAP セットアップ確認" src="https://codepen.io/mocaffy/embed/ByzeZwb?default-tab=html%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
   See the Pen
   <a href="https://codepen.io/mocaffy/pen/ByzeZwb">GSAP セットアップ確認</a>
   on <a href="https://codepen.io">CodePen</a>.
