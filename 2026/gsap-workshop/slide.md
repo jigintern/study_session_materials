@@ -196,7 +196,7 @@ Webflow による買収で、ScrollTrigger・SplitText・MorphSVG など
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/01-basics/setup-basic.html` | [CodePen](https://codepen.io/mocaffy/pen/ByzeZwb)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/ByzeZwb) | `examples/01-basics/setup-basic.html`
 
 ---
 
@@ -264,7 +264,7 @@ gsap.to(".box", {
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/01-basics/gsap-to.html` | [CodePen](https://codepen.io/mocaffy/pen/QwERgOL)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/QwERgOL) | `examples/01-basics/gsap-to.html`
 
 ---
 
@@ -331,7 +331,7 @@ gsap.from(".hero-title", {
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/01-basics/gsap-from.html` | [CodePen](https://codepen.io/mocaffy/pen/MYedoOK)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/MYedoOK) | `examples/01-basics/gsap-from.html`
 
 ---
 
@@ -363,7 +363,7 @@ gsap.fromTo(
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/01-basics/fromto.html` | [CodePen](https://codepen.io/mocaffy/pen/azZrwVW)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/azZrwVW) | `examples/01-basics/fromto.html`
 
 ---
 
@@ -397,7 +397,7 @@ gsap.to(".box", { x: 300, opacity: 1, duration: 1 });
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/01-basics/set.html` | [CodePen](https://codepen.io/mocaffy/pen/qENGjVP)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/qENGjVP) | `examples/01-basics/set.html`
 
 ---
 
@@ -432,7 +432,7 @@ gsap.to("h1", { y: -20 }); // すべての <h1> を動かす
 3. `gsap.fromTo()` で `.box` を **x: -200 から x: 400** まで移動させる
 4. `gsap.set()` で **背景色を赤に変更** し、その後 `to()` で **回転 360°** させる
 
-> 📁 `examples/exercises/01-basic-tween.html` | [CodePen](https://codepen.io/mocaffy/pen/WbxBOKN)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/WbxBOKN) | `examples/exercises/01-basic-tween.html`
 
 ---
 
@@ -484,7 +484,7 @@ gsap.to(".box", {
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/02-properties/duration-delay.html` | [CodePen](https://codepen.io/mocaffy/pen/emzaRyz)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/emzaRyz) | `examples/02-properties/duration-delay.html`
 
 ---
 
@@ -498,7 +498,7 @@ gsap.to(".box", {
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/02-properties/repeat-yoyo.html` | [CodePen](https://codepen.io/mocaffy/pen/ogLRwpp)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/ogLRwpp) | `examples/02-properties/repeat-yoyo.html`
 
 ---
 
@@ -534,7 +534,7 @@ ease: "power1.out"
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/02-properties/easing-directions.html` | [CodePen](https://codepen.io/mocaffy/pen/ByzeZJb)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/ByzeZJb) | `examples/02-properties/easing-directions.html`
 
 ---
 
@@ -565,7 +565,7 @@ ease: "power1.out"
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/02-properties/easing-comparison.html` | [CodePen](https://codepen.io/mocaffy/pen/vEKwZpr)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/vEKwZpr) | `examples/02-properties/easing-comparison.html`
 
 ---
 
@@ -606,7 +606,7 @@ ease: "back.out(3)"; // もっと行き過ぎる
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/02-properties/elastic-params.html` | [CodePen](https://codepen.io/mocaffy/pen/KwMLqQw)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/KwMLqQw) | `examples/02-properties/elastic-params.html`
 
 ---
 
@@ -621,7 +621,7 @@ ease: "back.out(3)"; // もっと行き過ぎる
    - `linear`, `power2.out`, `bounce.out`, `elastic.out`, `back.out`
 3. **カード登場**: ボタンクリックで `.card` が `scale: 0` → `scale: 1` で登場。最も自然に見える ease を探す
 
-> 📁 `examples/exercises/02-easing.html` | [CodePen](https://codepen.io/mocaffy/pen/MYedoBe)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/MYedoBe) | `examples/exercises/02-easing.html`
 
 ---
 
@@ -669,7 +669,7 @@ tl.to(".box1", { x: 100, duration: 1 })
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/03-timeline/timeline-basic.html` | [CodePen](https://codepen.io/mocaffy/pen/RNRmgQY)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/RNRmgQY) | `examples/03-timeline/timeline-basic.html`
 
 ---
 
@@ -706,7 +706,7 @@ tl.to(".a", { x: 100, duration: 1 }) // デフォルト: 前の直後
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/03-timeline/position-params.html` | [CodePen](https://codepen.io/mocaffy/pen/wBWbeyb)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/wBWbeyb) | `examples/03-timeline/position-params.html`
 
 ---
 
@@ -776,7 +776,7 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/03-timeline/loading-loop.html` | [CodePen](https://codepen.io/mocaffy/pen/yyJWXje)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/yyJWXje) | `examples/03-timeline/loading-loop.html`
 
 ---
 
@@ -790,7 +790,7 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
 2. **ステップ表示**: 3 枚の `.card` を順番にフェードイン。2 枚目は 1 枚目の終了 **0.3 秒前**に開始させる（`"-=0.3"` を使用）
 3. **ラベルの活用**: ボタン 2 つ（「イントロ」「メイン」）を用意し、クリックで Timeline の該当ラベルへジャンプさせる
 
-> 📁 `examples/exercises/03-timeline.html` | [CodePen](https://codepen.io/mocaffy/pen/XJKwgBM)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/XJKwgBM) | `examples/exercises/03-timeline.html`
 
 ---
 
@@ -839,7 +839,7 @@ gsap.to(".box", {
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/02-properties/stagger-each-amount.html` | [CodePen](https://codepen.io/mocaffy/pen/ZYONyrO)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/ZYONyrO) | `examples/02-properties/stagger-each-amount.html`
 
 ---
 
@@ -865,7 +865,7 @@ stagger: { each: 0.1, from: "random" }  // ランダム
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/02-properties/stagger-from.html` | [CodePen](https://codepen.io/mocaffy/pen/azZrwqw)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/azZrwqw) | `examples/02-properties/stagger-from.html`
 
 ---
 
@@ -899,7 +899,7 @@ gsap.to(".dot", {
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/02-properties/stagger-wave.html` | [CodePen](https://codepen.io/mocaffy/pen/qENGjxV)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/qENGjxV) | `examples/02-properties/stagger-wave.html`
 
 ---
 
@@ -947,7 +947,7 @@ gsap.to(".box", {
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/03-timeline/callbacks.html` | [CodePen](https://codepen.io/mocaffy/pen/WbxBOze)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/WbxBOze) | `examples/03-timeline/callbacks.html`
 
 ---
 
@@ -980,7 +980,7 @@ tween.kill(); // 破棄
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/03-timeline/control-ui.html` | [CodePen](https://codepen.io/mocaffy/pen/EayzXEm)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/EayzXEm) | `examples/03-timeline/control-ui.html`
 
 ---
 
@@ -1050,7 +1050,7 @@ start: 'center center' → 要素の中央が画面中央に来たら
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/04-scrolltrigger/fade-in.html` | [CodePen](https://codepen.io/mocaffy/pen/JoKqJvr)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/JoKqJvr) | `examples/04-scrolltrigger/fade-in.html`
 
 ---
 
@@ -1089,7 +1089,7 @@ scrollTrigger: {
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/04-scrolltrigger/toggle-actions.html` | [CodePen](https://codepen.io/mocaffy/pen/wBWbejb)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/wBWbejb) | `examples/04-scrolltrigger/toggle-actions.html`
 
 ---
 
@@ -1141,7 +1141,7 @@ gsap.to(".box", {
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/04-scrolltrigger/scrub.html` | [CodePen](https://codepen.io/mocaffy/pen/LEZoLme)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/LEZoLme) | `examples/04-scrolltrigger/scrub.html`
 
 ---
 
@@ -1176,7 +1176,7 @@ gsap.to(".box", {
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/04-scrolltrigger/pin.html` | [CodePen](https://codepen.io/mocaffy/pen/gbMJRzZ)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/gbMJRzZ) | `examples/04-scrolltrigger/pin.html`
 
 ---
 
@@ -1212,7 +1212,7 @@ gsap.to(".panels", {
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/04-scrolltrigger/horizontal-scroll.html` | [CodePen](https://codepen.io/mocaffy/pen/MYedoXe)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/MYedoXe) | `examples/04-scrolltrigger/horizontal-scroll.html`
 
 ---
 
@@ -1249,7 +1249,7 @@ tl.from(".title", { y: 30, opacity: 0 })
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/04-scrolltrigger/timeline-scroll.html` | [CodePen](https://codepen.io/mocaffy/pen/QwERgxW)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/QwERgxW) | `examples/04-scrolltrigger/timeline-scroll.html`
 
 ---
 
@@ -1263,7 +1263,7 @@ tl.from(".title", { y: 30, opacity: 0 })
 2. **パララックス効果**: 背景を `scrub: true` で `y: -100` 移動させる
 3. **横スクロール**: `pin: true` と `scrub` を使って、縦スクロールで横方向にパネルが流れるセクションを作る
 
-> 📁 `examples/exercises/04-scrolltrigger.html` | [CodePen](https://codepen.io/mocaffy/pen/dPXERje)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/dPXERje) | `examples/exercises/04-scrolltrigger.html`
 
 ---
 
@@ -1300,7 +1300,7 @@ tl.from(".title", { y: 30, opacity: 0 })
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/05-fukui-pr/index-simple.html` | [CodePen](https://codepen.io/mocaffy/pen/GgqaEGP)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/GgqaEGP) | `examples/05-fukui-pr/index-simple.html`
 
 ---
 
@@ -1314,7 +1314,7 @@ tl.from(".title", { y: 30, opacity: 0 })
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/05-fukui-pr/index.html` | [CodePen](https://codepen.io/mocaffy/pen/qENpdLM)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/qENpdLM) | `examples/05-fukui-pr/index.html`
 
 ---
 
@@ -1521,7 +1521,7 @@ gsap.killTweensOf(".box");
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 `examples/patterns/autoalpha.html` | [CodePen](https://codepen.io/mocaffy/pen/GgqaEBP)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/GgqaEBP) | `examples/patterns/autoalpha.html`
 
 ---
 
@@ -1622,7 +1622,7 @@ gsap.to(counter, {
 });
 ```
 
-> 📁 `examples/patterns/page-load.html` | [CodePen](https://codepen.io/mocaffy/pen/QwERgVw) ・ `examples/patterns/hover-card.html` | [CodePen](https://codepen.io/mocaffy/pen/PwzvjBL) ・ `examples/patterns/text-counter.html` | [CodePen](https://codepen.io/mocaffy/pen/yyJWXxO)
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/QwERgVw) | `examples/patterns/page-load.html` ・ [CodePen](https://codepen.io/mocaffy/pen/PwzvjBL) | `examples/patterns/hover-card.html` ・ [CodePen](https://codepen.io/mocaffy/pen/yyJWXxO) | `examples/patterns/text-counter.html`
 
 ---
 
