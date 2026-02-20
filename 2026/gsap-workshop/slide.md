@@ -450,7 +450,7 @@ gsap.to("h1", { y: -20 }); // すべての <h1> を動かす
 
 <!-- _class: break -->
 
-# ☕ 休憩（10分）
+# ☕ 休憩（5分）
 
 ---
 
@@ -827,14 +827,6 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
 </iframe>
 
 > 📁 [CodePen](https://codepen.io/mocaffy/pen/XJKwgBM) | `examples/exercises/03-timeline.html`
-
----
-
-<!-- _class: break -->
-
-# ☕ 休憩（10分）
-
----
 
 <!-- _class: chapter -->
 
@@ -1314,9 +1306,15 @@ tl.from(".title", { y: 30, opacity: 0 })
 
 ---
 
+
+---
+
 <!-- _class: break -->
 
-# ☕ 休憩（10分）
+# ☕ 休憩（5分）
+
+---
+
 
 ---
 
