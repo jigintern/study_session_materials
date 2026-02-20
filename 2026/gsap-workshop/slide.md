@@ -7,7 +7,7 @@ style: |
   section {
     font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
     font-size: 24px;
-    padding: 0px 60px;
+    padding: 32px 60px;
     color: #1a1a1a;
   }
   section.title {
@@ -67,6 +67,14 @@ style: |
   section.break h1 {
     font-size: 2.5em;
     font-weight: 300;
+  }
+  section.demo {
+    display: flex;
+    flex-direction: column;
+  }
+  section.demo iframe {
+    width: 100%;
+    flex: 1
   }
   code {
     background: #f4f4f5;
@@ -176,7 +184,19 @@ Webflow による買収で、ScrollTrigger・SplitText・MorphSVG など
 
 これだけで GSAP が使えるようになります！
 
-> 📁 `examples/01-basics/setup-basic.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：セットアップ確認
+
+<iframe scrolling="no" title="GSAP セットアップ確認" src="https://codepen.io/mocaffy/embed/ByzeZwb?default-tab=html%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/ByzeZwb">GSAP セットアップ確認</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/ByzeZwb) | `examples/01-basics/setup-basic.html`
 
 ---
 
@@ -232,7 +252,19 @@ gsap.to(".box", {
 });
 ```
 
-> 📁 `examples/01-basics/gsap-to.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：`gsap.to()`
+
+<iframe scrolling="no" title="gsap.to() - 複数プロパティ" src="https://codepen.io/mocaffy/embed/QwERgOL?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/QwERgOL">gsap.to() - 複数プロパティ</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/QwERgOL) | `examples/01-basics/gsap-to.html`
 
 ---
 
@@ -287,7 +319,19 @@ gsap.from(".hero-title", {
 
 > `from()` は「初期状態を一時的に変更 → 元に戻す」イメージ
 
-> 📁 `examples/01-basics/gsap-from.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：`gsap.from()`
+
+<iframe scrolling="no" title="gsap.from()" src="https://codepen.io/mocaffy/embed/MYedoOK?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/MYedoOK">gsap.from()</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/MYedoOK) | `examples/01-basics/gsap-from.html`
 
 ---
 
@@ -307,7 +351,19 @@ gsap.fromTo(
 - `fromTo()` なら **開始と終了を完全にコントロール** できる
 - 繰り返し実行しても常に同じ結果になる
 
-> 📁 `examples/01-basics/fromto.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：`gsap.fromTo()`
+
+<iframe scrolling="no" title="gsap.fromTo()" src="https://codepen.io/mocaffy/embed/azZrwVW?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/azZrwVW">gsap.fromTo()</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/azZrwVW) | `examples/01-basics/fromto.html`
 
 ---
 
@@ -329,7 +385,19 @@ gsap.to(".box", { x: 300, opacity: 1, duration: 1 });
 - 複数要素を **一括でリセット**
 - **条件分岐** による即時切り替え
 
-> 📁 `examples/01-basics/set.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：`gsap.set()`
+
+<iframe scrolling="no" title="gsap.set()" src="https://codepen.io/mocaffy/embed/qENGjVP?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/qENGjVP">gsap.set()</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/qENGjVP) | `examples/01-basics/set.html`
 
 ---
 
@@ -364,7 +432,7 @@ gsap.to("h1", { y: -20 }); // すべての <h1> を動かす
 3. `gsap.fromTo()` で `.box` を **x: -200 から x: 400** まで移動させる
 4. `gsap.set()` で **背景色を赤に変更** し、その後 `to()` で **回転 360°** させる
 
-> 📁 `examples/exercises/01-basic-tween.html`
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/WbxBOKN) | `examples/exercises/01-basic-tween.html`
 
 ---
 
@@ -404,8 +472,33 @@ gsap.to(".box", {
 });
 ```
 
-> 📁 `examples/02-properties/duration-delay.html`
-> 📁 `examples/02-properties/repeat-yoyo.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：duration / delay
+
+<iframe scrolling="no" title="duration & delay" src="https://codepen.io/mocaffy/embed/emzaRyz?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/emzaRyz">duration & delay</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/emzaRyz) | `examples/02-properties/duration-delay.html`
+
+---
+
+<!-- _class: demo -->
+
+## デモ：repeat / yoyo
+
+<iframe scrolling="no" title="repeat & yoyo" src="https://codepen.io/mocaffy/embed/ogLRwpp?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/ogLRwpp">repeat & yoyo</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/ogLRwpp) | `examples/02-properties/repeat-yoyo.html`
 
 ---
 
@@ -429,7 +522,19 @@ ease: "power1.out"
 
 > デフォルトは `"power1.out"`（自然な減速）
 
-> 📁 `examples/02-properties/easing-directions.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：イージング方向（in / out / inOut）
+
+<iframe scrolling="no" title="Easing Directions" src="https://codepen.io/mocaffy/embed/ByzeZJb?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/ByzeZJb">Easing Directions</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/ByzeZJb) | `examples/02-properties/easing-directions.html`
 
 ---
 
@@ -448,7 +553,19 @@ ease: "power1.out"
 
 💡 [Ease Visualizer](https://gsap.com/docs/v3/Eases/) で確認しよう！
 
-> 📁 `examples/02-properties/easing-comparison.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：イージング比較
+
+<iframe scrolling="no" title="Easing Comparison" src="https://codepen.io/mocaffy/embed/vEKwZpr?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/vEKwZpr">Easing Comparison</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/vEKwZpr) | `examples/02-properties/easing-comparison.html`
 
 ---
 
@@ -477,7 +594,19 @@ ease: "back.out(1.7)";
 ease: "back.out(3)"; // もっと行き過ぎる
 ```
 
-> 📁 `examples/02-properties/elastic-params.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：Elastic / Back パラメータ
+
+<iframe scrolling="no" title="Elastic & Back Parameters" src="https://codepen.io/mocaffy/embed/KwMLqQw?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/KwMLqQw">Elastic & Back Parameters</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/KwMLqQw) | `examples/02-properties/elastic-params.html`
 
 ---
 
@@ -492,7 +621,7 @@ ease: "back.out(3)"; // もっと行き過ぎる
    - `linear`, `power2.out`, `bounce.out`, `elastic.out`, `back.out`
 3. **カード登場**: ボタンクリックで `.card` が `scale: 0` → `scale: 1` で登場。最も自然に見える ease を探す
 
-> 📁 `examples/exercises/02-easing.html`
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/MYedoBe) | `examples/exercises/02-easing.html`
 
 ---
 
@@ -528,7 +657,19 @@ tl.to(".box1", { x: 100, duration: 1 })
 
 > Timeline なら **順番の変更・挿入・削除が簡単**
 
-> 📁 `examples/03-timeline/timeline-basic.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：Timeline 基本
+
+<iframe scrolling="no" title="Timeline 基本" src="https://codepen.io/mocaffy/embed/RNRmgQY?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/RNRmgQY">Timeline 基本</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/RNRmgQY) | `examples/03-timeline/timeline-basic.html`
 
 ---
 
@@ -553,7 +694,19 @@ tl.to(".a", { x: 100, duration: 1 }) // デフォルト: 前の直後
 | `"+=1"`   | 直前の終了 + 1秒（間を空ける）       |
 | `2`       | タイムラインの2秒地点（絶対位置）    |
 
-> 📁 `examples/03-timeline/position-params.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：Position パラメータ
+
+<iframe scrolling="no" title="Position Parameters" src="https://codepen.io/mocaffy/embed/wBWbeyb?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/wBWbeyb">Position Parameters</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/wBWbeyb) | `examples/03-timeline/position-params.html`
 
 ---
 
@@ -611,7 +764,19 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
 
 ローディングアニメーションに最適！
 
-> 📁 `examples/03-timeline/loading-loop.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：ループローディング
+
+<iframe scrolling="no" title="ローディングアニメーション" src="https://codepen.io/mocaffy/embed/yyJWXje?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/yyJWXje">ローディングアニメーション</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/yyJWXje) | `examples/03-timeline/loading-loop.html`
 
 ---
 
@@ -625,7 +790,7 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
 2. **ステップ表示**: 3 枚の `.card` を順番にフェードイン。2 枚目は 1 枚目の終了 **0.3 秒前**に開始させる（`"-=0.3"` を使用）
 3. **ラベルの活用**: ボタン 2 つ（「イントロ」「メイン」）を用意し、クリックで Timeline の該当ラベルへジャンプさせる
 
-> 📁 `examples/exercises/03-timeline.html`
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/XJKwgBM) | `examples/exercises/03-timeline.html`
 
 ---
 
@@ -662,7 +827,19 @@ gsap.to(".box", {
 | `stagger: 0.2` or `each: 0.2` | 各要素間の間隔が **0.2 秒固定**         |
 | `amount: 1`                   | 全要素の合計が **1 秒**（要素数で割る） |
 
-> 📁 `examples/02-properties/stagger-each-amount.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：Stagger `each` / `amount`
+
+<iframe scrolling="no" title="Stagger: each vs amount" src="https://codepen.io/mocaffy/embed/ZYONyrO?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/ZYONyrO">Stagger: each vs amount</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/ZYONyrO) | `examples/02-properties/stagger-each-amount.html`
 
 ---
 
@@ -676,7 +853,19 @@ stagger: { each: 0.1, from: "edges" }   // 両端から中央へ
 stagger: { each: 0.1, from: "random" }  // ランダム
 ```
 
-> 📁 `examples/02-properties/stagger-from.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：Stagger `from`
+
+<iframe scrolling="no" title="Stagger: from" src="https://codepen.io/mocaffy/embed/azZrwqw?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/azZrwqw">Stagger: from</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/azZrwqw) | `examples/02-properties/stagger-from.html`
 
 ---
 
@@ -698,7 +887,19 @@ gsap.to(".dot", {
 
 > これで「波のように動くドット」が簡単に作れる
 
-> 📁 `examples/02-properties/stagger-wave.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：Stagger の波アニメーション
+
+<iframe scrolling="no" title="Stagger Wave" src="https://codepen.io/mocaffy/embed/qENGjxV?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/qENGjxV">Stagger Wave</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/qENGjxV) | `examples/02-properties/stagger-wave.html`
 
 ---
 
@@ -734,7 +935,19 @@ gsap.to(".box", {
 
 💡 Timeline にも使えます（例: ローディング完了後にメイン表示）
 
-> 📁 `examples/03-timeline/callbacks.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：コールバック
+
+<iframe scrolling="no" title="Callbacks" src="https://codepen.io/mocaffy/embed/WbxBOze?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/WbxBOze">Callbacks</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/WbxBOze) | `examples/03-timeline/callbacks.html`
 
 ---
 
@@ -755,7 +968,19 @@ tween.timeScale(2); // 2倍速
 tween.kill(); // 破棄
 ```
 
-> 📁 `examples/03-timeline/control-methods.html` ・ `examples/03-timeline/control-ui.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：制御メソッド
+
+<iframe scrolling="no" title="Control UI" src="https://codepen.io/mocaffy/embed/EayzXEm?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/EayzXEm">Control UI</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/EayzXEm) | `examples/03-timeline/control-ui.html`
 
 ---
 
@@ -813,7 +1038,19 @@ start: 'top center'    → 要素の上端が画面中央に来たら
 start: 'center center' → 要素の中央が画面中央に来たら
 ```
 
-> 📁 `examples/04-scrolltrigger/fade-in.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：ScrollTrigger 基本（フェードイン）
+
+<iframe scrolling="no" title="ScrollTrigger - フェードイン" src="https://codepen.io/mocaffy/embed/JoKqJvr?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/JoKqJvr">ScrollTrigger - フェードイン</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/JoKqJvr) | `examples/04-scrolltrigger/fade-in.html`
 
 ---
 
@@ -840,7 +1077,19 @@ scrollTrigger: {
 
 💡 **よく使うパターン**: `"play none none reverse"`（画面外に出たら元に戻る）
 
-> 📁 `examples/04-scrolltrigger/toggle-actions.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：`toggleActions`
+
+<iframe scrolling="no" title="ScrollTrigger - toggleActions" src="https://codepen.io/mocaffy/embed/wBWbejb?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/wBWbejb">ScrollTrigger - toggleActions</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/wBWbejb) | `examples/04-scrolltrigger/toggle-actions.html`
 
 ---
 
@@ -880,7 +1129,19 @@ gsap.to(".box", {
 | `true`     | スクロール位置に即座に追従 |
 | `1`        | 1秒かけてスムーズに追従    |
 
-> 📁 `examples/04-scrolltrigger/scrub.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：`scrub`
+
+<iframe scrolling="no" title="ScrollTrigger - scrub" src="https://codepen.io/mocaffy/embed/LEZoLme?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/LEZoLme">ScrollTrigger - scrub</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/LEZoLme) | `examples/04-scrolltrigger/scrub.html`
 
 ---
 
@@ -903,7 +1164,19 @@ gsap.to(".box", {
 - スクロールしても要素は動かず、アニメーションだけ進む
 - 横スクロールや複雑な演出の基盤になる重要な機能
 
-> 📁 `examples/04-scrolltrigger/pin.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：`pin`
+
+<iframe scrolling="no" title="ScrollTrigger - pin" src="https://codepen.io/mocaffy/embed/gbMJRzZ?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/gbMJRzZ">ScrollTrigger - pin</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/gbMJRzZ) | `examples/04-scrolltrigger/pin.html`
 
 ---
 
@@ -927,7 +1200,19 @@ gsap.to(".panels", {
 });
 ```
 
-> 📁 `examples/04-scrolltrigger/horizontal-scroll.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：横スクロール
+
+<iframe scrolling="no" title="ScrollTrigger - 横スクロール" src="https://codepen.io/mocaffy/embed/MYedoXe?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/MYedoXe">ScrollTrigger - 横スクロール</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/MYedoXe) | `examples/04-scrolltrigger/horizontal-scroll.html`
 
 ---
 
@@ -952,7 +1237,19 @@ tl.from(".title", { y: 30, opacity: 0 })
 - Timeline のオプションに `scrollTrigger` を追加するだけ！
 - スクロールで発火し、中のアニメーションが順番に実行される
 
-> 📁 `examples/04-scrolltrigger/timeline-scroll.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：Timeline + ScrollTrigger
+
+<iframe scrolling="no" title="Timeline + ScrollTrigger" src="https://codepen.io/mocaffy/embed/QwERgxW?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/QwERgxW">Timeline + ScrollTrigger</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/QwERgxW) | `examples/04-scrolltrigger/timeline-scroll.html`
 
 ---
 
@@ -966,7 +1263,7 @@ tl.from(".title", { y: 30, opacity: 0 })
 2. **パララックス効果**: 背景を `scrub: true` で `y: -100` 移動させる
 3. **横スクロール**: `pin: true` と `scrub` を使って、縦スクロールで横方向にパネルが流れるセクションを作る
 
-> 📁 `examples/exercises/04-scrolltrigger.html`
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/dPXERje) | `examples/exercises/04-scrolltrigger.html`
 
 ---
 
@@ -991,8 +1288,33 @@ tl.from(".title", { y: 30, opacity: 0 })
 `examples/05-fukui-pr/index.html` をベースに、
 あなたの地元をPRするサイトを作ってみよう！
 
-> 📁 `examples/05-fukui-pr/index.html`（フル版）
-> 📁 `examples/05-fukui-pr/index-simple.html`（簡易版）
+---
+
+<!-- _class: demo -->
+
+## デモ：観光PRサイト（簡易版）
+
+<iframe scrolling="no" title="福井県 - DISCOVER FUKUI（簡易版）" src="https://codepen.io/mocaffy/embed/GgqaEGP?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/GgqaEGP">福井県 - DISCOVER FUKUI（簡易版）</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/GgqaEGP) | `examples/05-fukui-pr/index-simple.html`
+
+---
+
+<!-- _class: demo -->
+
+## デモ：観光PRサイト（フル版）
+
+<iframe scrolling="no" title="福井県 - DISCOVER FUKUI" src="https://codepen.io/mocaffy/embed/qENpdLM?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/qENpdLM">福井県 - DISCOVER FUKUI</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/qENpdLM) | `examples/05-fukui-pr/index.html`
 
 ---
 
@@ -1187,7 +1509,19 @@ ScrollTrigger.getAll().forEach((st) => st.kill());
 gsap.killTweensOf(".box");
 ```
 
-> 📁 `examples/patterns/autoalpha.html`
+---
+
+<!-- _class: demo -->
+
+## デモ：`autoAlpha` パターン
+
+<iframe scrolling="no" title="opacity vs autoAlpha" src="https://codepen.io/mocaffy/embed/GgqaEBP?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/GgqaEBP">opacity vs autoAlpha</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/GgqaEBP) | `examples/patterns/autoalpha.html`
 
 ---
 
@@ -1288,7 +1622,7 @@ gsap.to(counter, {
 });
 ```
 
-> 📁 `examples/patterns/page-load.html` ・ `examples/patterns/hover-card.html` ・ `examples/patterns/text-counter.html`
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/QwERgVw) | `examples/patterns/page-load.html` ・ [CodePen](https://codepen.io/mocaffy/pen/PwzvjBL) | `examples/patterns/hover-card.html` ・ [CodePen](https://codepen.io/mocaffy/pen/yyJWXxO) | `examples/patterns/text-counter.html`
 
 ---
 
