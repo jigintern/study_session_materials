@@ -432,6 +432,18 @@ gsap.to("h1", { y: -20 }); // すべての <h1> を動かす
 3. `gsap.fromTo()` で `.box` を **x: -200 から x: 400** まで移動させる
 4. `gsap.set()` で **背景色を赤に変更** し、その後 `to()` で **回転 360°** させる
 
+---
+
+<!-- _class: demo -->
+
+## 演習 1
+
+<iframe scrolling="no" title="演習1: 基本のTween" src="https://codepen.io/mocaffy/embed/WbxBOKN?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/WbxBOKN">演習1: 基本のTween</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
 > 📁 [CodePen](https://codepen.io/mocaffy/pen/WbxBOKN) | `examples/exercises/01-basic-tween.html`
 
 ---
@@ -621,6 +633,18 @@ ease: "back.out(3)"; // もっと行き過ぎる
    - `linear`, `power2.out`, `bounce.out`, `elastic.out`, `back.out`
 3. **カード登場**: ボタンクリックで `.card` が `scale: 0` → `scale: 1` で登場。最も自然に見える ease を探す
 
+---
+
+<!-- _class: demo -->
+
+## 演習 2
+
+<iframe scrolling="no" title="演習2: プロパティ & イージング" src="https://codepen.io/mocaffy/embed/MYedoBe?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/MYedoBe">演習2: プロパティ & イージング</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
 > 📁 [CodePen](https://codepen.io/mocaffy/pen/MYedoBe) | `examples/exercises/02-easing.html`
 
 ---
@@ -789,6 +813,18 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
 1. **ローディングアニメーション**: 3 つのドットが順番に `scale: 1.5` → 元に戻る Timeline を `repeat: -1` で作る
 2. **ステップ表示**: 3 枚の `.card` を順番にフェードイン。2 枚目は 1 枚目の終了 **0.3 秒前**に開始させる（`"-=0.3"` を使用）
 3. **ラベルの活用**: ボタン 2 つ（「イントロ」「メイン」）を用意し、クリックで Timeline の該当ラベルへジャンプさせる
+
+---
+
+<!-- _class: demo -->
+
+## 演習 3
+
+<iframe scrolling="no" title="演習3: Timeline" src="https://codepen.io/mocaffy/embed/XJKwgBM?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/XJKwgBM">演習3: Timeline</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
 
 > 📁 [CodePen](https://codepen.io/mocaffy/pen/XJKwgBM) | `examples/exercises/03-timeline.html`
 
@@ -1062,8 +1098,8 @@ scrollTrigger: {
   start: 'top 80%',
   end: 'bottom 20%',
   toggleActions: 'play none none reverse'
-  //              ↑    ↑    ↑    ↑
-  // onEnter  onLeave  onEnterBack  onLeaveBack
+  //             ↗️     ⬆️    ⬆️       ↖️
+  //      onEnter  onLeave  onEnterBack  onLeaveBack
 }
 ```
 
@@ -1261,7 +1297,18 @@ tl.from(".title", { y: 30, opacity: 0 })
 
 1. **フェードインセクション**: 3 つのセクションの要素が **画面の 80% に入った時** にフェードインする。`markers: true` でデバッグ
 2. **パララックス効果**: 背景を `scrub: true` で `y: -100` 移動させる
-3. **横スクロール**: `pin: true` と `scrub` を使って、縦スクロールで横方向にパネルが流れるセクションを作る
+
+---
+
+<!-- _class: demo -->
+
+## 演習 4
+
+<iframe scrolling="no" title="演習4: ScrollTrigger" src="https://codepen.io/mocaffy/embed/dPXERje?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/dPXERje">演習4: ScrollTrigger</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
 
 > 📁 [CodePen](https://codepen.io/mocaffy/pen/dPXERje) | `examples/exercises/04-scrolltrigger.html`
 
@@ -1292,21 +1339,7 @@ tl.from(".title", { y: 30, opacity: 0 })
 
 <!-- _class: demo -->
 
-## デモ：観光PRサイト（簡易版）
-
-<iframe scrolling="no" title="福井県 - DISCOVER FUKUI（簡易版）" src="https://codepen.io/mocaffy/embed/GgqaEGP?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
-  See the Pen
-  <a href="https://codepen.io/mocaffy/pen/GgqaEGP">福井県 - DISCOVER FUKUI（簡易版）</a>
-  on <a href="https://codepen.io">CodePen</a>.
-</iframe>
-
-> 📁 [CodePen](https://codepen.io/mocaffy/pen/GgqaEGP) | `examples/05-fukui-pr/index-simple.html`
-
----
-
-<!-- _class: demo -->
-
-## デモ：観光PRサイト（フル版）
+## デモ：観光PRサイト
 
 <iframe scrolling="no" title="福井県 - DISCOVER FUKUI" src="https://codepen.io/mocaffy/embed/qENpdLM?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
   See the Pen
@@ -1330,42 +1363,6 @@ tl.from(".title", { y: 30, opacity: 0 })
 | 観光スポット | パララックス効果（scrub）      |
 | グルメ       | 横スクロール（pin + scrub）    |
 | アクセス     | Timeline + ScrollTrigger       |
-
----
-
-## コードウォークスルー
-
-サンプルコードの JS は **9つの関数** に分かれています。
-
-```
-initLoader()          → ローディング画面
-initHeroAnimation()   → ヒーローセクション
-initProgressBar()     → プログレスバー
-initIntroAnimation()  → イントロ + カウントアップ
-initZoomAnimation()   → 円形ズーム演出
-initSpotsAnimation()  → 観光スポット + パララックス
-initGourmetAnimation() → グルメ横スクロール
-initAccessAnimation() → アクセス情報
-initSmoothScroll()    → スムーススクロール
-```
-
----
-
-## 学んだ技術との対応
-
-| 関数                 | 学んだ技術 ✅                | 新しい要素 ⭐                 |
-| -------------------- | ---------------------------- | ----------------------------- |
-| initLoader           | Timeline + stagger           | onComplete コールバック       |
-| initHeroAnimation    | Timeline + `-=`              | −                             |
-| initProgressBar      | scrub                        | −                             |
-| initIntroAnimation   | ScrollTrigger                | ⭐ カウントアップ（onUpdate） |
-| initSpotsAnimation   | パララックス（scrub）        | ⭐ fromTo                     |
-| initGourmetAnimation | **pin + scrub**              | ⭐ 横スクロール + 関数値      |
-| initAccessAnimation  | **Timeline + ScrollTrigger** | −                             |
-| initZoomAnimation    | **pin + scrub**              | ⭐ CSS変数アニメーション      |
-| initSmoothScroll     | −                            | ⭐ ScrollToPlugin             |
-
-**9つ中6つは学んだ技術の応用です！** ⭐ の部分はそのまま使ってOK。
 
 ---
 
@@ -1415,16 +1412,16 @@ initSmoothScroll()    → スムーススクロール
 
 ---
 
-## チャレンジ課題
+## やってみよう
 
-### 必須チャレンジ 🎯
+### 基本 🎯
 
 1. 地域名・キャッチコピー・画像を自分の地元に変更
 2. 配色を変更（CSS カスタムプロパティで最低3色）
 3. `initHeroAnimation()` の `ease` を好きなものに変える
 4. 観光スポットの `stagger` の値を変えて、登場の間隔を調整する
 
-### 追加チャレンジ ⭐
+### 応用 ⭐
 
 - イージングを変えてサイト全体の印象を変える
 - stagger の `from` を変えて登場演出を工夫する
@@ -1434,17 +1431,17 @@ initSmoothScroll()    → スムーススクロール
 
 ## 作業時間
 
-### 🕐 約45分
+### 🕐 約40分
 
-- 最初の10分：テーマ決め＆情報収集
-- 次の25分：コードの編集
-- 最後の10分：調整＆発表準備
+- 10分：テーマ決め＆情報収集
+- 20分：コードの編集
+- 10分：グループ内で発表
 
 **困ったらスタッフに聞いてね！**
 
 ---
 
-## 発表タイム（任意）
+## 発表タイム
 
 作ったサイトをみんなに見せよう！
 
@@ -1522,22 +1519,6 @@ gsap.killTweensOf(".box");
 </iframe>
 
 > 📁 [CodePen](https://codepen.io/mocaffy/pen/GgqaEBP) | `examples/patterns/autoalpha.html`
-
----
-
-## アクセシビリティへの配慮
-
-ユーザーが「視覚効果を減らす」設定にしている場合への対応：
-
-```javascript
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-if (prefersReducedMotion) {
-  gsap.globalTimeline.timeScale(100);
-}
-```
-
-**めまいや不快感を感じるユーザーへの配慮が大切です。**
 
 ---
 
@@ -1637,16 +1618,12 @@ gsap.to(counter, {
 - **プロジェクト名**: ふわっち
 - **URL**: https://whowatch.tv/s/snack/
 - **使用技術**: GSAP, ScrollTrigger
-- **課題・狙い・工夫**:
-
----
 
 ## 事例2
 
 - **プロジェクト名**: VTuber登竜門
 - **URL**: https://www.vmon.jp/
 - **使用技術**: GSAP, ScrollTrigger
-- **課題・狙い・工夫**:
 
 ---
 
