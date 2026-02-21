@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScrollTrigger - フェードイン</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; color: #333; }
+  .hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0fdf4;
+  }
+  .hero p {
+    font-size: 1.4em;
+    color: #555;
+    letter-spacing: 0.05em;
+  }
+  .section {
+    padding: 80px 40px;
+  }
+  .section:nth-child(odd) { background: #fff; }
+  .section:nth-child(even) { background: #f9f9f9; }
+  .section h2 {
+    font-size: 1.3em;
+    margin-bottom: 32px;
+    color: #333;
+  }
+  .boxes {
+    display: flex;
+    gap: 20px;
+  }
+  .box {
+    width: 80px;
+    height: 80px;
+    background: #0ae448;
+    border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+  <div class="hero">
+    <p>↓ スクロールしてね ↓</p>
+  </div>
+
+  <div class="section section1">
+    <h2>セクション 1</h2>
+    <div class="boxes">
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+    </div>
+  </div>
+
+  <div class="section section2">
+    <h2>セクション 2</h2>
+    <div class="boxes">
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+    </div>
+  </div>
+
+  <div class="section section3">
+    <h2>セクション 3</h2>
+    <div class="boxes">
+      <div class="box"></div>
+      <div class="box"></div>
+      <div class="box"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from('.section1 .box', {
+      opacity: 0,
+      y: 60,
+      stagger: 0.2,
+      scrollTrigger: {
+        trigger: '.section1',
+        start: 'top 80%',
+        markers: true
+      }
+    });
+
+    gsap.from('.section2 .box', {
+      opacity: 0,
+      y: 60,
+      stagger: 0.2,
+      scrollTrigger: {
+        trigger: '.section2',
+        start: 'top 80%',
+        markers: true
+      }
+    });
+
+    gsap.from('.section3 .box', {
+      opacity: 0,
+      y: 60,
+      stagger: 0.2,
+      scrollTrigger: {
+        trigger: '.section3',
+        start: 'top 80%',
+        markers: true
+      }
+    });
+  </script>
+</body>
+</html>

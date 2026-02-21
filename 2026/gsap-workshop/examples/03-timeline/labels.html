@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Labels（ラベル）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; padding: 30px 60px; }
+  h1 { font-size: 1.4em; color: #333; margin-bottom: 20px; }
+  .controls { display: flex; gap: 8px; margin-bottom: 24px; }
+  button {
+    padding: 8px 20px; border: none; border-radius: 6px; font-size: 0.9em;
+    font-weight: 600; cursor: pointer; color: #fff; background: #0ae448;
+  }
+  button.reset { background: #999; }
+  .stage { display: flex; flex-direction: column; gap: 16px; }
+  .row { display: flex; align-items: center; gap: 16px; }
+  .label { width: 80px; font-weight: bold; color: #555; font-size: 0.9em; flex-shrink: 0; }
+  .box { width: 60px; height: 60px; border-radius: 8px; flex-shrink: 0; }
+  #box1 { background: #e74c3c; }
+  #box2 { background: #3498db; }
+  #box3 { background: #f39c12; }
+</style>
+</head>
+<body>
+  <h1>Labels — ラベルでジャンプ</h1>
+  <div class="controls">
+    <button onclick="tl.play('intro')">intro から再生</button>
+    <button onclick="tl.play('main')">main から再生</button>
+    <button onclick="tl.play('end')">end から再生</button>
+    <button class="reset" onclick="tl.restart()">最初から</button>
+  </div>
+  <div class="stage">
+    <div class="row"><span class="label">intro</span><div class="box" id="box1"></div></div>
+    <div class="row"><span class="label">main</span><div class="box" id="box2"></div></div>
+    <div class="row"><span class="label">end</span><div class="box" id="box3"></div></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+    tl.addLabel("intro")
+      .to("#box1", { x: 300, duration: 0.8, ease: "power2.out" })
+      .addLabel("main")
+      .to("#box2", { x: 300, duration: 0.8, ease: "power2.out" })
+      .addLabel("end")
+      .to("#box3", { x: 300, duration: 0.8, ease: "power2.out" });
+
+    tl.play();
+  </script>
+</body>
+</html>

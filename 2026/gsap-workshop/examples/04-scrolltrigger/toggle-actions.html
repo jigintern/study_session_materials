@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScrollTrigger - toggleActions</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; color: #333; }
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f0fdf4;
+    gap: 16px;
+  }
+  .hero h1 {
+    font-size: 1.6em;
+    color: #333;
+  }
+  .hero p {
+    font-size: 1.1em;
+    color: #555;
+  }
+  .trigger-section {
+    padding: 120px 40px;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+  }
+  .box {
+    width: 80px;
+    height: 80px;
+    background: #0ae448;
+    border-radius: 8px;
+  }
+  .explanation {
+    padding: 80px 40px;
+    background: #f9f9f9;
+  }
+  .explanation h2 {
+    font-size: 1.3em;
+    margin-bottom: 24px;
+    color: #333;
+  }
+  .explanation table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 600px;
+  }
+  .explanation th,
+  .explanation td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.95em;
+  }
+  .explanation th {
+    color: #555;
+    font-weight: bold;
+  }
+  .explanation td {
+    color: #333;
+  }
+  .footer-spacer {
+    height: 60vh;
+    background: #fff;
+  }
+</style>
+</head>
+<body>
+  <div class="hero">
+    <h1>toggleActions デモ</h1>
+    <p>↓ スクロールして動きを確認 ↓</p>
+    <p style="font-size: 0.9em; color: #888;">スクロールを上下して、ボックスの出入りを観察してください</p>
+  </div>
+
+  <div class="trigger-section">
+    <div class="box"></div>
+  </div>
+
+  <div class="explanation">
+    <h2>toggleActions の 4 つのポジション</h2>
+    <table>
+      <tr>
+        <th>ポジション</th>
+        <th>意味</th>
+        <th>この例での値</th>
+      </tr>
+      <tr>
+        <td>onEnter</td>
+        <td>start を下方向に通過</td>
+        <td>play</td>
+      </tr>
+      <tr>
+        <td>onLeave</td>
+        <td>end を下方向に通過</td>
+        <td>reverse</td>
+      </tr>
+      <tr>
+        <td>onEnterBack</td>
+        <td>end を上方向に通過</td>
+        <td>play</td>
+      </tr>
+      <tr>
+        <td>onLeaveBack</td>
+        <td>start を上方向に通過</td>
+        <td>reverse</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="footer-spacer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from('.box', {
+      opacity: 0,
+      x: -200,
+      duration: 0.8,
+      scrollTrigger: {
+        trigger: '.trigger-section',
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play reverse play reverse',
+        markers: true
+      }
+    });
+  </script>
+</body>
+</html>

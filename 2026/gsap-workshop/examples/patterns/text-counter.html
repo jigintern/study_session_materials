@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Counter Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+  .counter { font-size: 4em; font-weight: bold; color: #222; font-variant-numeric: tabular-nums; }
+  .label { font-size: 1.1em; color: #888; margin-top: 8px; font-weight: 500; }
+</style>
+</head>
+<body>
+  <div class="counter" id="counter">0</div>
+  <div class="label">Total Users</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+    const counterEl = document.getElementById('counter');
+    const obj = { value: 0 };
+
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+
+    tl.to(obj, {
+      value: 12345,
+      duration: 2,
+      ease: 'power1.out',
+      onUpdate() {
+        counterEl.textContent = Math.round(obj.value).toLocaleString();
+      }
+    })
+    .to({}, { duration: 1 }) // pause at end
+    .call(() => {
+      obj.value = 0;
+      counterEl.textContent = '0';
+    });
+  </script>
+</body>
+</html>

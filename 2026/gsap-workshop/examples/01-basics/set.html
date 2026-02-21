@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gsap.set()</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; }
+  .box { width: 120px; height: 120px; background: #0ae448; border-radius: 8px; }
+  .label { margin-top: 24px; font-size: 14px; color: #555; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="box"></div>
+<div class="label">① set() で即座に赤＆右に移動 → ② to() で青にしながら更に右へ</div>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script>
+  // ① 即座に赤に変更に移動（アニメーションなし）
+  gsap.set(".box", { backgroundColor: "#e74c3c" });
+
+  // ② 青にしながら更に右へアニメーション
+  gsap.to(".box", { backgroundColor: "#3498db", x: 200, duration: 2 });
+</script>
+</body>
+</html>

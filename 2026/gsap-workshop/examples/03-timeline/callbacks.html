@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Callbacks Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; gap: 60px; }
+  .stage { position: relative; width: 400px; height: 120px; }
+  .box { width: 80px; height: 80px; background: #0ae448; border-radius: 8px; position: absolute; top: 20px; left: 0; }
+  .log-area { display: flex; flex-direction: column; gap: 12px; }
+  .log-item { padding: 10px 20px; border-radius: 6px; font-size: 1.1em; font-weight: 600; color: #444; background: #f0f0f0; transition: background 0.15s, color 0.15s; min-width: 220px; }
+  .log-item.active { color: #fff; }
+  .log-item.start.active { background: #3b82f6; }
+  .log-item.update.active { background: #f59e0b; }
+  .log-item.complete.active { background: #0ae448; }
+  .progress { font-size: 0.85em; margin-left: 8px; opacity: 0.9; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="box" id="box"></div>
+  </div>
+  <div class="log-area">
+    <div class="log-item start" id="logStart">onStart</div>
+    <div class="log-item update" id="logUpdate">onUpdate <span class="progress" id="progressText">0%</span></div>
+    <div class="log-item complete" id="logComplete">onComplete</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+    const box = document.getElementById('box');
+    const logStart = document.getElementById('logStart');
+    const logUpdate = document.getElementById('logUpdate');
+    const logComplete = document.getElementById('logComplete');
+    const progressText = document.getElementById('progressText');
+
+    function clearLogs() {
+      [logStart, logUpdate, logComplete].forEach(el => el.classList.remove('active'));
+      progressText.textContent = '0%';
+    }
+
+    function runAnimation() {
+      clearLogs();
+      gsap.fromTo(box, { x: 0 }, {
+        x: 300,
+        duration: 2,
+        ease: 'power2.inOut',
+        onStart() {
+          logStart.classList.add('active');
+        },
+        onUpdate() {
+          logUpdate.classList.add('active');
+          const p = Math.round(this.progress() * 100);
+          progressText.textContent = p + '%';
+        },
+        onComplete() {
+          logComplete.classList.add('active');
+          setTimeout(() => {
+            gsap.set(box, { x: 0 });
+            clearLogs();
+            setTimeout(runAnimation, 500);
+          }, 1500);
+        }
+      });
+    }
+
+    runAnimation();
+  </script>
+</body>
+</html>

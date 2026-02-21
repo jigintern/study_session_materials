@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stagger Wave</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; }
+  .dots { display: flex; gap: 16px; align-items: center; }
+  .dot { width: 20px; height: 20px; border-radius: 50%; background: #0ae448; }
+</style>
+</head>
+<body>
+  <div class="dots">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script>
+  gsap.to(".dot", {
+    y: -30,
+    duration: 0.5,
+    ease: "power1.inOut",
+    stagger: { each: 0.15 },
+    repeat: -1,
+    yoyo: true
+  });
+</script>
+</body>
+</html>

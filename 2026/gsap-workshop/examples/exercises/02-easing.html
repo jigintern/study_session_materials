@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>演習2: プロパティ & イージング</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; padding: 40px; }
+  h1 { font-size: 1.5em; color: #333; margin-bottom: 32px; padding-bottom: 8px; border-bottom: 3px solid #0ae448; }
+  .task { margin-bottom: 40px; padding: 24px; border: 1px solid #e0e0e0; border-radius: 12px; }
+  .task h2 { font-size: 1.1em; color: #0ae448; margin-bottom: 8px; }
+  .task p { font-size: 0.85em; color: #888; margin-bottom: 16px; }
+  .box { width: 80px; height: 80px; background: #0ae448; border-radius: 8px; }
+  .controls { margin-top: 12px; display: flex; gap: 8px; }
+  button {
+    padding: 8px 20px; border: none; border-radius: 6px; font-size: 0.9em;
+    font-weight: 600; cursor: pointer; color: #fff; background: #0ae448;
+  }
+  button.reset { background: #999; }
+
+  /* 課題2: easing rows */
+  .ease-row { display: flex; align-items: center; margin-bottom: 12px; }
+  .ease-label { width: 130px; font-size: 0.85em; font-weight: bold; color: #333; }
+  .ease-box { width: 50px; height: 50px; background: #0ae448; border-radius: 6px; }
+
+  /* 課題3: card */
+  .card {
+    width: 240px; padding: 32px 24px; background: #fff; border: 1px solid #e0e0e0;
+    border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transform: scale(0); /* hidden by default */
+  }
+  .card h3 { font-size: 1em; color: #333; margin-bottom: 8px; }
+  .card p { font-size: 0.8em; color: #888; }
+</style>
+</head>
+<body>
+  <h1>演習2: プロパティ & イージング</h1>
+
+  <!-- 課題1 -->
+  <div class="task">
+    <h2>課題1: パルスアニメーション</h2>
+    <p>ヒント: scale, repeat: -1, yoyo: true を使う</p>
+    <div class="box" id="pulse-box"></div>
+    <div class="controls">
+      <button onclick="task1()">実行</button>
+      <button class="reset" onclick="gsap.killTweensOf('#pulse-box'); gsap.set('#pulse-box',{scale:1})">リセット</button>
+    </div>
+  </div>
+
+  <!-- 課題2 -->
+  <div class="task">
+    <h2>課題2: 5つのboxを異なるeaseで同時にx:400移動</h2>
+    <p>ヒント: それぞれに gsap.to() を書く。ease の値を変える</p>
+    <div class="ease-row">
+      <span class="ease-label">linear</span>
+      <div class="ease-box" id="e1"></div>
+    </div>
+    <div class="ease-row">
+      <span class="ease-label">power2.out</span>
+      <div class="ease-box" id="e2"></div>
+    </div>
+    <div class="ease-row">
+      <span class="ease-label">bounce.out</span>
+      <div class="ease-box" id="e3"></div>
+    </div>
+    <div class="ease-row">
+      <span class="ease-label">elastic.out</span>
+      <div class="ease-box" id="e4"></div>
+    </div>
+    <div class="ease-row">
+      <span class="ease-label">back.out</span>
+      <div class="ease-box" id="e5"></div>
+    </div>
+    <div class="controls">
+      <button onclick="task2()">実行</button>
+      <button class="reset" onclick="gsap.set('#e1,#e2,#e3,#e4,#e5',{x:0})">リセット</button>
+    </div>
+  </div>
+
+  <!-- 課題3 -->
+  <div class="task">
+    <h2>課題3: ボタンクリックでカードが scale:0→1 で登場</h2>
+    <p>ヒント: gsap.fromTo() または gsap.to() で scale を 0→1 にする。最適な ease を選んでみよう</p>
+    <div class="card" id="popup-card">
+      <h3>お知らせ</h3>
+      <p>カードがポップアップしました！</p>
+    </div>
+    <div class="controls" style="margin-top: 16px;">
+      <button onclick="task3()">表示</button>
+      <button class="reset" onclick="gsap.set('#popup-card',{scale:0})">リセット</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script>
+   // --- 課題1: パルスアニメーション ---
+    function task1() {
+      // TODO: { } の中にプロパティを書こう
+      // scale: 1.3, repeat: -1, yoyo: true, duration: 0.6
+      gsap.to("#pulse-box", {
+
+      });
+    }
+
+    // --- 課題2: 5つのeaseを比較 ---
+    function task2() {
+      // TODO: それぞれの { } に x: 400, duration: 2, ease: "???" を書こう
+      gsap.to("#e1", {  });
+      gsap.to("#e2", {  });
+      gsap.to("#e3", {  });
+      gsap.to("#e4", {  });
+      gsap.to("#e5", {  });
+    }
+
+    // --- 課題3: カード登場アニメーション ---
+    function task3() {
+      // TODO: { } の中にプロパティを書こう
+      // scale: 1, duration: 0.5, ease: "???"
+      // 最適な ease を自分で選んでみよう（例: back.out, elastic.out など）
+      gsap.to("#popup-card", {
+
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>演習4: ScrollTrigger</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; color: #333; }
+
+  /* Task overview */
+  .task-overview {
+    padding: 40px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .task-overview h1 {
+    font-size: 1.5em; color: #333; margin-bottom: 32px;
+    padding-bottom: 8px; border-bottom: 3px solid #0ae448;
+  }
+  .task-list { margin-bottom: 32px; }
+  .task-list li {
+    font-size: 0.95em; color: #555; margin-bottom: 8px; line-height: 1.6;
+  }
+  .task-list li strong { color: #0ae448; }
+
+  /* Spacer */
+  .spacer {
+    height: 60vh; display: flex; align-items: center; justify-content: center;
+    background: #f0fdf4;
+  }
+  .spacer p { font-size: 1.3em; color: #888; letter-spacing: 0.05em; }
+
+  /* 課題1: Fade-in */
+  .fade-section {
+    padding: 80px 40px;
+  }
+  .fade-section:nth-child(odd) { background: #fff; }
+  .fade-section:nth-child(even) { background: #f9f9f9; }
+  .fade-section h2 {
+    font-size: 1.2em; margin-bottom: 24px; color: #333;
+  }
+  .fade-boxes { display: flex; gap: 20px; }
+  .fade-box {
+    width: 80px; height: 80px; background: #0ae448; border-radius: 8px;
+  }
+
+  /* 課題2: Scrub */
+  .scrub-section {
+    padding: 80px 40px;
+    height: 150vh;
+    background: #f9f9f9;
+  }
+  .scrub-section h2 {
+    font-size: 1.2em; margin-bottom: 24px; color: #333;
+  }
+  .scrub-box {
+    width: 80px; height: 80px; background: #0ae448; border-radius: 8px;
+  }
+
+  /* 課題3: Timeline + ScrollTrigger */
+  .showcase {
+    padding: 120px 40px;
+    background: #f0fdf4;
+    text-align: center;
+  }
+  .showcase h2 {
+    font-size: 2em; color: #333; margin-bottom: 12px;
+  }
+  .showcase p {
+    font-size: 1.1em; color: #888; margin-bottom: 32px;
+  }
+  .showcase-boxes {
+    display: flex; gap: 20px; justify-content: center;
+  }
+  .showcase-box {
+    width: 80px; height: 80px; border-radius: 8px;
+  }
+  .showcase-box:nth-child(1) { background: #e74c3c; }
+  .showcase-box:nth-child(2) { background: #3498db; }
+  .showcase-box:nth-child(3) { background: #f39c12; }
+
+  /* Footer */
+  .footer-spacer {
+    height: 50vh; display: flex; align-items: center; justify-content: center;
+    background: #f9f9f9;
+  }
+  .footer-spacer p { font-size: 1em; color: #aaa; }
+</style>
+</head>
+<body>
+
+  <!-- Task Overview -->
+  <div class="task-overview">
+    <h1>演習4: ScrollTrigger</h1>
+    <ol class="task-list">
+      <li><strong>課題1:</strong> フェードイン — セクションが画面に入ったらボックスがフェードイン（trigger, start, markers）</li>
+      <li><strong>課題2:</strong> scrub — スクロール量に連動してボックスが移動＆回転（scrub）</li>
+      <li><strong>課題3:</strong> Timeline + ScrollTrigger — タイトル → テキスト → ボックスが順番に登場</li>
+    </ol>
+  </div>
+
+  <!-- Spacer -->
+  <div class="spacer">
+    <p>↓ スクロールしてね ↓</p>
+  </div>
+
+  <!-- 課題1: フェードイン -->
+  <div class="fade-section" id="section1">
+    <h2>セクション 1</h2>
+    <div class="fade-boxes">
+      <div class="fade-box"></div>
+      <div class="fade-box"></div>
+      <div class="fade-box"></div>
+    </div>
+  </div>
+
+  <div class="fade-section" id="section2">
+    <h2>セクション 2</h2>
+    <div class="fade-boxes">
+      <div class="fade-box"></div>
+      <div class="fade-box"></div>
+      <div class="fade-box"></div>
+    </div>
+  </div>
+
+  <!-- Spacer -->
+  <div class="spacer">
+    <p>↓ 課題2: scrub ↓</p>
+  </div>
+
+  <!-- 課題2: Scrub -->
+  <div class="scrub-section" id="scrub-section">
+    <h2>スクロールに連動して動く</h2>
+    <div class="scrub-box" id="scrub-box"></div>
+  </div>
+
+  <!-- Spacer -->
+  <div class="spacer">
+    <p>↓ 課題3: Timeline + ScrollTrigger ↓</p>
+  </div>
+
+  <!-- 課題3: Timeline + ScrollTrigger -->
+  <div class="showcase" id="showcase">
+    <h2 id="showcase-title">まとめセクション</h2>
+    <p id="showcase-text">Timeline + ScrollTrigger で順番に登場させよう</p>
+    <div class="showcase-boxes">
+      <div class="showcase-box"></div>
+      <div class="showcase-box"></div>
+      <div class="showcase-box"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-spacer">
+    <p>おわり</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // --- 課題1: フェードイン ---
+    // TODO: gsap.from() の { } にプロパティを書こう
+    // opacity: 0, y: 60, stagger: 0.2
+    // scrollTrigger の start を指定しよう（例: "top 80%"）
+    gsap.from("#section1 .fade-box", {
+
+      scrollTrigger: {
+        trigger: "#section1",
+        start: "",       // ← "top 80%" のように指定
+        markers: true,
+      },
+    });
+    gsap.from("#section2 .fade-box", {
+
+      scrollTrigger: {
+        trigger: "#section2",
+        start: "",
+        markers: true,
+      },
+    });
+
+
+    // --- 課題2: scrub ---
+    // TODO: gsap.to() の { } にプロパティを書こう
+    // x: 500, rotation: 360 でボックスを動かす
+    // scrub: true を指定してスクロールに連動させよう
+    gsap.to("#scrub-box", {
+
+      scrollTrigger: {
+        trigger: "#scrub-section",
+        start: "top center",
+        end: "bottom center",
+        // scrub: ???    ← true を指定
+        markers: true,
+      },
+    });
+
+
+    // --- 課題3: Timeline + ScrollTrigger ---
+    // TODO: 各 .from() の { } にプロパティを書こう
+    // タイトル・テキストは opacity: 0, y: 30
+    // ボックスは opacity: 0, y: 30, stagger: 0.15
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#showcase",
+        start: "top 80%",
+      },
+    });
+    tl.from("#showcase-title", {  })
+      .from("#showcase-text", {  }, "-=0.4")
+      .from(".showcase-box", {  }, "-=0.4");
+
+  </script>
+</body>
+</html>

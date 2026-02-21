@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stagger: from</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; padding: 30px 40px; }
+  .section { margin-bottom: 24px; }
+  .section-label { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 80px; }
+  .row { display: flex; gap: 8px; }
+  .box { width: 50px; height: 50px; background: #0ae448; border-radius: 6px; }
+</style>
+</head>
+<body>
+  <div class="section">
+    <div class="section-label">start</div>
+    <div class="row" id="row-start">
+      <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+      <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">end</div>
+    <div class="row" id="row-end">
+      <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+      <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">center</div>
+    <div class="row" id="row-center">
+      <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+      <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">edges</div>
+    <div class="row" id="row-edges">
+      <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+      <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">random</div>
+    <div class="row" id="row-random">
+      <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+      <div class="box"></div><div class="box"></div><div class="box"></div><div class="box"></div>
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script>
+  const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+  const fromValues = ["start", "end", "center", "edges", "random"];
+  fromValues.forEach(from => {
+    tl.to(`#row-${from} .box`, {
+      y: -60, duration: 0.6, ease: "power2.out",
+      stagger: { each: 0.1, from: from }
+    }, 0);
+  });
+</script>
+</body>
+</html>

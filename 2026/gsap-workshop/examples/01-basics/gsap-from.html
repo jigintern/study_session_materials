@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gsap.from()</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; padding: 40px 60px; font-family: sans-serif; }
+  .stage { display: flex; flex-direction: column; gap: 32px; }
+  .row { display: flex; align-items: center; gap: 16px; }
+  .label { font-size: 14px; color: #555; font-weight: bold; width: 220px; text-align: right; flex-shrink: 0; }
+  .box { width: 80px; height: 80px; background: #0ae448; border-radius: 8px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="row"><span class="label">x (座標): -300 の状態から表示</span><div class="box" id="b1"></div></div>
+  <div class="row"><span class="label">opacity (不透明度): 0, y (座標): 50 の状態から表示</span><div class="box" id="b2"></div></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script>
+  // 左から飛んでくる
+  gsap.from("#b1", { x: -300, duration: 1, ease: "power2.out" });
+
+  // 下からフェードイン
+  gsap.from("#b2", { opacity: 0, y: 50, duration: 1, ease: "power2.out" });
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elastic & Back Parameters</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #fff; font-family: sans-serif; padding: 40px 60px; }
+  .row { display: flex; align-items: center; margin-bottom: 24px; }
+  .label { width: 200px; font-size: 16px; font-weight: bold; color: #333; }
+  .box { width: 80px; height: 80px; background: #0ae448; border-radius: 8px; }
+</style>
+</head>
+<body>
+  <h3 style="margin-bottom: 16px; color: #333;">elastic</h3>
+  <div class="row">
+    <span class="label">elastic.out(1, 0.3)</span>
+    <div class="box" id="e1"></div>
+  </div>
+  <div class="row">
+    <span class="label">elastic.out(2, 0.3)</span>
+    <div class="box" id="e2"></div>
+  </div>
+  <div class="row" style="margin-bottom: 40px;">
+    <span class="label">elastic.out(1, 0.8)</span>
+    <div class="box" id="e3"></div>
+  </div>
+
+  <h3 style="margin-bottom: 16px; color: #333;">back</h3>
+  <div class="row">
+    <span class="label">back.out(1.7)</span>
+    <div class="box" id="b1"></div>
+  </div>
+  <div class="row">
+    <span class="label">back.out(3)</span>
+    <div class="box" id="b2"></div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script>
+  gsap.to("#e1", { x: 300, duration: 2, ease: "elastic.out(1, 0.3)", repeat: -1, repeatDelay: 1.5 });
+  gsap.to("#e2", { x: 300, duration: 2, ease: "elastic.out(2, 0.3)", repeat: -1, repeatDelay: 1.5 });
+  gsap.to("#e3", { x: 300, duration: 2, ease: "elastic.out(1, 0.8)", repeat: -1, repeatDelay: 1.5 });
+  gsap.to("#b1", { x: 300, duration: 1.5, ease: "back.out(1.7)", repeat: -1, repeatDelay: 1.5 });
+  gsap.to("#b2", { x: 300, duration: 1.5, ease: "back.out(3)",   repeat: -1, repeatDelay: 1.5 });
+</script>
+</body>
+</html>
