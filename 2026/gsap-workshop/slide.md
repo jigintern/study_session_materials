@@ -421,25 +421,6 @@ gsap.to("h1", { y: -20 }); // すべての <h1> を動かす
 
 ---
 
-<!-- _class: exercise -->
-
-## 演習 1：基本の Tween
-
-### `examples/exercises/01-basic-tween.html` を開こう
-
-1. `gsap.to()` で `.box` を **右に 400px** 移動させる（2秒）
-2. `gsap.from()` で `.box` を **上から降ってくる** 演出にする（opacity も 0 → 1）
-3. `gsap.fromTo()` で `.box` を **x: -200 から x: 400** まで移動させる
-4. `gsap.set()` で **背景色を赤に変更** し、その後 `to()` で **回転 360°** させる
-
----
-
-<!-- _class: break -->
-
-# ☕ 休憩
-
----
-
 <!-- _class: chapter -->
 
 # Chapter 3
@@ -610,17 +591,16 @@ ease: "back.out(3)"; // もっと行き過ぎる
 
 <!-- _class: exercise -->
 
-## 演習 2：プロパティ & イージング
+## 演習 1：基本の Tween
 
-### `examples/exercises/02-easing.html` を開こう
+### `examples/exercises/01-basic-tween.html` を開こう
 
-1. **パルスアニメーション**: `.box` を `scale: 1.3` → 元に戻すを **無限ループ**（yoyo を使用）
-2. **イージング比較**: 5 つの `.box` にそれぞれ異なる ease で `x: 400` へ移動させる
-   - `linear`, `power2.out`, `bounce.out`, `elastic.out`, `back.out`
-3. **カード登場**: ボタンクリックで `.card` が `scale: 0` → `scale: 1` で登場。最も自然に見える ease を探す
+1. `gsap.to()` で `.box` を **右に 400px** 移動させる（2秒）
+2. `gsap.from()` で `.box` を **上から降ってくる** 演出にする（opacity も 0 → 1）
+3. `gsap.fromTo()` で `.box` を **x: -200 から x: 400** まで移動させる
+4. `gsap.set()` で **背景色を赤に変更** し、その後 `to()` で **回転 360°** させる
 
 ---
-
 <!-- _class: demo -->
 
 ## 演習 1
@@ -635,6 +615,19 @@ ease: "back.out(3)"; // もっと行き過ぎる
 
 ---
 
+<!-- _class: exercise -->
+
+## 演習 2：プロパティ & イージング
+
+### `examples/exercises/02-easing.html` を開こう
+
+1. **パルスアニメーション**: `.box` を `scale: 1.3` → 元に戻すを **無限ループ**（yoyo を使用）
+2. **イージング比較**: 5 つの `.box` にそれぞれ異なる ease で `x: 400` へ移動させる
+   - `linear`, `power2.out`, `bounce.out`, `elastic.out`, `back.out`
+3. **カード登場**: ボタンクリックで `.card` が `scale: 0` → `scale: 1` で登場。最も自然に見える ease を探す
+
+---
+
 <!-- _class: demo -->
 
 ## 演習 2
@@ -646,6 +639,12 @@ ease: "back.out(3)"; // もっと行き過ぎる
 </iframe>
 
 > 📁 [CodePen](https://codepen.io/mocaffy/pen/MYedoBe) | `examples/exercises/02-easing.html`
+
+---
+
+<!-- _class: break -->
+
+# ☕ 休憩
 
 ---
 
