@@ -434,23 +434,9 @@ gsap.to("h1", { y: -20 }); // すべての <h1> を動かす
 
 ---
 
-<!-- _class: demo -->
-
-## 演習 1
-
-<iframe scrolling="no" title="演習1: 基本のTween" src="https://codepen.io/mocaffy/embed/WbxBOKN?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
-  See the Pen
-  <a href="https://codepen.io/mocaffy/pen/WbxBOKN">演習1: 基本のTween</a>
-  on <a href="https://codepen.io">CodePen</a>.
-</iframe>
-
-> 📁 [CodePen](https://codepen.io/mocaffy/pen/WbxBOKN) | `examples/exercises/01-basic-tween.html`
-
----
-
 <!-- _class: break -->
 
-# ☕ 休憩（5分）
+# ☕ 休憩
 
 ---
 
@@ -632,6 +618,20 @@ ease: "back.out(3)"; // もっと行き過ぎる
 2. **イージング比較**: 5 つの `.box` にそれぞれ異なる ease で `x: 400` へ移動させる
    - `linear`, `power2.out`, `bounce.out`, `elastic.out`, `back.out`
 3. **カード登場**: ボタンクリックで `.card` が `scale: 0` → `scale: 1` で登場。最も自然に見える ease を探す
+
+---
+
+<!-- _class: demo -->
+
+## 演習 1
+
+<iframe scrolling="no" title="演習1: 基本のTween" src="https://codepen.io/mocaffy/embed/WbxBOKN?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/WbxBOKN">演習1: 基本のTween</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/WbxBOKN) | `examples/exercises/01-basic-tween.html`
 
 ---
 
@@ -1328,7 +1328,7 @@ tl.from(".title", { y: 30, opacity: 0 })
 
 <!-- _class: break -->
 
-# ☕ 休憩（5分）
+# ☕ 休憩
 
 ---
 
