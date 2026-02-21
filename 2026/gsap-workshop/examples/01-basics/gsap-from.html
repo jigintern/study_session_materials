@@ -15,19 +15,16 @@
 </head>
 <body>
 <div class="stage">
-  <div class="row"><span class="label">位置: x: -300</span><div class="box" id="b1"></div></div>
-  <div class="row"><span class="label">フェード: opacity: 0, y: 50</span><div class="box" id="b2"></div></div>
+  <div class="row"><span class="label">x (座標): -300 の状態から表示</span><div class="box" id="b1"></div></div>
+  <div class="row"><span class="label">opacity (不透明度): 0, y (座標): 50 の状態から表示</span><div class="box" id="b2"></div></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <script>
-  const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
-  tl.from("#b1", { x: -300, duration: 1, ease: "power2.out" }, 0)
-    .from("#b2", { opacity: 0, y: 50, duration: 1, ease: "power2.out" }, 0)
-    .to({}, { duration: 0.8 })
-    .to("#b1", { x: -300, duration: 0.01 })
-    .to("#b2", { opacity: 0, y: 50, duration: 0.01 })
-    .set("#b1", { clearProps: "all" })
-    .set("#b2", { clearProps: "all" });
+  // 左から飛んでくる
+  gsap.from("#b1", { x: -300, duration: 1, ease: "power2.out" });
+
+  // 下からフェードイン
+  gsap.from("#b2", { opacity: 0, y: 50, duration: 1, ease: "power2.out" });
 </script>
 </body>
 </html>
