@@ -18,12 +18,19 @@
   }
   button.reset { background: #999; }
 
-  /* 課題1: loading dots */
-  .dots { display: flex; gap: 16px; padding: 20px 0; }
-  .dot { width: 20px; height: 20px; border-radius: 50%; background: #0ae448; }
+  /* 共通ボックス */
+  .boxes { display: flex; flex-direction: column; gap: 12px; padding: 16px 0; }
+  .row { display: flex; align-items: center; gap: 12px; }
+  .label { width: 60px; font-size: 0.85em; font-weight: bold; color: #555; flex-shrink: 0; }
+  .box { width: 60px; height: 60px; border-radius: 8px; flex-shrink: 0; }
 
-  /* 課題2: cards */
-  .cards { display: flex; gap: 16px; }
+  /* 課題1 */
+  #task1-boxes .box:nth-child(1) { background: #e74c3c; }
+  #task1-boxes .box:nth-child(2) { background: #3498db; }
+  #task1-boxes .box:nth-child(3) { background: #f39c12; }
+
+  /* 課題2 */
+  .cards { display: flex; gap: 16px; padding: 16px 0; }
   .card {
     width: 150px; height: 100px; border: 1px solid #e0e0e0; border-radius: 12px;
     padding: 20px; display: flex; align-items: center; justify-content: center;
@@ -31,22 +38,10 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
 
-  /* 課題3: label jump */
-  .stage { padding: 20px 0; min-height: 120px; position: relative; }
-  .stage .circle {
-    width: 60px; height: 60px; border-radius: 50%; background: #0ae448;
-    position: absolute; top: 20px; left: 0;
-  }
-  .stage .square {
-    width: 60px; height: 60px; background: #333; border-radius: 8px;
-    position: absolute; top: 20px; left: 80px;
-  }
-  .stage .triangle {
-    width: 0; height: 0;
-    border-left: 30px solid transparent; border-right: 30px solid transparent;
-    border-bottom: 52px solid #0ae448;
-    position: absolute; top: 24px; left: 160px; opacity: 0.8;
-  }
+  /* 課題3 */
+  #task3-boxes .box:nth-child(1) { background: #e74c3c; }
+  #task3-boxes .box:nth-child(2) { background: #3498db; }
+  #task3-boxes .box:nth-child(3) { background: #f39c12; }
 </style>
 </head>
 <body>
@@ -54,23 +49,23 @@
 
   <!-- 課題1 -->
   <div class="task">
-    <h2>課題1: ローディングドット</h2>
-    <p>ヒント: timeline({ repeat: -1 }) で .dot を stagger で scale アニメーション</p>
-    <div class="dots" id="loading-dots">
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
+    <h2>課題1: Timeline で順番に移動</h2>
+    <p>3つのボックスを Timeline で順番に右へ移動させよう</p>
+    <div class="boxes" id="task1-boxes">
+      <div class="box" id="t1-a"></div>
+      <div class="box" id="t1-b"></div>
+      <div class="box" id="t1-c"></div>
     </div>
     <div class="controls">
       <button onclick="task1()">実行</button>
-      <button class="reset" onclick="if(tl1) tl1.kill(); gsap.set('#loading-dots .dot',{scale:1,y:0})">リセット</button>
+      <button class="reset" onclick="if(tl1) tl1.kill(); gsap.set('#task1-boxes .box',{x:0})">リセット</button>
     </div>
   </div>
 
   <!-- 課題2 -->
   <div class="task">
-    <h2>課題2: 3枚のカード順次フェードイン</h2>
-    <p>ヒント: timeline で .from() を使い、"-=0.3" で少し重ねる</p>
+    <h2>課題2: Position パラメータでオーバーラップ</h2>
+    <p>3枚のカードを順番にフェードイン。2枚目以降は前のアニメの終了 <strong>0.3秒前</strong> に開始させよう</p>
     <div class="cards" id="card-group">
       <div class="card">Card 1</div>
       <div class="card">Card 2</div>
@@ -85,56 +80,55 @@
   <!-- 課題3 -->
   <div class="task">
     <h2>課題3: ラベルでジャンプ</h2>
-    <p>ヒント: tl.addLabel("名前") でラベルを追加し、tl.play("名前") でジャンプ</p>
-    <div class="stage" id="label-stage">
-      <div class="circle"></div>
-      <div class="square"></div>
-      <div class="triangle"></div>
+    <p>Timeline にラベルを付けて、ボタンでその位置にジャンプさせよう</p>
+    <div class="boxes" id="task3-boxes">
+      <div class="row"><span class="label">intro</span><div class="box" id="t3-a"></div></div>
+      <div class="row"><span class="label">main</span><div class="box" id="t3-b"></div></div>
+      <div class="row"><span class="label">end</span><div class="box" id="t3-c"></div></div>
     </div>
     <div class="controls">
-      <button onclick="jumpIntro()">イントロ</button>
-      <button onclick="jumpMain()">メイン</button>
-      <button class="reset" onclick="if(tl3) { tl3.pause(0); }">リセット</button>
+      <button onclick="tl3.play('intro')">intro</button>
+      <button onclick="tl3.play('main')">main</button>
+      <button onclick="tl3.play('end')">end</button>
+      <button class="reset" onclick="tl3.pause(0)">リセット</button>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
   <script>
-    let tl1, tl2, tl3;
+    let tl1, tl2;
 
-    // --- 課題1: ローディングドット ---
+    // --- 課題1: Timeline で順番に移動 ---
     function task1() {
-      // TODO: gsap.timeline({ repeat: -1, yoyo: true }) を作成
-      // .dot を y: -20, stagger: 0.15, duration: 0.4 でアニメーション
-
+      // TODO: gsap.timeline() を作って tl1 に代入
+      // .to() で #t1-a, #t1-b, #t1-c を順番に x: 300 へ移動（duration: 0.6）
+      tl1 = gsap.timeline();
+      tl1.to("#t1-a", { })
+         .to("#t1-b", { })
+         .to("#t1-c", { });
     }
 
-    // --- 課題2: 3枚のカード順次フェードイン ---
+    // --- 課題2: Position パラメータでオーバーラップ ---
     function task2() {
-      // TODO: gsap.timeline() を作成
-      // 各 #card-group .card に .from() で opacity:0, y:20 を設定
-      // 2枚目以降は "-=0.3" のポジションパラメータで重ねる
-
+      // TODO: gsap.timeline() を作って tl2 に代入
+      // .from() で各カードを opacity: 0, y: 30 からフェードイン（duration: 0.6）
+      // 2枚目以降は "-=0.3" で前と重ねる
+      tl2 = gsap.timeline();
+      tl2.from("#card-group .card:nth-child(1)", { })
+         .from("#card-group .card:nth-child(2)", { })
+         .from("#card-group .card:nth-child(3)", { });
     }
 
     // --- 課題3: ラベルでジャンプ ---
-    // TODO: gsap.timeline({ paused: true }) を作成して tl3 に代入
-    // 1) .addLabel("intro")
-    // 2) .circle を x:300 に移動
-    // 3) .addLabel("main")
-    // 4) .square を x:300, rotation:360 に移動
-    // 5) .triangle を x:300, opacity:1 に移動
-
-
-    function jumpIntro() {
-      // TODO: tl3.play("intro")
-
-    }
-
-    function jumpMain() {
-      // TODO: tl3.play("main")
-
-    }
-  </script>
+    // TODO: addLabel() を追加して、各ボックスの前にラベルを付けよう
+    // "intro", "main", "end" の3つのラベルを付ける
+    const tl3 = gsap.timeline({ paused: true });
+    tl3 // .addLabel("intro") ← ここにラベルを追加
+        .to("#t3-a", { x: 300, duration: 0.6 })
+        // .addLabel("main") ← ここにラベルを追加
+        .to("#t3-b", { x: 300, duration: 0.6 })
+        // .addLabel("end") ← ここにラベルを追加
+        .to("#t3-c", { x: 300, duration: 0.6 });
+</script>
 </body>
 </html>
