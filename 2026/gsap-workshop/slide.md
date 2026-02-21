@@ -1347,8 +1347,12 @@ tl.from(".title", { y: 30, opacity: 0 })
 
 **自分の出身地（都道府県・市区町村）のPRサイト**
 
-`examples/05-fukui-pr/index.html` をベースに、
+StackBlitz のテンプレートをベースに、
 あなたの地元をPRするサイトを作ってみよう！
+
+▶ [StackBlitz を開く](https://stackblitz.com/edit/stackblitz-starters-b9hpbykz?file=index.html)
+
+> 📁 `examples/05-fukui-pr/index.html`
 
 ---
 
@@ -1356,13 +1360,10 @@ tl.from(".title", { y: 30, opacity: 0 })
 
 ## デモ：観光PRサイト
 
-<iframe scrolling="no" title="福井県 - DISCOVER FUKUI" src="https://codepen.io/mocaffy/embed/qENpdLM?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
-  See the Pen
-  <a href="https://codepen.io/mocaffy/pen/qENpdLM">福井県 - DISCOVER FUKUI</a>
-  on <a href="https://codepen.io">CodePen</a>.
+<iframe src="https://stackblitz.com/edit/stackblitz-starters-b9hpbykz?embed=1&file=index.html" frameborder="no" loading="lazy" allowfullscreen>
 </iframe>
 
-> 📁 [CodePen](https://codepen.io/mocaffy/pen/qENpdLM) | `examples/05-fukui-pr/index.html`
+> 📁 [StackBlitz](https://stackblitz.com/edit/stackblitz-starters-b9hpbykz?file=index.html) | `examples/05-fukui-pr/index.html`
 
 ---
 
@@ -1429,18 +1430,24 @@ tl.from(".title", { y: 30, opacity: 0 })
 
 ## やってみよう
 
-### 基本 🎯
+### 必須: コンテンツを自分の地元に 🎯
 
-1. 地域名・キャッチコピー・画像を自分の地元に変更
+1. 地域名・テキスト・画像を変更
 2. 配色を変更（CSS カスタムプロパティで最低3色）
-3. `initHeroAnimation()` の `ease` を好きなものに変える
-4. 観光スポットの `stagger` の値を変えて、登場の間隔を調整する
 
-### 応用 ⭐
+### 選択: 好きなアニメーションをカスタマイズ ✨
 
-- イージングを変えてサイト全体の印象を変える
-- stagger の `from` を変えて登場演出を工夫する
-- オリジナルのセクションを追加して新しいアニメーションを付ける
+（2つ以上やってみよう）
+
+- **ease**: ヒーローの登場を `back.out` や `elastic.out` に変えてみる
+- **stagger**: ローディング文字の間隔や `from` を変える
+- **Timeline**: ヒーローの `"-=0.6"` を変えてタイミングを調整
+- **scrub**: 横スクロールの追従速度を `0.5` → `2` に変える
+- **パララックス**: 観光スポットの `y` 移動量を変える
+
+### チャレンジ ⭐
+
+- オリジナルのセクション追加 + アニメーション
 
 ---
 
