@@ -8,7 +8,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #fff; font-family: sans-serif; padding: 30px 40px; }
   .section { margin-bottom: 24px; }
-  .section-label { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 8px; }
+  .section-label { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 80px; }
   .row { display: flex; gap: 8px; }
   .box { width: 50px; height: 50px; background: #0ae448; border-radius: 6px; }
 </style>
@@ -56,7 +56,7 @@
   const fromValues = ["start", "end", "center", "edges", "random"];
   fromValues.forEach(from => {
     tl.to(`#row-${from} .box`, {
-      x: 200, duration: 0.6, ease: "power2.out",
+      y: -60, duration: 0.6, ease: "power2.out",
       stagger: { each: 0.1, from: from }
     }, 0);
   });

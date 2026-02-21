@@ -8,7 +8,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #fff; font-family: sans-serif; padding: 40px 60px; }
   .section { margin-bottom: 40px; }
-  .section-label { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 12px; }
+  .section-label { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 100px; }
   .row { display: flex; gap: 12px; }
   .box { width: 80px; height: 80px; background: #0ae448; border-radius: 8px; }
 </style>
@@ -39,11 +39,11 @@
 <script>
   const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
   tl.to("#each-row .box", {
-    x: 300, duration: 0.8, ease: "power2.out",
-    stagger: { each: 0.2 }
+    y: -80, duration: 0.3, ease: "power2.out",
+    stagger: { each: 1 }
   }, 0)
   .to("#amount-row .box", {
-    x: 300, duration: 0.8, ease: "power2.out",
+    y: -80, duration: 0.3, ease: "power2.out",
     stagger: { amount: 1 }
   }, 0);
 </script>
