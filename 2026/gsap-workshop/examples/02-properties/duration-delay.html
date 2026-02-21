@@ -6,7 +6,7 @@
 <title>duration & delay</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #fff; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; }
+  body { background: #fff; display: flex; align-items: center; height: 100vh; font-family: sans-serif; }
   .stage { display: flex; flex-direction: column; gap: 16px; }
   .row { display: flex; align-items: center; gap: 16px; }
   .label { font-size: 14px; color: #555; font-weight: bold; width: 100px; text-align: right; }
@@ -21,9 +21,33 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
 <script>
-  gsap.to("#b1", { x: 300, duration: 0.8, delay: 0,   ease: "power2.out", repeat: -1, yoyo: true, repeatDelay: 0.8 });
-  gsap.to("#b2", { x: 300, duration: 0.8, delay: 0.2, ease: "power2.out", repeat: -1, yoyo: true, repeatDelay: 0.8 });
-  gsap.to("#b3", { x: 300, duration: 0.8, delay: 0.4, ease: "power2.out", repeat: -1, yoyo: true, repeatDelay: 0.8 });
+gsap.to("#b1", {
+  x: 300,
+  duration: 1, // 移動時間は 1 秒
+  delay: 0, // すぐ出発
+  ease: "power2.out",
+  repeat: -1,
+  yoyo: true,
+  repeatDelay: 1 // 両端で 1 秒止まる
+});
+gsap.to("#b2", {
+  x: 300,
+  duration: 1,
+  delay: 0.2, // 0.2秒遅れて出発
+  ease: "power2.out",
+  repeat: -1,
+  yoyo: true,
+  repeatDelay: 1
+});
+gsap.to("#b3", {
+  x: 300,
+  duration: 1,
+  delay: 0.4, // 0.4秒遅れて出発
+  ease: "power2.out",
+  repeat: -1,
+  yoyo: true,
+  repeatDelay: 1
+});
 </script>
 </body>
 </html>
