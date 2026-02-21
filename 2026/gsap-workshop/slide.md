@@ -760,6 +760,20 @@ tl.reverse("middle");
 
 ---
 
+<!-- _class: demo -->
+
+## デモ：ラベル
+
+<iframe scrolling="no" title="Labels（ラベル）" src="https://codepen.io/mocaffy/embed/bNeXLXY?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+  See the Pen
+  <a href="https://codepen.io/mocaffy/pen/bNeXLXY">Labels（ラベル）</a>
+  on <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/bNeXLXY) | `examples/03-timeline/labels.html`
+
+---
+
 ## Timeline のデフォルト設定 & ループ
 
 ### defaults で共通プロパティをまとめる
@@ -792,15 +806,15 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
 
 <!-- _class: demo -->
 
-## デモ：ループローディング
+## デモ：defaults & ループ
 
-<iframe scrolling="no" title="ローディングアニメーション" src="https://codepen.io/mocaffy/embed/yyJWXje?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
+<iframe scrolling="no" title="Timeline defaults & ループ" src="https://codepen.io/mocaffy/embed/JoKgpgP?default-tab=js%2Cresult&editable=true" frameborder="no" loading="lazy" allowtransparency="true">
   See the Pen
-  <a href="https://codepen.io/mocaffy/pen/yyJWXje">ローディングアニメーション</a>
+  <a href="https://codepen.io/mocaffy/pen/JoKgpgP">Timeline defaults & ループ</a>
   on <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-> 📁 [CodePen](https://codepen.io/mocaffy/pen/yyJWXje) | `examples/03-timeline/loading-loop.html`
+> 📁 [CodePen](https://codepen.io/mocaffy/pen/JoKgpgP) | `examples/03-timeline/defaults-loop.html`
 
 ---
 
@@ -810,9 +824,9 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
 
 ### `examples/exercises/03-timeline.html` を開こう
 
-1. **ローディングアニメーション**: 3 つのドットが順番に `scale: 1.5` → 元に戻る Timeline を `repeat: -1` で作る
-2. **ステップ表示**: 3 枚の `.card` を順番にフェードイン。2 枚目は 1 枚目の終了 **0.3 秒前**に開始させる（`"-=0.3"` を使用）
-3. **ラベルの活用**: ボタン 2 つ（「イントロ」「メイン」）を用意し、クリックで Timeline の該当ラベルへジャンプさせる
+1. **Timeline で順番に移動**: 3 つのボックスを `.to()` で順番に右へ移動させる Timeline を作る
+2. **Position パラメータでオーバーラップ**: 3 枚のカードを順番にフェードイン。2 枚目以降は `"-=0.3"` で前と重ねる
+3. **ラベルでジャンプ**: Timeline にラベルを付けて、ボタンクリックでその位置にジャンプさせる
 
 ---
 
@@ -827,6 +841,8 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
 </iframe>
 
 > 📁 [CodePen](https://codepen.io/mocaffy/pen/XJKwgBM) | `examples/exercises/03-timeline.html`
+
+---
 
 <!-- _class: chapter -->
 
@@ -844,7 +860,7 @@ tl.to(".dot", { y: -20, stagger: 0.1 });
 gsap.to(".box", {
   x: 300,
   duration: 1,
-  stagger: 0.2, // 各要素 0.2 秒間隔
+  stagger: 1, // 各要素 1 秒間隔
 });
 ```
 
@@ -852,7 +868,7 @@ gsap.to(".box", {
 
 | プロパティ                    | 説明                                    |
 | ----------------------------- | --------------------------------------- |
-| `stagger: 0.2` or `each: 0.2` | 各要素間の間隔が **0.2 秒固定**         |
+| `stagger: 1` or `each: 1` | 各要素間の間隔が **1 秒固定**         |
 | `amount: 1`                   | 全要素の合計が **1 秒**（要素数で割る） |
 
 ---
@@ -1287,8 +1303,9 @@ tl.from(".title", { y: 30, opacity: 0 })
 
 ### `examples/exercises/04-scrolltrigger.html` を開こう
 
-1. **フェードインセクション**: 3 つのセクションの要素が **画面の 80% に入った時** にフェードインする。`markers: true` でデバッグ
-2. **パララックス効果**: 背景を `scrub: true` で `y: -100` 移動させる
+1. **フェードイン**: セクションが画面に入ったらボックスがフェードイン（`trigger`, `start`, `markers`）
+2. **scrub**: スクロール量に連動してボックスが移動＆回転（`scrub: true`）
+3. **Timeline + ScrollTrigger**: タイトル → テキスト → ボックスが `"-=0.4"` で重なりながら順番に登場
 
 ---
 
