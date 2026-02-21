@@ -94,29 +94,33 @@
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
   <script>
-    // --- 課題1: パルスアニメーション ---
+   // --- 課題1: パルスアニメーション ---
     function task1() {
-      // TODO: gsap.to() で #pulse-box を scale:1.3 にする
-      // repeat: -1, yoyo: true, duration: 0.6 を指定
+      // TODO: { } の中にプロパティを書こう
+      // scale: 1.3, repeat: -1, yoyo: true, duration: 0.6
+      gsap.to("#pulse-box", {
 
+      });
     }
 
     // --- 課題2: 5つのeaseを比較 ---
     function task2() {
-      // TODO: 5つの gsap.to() を書く（duration: 2）
-      // #e1 → ease: "linear"
-      // #e2 → ease: "power2.out"
-      // #e3 → ease: "bounce.out"
-      // #e4 → ease: "elastic.out"
-      // #e5 → ease: "back.out"
-
+      // TODO: それぞれの { } に x: 400, duration: 2, ease: "???" を書こう
+      gsap.to("#e1", {  });
+      gsap.to("#e2", {  });
+      gsap.to("#e3", {  });
+      gsap.to("#e4", {  });
+      gsap.to("#e5", {  });
     }
 
     // --- 課題3: カード登場アニメーション ---
     function task3() {
-      // TODO: #popup-card を scale:0 → scale:1 にアニメーション
+      // TODO: { } の中にプロパティを書こう
+      // scale: 1, duration: 0.5, ease: "???"
       // 最適な ease を自分で選んでみよう（例: back.out, elastic.out など）
+      gsap.to("#popup-card", {
 
+      });
     }
   </script>
 </body>
