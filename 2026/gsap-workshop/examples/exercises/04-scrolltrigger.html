@@ -24,14 +24,14 @@
   }
   .task-list li strong { color: #0ae448; }
 
-  /* Hero spacer */
-  .hero {
+  /* Spacer */
+  .spacer {
     height: 60vh; display: flex; align-items: center; justify-content: center;
     background: #f0fdf4;
   }
-  .hero p { font-size: 1.3em; color: #888; letter-spacing: 0.05em; }
+  .spacer p { font-size: 1.3em; color: #888; letter-spacing: 0.05em; }
 
-  /* 課題1: Fade-in sections */
+  /* 課題1: Fade-in */
   .fade-section {
     padding: 80px 40px;
   }
@@ -45,38 +45,42 @@
     width: 80px; height: 80px; background: #0ae448; border-radius: 8px;
   }
 
-  /* 課題2: Parallax */
-  .parallax-section {
-    position: relative; height: 100vh; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
+  /* 課題2: Scrub */
+  .scrub-section {
+    padding: 80px 40px;
+    height: 150vh;
+    background: #f9f9f9;
   }
-  .parallax-bg {
-    position: absolute; top: -30%; left: 0; width: 100%; height: 160%;
-    background: linear-gradient(135deg, #0ae448 0%, #06b835 50%, #048a28 100%);
-    z-index: 0;
+  .scrub-section h2 {
+    font-size: 1.2em; margin-bottom: 24px; color: #333;
   }
-  .parallax-text {
-    position: relative; z-index: 1; color: #fff; text-align: center;
+  .scrub-box {
+    width: 80px; height: 80px; background: #0ae448; border-radius: 8px;
   }
-  .parallax-text h2 { font-size: 2.5em; margin-bottom: 16px; }
-  .parallax-text p { font-size: 1.1em; opacity: 0.9; }
 
-  /* 課題3: Horizontal scroll */
-  .horizontal-wrapper {
-    overflow: hidden;
+  /* 課題3: Timeline + ScrollTrigger */
+  .showcase {
+    padding: 120px 40px;
+    background: #f0fdf4;
+    text-align: center;
   }
-  .horizontal-container {
-    display: flex; width: 300vw; /* 3 panels x 100vw */
+  .showcase h2 {
+    font-size: 2em; color: #333; margin-bottom: 12px;
   }
-  .panel {
-    width: 100vw; height: 100vh; display: flex; align-items: center;
-    justify-content: center; font-size: 2em; font-weight: bold;
+  .showcase p {
+    font-size: 1.1em; color: #888; margin-bottom: 32px;
   }
-  .panel:nth-child(1) { background: #f0fdf4; color: #0ae448; }
-  .panel:nth-child(2) { background: #0ae448; color: #fff; }
-  .panel:nth-child(3) { background: #333; color: #0ae448; }
+  .showcase-boxes {
+    display: flex; gap: 20px; justify-content: center;
+  }
+  .showcase-box {
+    width: 80px; height: 80px; border-radius: 8px;
+  }
+  .showcase-box:nth-child(1) { background: #e74c3c; }
+  .showcase-box:nth-child(2) { background: #3498db; }
+  .showcase-box:nth-child(3) { background: #f39c12; }
 
-  /* Footer spacer */
+  /* Footer */
   .footer-spacer {
     height: 50vh; display: flex; align-items: center; justify-content: center;
     background: #f9f9f9;
@@ -90,18 +94,18 @@
   <div class="task-overview">
     <h1>演習4: ScrollTrigger</h1>
     <ol class="task-list">
-      <li><strong>課題1:</strong> フェードインセクション — 3つのセクションがスクロールで順番にフェードイン（markers: true で確認）</li>
-      <li><strong>課題2:</strong> パララックス — 背景がスクロールに連動してゆっくり動く（scrub を使用）</li>
-      <li><strong>課題3:</strong> 横スクロール — 3枚のパネルが横にスクロール（pin + scrub を使用）</li>
+      <li><strong>課題1:</strong> フェードイン — セクションが画面に入ったらボックスがフェードイン（trigger, start, markers）</li>
+      <li><strong>課題2:</strong> scrub — スクロール量に連動してボックスが移動＆回転（scrub）</li>
+      <li><strong>課題3:</strong> Timeline + ScrollTrigger — タイトル → テキスト → ボックスが順番に登場</li>
     </ol>
   </div>
 
-  <!-- Hero spacer -->
-  <div class="hero">
+  <!-- Spacer -->
+  <div class="spacer">
     <p>↓ スクロールしてね ↓</p>
   </div>
 
-  <!-- 課題1: フェードインセクション -->
+  <!-- 課題1: フェードイン -->
   <div class="fade-section" id="section1">
     <h2>セクション 1</h2>
     <div class="fade-boxes">
@@ -120,34 +124,34 @@
     </div>
   </div>
 
-  <div class="fade-section" id="section3">
-    <h2>セクション 3</h2>
-    <div class="fade-boxes">
-      <div class="fade-box"></div>
-      <div class="fade-box"></div>
-      <div class="fade-box"></div>
+  <!-- Spacer -->
+  <div class="spacer">
+    <p>↓ 課題2: scrub ↓</p>
+  </div>
+
+  <!-- 課題2: Scrub -->
+  <div class="scrub-section" id="scrub-section">
+    <h2>スクロールに連動して動く</h2>
+    <div class="scrub-box" id="scrub-box"></div>
+  </div>
+
+  <!-- Spacer -->
+  <div class="spacer">
+    <p>↓ 課題3: Timeline + ScrollTrigger ↓</p>
+  </div>
+
+  <!-- 課題3: Timeline + ScrollTrigger -->
+  <div class="showcase" id="showcase">
+    <h2 id="showcase-title">まとめセクション</h2>
+    <p id="showcase-text">Timeline + ScrollTrigger で順番に登場させよう</p>
+    <div class="showcase-boxes">
+      <div class="showcase-box"></div>
+      <div class="showcase-box"></div>
+      <div class="showcase-box"></div>
     </div>
   </div>
 
-  <!-- 課題2: パララックス -->
-  <div class="parallax-section" id="parallax">
-    <div class="parallax-bg" id="parallax-bg"></div>
-    <div class="parallax-text">
-      <h2>パララックス効果</h2>
-      <p>背景がゆっくり動くのを感じてみよう</p>
-    </div>
-  </div>
-
-  <!-- 課題3: 横スクロール -->
-  <div class="horizontal-wrapper" id="horizontal-wrapper">
-    <div class="horizontal-container" id="horizontal-container">
-      <div class="panel">Panel 1</div>
-      <div class="panel">Panel 2</div>
-      <div class="panel">Panel 3</div>
-    </div>
-  </div>
-
-  <!-- Footer spacer -->
+  <!-- Footer -->
   <div class="footer-spacer">
     <p>おわり</p>
   </div>
@@ -157,25 +161,57 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // --- 課題1: フェードインセクション ---
-    // TODO: #section1, #section2, #section3 それぞれの .fade-box に対して
-    // gsap.from() で opacity:0, y:60, stagger:0.2 を設定
-    // scrollTrigger: { trigger: セクション, start: "top 80%", markers: true }
+    // --- 課題1: フェードイン ---
+    // TODO: gsap.from() の { } にプロパティを書こう
+    // opacity: 0, y: 60, stagger: 0.2
+    // scrollTrigger の start を指定しよう（例: "top 80%"）
+    gsap.from("#section1 .fade-box", {
+
+      scrollTrigger: {
+        trigger: "#section1",
+        start: "",       // ← "top 80%" のように指定
+        markers: true,
+      },
+    });
+    gsap.from("#section2 .fade-box", {
+
+      scrollTrigger: {
+        trigger: "#section2",
+        start: "",
+        markers: true,
+      },
+    });
 
 
-    // --- 課題2: パララックス ---
-    // TODO: #parallax-bg を gsap.to() で y: 100 にアニメーション
-    // scrollTrigger: { trigger: "#parallax", start: "top bottom", end: "bottom top", scrub: true }
+    // --- 課題2: scrub ---
+    // TODO: gsap.to() の { } にプロパティを書こう
+    // x: 500, rotation: 360 でボックスを動かす
+    // scrub: true を指定してスクロールに連動させよう
+    gsap.to("#scrub-box", {
+
+      scrollTrigger: {
+        trigger: "#scrub-section",
+        start: "top center",
+        end: "bottom center",
+        // scrub: ???    ← true を指定
+        markers: true,
+      },
+    });
 
 
-    // --- 課題3: 横スクロール ---
-    // TODO: #horizontal-container を gsap.to() で x に移動量を設定
-    // scrollTrigger: {
-    //   trigger: "#horizontal-wrapper",
-    //   pin: true,
-    //   scrub: 1,
-    //   end: () => "+=" + document.getElementById("horizontal-container").offsetWidth
-    // }
+    // --- 課題3: Timeline + ScrollTrigger ---
+    // TODO: 各 .from() の { } にプロパティを書こう
+    // タイトル・テキストは opacity: 0, y: 30
+    // ボックスは opacity: 0, y: 30, stagger: 0.15
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#showcase",
+        start: "top 80%",
+      },
+    });
+    tl.from("#showcase-title", {  })
+      .from("#showcase-text", {  }, "-=0.4")
+      .from(".showcase-box", {  }, "-=0.4");
 
   </script>
 </body>
