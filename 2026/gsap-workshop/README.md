@@ -46,3 +46,10 @@ gsap-workshop/
 - [GSAP 公式ドキュメント](https://greensock.com/docs/)
 - [GSAP Cheat Sheet](https://greensock.com/cheatsheet/)
 - [GSAP Ease Visualizer](https://greensock.com/docs/v3/Eases)
+
+## 本編
+
+資料本編はこちら：
+
+- [HTML版](https://jigintern.github.io/study_session_materials/gsap-workshop-2026/slide.html)
+- [PDF版](https://jigintern.github.io/study_session_materials/gsap-workshop-2026/slide.pdf)
