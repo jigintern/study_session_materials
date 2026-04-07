@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自己紹介ページ</title>
+  <style>
+    /* ===== 全体の設定 ===== */
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ===== レイアウト ===== */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* ===== ヘッダー ===== */
+    .header {
+      background-color: #ff9a9e;
+      text-align: center;
+      padding: 40px 20px;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: #fff;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      color: #fff;
+    }
+
+    /* ===== カード（共通） ===== */
+    .card {
+      background-color: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 20px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ===== プロフィールセクション ===== */
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ff9a9e;
+    }
+
+    .profile-text p {
+      margin: 4px 0;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ===== 好きなものリスト ===== */
+    .card h2 {
+      font-size: 20px;
+      margin: 0 0 12px;
+      color: #ff7eb3;
+    }
+
+    .favorites-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .favorites-list li {
+      padding: 6px 0;
+      font-size: 15px;
+    }
+
+    .favorites-list li::before {
+      content: "♡ ";
+      color: #ff7eb3;
+    }
+
+    /* ===== スキルバッジ ===== */
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .badge {
+      background-color: #fff0f3;
+      color: #ff7eb3;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* ===== SNSリンク ===== */
+    .sns-links {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .sns-link {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #ff9a9e;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* ===== いいねボタン ===== */
+    .like-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 16px;
+      border: 2px solid #ff7eb3;
+      border-radius: 20px;
+      background: none;
+      color: #ff7eb3;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .like-btn:hover {
+      background-color: #ff7eb3;
+      color: #fff;
+    }
+
+    .like-btn.liked {
+      background-color: #ff7eb3;
+      color: #fff;
+    }
+
+    /* ===== 訪問回数 ===== */
+    .visit-count {
+      font-size: 12px;
+      margin-top: 4px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <div class="header">
+    <h1>田中 はなこ</h1>
+    <p>Web開発をはじめたばかりの大学生です！</p>
+    <div class="visit-count" id="visitCount"></div>
+  </div>
+
+  <!-- メインコンテンツ -->
+  <div class="container">
+
+    <!-- プロフィール -->
+    <div class="card">
+      <div class="profile">
+        <img
+          src="https://api.dicebear.com/7.x/thumbs/svg?seed=Hanako&backgroundColor=ffdfbf"
+          alt="プロフィール写真"
+          class="profile-img"
+        >
+        <div class="profile-text">
+          <p>こんにちは！田中はなこです。</p>
+          <p>東京に住んでいて、カフェ巡りと猫が好きです。最近プログラミングを始めました！</p>
+          <button class="like-btn" id="likeBtn">♡ 0 いいね</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 好きなもの -->
+    <div class="card">
+      <h2>好きなもの</h2>
+      <ul class="favorites-list">
+        <li>カフェ巡り</li>
+        <li>猫</li>
+        <li>ラーメン</li>
+        <li>音楽を聴くこと</li>
+        <li>写真を撮ること</li>
+      </ul>
+    </div>
+
+    <!-- スキル -->
+    <div class="card">
+      <h2>できること・学んでいること</h2>
+      <div class="badges">
+        <span class="badge">HTML</span>
+        <span class="badge">CSS</span>
+        <span class="badge">JavaScript</span>
+        <span class="badge">写真</span>
+        <span class="badge">デザイン</span>
+      </div>
+    </div>
+
+    <!-- SNSリンク -->
+    <div class="card">
+      <h2>SNS</h2>
+      <div class="sns-links">
+        <a href="#" class="sns-link">Twitter</a>
+        <a href="#" class="sns-link">Instagram</a>
+        <a href="#" class="sns-link">GitHub</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // いいねボタン
+    let likeCount = 0;
+    const likeBtn = document.querySelector("#likeBtn");
+    likeBtn.addEventListener("click", function () {
+      likeCount++;
+      likeBtn.textContent = "♡ " + likeCount + " いいね";
+      likeBtn.classList.add("liked");
+    });
+
+    // 訪問回数
+    let visitCount = localStorage.getItem("visitCount");
+    if (visitCount === null) {
+      visitCount = 0;
+    }
+    visitCount = Number(visitCount) + 1;
+    localStorage.setItem("visitCount", visitCount);
+    document.querySelector("#visitCount").textContent = "このページは " + visitCount + " 回目の訪問です";
+  </script>
+
+</body>
+</html>

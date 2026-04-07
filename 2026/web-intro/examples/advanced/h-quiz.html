@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自己紹介ページ（ミニクイズゲーム）</title>
+  <style>
+    /* ===== 全体の設定 ===== */
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ===== レイアウト ===== */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* ===== ヘッダー ===== */
+    .header {
+      background-color: #ff9a9e;
+      text-align: center;
+      padding: 40px 20px;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: #fff;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      color: #fff;
+    }
+
+    /* ===== カード（共通） ===== */
+    .card {
+      background-color: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 20px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ===== プロフィールセクション ===== */
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ff9a9e;
+    }
+
+    .profile-text p {
+      margin: 4px 0;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ===== 好きなものリスト ===== */
+    .card h2 {
+      font-size: 20px;
+      margin: 0 0 12px;
+      color: #ff7eb3;
+    }
+
+    .favorites-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .favorites-list li {
+      padding: 6px 0;
+      font-size: 15px;
+    }
+
+    .favorites-list li::before {
+      content: "♡ ";
+      color: #ff7eb3;
+    }
+
+    /* ===== スキルバッジ ===== */
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .badge {
+      background-color: #fff0f3;
+      color: #ff7eb3;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* ===== SNSリンク ===== */
+    .sns-links {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .sns-link {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #ff9a9e;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* ===== ミニクイズ ===== */
+    .quiz-question {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .quiz-btn {
+      padding: 10px 16px;
+      border: 2px solid #fad0c4;
+      border-radius: 12px;
+      background: none;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+
+    .quiz-btn:hover {
+      border-color: #ff7eb3;
+      background: #fff0f3;
+    }
+
+    .quiz-btn.correct {
+      border-color: #4caf50;
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .quiz-btn.wrong {
+      border-color: #ef5350;
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .quiz-result {
+      margin-top: 12px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      display: none;
+    }
+
+    .quiz-result.show {
+      display: block;
+    }
+
+    .quiz-next {
+      margin-top: 12px;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 20px;
+      background: #ff9a9e;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .quiz-next.show {
+      display: inline-block;
+    }
+
+    .quiz-score {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <div class="header">
+    <h1>田中 はなこ</h1>
+    <p>Web開発をはじめたばかりの大学生です！</p>
+  </div>
+
+  <!-- メインコンテンツ -->
+  <div class="container">
+
+    <!-- プロフィール -->
+    <div class="card">
+      <div class="profile">
+        <img
+          src="https://api.dicebear.com/7.x/thumbs/svg?seed=Hanako&backgroundColor=ffdfbf"
+          alt="プロフィール写真"
+          class="profile-img"
+        >
+        <div class="profile-text">
+          <p>こんにちは！田中はなこです。</p>
+          <p>東京に住んでいて、カフェ巡りと猫が好きです。最近プログラミングを始めました！</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 好きなもの -->
+    <div class="card">
+      <h2>好きなもの</h2>
+      <ul class="favorites-list">
+        <li>カフェ巡り</li>
+        <li>猫</li>
+        <li>ラーメン</li>
+        <li>音楽を聴くこと</li>
+        <li>写真を撮ること</li>
+      </ul>
+    </div>
+
+    <!-- スキル -->
+    <div class="card">
+      <h2>できること・学んでいること</h2>
+      <div class="badges">
+        <span class="badge">HTML</span>
+        <span class="badge">CSS</span>
+        <span class="badge">JavaScript</span>
+        <span class="badge">写真</span>
+        <span class="badge">デザイン</span>
+      </div>
+    </div>
+
+    <!-- SNSリンク -->
+    <div class="card">
+      <h2>SNS</h2>
+      <div class="sns-links">
+        <a href="#" class="sns-link">Twitter</a>
+        <a href="#" class="sns-link">Instagram</a>
+        <a href="#" class="sns-link">GitHub</a>
+      </div>
+    </div>
+
+    <!-- ミニクイズ -->
+    <div class="card">
+      <h2>ミニクイズ</h2>
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-result" id="quizResult"></div>
+      <button class="quiz-next" id="quizNext">次の問題 →</button>
+      <div class="quiz-score" id="quizScore"></div>
+    </div>
+
+  </div>
+
+  <script>
+    // ===== ミニクイズ =====
+    const quizData = [
+      { question: "私の好きな食べ物は？", options: ["ラーメン", "寿司", "カレー"], answer: 0 },
+      { question: "私が住んでいるのは？", options: ["大阪", "東京", "福岡"], answer: 1 },
+      { question: "私の好きな動物は？", options: ["犬", "うさぎ", "猫"], answer: 2 }
+    ];
+    let currentQuiz = 0;
+    let quizCorrect = 0;
+    let quizAnswered = false;
+
+    function showQuiz() {
+      const q = quizData[currentQuiz];
+      document.querySelector("#quizQuestion").textContent = "Q" + (currentQuiz + 1) + ". " + q.question;
+      const optionsDiv = document.querySelector("#quizOptions");
+      optionsDiv.innerHTML = "";
+      quizAnswered = false;
+
+      for (let i = 0; i < q.options.length; i++) {
+        const btn = document.createElement("button");
+        btn.className = "quiz-btn";
+        btn.textContent = q.options[i];
+        btn.setAttribute("data-index", i);
+        btn.addEventListener("click", function() {
+          if (quizAnswered) return;
+          quizAnswered = true;
+          const sel = Number(this.getAttribute("data-index"));
+          const correct = quizData[currentQuiz].answer;
+          if (sel === correct) {
+            this.classList.add("correct");
+            quizCorrect++;
+            document.querySelector("#quizResult").textContent = "⭕ 正解！";
+            document.querySelector("#quizResult").style.backgroundColor = "#e8f5e9";
+            document.querySelector("#quizResult").style.color = "#2e7d32";
+          } else {
+            this.classList.add("wrong");
+            optionsDiv.querySelectorAll(".quiz-btn")[correct].classList.add("correct");
+            document.querySelector("#quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
+            document.querySelector("#quizResult").style.backgroundColor = "#ffebee";
+            document.querySelector("#quizResult").style.color = "#c62828";
+          }
+          document.querySelector("#quizResult").classList.add("show");
+          document.querySelector("#quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
+          if (currentQuiz < quizData.length - 1) {
+            document.querySelector("#quizNext").classList.add("show");
+          } else {
+            document.querySelector("#quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
+          }
+        });
+        optionsDiv.appendChild(btn);
+      }
+      document.querySelector("#quizResult").classList.remove("show");
+      document.querySelector("#quizNext").classList.remove("show");
+    }
+
+    document.querySelector("#quizNext").addEventListener("click", function() {
+      currentQuiz++;
+      showQuiz();
+    });
+
+    showQuiz();
+  </script>
+
+</body>
+</html>

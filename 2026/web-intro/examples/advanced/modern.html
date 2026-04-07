@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自己紹介ページ（モダンデザイン）</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+    /* ===== 全体 ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", "Noto Sans JP", sans-serif;
+      background-color: #0a0a0a;
+      color: #f5f5f5;
+      overflow-x: hidden;
+    }
+
+    /* ===== ヒーローセクション ===== */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%),
+        url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=80') center/cover no-repeat;
+      z-index: 0;
+      transform: scale(1.05);
+      transition: transform 0.3s;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+    }
+    .hero-name {
+      font-size: clamp(48px, 10vw, 96px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-tagline {
+      font-size: clamp(16px, 3vw, 22px);
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 16px;
+    }
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ===== スクロールアニメーション ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-60px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(60px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ===== セクション共通 ===== */
+    .section {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #8b5cf6;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    /* ===== プロフィールセクション ===== */
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    .profile-img-wrap {
+      flex-shrink: 0;
+      position: relative;
+    }
+    .profile-img {
+      width: 160px;
+      height: 160px;
+      border-radius: 32px;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .profile-img-wrap:hover .profile-img {
+      transform: scale(1.03);
+    }
+    .profile-img-glow {
+      position: absolute;
+      inset: -4px;
+      border-radius: 36px;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      z-index: -1;
+      opacity: 0.5;
+      filter: blur(16px);
+    }
+    .profile-bio p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #a0a0b0;
+    }
+
+    /* ===== 好きなものリスト ===== */
+    .favorites-list {
+      list-style: none;
+    }
+    .favorites-list li {
+      padding: 14px 16px;
+      font-size: 15px;
+      color: #c0c0d0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      transition: all 0.15s;
+    }
+    .favorites-list li:last-child { border-bottom: none; }
+    .favorites-list li::before {
+      content: "♡ ";
+      color: #ec4899;
+    }
+    .favorites-list li:hover {
+      background: rgba(139, 92, 246, 0.06);
+    }
+
+    /* ===== スキルバッジ ===== */
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .badge {
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      color: #a78bfa;
+      background: rgba(139, 92, 246, 0.06);
+      transition: all 0.2s;
+    }
+    .badge:hover {
+      background: rgba(139, 92, 246, 0.15);
+      transform: translateY(-2px);
+    }
+
+    /* ===== SNSリンク ===== */
+    .sns-links {
+      display: flex;
+      gap: 12px;
+    }
+    .sns-link {
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #c0c0d0;
+      text-decoration: none;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.25s;
+    }
+    .sns-link:hover {
+      background: #8b5cf6;
+      border-color: #8b5cf6;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+    }
+
+    /* ===== 区切り線 ===== */
+    .divider {
+      max-width: 720px;
+      margin: 0 auto;
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== ヒーロー ===== -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1 class="hero-name">田中 はなこ</h1>
+      <p class="hero-tagline">Web開発をはじめたばかりの大学生です！</p>
+    </div>
+    <div class="hero-scroll-hint">scroll ↓</div>
+  </section>
+
+  <!-- ===== プロフィール ===== -->
+  <div class="section">
+    <div class="reveal-left section-label">About</div>
+    <div class="reveal-left section-title">自己紹介</div>
+    <div class="profile-section reveal">
+      <div class="profile-img-wrap">
+        <div class="profile-img-glow"></div>
+        <img
+          src="https://api.dicebear.com/7.x/thumbs/svg?seed=Hanako&backgroundColor=ffdfbf"
+          alt="プロフィール写真"
+          class="profile-img"
+        >
+      </div>
+      <div class="profile-bio">
+        <p>こんにちは！田中はなこです。</p>
+        <p>東京に住んでいて、カフェ巡りと猫が好きです。最近プログラミングを始めました！</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 好きなもの ===== -->
+  <div class="section">
+    <div class="reveal-right section-label">Favorites</div>
+    <div class="reveal-right section-title">好きなもの</div>
+    <div class="reveal">
+      <ul class="favorites-list">
+        <li>カフェ巡り</li>
+        <li>猫</li>
+        <li>ラーメン</li>
+        <li>音楽を聴くこと</li>
+        <li>写真を撮ること</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== スキル ===== -->
+  <div class="section">
+    <div class="reveal-left section-label">Skills</div>
+    <div class="reveal-left section-title">できること・学んでいること</div>
+    <div class="badges reveal">
+      <span class="badge">HTML</span>
+      <span class="badge">CSS</span>
+      <span class="badge">JavaScript</span>
+      <span class="badge">写真</span>
+      <span class="badge">デザイン</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== SNSリンク ===== -->
+  <div class="section">
+    <div class="reveal-right section-label">Links</div>
+    <div class="reveal-right section-title">SNS</div>
+    <div class="sns-links reveal">
+      <a href="#" class="sns-link">Twitter</a>
+      <a href="#" class="sns-link">Instagram</a>
+      <a href="#" class="sns-link">GitHub</a>
+    </div>
+  </div>
+
+  <div style="height: 80px;"></div>
+
+  <script>
+    // ===== スクロールアニメーション（IntersectionObserver） =====
+    const reveals = document.querySelectorAll(".reveal, .reveal-left, .reveal-right");
+    const observer = new IntersectionObserver(function(entries) {
+      for (let i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) {
+          entries[i].target.classList.add("visible");
+        }
+      }
+    }, { threshold: 0.15 });
+    for (let i = 0; i < reveals.length; i++) {
+      observer.observe(reveals[i]);
+    }
+
+    // ===== ヒーロー視差（スクロールで背景がずれる） =====
+    const heroBg = document.querySelector(".hero-bg");
+    window.addEventListener("scroll", function() {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        heroBg.style.transform = "scale(1.05) translateY(" + (y * 0.3) + "px)";
+      }
+    });
+  </script>
+
+</body>
+</html>

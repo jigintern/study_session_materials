@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自己紹介ページ</title>
+  <style>
+    /* ===== 全体の設定 ===== */
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ===== レイアウト ===== */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* ===== ヘッダー ===== */
+    .header {
+      background-color: #ff9a9e;
+      text-align: center;
+      padding: 40px 20px;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: #fff;
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      color: #fff;
+    }
+
+    /* ===== カード（共通） ===== */
+    .card {
+      background-color: #fff;
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 20px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ===== プロフィールセクション ===== */
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ff9a9e;
+    }
+
+    .profile-text p {
+      margin: 4px 0;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <div class="header">
+    <h1>田中 はなこ</h1>
+    <p>Web開発をはじめたばかりの大学生です！</p>
+  </div>
+
+  <!-- メインコンテンツ -->
+  <div class="container">
+
+    <!-- プロフィール -->
+    <div class="card">
+      <div class="profile">
+        <img
+          src="https://api.dicebear.com/7.x/thumbs/svg?seed=Hanako&backgroundColor=ffdfbf"
+          alt="プロフィール写真"
+          class="profile-img"
+        >
+        <div class="profile-text">
+          <p>こんにちは！田中はなこです。</p>
+          <p>東京に住んでいて、カフェ巡りと猫が好きです。最近プログラミングを始めました！</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
