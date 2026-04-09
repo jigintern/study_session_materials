@@ -1917,34 +1917,15 @@ showQuiz();
 
 ## 今日やったこと
 
-<div class="columns">
-<div>
+![bg right:40% fit](imgs/step5-sns.png)
 
-### HTML（構造）
-タグでページの構造を作った
-
+### HTML
 `h1` `h2` `p` `div` `img`
-`ul` `li` `span` `a` `button`
+`ul` `li` `span` `a`
 
-</div>
-<div>
-
-### CSS（見た目）
-プロパティで見た目を整えた
-
-色・配置・角丸・影・ホバー効果
-
-</div>
-</div>
-
----
-
-## 今日やったこと（続き）
-
-### JavaScript（動き）
-クリックイベントでダークモードを切り替えた
-
-`querySelector` `addEventListener` `classList.toggle`
+### CSS
+背景色・文字色・配置・角丸
+影・Flexbox・ホバー効果
 
 ---
 
