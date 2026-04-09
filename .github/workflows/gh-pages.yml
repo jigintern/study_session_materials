@@ -35,6 +35,8 @@ jobs:
             output_name: gsap-workshop-2026
           - slide: 2026/open-data
             output_name: open-data-2026
+          - slide: 2026/web-intro
+            output_name: web-intro-2026
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
