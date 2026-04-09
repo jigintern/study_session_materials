@@ -205,8 +205,8 @@ script.js     ← JSを書くファイル（応用課題で使う）
   </head>
   <body>
     <!-- ここにコードを記入 -->
+      <script src="script.js"></script>
   </body>
-  <script src="script.js"></script>
 </html>
 ```
 
