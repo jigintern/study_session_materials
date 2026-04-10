@@ -752,6 +752,14 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 
 ---
 
+## ここまでの結果
+
+![bg right:40% fit](imgs/step3-favorites.png)
+
+ヘッダー + プロフィール + 好きなものリストが表示されていればOK！
+
+---
+
 <!-- _class: lead -->
 
 # Chapter 6
@@ -821,6 +829,14 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 ```
 
 `flex-wrap: wrap` → 1行に収まらない場合に **折り返す**
+
+---
+
+## ここまでの結果
+
+![bg right:40% fit](imgs/step4-badges.png)
+
+バッジが横並びで表示されていればOK！
 
 ---
 
