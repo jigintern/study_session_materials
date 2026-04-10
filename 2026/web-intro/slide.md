@@ -1799,3 +1799,51 @@ border: 3px solid #ff9a9e;
 
 > **F12** でDevToolsを開く → **Elements** → 右下の **Computed** タブ
 > 困ったら開発者ツールで余白を確認する癖をつけると便利です！
+
+---
+
+## よく使う HTML タグ一覧
+
+| タグ | 意味 |
+|------|------|
+| `<h1>` 〜 `<h6>` | 見出し（h1が最大） |
+| `<p>` | 段落（文章） |
+| `<div>` | ブロックのグループ化 |
+| `<span>` | インラインのグループ化 |
+| `<a href="URL">` | リンク |
+| `<img src="URL" alt="説明">` | 画像 |
+| `<ul>`, `<li>` | 箇条書きリスト |
+| `<ol>`, `<li>` | 番号付きリスト |
+| `<button>` | ボタン |
+| `<input>` | 入力フォーム |
+
+> 参考: [MDN HTML要素リファレンス](https://developer.mozilla.org/ja/docs/Web/HTML/Element)
+
+---
+
+## よく使う CSS プロパティ一覧
+
+| プロパティ | 意味 |
+|-----------|------|
+| `color` | 文字色 |
+| `background-color` | 背景色 |
+| `font-size` | 文字の大きさ |
+| `font-weight` | 文字の太さ（`bold` など） |
+| `text-align` | 文字の揃え方（`center` など） |
+| `padding` | 内側の余白 |
+| `margin` | 外側の余白 |
+| `border` | 枠線 |
+| `border-radius` | 角の丸み |
+| `width`, `height` | 幅・高さ |
+| `display` | 表示方法（`flex`, `none` など） |
+| `box-shadow` | 影 |
+
+> 参考: [MDN CSSリファレンス](https://developer.mozilla.org/ja/docs/Web/CSS/Reference)
+
+---
+
+## 参考リンク
+
+- [MDN Web Docs](https://developer.mozilla.org/ja/) — HTML/CSS/JS の公式リファレンス
+- [Can I use](https://caniuse.com/) — ブラウザ対応状況の確認
+- [Google カラーピッカー](https://g.co/kgs/HwVnkZs) — カラーコードを選ぶ
