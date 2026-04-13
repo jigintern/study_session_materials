@@ -15,6 +15,236 @@ style: |
     text-align: center;
     margin: 0.5em 0;
   }
+  .profile-visual {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 1.5em;
+    align-items: center;
+  }
+  .visual-card {
+    background: #fffdfd;
+    border: 4px solid #ffb3c1;
+    border-radius: 24px;
+    padding: 34px 18px 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+  .visual-profile {
+    background: #f7fbff;
+    border: 3px dashed #7db7ff;
+    border-radius: 18px;
+    padding: 34px 18px 18px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .visual-photo-area {
+    width: 140px;
+    text-align: center;
+  }
+  .visual-photo {
+    width: 104px;
+    height: 104px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: #ffdce6;
+    border: 4px solid #ff7eb3;
+  }
+  .visual-text-area {
+    flex: 1;
+    background: #fff8e7;
+    border: 3px solid #f6c453;
+    border-radius: 16px;
+    padding: 32px 14px 14px;
+    margin-top: 20px;
+  }
+  .visual-line {
+    height: 16px;
+    background: #ffffff;
+    border: 2px solid #f6c453;
+    border-radius: 999px;
+    margin: 10px 0;
+  }
+  .visual-tag {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 0;
+    font-size: 0.72em;
+    font-weight: 700;
+    border: none;
+    background: transparent;
+    line-height: 1.2;
+  }
+  .tag-card {
+    color: #b83260;
+  }
+  .tag-profile {
+    color: #225ea8;
+  }
+  .tag-photo {
+    color: #b83260;
+  }
+  .tag-text {
+    color: #8a5b00;
+  }
+  .visual-note {
+    font-size: 0.95em;
+    line-height: 1.5;
+  }
+  .frame-anchor {
+    position: relative;
+  }
+  .frame-tag {
+    position: absolute;
+    top: -30px;
+    left: 16px;
+    transform: none;
+    margin: 0;
+    z-index: 2;
+  }
+  .frame-tag.tight {
+    top: -18px;
+  }
+  .frame-tag.centered {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .visual-photo-wrap {
+    position: relative;
+    padding-top: 40px;
+  }
+  .visual-photo-wrap .visual-photo {
+    margin-top: 6px;
+  }
+  .header-item {
+    position: relative;
+    padding-top: 10px;
+  }
+  .header-item + .header-item {
+    margin-top: 10px;
+    padding-top: 14px;
+  }
+  .ui-visual {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 1.5em;
+    align-items: center;
+  }
+  .ui-stage {
+    background: #fffdfd;
+    border: 4px solid #ffd6e0;
+    border-radius: 24px;
+    padding: 34px 18px 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  }
+  .header-box {
+    background: #ff9a9e;
+    border-radius: 0 0 24px 24px;
+    padding: 22px 18px 18px;
+    text-align: center;
+  }
+  .header-title {
+    width: 58%;
+    height: 18px;
+    margin: 0 auto 28px;
+    background: #fff8e7;
+    border: 2px solid #f6c453;
+    box-sizing: border-box;
+    border-radius: 999px;
+  }
+  .header-subtitle {
+    width: 72%;
+    height: 14px;
+    margin: 0 auto;
+    background: #eaf4ff;
+    border: 2px solid #7db7ff;
+    box-sizing: border-box;
+    border-radius: 999px;
+  }
+  .list-box,
+  .badges-box,
+  .links-box {
+    background: #fffdfd;
+    border: 4px solid #ffb3c1;
+    border-radius: 24px;
+    padding: 34px 18px 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+  .list-title-wrap {
+    position: relative;
+    width: 100%;
+    margin-left: 0;
+    margin-top: 12px;
+    padding-top: 22px;
+    margin-bottom: 28px;
+    padding-bottom: 4px;
+  }
+  .list-title-wrap > .frame-tag {
+    top: -22px;
+  }
+  .list-title {
+    width: 100%;
+    height: 16px;
+    background: #fff8e7;
+    border: 2px solid #f6c453;
+    box-sizing: border-box;
+    border-radius: 999px;
+  }
+  .list-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+  }
+  .list-group,
+  .badges-group,
+  .links-group {
+    margin-top: 36px;
+    padding: 30px 14px 12px;
+    background: #f7fbff;
+    border: 3px dashed #7db7ff;
+    border-radius: 16px;
+  }
+  .list-bullet {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ff7eb3;
+  }
+  .list-line {
+    flex: 1;
+    height: 14px;
+    background: #ffffff;
+    border: 2px solid #7db7ff;
+    border-radius: 999px;
+  }
+  .badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .badge-pill {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #fff0f3;
+    border: 2px solid #ffb3c1;
+    color: #b83260;
+    font-size: 0.8em;
+    font-weight: 700;
+  }
+  .links-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .link-pill {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #ff9a9e;
+    color: white;
+    font-size: 0.8em;
+    font-weight: 700;
+  }
 ---
 
 <!-- _class: lead -->
@@ -101,21 +331,21 @@ script.js    ← 動きの設定（どう動くか）
 
 ## Webページを構成する3つの言語
 
-| 言語 | 役割 | やること |
-|------|------|----------|
-| **HTML** | 構造 | ページに「何を置くか」を決める |
-| **CSS** | 見た目 | 「どう見えるか」を決める |
-| **JavaScript** | 動き | 「どう動くか」を決める |
+| 言語           | 役割   | やること                       |
+| -------------- | ------ | ------------------------------ |
+| **HTML**       | 構造   | ページに「何を置くか」を決める |
+| **CSS**        | 見た目 | 「どう見えるか」を決める       |
+| **JavaScript** | 動き   | 「どう動くか」を決める         |
 
 ---
 
 ## 例え話: 家を建てる
 
-| | 役割 | 家で言うと |
-|---|---|---|
-| **HTML** | 構造 | 柱・壁・窓の配置（間取り図） |
-| **CSS** | 見た目 | 壁紙の色・カーテン・家具（インテリア） |
-| **JavaScript** | 動き | 自動ドア・照明のスイッチ（仕掛け） |
+|                | 役割   | 家で言うと                             |
+| -------------- | ------ | -------------------------------------- |
+| **HTML**       | 構造   | 柱・壁・窓の配置（間取り図）           |
+| **CSS**        | 見た目 | 壁紙の色・カーテン・家具（インテリア） |
+| **JavaScript** | 動き   | 自動ドア・照明のスイッチ（仕掛け）     |
 
 HTMLだけだと **骨組みだけの家**。
 CSSを足すと **きれいな家** になる。
@@ -235,7 +465,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   </head>
   <body>
     <!-- ここにコードを記入 -->
-      <script src="script.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
 ```
@@ -247,12 +477,12 @@ script.js     ← JSを書くファイル（応用課題で使う）
 最初は **おまじない** だと思ってOKです。
 大事なのは **`<body>` の中に書く** ということ。
 
-| コード | 意味 |
-|--------|------|
-| `<!DOCTYPE html>` | 「これはHTMLです」という宣言 |
-| `<head>` | ページの設定 |
-| `<link>` | CSSファイルを読み込む |
-| `<body>` | **ページの中身**（ここに書いたものが表示される） |
+| コード            | 意味                                             |
+| ----------------- | ------------------------------------------------ |
+| `<!DOCTYPE html>` | 「これはHTMLです」という宣言                     |
+| `<head>`          | ページの設定                                     |
+| `<link>`          | CSSファイルを読み込む                            |
+| `<body>`          | **ページの中身**（ここに書いたものが表示される） |
 
 ---
 
@@ -272,6 +502,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
 白い文字で **名前** と **一言メッセージ** を表示するヘッダーを作ります。
 
 ### できるようになること
+
 - ページの最初に「何のページか」を伝えられる
 - 文字と背景色で第一印象を作れる
 
@@ -296,16 +527,47 @@ HTMLは **タグ** という目印を使って書きます。
 
 ## 今回使うタグ
 
-| タグ | 意味 | 表示 |
-|------|------|------|
-| `<h1>` | 見出し（一番大きい） | **太く大きい文字** |
-| `<p>` | 段落（パラグラフ） | ふつうの文章 |
-| `<div>` | グループ化する箱 | 見た目は何もない（CSSで変える） |
+| タグ    | 意味                 | 表示                            |
+| ------- | -------------------- | ------------------------------- |
+| `<h1>`  | 見出し（一番大きい） | **太く大きい文字**              |
+| `<p>`   | 段落（パラグラフ）   | ふつうの文章                    |
+| `<div>` | グループ化する箱     | 見た目は何もない（CSSで変える） |
 
 `<div>` は **他のタグをまとめるための入れ物** として使います。
 
 > なぜまとめるの？ → まとめることで **CSSをグループ単位で適用** できる。
 > 例: ヘッダー全体に背景色をつけたい → `<h1>` と `<p>` を `<div>` でまとめて、その `<div>` に背景色を指定する。
+
+---
+
+## コードにする前に、完成画面を部品で見てみよう
+
+<div class="ui-visual">
+<div>
+  <div class="ui-stage frame-anchor">
+    <div class="visual-tag tag-card frame-tag">ヘッダー全体 (`header`)</div>
+    <div class="header-box">
+      <div class="header-item">
+        <div class="visual-tag tag-text frame-tag tight centered">名前 (`h1`)</div>
+        <div class="header-title"></div>
+      </div>
+      <div class="header-item">
+        <div class="visual-tag tag-profile frame-tag tight centered">ひとこと (`p`)</div>
+        <div class="header-subtitle"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="visual-note">
+
+- まず大きなヘッダーを1つ作る
+- その中に「名前」と「ひとこと」を入れる
+- ヘッダー全体に背景色をつける
+
+> `div` は、部品をまとめる箱として使えます。
+
+</div>
+</div>
 
 ---
 
@@ -350,7 +612,7 @@ body {              ← 「body に対して」
 ## class属性 — HTMLとCSSを紐づける
 
 ```html
-<div class="header">
+<div class="header"></div>
 ```
 
 ↑ この `class="header"` が **名札** の役割。
@@ -389,13 +651,13 @@ body {
 
 ## ヘッダーCSSの各プロパティ
 
-| プロパティ | 意味 |
-|-----------|------|
-| `margin: 0; padding: 0` | ページのデフォルト余白をなくす |
-| `background-color: #ff9a9e` | 背景色（ピンク） |
-| `text-align: center` | 文字を中央揃え |
-| `padding: 40px 20px` | 内側の余白（上下40px、左右20px） |
-| `border-radius: 0 0 20px 20px` | 角を丸くする |
+| プロパティ                     | 意味                             |
+| ------------------------------ | -------------------------------- |
+| `margin: 0; padding: 0`        | ページのデフォルト余白をなくす   |
+| `background-color: #ff9a9e`    | 背景色（ピンク）                 |
+| `text-align: center`           | 文字を中央揃え                   |
+| `padding: 40px 20px`           | 内側の余白（上下40px、左右20px） |
+| `border-radius: 0 0 20px 20px` | 角を丸くする                     |
 
 ---
 
@@ -486,6 +748,7 @@ border-radius: 0    0    20px  20px;
 ![bg right:50% fit](imgs/step1-header.png)
 
 ### 今できるようになったこと
+
 - ページのタイトル部分を自分で作れる
 - 背景色や文字色で雰囲気を変えられる
 
@@ -508,6 +771,7 @@ border-radius: 0    0    20px  20px;
 丸い写真と自己紹介テキストを **横並び** で表示するカードを作ります。
 
 ### できるようになること
+
 - 「ひとまとまりの情報」をカードとして見やすく置ける
 - 写真と文章をセットで紹介できる
 
@@ -528,9 +792,9 @@ border-radius: 0    0    20px  20px;
 
 ```css
 .container {
-  max-width: 600px;    /* 横幅を制限 */
-  margin: 0 auto;      /* 中央寄せ */
-  padding: 20px;       /* 内側の余白 */
+  max-width: 600px; /* 横幅を制限 */
+  margin: 0 auto; /* 中央寄せ */
+  padding: 20px; /* 内側の余白 */
 }
 ```
 
@@ -541,13 +805,49 @@ border-radius: 0    0    20px  20px;
 画像を表示するタグ。**終了タグがない** 特殊なタグです。
 
 ```html
-<img src="画像のURL" alt="説明テキスト">
+<img src="画像のURL" alt="説明テキスト" />
 ```
 
-| 属性 | 意味 |
-|------|------|
-| `src` | 画像ファイルのURL（どの画像を表示するか） |
+| 属性  | 意味                                             |
+| ----- | ------------------------------------------------ |
+| `src` | 画像ファイルのURL（どの画像を表示するか）        |
 | `alt` | 画像が読み込めなかった時に表示される代替テキスト |
+
+---
+
+## コードにする前に、完成画面を部品で見てみよう
+
+<div class="profile-visual">
+<div>
+  <div class="visual-card frame-anchor">
+    <div class="visual-tag tag-card frame-tag">カード全体 (`card`)</div>
+    <div class="visual-profile frame-anchor">
+      <div class="visual-tag tag-profile frame-tag">写真と説明のまとまり (`profile`)</div>
+      <div class="visual-photo-area">
+        <div class="visual-photo-wrap">
+          <div class="visual-tag tag-photo frame-tag tight centered">写真 (`img`)</div>
+          <div class="visual-photo"></div>
+        </div>
+      </div>
+      <div class="visual-text-area frame-anchor">
+        <div class="visual-tag tag-text frame-tag">説明文の箱 (`profile-text`)</div>
+        <div class="visual-line"></div>
+        <div class="visual-line"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="visual-note">
+
+- まず大きなカードを1つ作る
+- その中に「写真」と「説明文」を入れる
+- 写真と説明文を横に並べる
+- 説明文の中に文章を2つ入れる
+
+> HTML は、この部品の並び方をコードで書いたものです。
+
+</div>
+</div>
 
 ---
 
@@ -558,11 +858,7 @@ border-radius: 0    0    20px  20px;
 ```html
 <div class="card">
   <div class="profile">
-    <img
-      src="写真のURL"
-      alt="プロフィール写真"
-      class="profile-img"
-    >
+    <img src="写真のURL" alt="プロフィール写真" class="profile-img" />
     <div class="profile-text">
       <p>こんにちは！田中はなこです。</p>
       <p>東京に住んでいて、カフェ巡りと猫が好きです。</p>
@@ -577,10 +873,10 @@ border-radius: 0    0    20px  20px;
 
 ```css
 .card {
-  background-color: #fff;     /* 白い背景 */
-  border-radius: 16px;        /* 角を丸く */
-  padding: 24px;              /* 内側の余白 */
-  margin-top: 20px;           /* カード同士の間隔 */
+  background-color: #fff; /* 白い背景 */
+  border-radius: 16px; /* 角を丸く */
+  padding: 24px; /* 内側の余白 */
+  margin-top: 20px; /* カード同士の間隔 */
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); /* 影 */
 }
 ```
@@ -654,8 +950,8 @@ padding: 40px 20px;
 .profile-img {
   width: 100px;
   height: 100px;
-  border-radius: 50%;       /* 50%で正円 */
-  object-fit: cover;        /* 枠に合わせてトリミング */
+  border-radius: 50%; /* 50%で正円 */
+  object-fit: cover; /* 枠に合わせてトリミング */
   border: 3px solid #ff9a9e; /* ピンクの枠線 */
 }
 ```
@@ -686,6 +982,7 @@ padding: 40px 20px;
 ヘッダー + プロフィールカードが表示されていればOK！
 
 ### 今できるようになったこと
+
 - プロフィールや商品紹介のような情報ブロックを作れる
 - `display: flex` で画像と文章を横並びにできる
 
@@ -708,6 +1005,7 @@ padding: 40px 20px;
 CSSの `::before` で装飾をカスタマイズする方法を学びます。
 
 ### できるようになること
+
 - 情報を箇条書きで整理して見せられる
 - CSSだけでリストの見た目を変えられる
 
@@ -715,19 +1013,61 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 
 ## 新しいタグ: `<h2>`, `<ul>`, `<li>`
 
-| タグ | 意味 | 表示 |
-|------|------|------|
+| タグ   | 意味                        | 表示                 |
+| ------ | --------------------------- | -------------------- |
 | `<h2>` | 小見出し（h1 の次に大きい） | **太い中サイズ文字** |
-| `<ul>` | 順番なしリスト（箇条書き） | ・が付いたリスト |
-| `<li>` | リストの各項目 | 1つ1つの項目 |
+| `<ul>` | 順番なしリスト（箇条書き）  | ・が付いたリスト     |
+| `<li>` | リストの各項目              | 1つ1つの項目         |
 
 ```html
-<ul>         ← リストの開始
+<ul>
+  ← リストの開始
   <li>項目1</li>
   <li>項目2</li>
   <li>項目3</li>
-</ul>        ← リストの終了
+</ul>
+← リストの終了
 ```
+
+---
+
+## コードにする前に、完成画面を部品で見てみよう
+
+<div class="ui-visual">
+<div>
+  <div class="list-box frame-anchor">
+    <div class="visual-tag tag-card frame-tag">カード (`card`)</div>
+    <div class="list-title-wrap">
+      <div class="visual-tag tag-text frame-tag">見出し (`h2`)</div>
+      <div class="list-title"></div>
+    </div>
+    <div class="list-group frame-anchor">
+      <div class="visual-tag tag-profile frame-tag">リスト全体 (`ul`)</div>
+      <div class="list-item">
+        <div class="list-bullet"></div>
+        <div class="list-line"></div>
+      </div>
+      <div class="list-item">
+        <div class="list-bullet"></div>
+        <div class="list-line"></div>
+      </div>
+      <div class="list-item">
+        <div class="list-bullet"></div>
+        <div class="list-line"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="visual-note">
+
+- カードの中に見出しを1つ置く
+- その下にリスト全体を置く
+- リストの中に項目を1つずつ入れる
+
+> `ul` の中に `li` を並べると、箇条書きになります。
+
+</div>
+</div>
 
 ---
 
@@ -789,11 +1129,11 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 
 ## ポイント解説
 
-| コード | 意味 |
-|--------|------|
-| `list-style: none` | デフォルトの黒丸（・）を消す |
-| `li::before` | 各 li の **前に** 何かを挿入する |
-| `content: "♡ "` | 挿入する中身（ハートマーク） |
+| コード             | 意味                             |
+| ------------------ | -------------------------------- |
+| `list-style: none` | デフォルトの黒丸（・）を消す     |
+| `li::before`       | 各 li の **前に** 何かを挿入する |
+| `content: "♡ "`    | 挿入する中身（ハートマーク）     |
 
 `::before` は **疑似要素** と呼ばれるもの。
 HTMLを変えずに、CSSだけで飾りを追加できます。
@@ -809,6 +1149,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 ヘッダー + プロフィール + 好きなものリストが表示されていればOK！
 
 ### 今できるようになったこと
+
 - 好きなもの、特徴、ルールなどを見やすく並べられる
 - HTMLを増やさなくても CSS で飾りを足せる
 
@@ -829,6 +1170,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 スキルや趣味を **バッジ（タグ）** 風に横並びで表示します。
 
 ### できるようになること
+
 - 短いキーワードを見やすく並べられる
 - スマホでも崩れにくい並び方を作れる
 
@@ -841,10 +1183,46 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 `<span>` は `<div>` と似た入れ物タグ。
 
 違いは **占める領域**。
+
 - `<div>` → 横幅いっぱいに広がる
 - `<span>` → 中身の幅だけ
 
 バッジのような小さなラベルには `<span>` が適切。
+
+---
+
+## コードにする前に、完成画面を部品で見てみよう
+
+<div class="ui-visual">
+<div>
+  <div class="badges-box frame-anchor">
+    <div class="visual-tag tag-card frame-tag">カード (`card`)</div>
+    <div class="list-title-wrap">
+      <div class="visual-tag tag-text frame-tag">見出し (`h2`)</div>
+      <div class="list-title"></div>
+    </div>
+    <div class="badges-group frame-anchor">
+      <div class="visual-tag tag-profile frame-tag">バッジを入れる箱 (`badges`)</div>
+      <div class="badges-row">
+        <div class="badge-pill">HTML</div>
+        <div class="badge-pill">CSS</div>
+        <div class="badge-pill">JavaScript</div>
+        <div class="badge-pill">写真</div>
+        <div class="badge-pill">デザイン</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="visual-note">
+
+- カードの中に見出しを置く
+- その下にバッジを入れる箱を作る
+- 小さいラベルをたくさん並べる
+
+> `<span>` は、小さな部品を作る時に便利です。
+
+</div>
+</div>
 
 ---
 
@@ -862,7 +1240,6 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
   </div>
 </div>
 ```
-
 
 ---
 
@@ -897,6 +1274,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 バッジが横並びで表示されていればOK！
 
 ### 今できるようになったこと
+
 - スキル、趣味、特徴をタグのように見せられる
 - `flex-wrap` で内容が増えても折り返せる
 
@@ -917,8 +1295,42 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 ボタン風の **SNSリンク** を横並びで表示します。
 
 ### できるようになること
+
 - 自分のSNSや作品ページへ案内できる
 - リンクを「押したくなる見た目」にできる
+
+---
+
+## コードにする前に、完成画面を部品で見てみよう
+
+<div class="ui-visual">
+<div>
+  <div class="links-box frame-anchor">
+    <div class="visual-tag tag-card frame-tag">カード (`card`)</div>
+    <div class="list-title-wrap">
+      <div class="visual-tag tag-text frame-tag">見出し (`h2`)</div>
+      <div class="list-title"></div>
+    </div>
+    <div class="links-group frame-anchor">
+      <div class="visual-tag tag-profile frame-tag">リンクを並べる箱 (`sns-links`)</div>
+      <div class="links-row">
+        <div class="link-pill">Twitter</div>
+        <div class="link-pill">Instagram</div>
+        <div class="link-pill">GitHub</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="visual-note">
+
+- カードの中に見出しを置く
+- その下にリンクを並べる箱を作る
+- 1つ1つのリンクをボタン風に見せる
+
+> `<a>` はリンク、CSS で見た目を変えるとボタン風にもできます。
+
+</div>
+</div>
 
 ---
 
@@ -937,8 +1349,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 
 ### `<a>` タグ = リンクを作るタグ
 
-| 属性 | 意味 |
-|------|------|
+| 属性   | 意味                              |
+| ------ | --------------------------------- |
 | `href` | リンク先のURL（`#` は仮のリンク） |
 
 `href` に自分のSNSのURLを入れると、本物のリンクになります。
@@ -998,14 +1410,17 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 ![bg right:35% fit](imgs/step5-sns.png)
 
 ### ここまででできるようになったこと
+
 - 1枚の自己紹介ページを最初から作れる
 - 色、余白、角丸、影で見た目を整えられる
 - リスト、タグ、リンクで情報を整理して伝えられる
 
 ### 今日使った HTML タグ
+
 `<h1>` `<h2>` `<p>` `<div>` `<img>` `<ul>` `<li>` `<span>` `<a>`
 
 ### 今日使った CSS プロパティ
+
 `background-color` `color` `padding` `margin` `border-radius` `box-shadow` `display: flex` `text-align` `::before` `:hover`
 
 ---
@@ -1091,8 +1506,12 @@ body.dark { ... }
 これは「body に `dark` というクラスが **ついている時だけ** 適用する」という意味。
 
 ```html
-<body>           → body.dark のスタイルは適用されない
-<body class="dark"> → body.dark のスタイルが適用される
+<body>
+  → body.dark のスタイルは適用されない
+  <body class="dark">
+    → body.dark のスタイルが適用される
+  </body>
+</body>
 ```
 
 JavaScript で **このクラスをつけたり外したり** することで、切り替えを実現します。
@@ -1104,28 +1523,26 @@ JavaScript で **このクラスをつけたり外したり** することで、
 `index.html` の container の中、一番下に追加：
 
 ```html
-<button class="dark-mode-btn" id="darkModeBtn">
-  🌙 ダークモード
-</button>
+<button class="dark-mode-btn" id="darkModeBtn">🌙 ダークモード</button>
 ```
 
 ### 新しい要素
 
-| 要素 | 意味 |
-|------|------|
-| `<button>` | クリックできるボタンを作るタグ |
+| 要素               | 意味                                           |
+| ------------------ | ---------------------------------------------- |
+| `<button>`         | クリックできるボタンを作るタグ                 |
 | `id="darkModeBtn"` | この要素に **ユニーク（唯一の名前）** をつける |
 
 ---
 
 ## `class` と `id` の違い
 
-| | `class` | `id` |
-|---|---------|------|
-| 書き方 | `class="card"` | `id="darkModeBtn"` |
-| CSS | `.card { }` | `#darkModeBtn { }` |
-| 使える数 | 同じ名前を **何個でも** 使える | 1ページに **1つだけ** |
-| 用途 | スタイル用（同じ見た目のものに） | JS で特定の要素を見つける用 |
+|          | `class`                          | `id`                        |
+| -------- | -------------------------------- | --------------------------- |
+| 書き方   | `class="card"`                   | `id="darkModeBtn"`          |
+| CSS      | `.card { }`                      | `#darkModeBtn { }`          |
+| 使える数 | 同じ名前を **何個でも** 使える   | 1ページに **1つだけ**       |
+| 用途     | スタイル用（同じ見た目のものに） | JS で特定の要素を見つける用 |
 
 ---
 
@@ -1154,7 +1571,7 @@ JavaScript で **このクラスをつけたり外したり** することで、
 ```js
 const btn = document.querySelector("#darkModeBtn");
 
-btn.addEventListener("click", function() {
+btn.addEventListener("click", function () {
   document.body.classList.toggle("dark");
 
   if (document.body.classList.contains("dark")) {
@@ -1173,11 +1590,11 @@ btn.addEventListener("click", function() {
 const btn = document.querySelector("#darkModeBtn");
 ```
 
-| パーツ | 意味 |
-|--------|------|
-| `const btn` | `btn` という名前の **変数**（データを入れる箱）を作る |
-| `document.querySelector(...)` | ページの中から要素を **探す** |
-| `"#darkModeBtn"` | id が `darkModeBtn` の要素を指定 |
+| パーツ                        | 意味                                                  |
+| ----------------------------- | ----------------------------------------------------- |
+| `const btn`                   | `btn` という名前の **変数**（データを入れる箱）を作る |
+| `document.querySelector(...)` | ページの中から要素を **探す**                         |
+| `"#darkModeBtn"`              | id が `darkModeBtn` の要素を指定                      |
 
 → 「ページから `#darkModeBtn` ボタンを見つけて、`btn` に入れておく」
 
@@ -1186,16 +1603,16 @@ const btn = document.querySelector("#darkModeBtn");
 ## JavaScript を1行ずつ解説（2/3）
 
 ```js
-btn.addEventListener("click", function() {
+btn.addEventListener("click", function () {
   // ここに「クリックされた時にやること」を書く
 });
 ```
 
-| パーツ | 意味 |
-|--------|------|
-| `addEventListener` | 「○○が起きたら△△する」を登録する |
-| `"click"` | 「クリック」というイベント |
-| `function() { ... }` | クリックされた時に実行する処理 |
+| パーツ               | 意味                             |
+| -------------------- | -------------------------------- |
+| `addEventListener`   | 「○○が起きたら△△する」を登録する |
+| `"click"`            | 「クリック」というイベント       |
+| `function() { ... }` | クリックされた時に実行する処理   |
 
 → 「`btn` がクリックされたら、この処理を実行する」
 
@@ -1207,10 +1624,10 @@ btn.addEventListener("click", function() {
 document.body.classList.toggle("dark");
 ```
 
-| パーツ | 意味 |
-|--------|------|
-| `document.body` | `<body>` 要素 |
-| `.classList` | その要素が持つクラスの一覧 |
+| パーツ            | 意味                                                |
+| ----------------- | --------------------------------------------------- |
+| `document.body`   | `<body>` 要素                                       |
+| `.classList`      | その要素が持つクラスの一覧                          |
 | `.toggle("dark")` | `dark` クラスがなければ **つける**、あれば **外す** |
 
 → 「body の dark クラスを ON/OFF する」
@@ -1236,7 +1653,6 @@ document.body.classList.toggle("dark");
 
 ---
 
-
 ## ★ いいねボタン
 
 ![bg right:35% fit](imgs/adv-b-like.png)
@@ -1258,7 +1674,6 @@ document.body.classList.toggle("dark");
 
 ---
 
-
 ## ★ いいねボタン — 答え
 
 <details><summary>完成コード（クリックで開く）</summary>
@@ -1266,10 +1681,11 @@ document.body.classList.toggle("dark");
 ```html
 <button class="like-btn" id="likeBtn">♡ 0 いいね</button>
 ```
+
 ```js
 let count = 0;
 const likeBtn = document.querySelector("#likeBtn");
-likeBtn.addEventListener("click", function() {
+likeBtn.addEventListener("click", function () {
   count = count + 1;
   likeBtn.textContent = "♡ " + count + " いいね";
 });
@@ -1278,7 +1694,6 @@ likeBtn.addEventListener("click", function() {
 </details>
 
 ---
-
 
 ## ★ ページ訪問回数
 
@@ -1304,16 +1719,18 @@ likeBtn.addEventListener("click", function() {
 
 ```js
 let visits = localStorage.getItem("visitCount");
-if (visits === null) { visits = 0; }
+if (visits === null) {
+  visits = 0;
+}
 visits = Number(visits) + 1;
 localStorage.setItem("visitCount", visits);
-document.querySelector("#visitCount").textContent = "このページは " + visits + " 回目の訪問です";
+document.querySelector("#visitCount").textContent =
+  "このページは " + visits + " 回目の訪問です";
 ```
 
 </details>
 
 ---
-
 
 ## ★ 現在時刻の表示
 
@@ -1336,7 +1753,6 @@ document.querySelector("#visitCount").textContent = "このページは " + visi
 
 ---
 
-
 ## ★ 現在時刻の表示 — 答え
 
 <details><summary>完成コード（クリックで開く）</summary>
@@ -1356,7 +1772,6 @@ setInterval(updateClock, 1000);
 </details>
 
 ---
-
 
 ## ★★ タブ切り替え
 
@@ -1380,7 +1795,6 @@ setInterval(updateClock, 1000);
 
 ---
 
-
 ## ★★ タブ切り替え — 答え
 
 <details><summary>完成コード（クリックで開く）</summary>
@@ -1391,21 +1805,34 @@ setInterval(updateClock, 1000);
   <button class="tab-btn" data-tab="dislikes">苦手なもの</button>
 </div>
 <div class="tab-content active" id="tab-likes">
-  <ul class="favorites-list"><li>カフェ巡り</li><li>猫</li><li>ラーメン</li></ul>
+  <ul class="favorites-list">
+    <li>カフェ巡り</li>
+    <li>猫</li>
+    <li>ラーメン</li>
+  </ul>
 </div>
 <div class="tab-content" id="tab-dislikes">
-  <ul class="favorites-list"><li>早起き</li><li>虫</li><li>満員電車</li></ul>
+  <ul class="favorites-list">
+    <li>早起き</li>
+    <li>虫</li>
+    <li>満員電車</li>
+  </ul>
 </div>
 ```
+
 ```js
 const tabBtns = document.querySelectorAll(".tab-btn");
 for (let i = 0; i < tabBtns.length; i++) {
-  tabBtns[i].addEventListener("click", function() {
-    for (let j = 0; j < tabBtns.length; j++) tabBtns[j].classList.remove("active");
+  tabBtns[i].addEventListener("click", function () {
+    for (let j = 0; j < tabBtns.length; j++)
+      tabBtns[j].classList.remove("active");
     const allTabs = document.querySelectorAll(".tab-content");
-    for (let j = 0; j < allTabs.length; j++) allTabs[j].classList.remove("active");
+    for (let j = 0; j < allTabs.length; j++)
+      allTabs[j].classList.remove("active");
     this.classList.add("active");
-    document.querySelector("#tab-" + this.getAttribute("data-tab")).classList.add("active");
+    document
+      .querySelector("#tab-" + this.getAttribute("data-tab"))
+      .classList.add("active");
   });
 }
 ```
@@ -1413,7 +1840,6 @@ for (let i = 0; i < tabBtns.length; i++) {
 </details>
 
 ---
-
 
 ## ★★ 画像スライドショー
 
@@ -1437,7 +1863,6 @@ for (let i = 0; i < tabBtns.length; i++) {
 
 ---
 
-
 ## ★★ 画像スライドショー — 答え
 
 <details><summary>完成コード（クリックで開く）</summary>
@@ -1450,13 +1875,13 @@ const counter = document.querySelector("#slideshowCounter");
 
 function updateSlideshow() {
   img.src = photos[currentPhoto];
-  counter.textContent = (currentPhoto + 1) + " / " + photos.length;
+  counter.textContent = currentPhoto + 1 + " / " + photos.length;
 }
-document.querySelector("#prevBtn").addEventListener("click", function() {
+document.querySelector("#prevBtn").addEventListener("click", function () {
   currentPhoto = (currentPhoto - 1 + photos.length) % photos.length;
   updateSlideshow();
 });
-document.querySelector("#nextBtn").addEventListener("click", function() {
+document.querySelector("#nextBtn").addEventListener("click", function () {
   currentPhoto = (currentPhoto + 1) % photos.length;
   updateSlideshow();
 });
@@ -1465,7 +1890,6 @@ document.querySelector("#nextBtn").addEventListener("click", function() {
 </details>
 
 ---
-
 
 ## ★★ カスタムカーソル
 
@@ -1490,31 +1914,48 @@ document.querySelector("#nextBtn").addEventListener("click", function() {
 
 ---
 
-
 ## ★★ カスタムカーソル — 答え
 
 <details><summary>完成コード（クリックで開く）</summary>
 
 ```css
 .custom-cursor {
-  position: fixed; width: 20px; height: 20px; border-radius: 50%;
-  background-color: #ff7eb3; pointer-events: none; z-index: 9999;
-  transform: translate(-50%, -50%); mix-blend-mode: difference;
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ff7eb3;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
 }
 .cursor-particle {
-  position: fixed; width: 8px; height: 8px; border-radius: 50%;
-  background-color: #ff9a9e; pointer-events: none; z-index: 9998;
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ff9a9e;
+  pointer-events: none;
+  z-index: 9998;
   animation: particle-fade 0.6s ease-out forwards;
 }
 @keyframes particle-fade {
-  0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
 }
 ```
+
 ```js
 const cursor = document.querySelector("#customCursor");
 let pc = 0;
-document.addEventListener("mousemove", function(e) {
+document.addEventListener("mousemove", function (e) {
   cursor.style.left = e.clientX + "px";
   cursor.style.top = e.clientY + "px";
   pc++;
@@ -1524,14 +1965,15 @@ document.addEventListener("mousemove", function(e) {
   p.style.left = e.clientX + "px";
   p.style.top = e.clientY + "px";
   document.body.appendChild(p);
-  setTimeout(function() { p.remove(); }, 600);
+  setTimeout(function () {
+    p.remove();
+  }, 600);
 });
 ```
 
 </details>
 
 ---
-
 
 ## ★★★ モーダル（ポップアップ）
 
@@ -1555,7 +1997,6 @@ document.addEventListener("mousemove", function(e) {
 
 ---
 
-
 ## ★★★ モーダル — 答え
 
 <details><summary>完成コード（クリックで開く）</summary>
@@ -1564,27 +2005,38 @@ document.addEventListener("mousemove", function(e) {
 <div class="modal-overlay" id="modal">
   <div class="modal-content">
     <button class="modal-close" id="modalClose">✕</button>
-    <img src="画像URL" class="modal-img">
+    <img src="画像URL" class="modal-img" />
   </div>
 </div>
 ```
+
 ```css
 .modal-overlay {
-  display: none; position: fixed; top: 0; left: 0;
-  width: 100%; height: 100%; background: rgba(0,0,0,0.7);
-  z-index: 1000; justify-content: center; align-items: center;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
 }
-.modal-overlay.show { display: flex; }
+.modal-overlay.show {
+  display: flex;
+}
 ```
+
 ```js
 const modal = document.querySelector("#modal");
-document.querySelector("#profileImg").addEventListener("click", function() {
+document.querySelector("#profileImg").addEventListener("click", function () {
   modal.classList.add("show");
 });
-document.querySelector("#modalClose").addEventListener("click", function() {
+document.querySelector("#modalClose").addEventListener("click", function () {
   modal.classList.remove("show");
 });
-modal.addEventListener("click", function(e) {
+modal.addEventListener("click", function (e) {
   if (e.target === modal) modal.classList.remove("show");
 });
 ```
@@ -1622,23 +2074,25 @@ modal.addEventListener("click", function(e) {
 ```js
 const list = document.querySelector("#likesList");
 let dragItem = null;
-list.addEventListener("dragstart", function(e) {
-  dragItem = e.target; e.target.classList.add("dragging");
+list.addEventListener("dragstart", function (e) {
+  dragItem = e.target;
+  e.target.classList.add("dragging");
 });
-list.addEventListener("dragend", function(e) {
+list.addEventListener("dragend", function (e) {
   e.target.classList.remove("dragging");
   const items = list.querySelectorAll("li");
   for (let i = 0; i < items.length; i++) items[i].classList.remove("drag-over");
 });
-list.addEventListener("dragover", function(e) {
+list.addEventListener("dragover", function (e) {
   e.preventDefault();
   if (e.target.tagName === "LI" && e.target !== dragItem) {
     const items = list.querySelectorAll("li");
-    for (let i = 0; i < items.length; i++) items[i].classList.remove("drag-over");
+    for (let i = 0; i < items.length; i++)
+      items[i].classList.remove("drag-over");
     e.target.classList.add("drag-over");
   }
 });
-list.addEventListener("drop", function(e) {
+list.addEventListener("drop", function (e) {
   e.preventDefault();
   if (e.target.tagName === "LI" && e.target !== dragItem) {
     const all = Array.prototype.slice.call(list.querySelectorAll("li"));
@@ -1681,30 +2135,49 @@ list.addEventListener("drop", function(e) {
 
 ```js
 const quizData = [
-  { question: "私の好きな食べ物は？", options: ["ラーメン","寿司","カレー"], answer: 0 },
-  { question: "私が住んでいるのは？", options: ["大阪","東京","福岡"], answer: 1 },
-  { question: "私の好きな動物は？", options: ["犬","うさぎ","猫"], answer: 2 }
+  {
+    question: "私の好きな食べ物は？",
+    options: ["ラーメン", "寿司", "カレー"],
+    answer: 0,
+  },
+  {
+    question: "私が住んでいるのは？",
+    options: ["大阪", "東京", "福岡"],
+    answer: 1,
+  },
+  {
+    question: "私の好きな動物は？",
+    options: ["犬", "うさぎ", "猫"],
+    answer: 2,
+  },
 ];
-let current = 0, score = 0, answered = false;
+let current = 0,
+  score = 0,
+  answered = false;
 function showQuiz() {
   const q = quizData[current];
   document.querySelector("#quizQuestion").textContent =
-    "Q" + (current+1) + ". " + q.question;
+    "Q" + (current + 1) + ". " + q.question;
   const div = document.querySelector("#quizOptions");
-  div.innerHTML = ""; answered = false;
+  div.innerHTML = "";
+  answered = false;
   for (let i = 0; i < q.options.length; i++) {
     const btn = document.createElement("button");
-    btn.className = "quiz-btn"; btn.textContent = q.options[i];
+    btn.className = "quiz-btn";
+    btn.textContent = q.options[i];
     btn.setAttribute("data-index", i);
-    btn.addEventListener("click", function() {
-      if (answered) return; answered = true;
+    btn.addEventListener("click", function () {
+      if (answered) return;
+      answered = true;
       const sel = Number(this.getAttribute("data-index"));
       if (sel === quizData[current].answer) {
-        this.classList.add("correct"); score++;
+        this.classList.add("correct");
+        score++;
       } else {
         this.classList.add("wrong");
-        div.querySelectorAll(".quiz-btn")[quizData[current].answer]
-          .classList.add("correct");
+        div
+          .querySelectorAll(".quiz-btn")
+          [quizData[current].answer].classList.add("correct");
       }
       if (current < quizData.length - 1)
         document.querySelector("#quizNext").style.display = "inline-block";
@@ -1713,8 +2186,10 @@ function showQuiz() {
   }
   document.querySelector("#quizNext").style.display = "none";
 }
-document.querySelector("#quizNext").addEventListener("click",
-  function() { current++; showQuiz(); });
+document.querySelector("#quizNext").addEventListener("click", function () {
+  current++;
+  showQuiz();
+});
 showQuiz();
 ```
 
@@ -1761,6 +2236,7 @@ showQuiz();
 今回作成したWebサイトを使用して自己紹介をしてみましょう！
 
 ### 発表の内容
+
 - 自分のページを画面に映す
 - ページを使って **自己紹介**
 - 応用課題をやった人はそれも見せてください
@@ -1781,11 +2257,13 @@ showQuiz();
 ![bg right:40% fit](imgs/step5-sns.png)
 
 ### できるようになったこと
+
 - 名前、写真、好きなものを載せたページを作れた
 - CSSで色や余白や配置を調整できた
 - リンクやボタン風デザインでページを使いやすくできた
 
 ### 使った主な道具
+
 - HTML: `h1` `h2` `p` `div` `img` `ul` `li` `span` `a`
 - CSS: 背景色・文字色・配置・角丸・影・Flexbox・ホバー効果
 
@@ -1793,25 +2271,25 @@ showQuiz();
 
 ## 次に作れるもの
 
-| 作れるもの | 使う知識 |
-|----------|------|
-| **部活紹介ページ** | 見出し・画像・リスト・リンク |
-| **作品紹介ページ** | カード・写真・説明文・ボタン |
+| 作れるもの             | 使う知識                           |
+| ---------------------- | ---------------------------------- |
+| **部活紹介ページ**     | 見出し・画像・リスト・リンク       |
+| **作品紹介ページ**     | カード・写真・説明文・ボタン       |
 | **イベント告知ページ** | タイトル・日時・場所・申込みリンク |
-| **お店紹介ページ** | 写真・メニュー・地図リンク |
-| **ポートフォリオ** | 自己紹介・スキル・SNS・作品リンク |
+| **お店紹介ページ**     | 写真・メニュー・地図リンク         |
+| **ポートフォリオ**     | 自己紹介・スキル・SNS・作品リンク  |
 
 ---
 
 ## 次に学ぶとよいこと
 
-| トピック | できること |
-|----------|------|
-| **レスポンシブ** | スマホ対応のデザインが作れる |
-| **JavaScript** | もっと色々な動きをつけられる |
-| **Git & GitHub** | コードを保存・公開・共同開発できる |
+| トピック           | できること                            |
+| ------------------ | ------------------------------------- |
+| **レスポンシブ**   | スマホ対応のデザインが作れる          |
+| **JavaScript**     | もっと色々な動きをつけられる          |
+| **Git & GitHub**   | コードを保存・公開・共同開発できる    |
 | **フレームワーク** | React, Vue などで大きなサイトを作れる |
-| **デザイン** | もっと見やすく使いやすくできる |
+| **デザイン**       | もっと見やすく使いやすくできる        |
 
 ---
 
@@ -1859,16 +2337,16 @@ border: 3px solid #ff9a9e;
 
 ## よく使う HTML タグ一覧
 
-| タグ | 意味 |
-|------|------|
-| `<h1>` 〜 `<h6>` | 見出し（h1が最大） |
-| `<p>` | 段落（文章） |
-| `<div>` | ブロックのグループ化 |
-| `<span>` | インラインのグループ化 |
-| `<a href="URL">` | リンク |
-| `<img src="URL" alt="説明">` | 画像（終了タグなし） |
-| `<ul>`, `<ol>`, `<li>` | リスト |
-| `<button>` | ボタン |
+| タグ                         | 意味                   |
+| ---------------------------- | ---------------------- |
+| `<h1>` 〜 `<h6>`             | 見出し（h1が最大）     |
+| `<p>`                        | 段落（文章）           |
+| `<div>`                      | ブロックのグループ化   |
+| `<span>`                     | インラインのグループ化 |
+| `<a href="URL">`             | リンク                 |
+| `<img src="URL" alt="説明">` | 画像（終了タグなし）   |
+| `<ul>`, `<ol>`, `<li>`       | リスト                 |
+| `<button>`                   | ボタン                 |
 
 > 参考: [MDN HTML要素リファレンス](https://developer.mozilla.org/ja/docs/Web/HTML/Element)
 
@@ -1876,20 +2354,20 @@ border: 3px solid #ff9a9e;
 
 ## よく使う CSS プロパティ一覧
 
-| プロパティ | 意味 |
-|-----------|------|
-| `color` | 文字色 |
-| `background-color` | 背景色 |
-| `font-size` | 文字の大きさ |
-| `text-align` | 文字の揃え方（`center` など） |
-| `padding` / `margin` | 内側 / 外側の余白 |
-| `border` | 枠線（太さ 種類 色） |
-| `border-radius` | 角の丸み |
-| `display` | 表示方法（`flex`, `block`, `none`） |
-| `box-shadow` | 影 |
-| `width`, `height` | 幅・高さ |
-| `display` | 表示方法（`flex`, `none` など） |
-| `box-shadow` | 影 |
+| プロパティ           | 意味                                |
+| -------------------- | ----------------------------------- |
+| `color`              | 文字色                              |
+| `background-color`   | 背景色                              |
+| `font-size`          | 文字の大きさ                        |
+| `text-align`         | 文字の揃え方（`center` など）       |
+| `padding` / `margin` | 内側 / 外側の余白                   |
+| `border`             | 枠線（太さ 種類 色）                |
+| `border-radius`      | 角の丸み                            |
+| `display`            | 表示方法（`flex`, `block`, `none`） |
+| `box-shadow`         | 影                                  |
+| `width`, `height`    | 幅・高さ                            |
+| `display`            | 表示方法（`flex`, `none` など）     |
+| `box-shadow`         | 影                                  |
 
 > 参考: [MDN CSSリファレンス](https://developer.mozilla.org/ja/docs/Web/CSS/Reference)
 
