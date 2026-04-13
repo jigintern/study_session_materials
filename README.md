@@ -6,6 +6,15 @@
 
 作成年度が新しい順に記述しています。
 
+### 2026年作成
+
+* [オープンデータで課題を解決する Web アプリ開発](./2026/open-data/README.md)
+  * オープンデータを使って「福井恐竜博物館 おでかけプランナー」を作りながら、fetch・Chart.js・DOM 操作・filter を学ぶハンズオンです
+  * [スライド](https://jigintern.github.io/study_session_materials/open-data-2026/slide.html)
+* [GSAP ワークショップ 〜Web アニメーションの世界へようこそ〜](./2026/gsap-workshop/README.md)
+  * GSAP を使ってアニメーション付きの Web ページを作る方法を学ぶワークショップです
+  * [スライド](https://jigintern.github.io/study_session_materials/gsap-workshop-2026/slide.html)
+
 ### 2025年作成
 
 * [サイコロで学ぶスクラム開発](./2025/scrum-trial/README.md)
