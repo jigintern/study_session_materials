@@ -41,7 +41,7 @@ let allSpots = null;
 let genreChangeBound = false;
 
 function formatDateLabel(isoDate) {
-  const [y, m, d] = isoDate.split("-");
+  const [, m, d] = isoDate.split("-");
   return `${Number(m)}/${Number(d)}`;
 }
 
