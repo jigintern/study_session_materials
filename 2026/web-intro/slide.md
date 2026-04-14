@@ -400,7 +400,7 @@ body {
 
 | プロパティ | 意味 |
 |-----------|------|
-| `margin: 0; padding: 0` | ページのデフォルト余白をなくす |
+| `margin: 0` `padding: 0` | ページのデフォルト余白をなくす |
 | `background-color: #ff9a9e` | 背景色（ピンク） |
 | `text-align: center` | 文字を中央揃え |
 | `padding: 40px 20px` | 内側の余白（上下40px、左右20px） |
