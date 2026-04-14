@@ -11,7 +11,7 @@
 
 ```
 2026/open-data/
-├── template/       # ハンズオン開始用（index・styles は完成版同様、app.js は Chart より前＝コメントのみ）
+├── template/       # ハンズオン開始用（index・styles は完成版同様。app.js は定数・デモ・補助関数・main まで入り、[4-*]〜[8-*] の実装ブロックはコメントアウト）
 ├── index.html      # アプリの画面（HTML 骨格）— 完成版デモ
 ├── map.html        # Leaflet 地図（スポットをピン表示）
 ├── open-meteo.html # Open-Meteo API の降水量を Chart.js でグラフ化するサンプル（表付き）
