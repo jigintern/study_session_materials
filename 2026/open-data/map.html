@@ -88,6 +88,21 @@
       }
 
       /**
+       * 外部 CSV の文字列を HTML として解釈させない（XSS 対策）
+       * @param {Record<string, string>} spot
+       * @returns {HTMLDivElement}
+       */
+      function createSpotPopupContent(spot) {
+        const wrap = document.createElement("div");
+        const title = document.createElement("b");
+        title.textContent = spot.name ?? "";
+        wrap.appendChild(title);
+        wrap.appendChild(document.createElement("br"));
+        wrap.appendChild(document.createTextNode(spot.category ?? ""));
+        return wrap;
+      }
+
+      /**
        * @param {Record<string, string>[]} spots
        */
       function renderMarkers(spots) {
@@ -99,7 +114,7 @@
           if (!lat || !lng) continue;
           const marker = L.marker([lat, lng])
             .addTo(leafletMap)
-            .bindPopup(`<b>${spot.name}</b><br>${spot.category}`);
+            .bindPopup(createSpotPopupContent(spot));
           mapMarkers.push(marker);
         }
       }
