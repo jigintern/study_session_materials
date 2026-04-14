@@ -1946,6 +1946,6 @@ border: 3px solid #ff9a9e;
 
 ## 参考リンク
 
-- [MDN Web Docs](https://developer.mozilla.org/ja/) — HTML/CSS/JS の公式リファレンス
+- [MDN Web Docs](https://developer.mozilla.org/ja/) — HTML/CSS/JS のリファレンス
 - [Can I use](https://caniuse.com/) — ブラウザ対応状況の確認
 - [Google カラーピッカー](https://g.co/kgs/HwVnkZs) — カラーコードを選ぶ
