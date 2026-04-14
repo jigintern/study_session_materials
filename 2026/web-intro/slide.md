@@ -978,7 +978,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 <div class="card">
   <h2>SNS</h2>
   <div class="sns-links">
-    <a href="#" class="sns-link">Twitter</a>
+    <a href="#" class="sns-link">X</a>
     <a href="#" class="sns-link">Instagram</a>
     <a href="#" class="sns-link">GitHub</a>
   </div>
