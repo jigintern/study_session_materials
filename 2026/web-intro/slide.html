@@ -5099,8 +5099,7 @@ list.<span class="hljs-title function_">addEventListener</span>(<span class="hlj
 <span class="hljs-keyword">let</span> current = <span class="hljs-number">0</span>, score = <span class="hljs-number">0</span>, answered = <span class="hljs-literal">false</span>;
 <span class="hljs-keyword">function</span> <span class="hljs-title function_">showQuiz</span>(<span class="hljs-params"></span>) {
   <span class="hljs-keyword">const</span> q = quizData[current];
-  <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;#quizQuestion&quot;</span>).<span class="hljs-property">textContent</span> =
-    <span class="hljs-string">&quot;Q&quot;</span> + (current+<span class="hljs-number">1</span>) + <span class="hljs-string">&quot;. &quot;</span> + q.<span class="hljs-property">question</span>;
+  <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;#quizQuestion&quot;</span>).<span class="hljs-property">textContent</span> = <span class="hljs-string">&quot;Q&quot;</span> + (current+<span class="hljs-number">1</span>) + <span class="hljs-string">&quot;. &quot;</span> + q.<span class="hljs-property">question</span>;
   <span class="hljs-keyword">const</span> div = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&quot;#quizOptions&quot;</span>);
   div.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">&quot;&quot;</span>; answered = <span class="hljs-literal">false</span>;
   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; q.<span class="hljs-property">options</span>.<span class="hljs-property">length</span>; i++) {

@@ -1737,8 +1737,7 @@ const quizData = [
 let current = 0, score = 0, answered = false;
 function showQuiz() {
   const q = quizData[current];
-  document.querySelector("#quizQuestion").textContent =
-    "Q" + (current+1) + ". " + q.question;
+  document.querySelector("#quizQuestion").textContent = "Q" + (current+1) + ". " + q.question;
   const div = document.querySelector("#quizOptions");
   div.innerHTML = ""; answered = false;
   for (let i = 0; i < q.options.length; i++) {
