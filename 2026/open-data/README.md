@@ -17,7 +17,7 @@
 ├── open-meteo.html # Open-Meteo API の降水量を Chart.js でグラフ化するサンプル（表付き）
 ├── styles.css      # 見た目のスタイル
 ├── app.js          # JavaScript：データ取得・グラフ・スポット一覧
-├── CODE_REFERENCE.md   # ハンズオン正解コードの索引（template/app.js と完成版への案内）
+├── CODE_REFERENCE.md   # ハンズオン完成版コードの索引（template/app.js と完成版への案内）
 ├── README.md       # 授業の仕様・設計書（このファイル）
 ├── slide.md        # 講義スライド（講師用・Marp）
 └── handout.md      # 配布資料（参加者用）
