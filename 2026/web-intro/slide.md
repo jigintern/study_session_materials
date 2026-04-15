@@ -382,30 +382,18 @@ body {              ← 「body に対して」
 
 ```css
 body {
+  /* ページのデフォルト余白をなくす */
   margin: 0;
   padding: 0;
 }
 
 .header {
-  background-color: pink;
-  text-align: center;
-  padding: 40px 20px;
-  border-radius: 0 0 20px 20px;
+  background-color: pink;       /* 背景色（ピンク */
+  text-align: center;           /* 文字を中央揃え */
+  padding: 40px 20px;           /* 内側の余白（上下40px、左右20px） */
+  border-radius: 0 0 20px 20px; /* 角を丸くする */
 }
 ```
-
----
-
-## ヘッダーCSSの各プロパティ
-
-| プロパティ | 意味 |
-|-----------|------|
-| `margin: 0` `padding: 0` | ページのデフォルト余白をなくす |
-| `background-color: pink` | 背景色（ピンク） |
-| `text-align: center` | 文字を中央揃え |
-| `padding: 40px 20px` | 内側の余白（上下40px、左右20px） |
-| `border-radius: 0 0 20px 20px` | 角を丸くする |
-
 > `px` = ピクセル。画面上の点の数で大きさを指定する単位。
 
 ---
