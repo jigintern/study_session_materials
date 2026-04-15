@@ -560,11 +560,15 @@ border-radius: 0    0    20px  20px;
 
 ---
 
-## padding と margin の違い
+## padding の違い
 
 ![bg right:50% fit](imgs/padding-compare.png)
 
 **padding**（内側）がないと、テキストが枠にくっつく。
+
+---
+
+## margin の違い
 
 ![bg right:50% fit](imgs/margin-compare.png)
 
