@@ -387,7 +387,7 @@ body {
 }
 
 .header {
-  background-color: #ff9a9e;
+  background-color: pink;
   text-align: center;
   padding: 40px 20px;
   border-radius: 0 0 20px 20px;
@@ -401,60 +401,12 @@ body {
 | プロパティ | 意味 |
 |-----------|------|
 | `margin: 0` `padding: 0` | ページのデフォルト余白をなくす |
-| `background-color: #ff9a9e` | 背景色（ピンク） |
+| `background-color: pink` | 背景色（ピンク） |
 | `text-align: center` | 文字を中央揃え |
 | `padding: 40px 20px` | 内側の余白（上下40px、左右20px） |
 | `border-radius: 0 0 20px 20px` | 角を丸くする |
 
 > `px` = ピクセル。画面上の点の数で大きさを指定する単位。
-
----
-
-## CSSでの色の指定方法
-
-`#ff9a9e` って何？ → **カラーコード** です。
-
-CSSで色を指定するには **2つの方法** があります。
-
-### 1. 色の名前（英語）
-
-```css
-background-color: pink;
-color: white;
-```
-
-`red`, `blue`, `pink`, `black`, `white` など約140色が使える。
-ただし約140色しかないので、使いたい色がないことが多い。
-
-→ より自由に色を指定するために **カラーコード** を使う。
-
----
-
-## カラーコード
-
-### 2. カラーコード（`#` + 6桁の英数字）
-
-```css
-background-color: #ff9a9e;
-color: #fff;
-```
-
-`#` の後に **赤(R)・緑(G)・青(B)** を2桁ずつ指定する。
-より細かい色が指定できる。
-
----
-
-## カラーコードの読み方
-
-6桁は **赤・緑・青** の順で、数字が大きいほどその色が強い。
-
-- `#ff0000` → 赤が最大、他が0 → **赤！**
-- `#0000ff` → 青が最大 → **青！**
-- `#000000` → 全部0 → **黒**
-- `#ffffff` → 全部最大 → **白**
-
-> カラーコードは覚えなくてOK。
-> ネットで **「カラーピッカー」** と検索すると好きな色を選べます。
 
 ---
 
@@ -476,12 +428,12 @@ border-radius: 0    0    20px  20px;
 ```css
 .header h1 {
   margin: 0;
-  color: #fff;
+  color: white;
 }
 
 .header p {
   margin: 8px 0 0;
-  color: #fff;
+  color: white;
 }
 ```
 
@@ -598,7 +550,7 @@ border-radius: 0    0    20px  20px;
 
 ```css
 .card {
-  background-color: #fff;     /* 白い背景 */
+  background-color: white;    /* 白い背景 */
   border-radius: 16px;        /* 角を丸く */
   padding: 24px;              /* 内側の余白 */
   margin-top: 20px;           /* カード同士の間隔 */
@@ -675,7 +627,7 @@ padding: 40px 20px;
   height: 100px;
   border-radius: 50%;       /* 50%で正円 */
   object-fit: cover;        /* 枠に合わせてトリミング */
-  border: 3px solid #ff9a9e; /* ピンクの枠線 */
+  border: 3px solid pink; /* ピンクの枠線 */
 }
 ```
 
@@ -785,7 +737,7 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 .card h2 {
   font-size: 20px;
   margin: 0 0 12px;
-  color: #ff7eb3;
+  color: hotpink;
 }
 ```
 
@@ -810,7 +762,7 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 
 .favorites-list li::before {
   content: "♡ ";
-  color: #ff7eb3;
+  color: hotpink;
 }
 ```
 
@@ -916,8 +868,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 }
 
 .badge {
-  background-color: #fff0f3;
-  color: #ff7eb3;
+  background-color: mistyrose;
+  color: hotpink;
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 14px;
@@ -1006,8 +958,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 .sns-link {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #ff9a9e;
-  color: #fff;
+  background-color: pink;
+  color: white;
   text-decoration: none;
   border-radius: 25px;
   font-size: 14px;
@@ -1020,7 +972,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 `text-decoration: none` → リンクの下線を消す
 
 > ブラウザはデフォルトで `<a>` タグに青い文字 + 下線をつけます。
-> `text-decoration: none` と `color: #fff` で、それをリセットしてボタン風に見せています。
+> `text-decoration: none` と `color: white` で、それをリセットしてボタン風に見せています。
 
 ---
 
@@ -1028,7 +980,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 
 ```css
 .sns-link:hover {
-  background-color: #ff7eb3;
+  background-color: hotpink;
 }
 ```
 
@@ -1106,6 +1058,42 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 1. **CSS** — 暗い配色のスタイルを追加する
 2. **HTML** — 切り替えボタンを追加する
 3. **JS** — ボタンを押したらスタイルを切り替える
+
+---
+
+## その前に: CSSでの色の指定方法
+
+これまでは `pink` や `white` のような **色の名前** で色を指定してきました。
+
+ただし色名は約140色しかなく、**ダークモード用の暗い色** は名前で表現できません。
+
+→ より自由に色を指定するために **カラーコード** を使います。
+
+---
+
+## カラーコード（`#` + 6桁の英数字）
+
+```css
+background-color: #1a1a2e;
+color: #fff;
+```
+
+`#` の後に **赤(R)・緑(G)・青(B)** を2桁ずつ指定する。
+色名より細かい色が指定できる。
+
+---
+
+## カラーコードの読み方
+
+6桁は **赤・緑・青** の順で、数字が大きいほどその色が強い。
+
+- `#ff0000` → 赤が最大、他が0 → **赤！**
+- `#0000ff` → 青が最大 → **青！**
+- `#000000` → 全部0 → **黒**
+- `#ffffff` → 全部最大 → **白**
+
+> カラーコードは覚えなくてOK。
+> ネットで **「カラーピッカー」** と検索すると好きな色を選べます。
 
 ---
 
@@ -1887,8 +1875,8 @@ box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 ## `border` の書き方
 
 ```css
-border: 3px solid #ff9a9e;
-/*      太さ  種類   色    */
+border: 3px solid pink;
+/*      太さ  種類   色   */
 ```
 
 3つの値をスペース区切りで書く。線の種類は `solid`（実線）、`dashed`（破線）、`dotted`（点線）、`none`（なし）。

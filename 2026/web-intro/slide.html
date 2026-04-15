@@ -1090,7 +1090,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
 }
 
 <span class="hljs-selector-class">.header</span> {
-  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#ff9a9e</span>;
+  <span class="hljs-attribute">background-color</span>: pink;
   <span class="hljs-attribute">text-align</span>: center;
   <span class="hljs-attribute">padding</span>: <span class="hljs-number">40px</span> <span class="hljs-number">20px</span>;
   <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">20px</span> <span class="hljs-number">20px</span>;
@@ -1134,7 +1134,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
 <td>ページのデフォルト余白をなくす</td>
 </tr>
 <tr>
-<td><code>background-color: #ff9a9e</code></td>
+<td><code>background-color: pink</code></td>
 <td>背景色（ピンク）</td>
 </tr>
 <tr>
@@ -1178,16 +1178,12 @@ script.js     ← JSを書くファイル（応用課題で使う）
   margin: 0.5em 0;
 }
 ;" data-marpit-pagination-total="128" data-size="16:9">
-<h2 id="css%E3%81%A7%E3%81%AE%E8%89%B2%E3%81%AE%E6%8C%87%E5%AE%9A%E6%96%B9%E6%B3%95">CSSでの色の指定方法</h2>
-<p><code>#ff9a9e</code> って何？ → <strong>カラーコード</strong> です。</p>
-<p>CSSで色を指定するには <strong>2つの方法</strong> があります。</p>
-<h3 id="1-%E8%89%B2%E3%81%AE%E5%90%8D%E5%89%8D%E8%8B%B1%E8%AA%9E">1. 色の名前（英語）</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-css"><span class="hljs-attribute">background-color</span>: pink;
-<span class="hljs-attribute">color</span>: white;
+<h2 id="border-radius-%E3%81%AE4%E3%81%A4%E3%81%AE%E5%80%A4"><code>border-radius</code> の4つの値</h2>
+<p><code>border-radius</code> に4つの値を書くと、<strong>左上・右上・右下・左下</strong>（時計回り）を個別に指定できる。</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code>border-radius: 0    0    20px  20px;
+/*             左上  右上  右下  左下  */
 </code></pre>
-<p><code>red</code>, <code>blue</code>, <code>pink</code>, <code>black</code>, <code>white</code> など約140色が使える。<br />
-ただし約140色しかないので、使いたい色がないことが多い。</p>
-<p>→ より自由に色を指定するために <strong>カラーコード</strong> を使う。</p>
+<p>→ 上は角ばったまま、下だけ丸くなる。</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="29" data-paginate="true" data-style=".columns {
   display: grid;
@@ -1212,15 +1208,21 @@ script.js     ← JSを書くファイル（応用課題で使う）
   margin: 0.5em 0;
 }
 ;" data-marpit-pagination-total="128" data-size="16:9">
-<h2 id="%E3%82%AB%E3%83%A9%E3%83%BC%E3%82%B3%E3%83%BC%E3%83%89">カラーコード</h2>
-<h3 id="2-%E3%82%AB%E3%83%A9%E3%83%BC%E3%82%B3%E3%83%BC%E3%83%89--6%E6%A1%81%E3%81%AE%E8%8B%B1%E6%95%B0%E5%AD%97">2. カラーコード（<code>#</code> + 6桁の英数字）</h3>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-css"><span class="hljs-attribute">background-color</span>: <span class="hljs-number">#ff9a9e</span>;
-<span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+<h2 id="%E3%83%98%E3%83%83%E3%83%80%E3%83%BC%E3%81%AE%E6%96%87%E5%AD%97%E3%81%AEcss">ヘッダーの文字のCSS</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-css"><span class="hljs-selector-class">.header</span> <span class="hljs-selector-tag">h1</span> {
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">color</span>: white;
+}
+
+<span class="hljs-selector-class">.header</span> <span class="hljs-selector-tag">p</span> {
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">8px</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">color</span>: white;
+}
 </code></pre>
-<p><code>#</code> の後に <strong>赤(R)・緑(G)・青(B)</strong> を2桁ずつ指定する。<br />
-より細かい色が指定できる。</p>
+<p><code>.header h1</code> = 「header の中にある h1」という意味。<br />
+これで <strong>ヘッダーの中の見出しだけ</strong> にスタイルを当てられる。</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="30" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1242,21 +1244,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-;" data-marpit-pagination-total="128" data-size="16:9">
-<h2 id="%E3%82%AB%E3%83%A9%E3%83%BC%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E8%AA%AD%E3%81%BF%E6%96%B9">カラーコードの読み方</h2>
-<p>6桁は <strong>赤・緑・青</strong> の順で、数字が大きいほどその色が強い。</p>
-<ul>
-<li><code>#ff0000</code> → 赤が最大、他が0 → <strong>赤！</strong></li>
-<li><code>#0000ff</code> → 青が最大 → <strong>青！</strong></li>
-<li><code>#000000</code> → 全部0 → <strong>黒</strong></li>
-<li><code>#ffffff</code> → 全部最大 → <strong>白</strong></li>
-</ul>
-<blockquote>
-<p>カラーコードは覚えなくてOK。<br />
-ネットで <strong>「カラーピッカー」</strong> と検索すると好きな色を選べます。</p>
-</blockquote>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/step1-header.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="30" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1267,96 +1255,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="31" style="--paginate:true;--style:.columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5em;
-}
-.big {
-  font-size: 1.6em;
-  font-weight: 800;
-  text-align: center;
-  margin: 0.5em 0;
-}
-;" data-marpit-pagination-total="128" data-size="16:9">
-<h2 id="border-radius-%E3%81%AE4%E3%81%A4%E3%81%AE%E5%80%A4"><code>border-radius</code> の4つの値</h2>
-<p><code>border-radius</code> に4つの値を書くと、<strong>左上・右上・右下・左下</strong>（時計回り）を個別に指定できる。</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code>border-radius: 0    0    20px  20px;
-/*             左上  右上  右下  左下  */
-</code></pre>
-<p>→ 上は角ばったまま、下だけ丸くなる。</p>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="32" data-paginate="true" data-style=".columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5em;
-}
-.big {
-  font-size: 1.6em;
-  font-weight: 800;
-  text-align: center;
-  margin: 0.5em 0;
-}
-" lang="ja-JP" data-marpit-pagination="32" style="--paginate:true;--style:.columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5em;
-}
-.big {
-  font-size: 1.6em;
-  font-weight: 800;
-  text-align: center;
-  margin: 0.5em 0;
-}
-;" data-marpit-pagination-total="128" data-size="16:9">
-<h2 id="%E3%83%98%E3%83%83%E3%83%80%E3%83%BC%E3%81%AE%E6%96%87%E5%AD%97%E3%81%AEcss">ヘッダーの文字のCSS</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-css"><span class="hljs-selector-class">.header</span> <span class="hljs-selector-tag">h1</span> {
-  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
-  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
-}
-
-<span class="hljs-selector-class">.header</span> <span class="hljs-selector-tag">p</span> {
-  <span class="hljs-attribute">margin</span>: <span class="hljs-number">8px</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>;
-  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
-}
-</code></pre>
-<p><code>.header h1</code> = 「header の中にある h1」という意味。<br />
-これで <strong>ヘッダーの中の見出しだけ</strong> にスタイルを当てられる。</p>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5em;
-}
-.big {
-  font-size: 1.6em;
-  font-weight: 800;
-  text-align: center;
-  margin: 0.5em 0;
-}
-" lang="ja-JP" data-marpit-pagination="33" style="--paginate:true;--style:.columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5em;
-}
-.big {
-  font-size: 1.6em;
-  font-weight: 800;
-  text-align: center;
-  margin: 0.5em 0;
-}
-;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/step1-header.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="33" data-paginate="true" data-style=".columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5em;
-}
-.big {
-  font-size: 1.6em;
-  font-weight: 800;
-  text-align: center;
-  margin: 0.5em 0;
-}
-" lang="ja-JP" data-marpit-pagination="33" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="30" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1391,7 +1290,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="33" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-paginate="true" data-class="lead" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="30" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="31" data-paginate="true" data-class="lead" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1402,7 +1301,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" class="lead" data-marpit-pagination="34" style="--paginate:true;--class:lead;--style:.columns {
+" lang="ja-JP" class="lead" data-marpit-pagination="31" style="--paginate:true;--class:lead;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1428,7 +1327,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="35" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="32" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1439,7 +1338,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/part-profile.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="35" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/part-profile.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="32" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1450,7 +1349,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="35" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="32" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1482,7 +1381,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="35" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="32" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1493,7 +1392,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="36" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="33" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1504,7 +1403,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:55%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/visual-ch4-profile.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="45%" height="720"><section id="36" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:55%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/visual-ch4-profile.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="45%" height="720"><section id="33" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1515,7 +1414,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="36" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="33" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1546,7 +1445,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="36" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="37" data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="33" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="34" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1557,7 +1456,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="37" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="34" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1584,7 +1483,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
 }
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="38" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="35" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1595,7 +1494,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="38" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="35" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1630,7 +1529,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
 </tbody>
 </table>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="39" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="36" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1641,7 +1540,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="39" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="36" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1670,7 +1569,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="37" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1681,7 +1580,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="40" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="37" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1695,7 +1594,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
 ;" data-marpit-pagination-total="128" data-size="16:9">
 <h2 id="%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AEcss">カードのCSS</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-css"><span class="hljs-selector-class">.card</span> {
-  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#fff</span>;     <span class="hljs-comment">/* 白い背景 */</span>
+  <span class="hljs-attribute">background-color</span>: white;    <span class="hljs-comment">/* 白い背景 */</span>
   <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">16px</span>;        <span class="hljs-comment">/* 角を丸く */</span>
   <span class="hljs-attribute">padding</span>: <span class="hljs-number">24px</span>;              <span class="hljs-comment">/* 内側の余白 */</span>
   <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">20px</span>;           <span class="hljs-comment">/* カード同士の間隔 */</span>
@@ -1714,7 +1613,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="41" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="38" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1725,7 +1624,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:40%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/boxmodel.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="41" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:40%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/boxmodel.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="38" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1736,7 +1635,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="41" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="38" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1768,7 +1667,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="41" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="38" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1779,7 +1678,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="42" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="39" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1790,7 +1689,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/padding-compare.png&quot;);background-size:contain;"></figure><figure style="background-image:url(&quot;imgs/margin-compare.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="42" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/padding-compare.png&quot;);background-size:contain;"></figure><figure style="background-image:url(&quot;imgs/margin-compare.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="39" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1801,7 +1700,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="42" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="39" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1830,7 +1729,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="42" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="39" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="40" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1841,7 +1740,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="43" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="40" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1876,7 +1775,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="44" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="41" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1887,7 +1786,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:55%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/flexbox-compare.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="45%" height="720"><section id="44" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:55%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/flexbox-compare.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="45%" height="720"><section id="41" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1898,7 +1797,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="44" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="41" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1933,7 +1832,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="44" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="41" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="42" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1944,7 +1843,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="45" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="42" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1962,14 +1861,14 @@ script.js     ← JSを書くファイル（応用課題で使う）
   <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;
   <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">50%</span>;       <span class="hljs-comment">/* 50%で正円 */</span>
   <span class="hljs-attribute">object-fit</span>: cover;        <span class="hljs-comment">/* 枠に合わせてトリミング */</span>
-  <span class="hljs-attribute">border</span>: <span class="hljs-number">3px</span> solid <span class="hljs-number">#ff9a9e</span>; <span class="hljs-comment">/* ピンクの枠線 */</span>
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">3px</span> solid pink; <span class="hljs-comment">/* ピンクの枠線 */</span>
 }
 </code></pre>
 <blockquote>
 <p><code>border-radius: 50%</code> で正方形が <strong>正円</strong> になる。よく使うテクニック。</p>
 </blockquote>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="46" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="43" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -1980,7 +1879,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="46" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="43" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2013,7 +1912,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="47" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="44" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2024,7 +1923,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:40%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/step2-profile.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="47" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:40%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/step2-profile.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="44" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2035,7 +1934,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="47" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="44" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2067,7 +1966,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="47" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48" data-paginate="true" data-class="lead" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="44" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="45" data-paginate="true" data-class="lead" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2078,7 +1977,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" class="lead" data-marpit-pagination="48" style="--paginate:true;--class:lead;--style:.columns {
+" lang="ja-JP" class="lead" data-marpit-pagination="45" style="--paginate:true;--class:lead;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2104,7 +2003,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="49" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="46" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2115,7 +2014,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/part-favorites.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="49" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/part-favorites.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="46" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2126,7 +2025,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="49" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="46" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2159,7 +2058,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="49" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="46" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2170,7 +2069,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="50" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="47" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2181,7 +2080,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:55%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/visual-ch5-list.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="45%" height="720"><section id="50" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:55%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/visual-ch5-list.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="45%" height="720"><section id="47" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2192,7 +2091,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="50" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="47" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2223,7 +2122,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="50" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="51" data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="47" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="48" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2234,7 +2133,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="51" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="48" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2280,7 +2179,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
 <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>        ← リストの終了
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="52" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="49" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2291,7 +2190,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="52" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="49" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2317,7 +2216,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="53" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="50" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2328,7 +2227,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="53" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="50" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2344,13 +2243,13 @@ script.js     ← JSを書くファイル（応用課題で使う）
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-css"><span class="hljs-selector-class">.card</span> <span class="hljs-selector-tag">h2</span> {
   <span class="hljs-attribute">font-size</span>: <span class="hljs-number">20px</span>;
   <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">12px</span>;
-  <span class="hljs-attribute">color</span>: <span class="hljs-number">#ff7eb3</span>;
+  <span class="hljs-attribute">color</span>: hotpink;
 }
 </code></pre>
 <p><code>.card h2</code> = 「card の中にある h2」にだけ適用。<br />
 すべての h2 ではなく、<strong>カード内の見出しだけ</strong> をピンクにします。</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="54" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="51" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2361,7 +2260,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="54" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="51" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2387,11 +2286,11 @@ script.js     ← JSを書くファイル（応用課題で使う）
 
 <span class="hljs-selector-class">.favorites-list</span> <span class="hljs-selector-tag">li</span><span class="hljs-selector-pseudo">::before</span> {
   <span class="hljs-attribute">content</span>: <span class="hljs-string">&quot;♡ &quot;</span>;
-  <span class="hljs-attribute">color</span>: <span class="hljs-number">#ff7eb3</span>;
+  <span class="hljs-attribute">color</span>: hotpink;
 }
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="55" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="52" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2402,7 +2301,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="55" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="52" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2454,7 +2353,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="56" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="53" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2465,7 +2364,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:40%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/step3-favorites.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="56" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:40%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/step3-favorites.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="53" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2476,7 +2375,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="56" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="53" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2508,7 +2407,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="56" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="57" data-paginate="true" data-class="lead" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="53" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="54" data-paginate="true" data-class="lead" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2519,7 +2418,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" class="lead" data-marpit-pagination="57" style="--paginate:true;--class:lead;--style:.columns {
+" lang="ja-JP" class="lead" data-marpit-pagination="54" style="--paginate:true;--class:lead;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2545,7 +2444,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="58" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="55" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2556,7 +2455,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/part-badges.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="58" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/part-badges.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="55" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2567,7 +2466,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="58" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="55" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2599,7 +2498,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="58" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="55" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2610,7 +2509,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="59" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="56" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2621,7 +2520,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:55%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/visual-ch6-badges.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="45%" height="720"><section id="59" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:55%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/visual-ch6-badges.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="45%" height="720"><section id="56" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2632,7 +2531,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="59" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="56" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2663,7 +2562,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="59" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="56" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2674,7 +2573,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="60" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="57" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2685,7 +2584,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/block-vs-inline.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="60" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/block-vs-inline.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="57" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2696,7 +2595,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="60" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="57" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2729,7 +2628,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="60" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="61" data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="57" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="58" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2740,7 +2639,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="61" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="58" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2765,7 +2664,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="62" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="59" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2776,7 +2675,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="62" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="59" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2797,8 +2696,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
 }
 
 <span class="hljs-selector-class">.badge</span> {
-  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#fff0f3</span>;
-  <span class="hljs-attribute">color</span>: <span class="hljs-number">#ff7eb3</span>;
+  <span class="hljs-attribute">background-color</span>: mistyrose;
+  <span class="hljs-attribute">color</span>: hotpink;
   <span class="hljs-attribute">padding</span>: <span class="hljs-number">6px</span> <span class="hljs-number">14px</span>;
   <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">20px</span>;
   <span class="hljs-attribute">font-size</span>: <span class="hljs-number">14px</span>;
@@ -2818,7 +2717,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="63" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="60" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2829,7 +2728,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:40%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/step4-badges.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="63" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:40%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/step4-badges.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="60" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2840,7 +2739,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="63" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="60" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2872,7 +2771,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="63" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="64" data-paginate="true" data-class="lead" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="60" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="61" data-paginate="true" data-class="lead" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2883,7 +2782,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" class="lead" data-marpit-pagination="64" style="--paginate:true;--class:lead;--style:.columns {
+" lang="ja-JP" class="lead" data-marpit-pagination="61" style="--paginate:true;--class:lead;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2909,7 +2808,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="65" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="62" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2920,7 +2819,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/part-sns.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="65" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:50%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/part-sns.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="62" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2931,7 +2830,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="65" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="62" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2963,7 +2862,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="65" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="62" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2974,7 +2873,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="66" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="63" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2985,7 +2884,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:55%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/visual-ch7-sns.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="45%" height="720"><section id="66" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:55%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/visual-ch7-sns.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="45%" height="720"><section id="63" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -2996,7 +2895,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="66" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="63" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3027,7 +2926,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="66" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="67" data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="63" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="64" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3038,7 +2937,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="67" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="64" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3077,7 +2976,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
 </table>
 <p><code>href</code> に自分のSNSのURLを入れると、本物のリンクになります。</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="68" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="65" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3088,7 +2987,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="68" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="65" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3110,8 +3009,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
 <span class="hljs-selector-class">.sns-link</span> {
   <span class="hljs-attribute">display</span>: inline-block;
   <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span> <span class="hljs-number">20px</span>;
-  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#ff9a9e</span>;
-  <span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+  <span class="hljs-attribute">background-color</span>: pink;
+  <span class="hljs-attribute">color</span>: white;
   <span class="hljs-attribute">text-decoration</span>: none;
   <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">25px</span>;
   <span class="hljs-attribute">font-size</span>: <span class="hljs-number">14px</span>;
@@ -3119,7 +3018,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
 }
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="69" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="66" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3130,7 +3029,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="69" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="66" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3145,10 +3044,10 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
 <p><code>text-decoration: none</code> → リンクの下線を消す</p>
 <blockquote>
 <p>ブラウザはデフォルトで <code>&lt;a&gt;</code> タグに青い文字 + 下線をつけます。<br />
-<code>text-decoration: none</code> と <code>color: #fff</code> で、それをリセットしてボタン風に見せています。</p>
+<code>text-decoration: none</code> と <code>color: white</code> で、それをリセットしてボタン風に見せています。</p>
 </blockquote>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="70" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="67" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3159,7 +3058,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="70" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="67" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3173,7 +3072,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
 ;" data-marpit-pagination-total="128" data-size="16:9">
 <h2 id="%E3%83%9B%E3%83%90%E3%83%BC%E5%8A%B9%E6%9E%9C%E3%82%92%E3%81%A4%E3%81%91%E3%82%8B">ホバー効果をつける</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-css"><span class="hljs-selector-class">.sns-link</span><span class="hljs-selector-pseudo">:hover</span> {
-  <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#ff7eb3</span>;
+  <span class="hljs-attribute">background-color</span>: hotpink;
 }
 </code></pre>
 <h3 id="hover-%E3%81%A8%E3%81%AF"><code>:hover</code> とは？</h3>
@@ -3191,7 +3090,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="71" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="68" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3202,7 +3101,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:35%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/step5-sns.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="65%" height="720"><section id="71" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:35%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/step5-sns.png&quot;);background-size:contain;"></figure></div></section></foreignObject><foreignObject width="65%" height="720"><section id="68" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3213,7 +3112,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="71" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="68" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3250,7 +3149,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="71" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="72" data-paginate="true" data-class="lead" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="68" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="69" data-paginate="true" data-class="lead" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3261,7 +3160,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" class="lead" data-marpit-pagination="72" style="--paginate:true;--class:lead;--style:.columns {
+" lang="ja-JP" class="lead" data-marpit-pagination="69" style="--paginate:true;--class:lead;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3276,7 +3175,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
 <h1 id="chapter-8">Chapter 8</h1>
 <h2 id="%E5%BF%9C%E7%94%A8%E8%AA%B2%E9%A1%8C">応用課題</h2>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="73" data-paginate="true" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="70" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3287,7 +3186,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="73" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="70" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3306,7 +3205,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
 <li>わからないことは <strong>メンターに聞いてOK</strong></li>
 </ol>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="74" data-paginate="true" data-class="lead" data-style=".columns {
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="71" data-paginate="true" data-class="lead" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3317,7 +3216,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" class="lead" data-marpit-pagination="74" style="--paginate:true;--class:lead;--style:.columns {
+" lang="ja-JP" class="lead" data-marpit-pagination="71" style="--paginate:true;--class:lead;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3343,7 +3242,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="75" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="72" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3354,7 +3253,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-;--marpit-advanced-background-split:40%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/adv-a-darkmode.gif&quot;);"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="75" data-paginate="true" data-style=".columns {
+;--marpit-advanced-background-split:40%;" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;imgs/adv-a-darkmode.gif&quot;);"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="72" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3365,7 +3264,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="75" style="--paginate:true;--style:.columns {
+" lang="ja-JP" data-marpit-pagination="72" style="--paginate:true;--style:.columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3401,7 +3300,96 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   text-align: center;
   margin: 0.5em 0;
 }
-" lang="ja-JP" data-marpit-pagination="75" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="76" data-paginate="true" data-style=".columns {
+" lang="ja-JP" data-marpit-pagination="72" style="" data-marpit-pagination-total="128" data-size="16:9" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="73" data-paginate="true" data-style=".columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5em;
+}
+.big {
+  font-size: 1.6em;
+  font-weight: 800;
+  text-align: center;
+  margin: 0.5em 0;
+}
+" lang="ja-JP" data-marpit-pagination="73" style="--paginate:true;--style:.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5em;
+}
+.big {
+  font-size: 1.6em;
+  font-weight: 800;
+  text-align: center;
+  margin: 0.5em 0;
+}
+;" data-marpit-pagination-total="128" data-size="16:9">
+<h2 id="%E3%83%80%E3%83%BC%E3%82%AF%E3%83%A2%E3%83%BC%E3%83%89%E3%81%AE%E4%BD%9C%E3%82%8A%E6%96%B9">ダークモードの作り方</h2>
+<h3 id="%E6%B5%81%E3%82%8C">流れ</h3>
+<ol>
+<li><strong>CSS</strong> — 暗い配色のスタイルを追加する</li>
+<li><strong>HTML</strong> — 切り替えボタンを追加する</li>
+<li><strong>JS</strong> — ボタンを押したらスタイルを切り替える</li>
+</ol>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="74" data-paginate="true" data-style=".columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5em;
+}
+.big {
+  font-size: 1.6em;
+  font-weight: 800;
+  text-align: center;
+  margin: 0.5em 0;
+}
+" lang="ja-JP" data-marpit-pagination="74" style="--paginate:true;--style:.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5em;
+}
+.big {
+  font-size: 1.6em;
+  font-weight: 800;
+  text-align: center;
+  margin: 0.5em 0;
+}
+;" data-marpit-pagination-total="128" data-size="16:9">
+<h2 id="%E3%81%9D%E3%81%AE%E5%89%8D%E3%81%AB-css%E3%81%A7%E3%81%AE%E8%89%B2%E3%81%AE%E6%8C%87%E5%AE%9A%E6%96%B9%E6%B3%95">その前に: CSSでの色の指定方法</h2>
+<p>これまでは <code>pink</code> や <code>white</code> のような <strong>色の名前</strong> で色を指定してきました。</p>
+<p>ただし色名は約140色しかなく、<strong>ダークモード用の暗い色</strong> は名前で表現できません。</p>
+<p>→ より自由に色を指定するために <strong>カラーコード</strong> を使います。</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="75" data-paginate="true" data-style=".columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5em;
+}
+.big {
+  font-size: 1.6em;
+  font-weight: 800;
+  text-align: center;
+  margin: 0.5em 0;
+}
+" lang="ja-JP" data-marpit-pagination="75" style="--paginate:true;--style:.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5em;
+}
+.big {
+  font-size: 1.6em;
+  font-weight: 800;
+  text-align: center;
+  margin: 0.5em 0;
+}
+;" data-marpit-pagination-total="128" data-size="16:9">
+<h2 id="%E3%82%AB%E3%83%A9%E3%83%BC%E3%82%B3%E3%83%BC%E3%83%89--6%E6%A1%81%E3%81%AE%E8%8B%B1%E6%95%B0%E5%AD%97">カラーコード（<code>#</code> + 6桁の英数字）</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-css"><span class="hljs-attribute">background-color</span>: <span class="hljs-number">#1a1a2e</span>;
+<span class="hljs-attribute">color</span>: <span class="hljs-number">#fff</span>;
+</code></pre>
+<p><code>#</code> の後に <strong>赤(R)・緑(G)・青(B)</strong> を2桁ずつ指定する。<br />
+色名より細かい色が指定できる。</p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="76" data-paginate="true" data-style=".columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5em;
@@ -3424,13 +3412,18 @@ HTMLを変えずに、CSSだけで飾りを追加できます。</p>
   margin: 0.5em 0;
 }
 ;" data-marpit-pagination-total="128" data-size="16:9">
-<h2 id="%E3%83%80%E3%83%BC%E3%82%AF%E3%83%A2%E3%83%BC%E3%83%89%E3%81%AE%E4%BD%9C%E3%82%8A%E6%96%B9">ダークモードの作り方</h2>
-<h3 id="%E6%B5%81%E3%82%8C">流れ</h3>
-<ol>
-<li><strong>CSS</strong> — 暗い配色のスタイルを追加する</li>
-<li><strong>HTML</strong> — 切り替えボタンを追加する</li>
-<li><strong>JS</strong> — ボタンを押したらスタイルを切り替える</li>
-</ol>
+<h2 id="%E3%82%AB%E3%83%A9%E3%83%BC%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E8%AA%AD%E3%81%BF%E6%96%B9">カラーコードの読み方</h2>
+<p>6桁は <strong>赤・緑・青</strong> の順で、数字が大きいほどその色が強い。</p>
+<ul>
+<li><code>#ff0000</code> → 赤が最大、他が0 → <strong>赤！</strong></li>
+<li><code>#0000ff</code> → 青が最大 → <strong>青！</strong></li>
+<li><code>#000000</code> → 全部0 → <strong>黒</strong></li>
+<li><code>#ffffff</code> → 全部最大 → <strong>白</strong></li>
+</ul>
+<blockquote>
+<p>カラーコードは覚えなくてOK。<br />
+ネットで <strong>「カラーピッカー」</strong> と検索すると好きな色を選べます。</p>
+</blockquote>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="77" data-paginate="true" data-style=".columns {
   display: grid;
@@ -5578,8 +5571,8 @@ list.<span class="hljs-title function_">addEventListener</span>(<span class="hlj
 }
 ;" data-marpit-pagination-total="128" data-size="16:9">
 <h2 id="border-%E3%81%AE%E6%9B%B8%E3%81%8D%E6%96%B9"><code>border</code> の書き方</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-css"><span class="hljs-attribute">border</span>: <span class="hljs-number">3px</span> solid <span class="hljs-number">#ff9a9e</span>;
-<span class="hljs-comment">/*      太さ  種類   色    */</span>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-css"><span class="hljs-attribute">border</span>: <span class="hljs-number">3px</span> solid pink;
+<span class="hljs-comment">/*      太さ  種類   色   */</span>
 </code></pre>
 <p>3つの値をスペース区切りで書く。線の種類は <code>solid</code>（実線）、<code>dashed</code>（破線）、<code>dotted</code>（点線）、<code>none</code>（なし）。</p>
 </section>
