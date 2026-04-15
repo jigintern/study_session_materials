@@ -145,12 +145,6 @@
       font-size: 14px;
       cursor: pointer;
       text-align: left;
-      transition: all 0.2s;
-    }
-
-    .quiz-btn:hover {
-      border-color: #ff7eb3;
-      background: #fff0f3;
     }
 
     .quiz-btn.correct {
@@ -165,19 +159,6 @@
       color: #c62828;
     }
 
-    .quiz-result {
-      margin-top: 12px;
-      padding: 10px 16px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: bold;
-      display: none;
-    }
-
-    .quiz-result.show {
-      display: block;
-    }
-
     .quiz-next {
       margin-top: 12px;
       padding: 8px 20px;
@@ -188,16 +169,6 @@
       font-size: 14px;
       cursor: pointer;
       display: none;
-    }
-
-    .quiz-next.show {
-      display: inline-block;
-    }
-
-    .quiz-score {
-      margin-top: 8px;
-      font-size: 13px;
-      color: #999;
     }
   </style>
 </head>
@@ -266,73 +237,53 @@
       <h2>ミニクイズ</h2>
       <div class="quiz-question" id="quizQuestion"></div>
       <div class="quiz-options" id="quizOptions"></div>
-      <div class="quiz-result" id="quizResult"></div>
       <button class="quiz-next" id="quizNext">次の問題 →</button>
-      <div class="quiz-score" id="quizScore"></div>
     </div>
 
   </div>
 
   <script>
-    // ===== ミニクイズ =====
     const quizData = [
       { question: "私の好きな食べ物は？", options: ["ラーメン", "寿司", "カレー"], answer: 0 },
       { question: "私が住んでいるのは？", options: ["大阪", "東京", "福岡"], answer: 1 },
       { question: "私の好きな動物は？", options: ["犬", "うさぎ", "猫"], answer: 2 }
     ];
-    let currentQuiz = 0;
-    let quizCorrect = 0;
-    let quizAnswered = false;
+    let current = 0, score = 0, answered = false;
 
     function showQuiz() {
-      const q = quizData[currentQuiz];
-      document.querySelector("#quizQuestion").textContent = "Q" + (currentQuiz + 1) + ". " + q.question;
-      const optionsDiv = document.querySelector("#quizOptions");
-      optionsDiv.innerHTML = "";
-      quizAnswered = false;
-
+      const q = quizData[current];
+      document.querySelector("#quizQuestion").textContent = "Q" + (current + 1) + ". " + q.question;
+      const div = document.querySelector("#quizOptions");
+      div.innerHTML = "";
+      answered = false;
       for (let i = 0; i < q.options.length; i++) {
         const btn = document.createElement("button");
         btn.className = "quiz-btn";
         btn.textContent = q.options[i];
         btn.setAttribute("data-index", i);
-        btn.addEventListener("click", function() {
-          if (quizAnswered) return;
-          quizAnswered = true;
+        btn.addEventListener("click", function () {
+          if (answered) return;
+          answered = true;
           const sel = Number(this.getAttribute("data-index"));
-          const correct = quizData[currentQuiz].answer;
-          if (sel === correct) {
+          if (sel === quizData[current].answer) {
             this.classList.add("correct");
-            quizCorrect++;
-            document.querySelector("#quizResult").textContent = "⭕ 正解！";
-            document.querySelector("#quizResult").style.backgroundColor = "#e8f5e9";
-            document.querySelector("#quizResult").style.color = "#2e7d32";
+            score++;
           } else {
             this.classList.add("wrong");
-            optionsDiv.querySelectorAll(".quiz-btn")[correct].classList.add("correct");
-            document.querySelector("#quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
-            document.querySelector("#quizResult").style.backgroundColor = "#ffebee";
-            document.querySelector("#quizResult").style.color = "#c62828";
+            div.querySelectorAll(".quiz-btn")[quizData[current].answer].classList.add("correct");
           }
-          document.querySelector("#quizResult").classList.add("show");
-          document.querySelector("#quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
-          if (currentQuiz < quizData.length - 1) {
-            document.querySelector("#quizNext").classList.add("show");
-          } else {
-            document.querySelector("#quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
+          if (current < quizData.length - 1) {
+            document.querySelector("#quizNext").style.display = "inline-block";
           }
         });
-        optionsDiv.appendChild(btn);
+        div.appendChild(btn);
       }
-      document.querySelector("#quizResult").classList.remove("show");
-      document.querySelector("#quizNext").classList.remove("show");
+      document.querySelector("#quizNext").style.display = "none";
     }
-
-    document.querySelector("#quizNext").addEventListener("click", function() {
-      currentQuiz++;
+    document.querySelector("#quizNext").addEventListener("click", function () {
+      current++;
       showQuiz();
     });
-
     showQuiz();
   </script>
 

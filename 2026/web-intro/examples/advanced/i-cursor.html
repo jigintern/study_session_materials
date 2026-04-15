@@ -130,7 +130,7 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: #ff7eb3;
+      background-color: #ff7eb3;
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
@@ -142,18 +142,18 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #ff9a9e;
+      background-color: #ff9a9e;
       pointer-events: none;
       z-index: 9998;
       animation: particle-fade 0.6s ease-out forwards;
     }
 
     @keyframes particle-fade {
-      from {
+      0% {
         opacity: 0.8;
         transform: translate(-50%, -50%) scale(1);
       }
-      to {
+      100% {
         opacity: 0;
         transform: translate(-50%, -50%) scale(0.2);
       }
@@ -226,26 +226,19 @@
   </div>
 
   <script>
-    // ===== カスタムカーソル + パーティクル =====
     const cursor = document.querySelector("#customCursor");
-    let moveCount = 0;
-
-    document.addEventListener("mousemove", function(e) {
+    let pc = 0;
+    document.addEventListener("mousemove", function (e) {
       cursor.style.left = e.clientX + "px";
       cursor.style.top = e.clientY + "px";
-
-      moveCount++;
-      if (moveCount % 3 !== 0) return;
-
-      const particle = document.createElement("div");
-      particle.className = "cursor-particle";
-      particle.style.left = e.clientX + "px";
-      particle.style.top = e.clientY + "px";
-      document.body.appendChild(particle);
-
-      setTimeout(function() {
-        particle.remove();
-      }, 600);
+      pc++;
+      if (pc % 3 !== 0) return;
+      const p = document.createElement("div");
+      p.className = "cursor-particle";
+      p.style.left = e.clientX + "px";
+      p.style.top = e.clientY + "px";
+      document.body.appendChild(p);
+      setTimeout(function () { p.remove(); }, 600);
     });
   </script>
 

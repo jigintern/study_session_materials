@@ -231,18 +231,20 @@
   </div>
 
   <script>
-    document.querySelectorAll('.tab-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.tab-btn').forEach(function(b) {
-          b.classList.remove('active');
-        });
-        document.querySelectorAll('.tab-content').forEach(function(c) {
-          c.classList.remove('active');
-        });
-        btn.classList.add('active');
-        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    for (let i = 0; i < tabBtns.length; i++) {
+      tabBtns[i].addEventListener("click", function () {
+        for (let j = 0; j < tabBtns.length; j++) {
+          tabBtns[j].classList.remove("active");
+        }
+        const allTabs = document.querySelectorAll(".tab-content");
+        for (let j = 0; j < allTabs.length; j++) {
+          allTabs[j].classList.remove("active");
+        }
+        this.classList.add("active");
+        document.querySelector("#tab-" + this.getAttribute("data-tab")).classList.add("active");
       });
-    });
+    }
   </script>
 
 </body>

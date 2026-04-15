@@ -82,13 +82,6 @@
     .favorites-list li {
       padding: 6px 0;
       font-size: 15px;
-      cursor: grab;
-      transition: all 0.15s;
-      border-bottom: 1px dashed #eee;
-    }
-
-    .favorites-list li:hover {
-      background: #fff0f3;
     }
 
     .favorites-list li.dragging {
@@ -103,12 +96,6 @@
     .favorites-list li::before {
       content: "♡ ";
       color: hotpink;
-    }
-
-    .drag-hint {
-      font-size: 12px;
-      color: #bbb;
-      margin-top: 8px;
     }
 
     /* ===== スキルバッジ ===== */
@@ -183,7 +170,6 @@
         <li draggable="true">音楽を聴くこと</li>
         <li draggable="true">写真を撮ること</li>
       </ul>
-      <div class="drag-hint">↕ ドラッグで並び替えできます</div>
     </div>
 
     <!-- スキル -->
@@ -211,43 +197,37 @@
   </div>
 
   <script>
-    // ===== ドラッグ並び替え =====
-    const dragList = document.querySelector("#likesList");
+    const list = document.querySelector("#likesList");
     let dragItem = null;
 
-    dragList.addEventListener("dragstart", function(e) {
+    list.addEventListener("dragstart", function (e) {
       dragItem = e.target;
       e.target.classList.add("dragging");
     });
 
-    dragList.addEventListener("dragend", function(e) {
+    list.addEventListener("dragend", function (e) {
       e.target.classList.remove("dragging");
-      const items = dragList.querySelectorAll("li");
-      for (let i = 0; i < items.length; i++) {
-        items[i].classList.remove("drag-over");
-      }
-      dragItem = null;
+      const items = list.querySelectorAll("li");
+      for (let i = 0; i < items.length; i++) items[i].classList.remove("drag-over");
     });
 
-    dragList.addEventListener("dragover", function(e) {
+    list.addEventListener("dragover", function (e) {
       e.preventDefault();
       if (e.target.tagName === "LI" && e.target !== dragItem) {
-        const items = dragList.querySelectorAll("li");
-        for (let i = 0; i < items.length; i++) {
-          items[i].classList.remove("drag-over");
-        }
+        const items = list.querySelectorAll("li");
+        for (let i = 0; i < items.length; i++) items[i].classList.remove("drag-over");
         e.target.classList.add("drag-over");
       }
     });
 
-    dragList.addEventListener("drop", function(e) {
+    list.addEventListener("drop", function (e) {
       e.preventDefault();
       if (e.target.tagName === "LI" && e.target !== dragItem) {
-        const all = Array.prototype.slice.call(dragList.querySelectorAll("li"));
+        const all = Array.from(list.querySelectorAll("li"));
         if (all.indexOf(dragItem) < all.indexOf(e.target)) {
-          dragList.insertBefore(dragItem, e.target.nextSibling);
+          list.insertBefore(dragItem, e.target.nextSibling);
         } else {
-          dragList.insertBefore(dragItem, e.target);
+          list.insertBefore(dragItem, e.target);
         }
       }
     });

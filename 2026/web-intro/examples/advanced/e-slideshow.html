@@ -199,7 +199,7 @@
         <img id="slideshowImg" class="slideshow-img" src="https://api.dicebear.com/7.x/shapes/svg?seed=photo1" alt="スライドショー画像">
         <div class="slideshow-controls">
           <button id="prevBtn" class="slideshow-btn">◀</button>
-          <span id="counter" class="slideshow-counter">1 / 3</span>
+          <span id="slideshowCounter" class="slideshow-counter">1 / 3</span>
           <button id="nextBtn" class="slideshow-btn">▶</button>
         </div>
       </div>
@@ -243,28 +243,23 @@
 
   <script>
     const photos = [
-      'https://api.dicebear.com/7.x/shapes/svg?seed=photo1',
-      'https://api.dicebear.com/7.x/shapes/svg?seed=photo2',
-      'https://api.dicebear.com/7.x/shapes/svg?seed=photo3'
+      "https://api.dicebear.com/7.x/shapes/svg?seed=photo1",
+      "https://api.dicebear.com/7.x/shapes/svg?seed=photo2",
+      "https://api.dicebear.com/7.x/shapes/svg?seed=photo3"
     ];
     let currentPhoto = 0;
-
-    const slideshowImg = document.getElementById('slideshowImg');
-    const counter = document.getElementById('counter');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+    const img = document.querySelector("#slideshowImg");
+    const counter = document.querySelector("#slideshowCounter");
 
     function updateSlideshow() {
-      slideshowImg.src = photos[currentPhoto];
-      counter.textContent = (currentPhoto + 1) + ' / ' + photos.length;
+      img.src = photos[currentPhoto];
+      counter.textContent = (currentPhoto + 1) + " / " + photos.length;
     }
-
-    prevBtn.addEventListener('click', function() {
+    document.querySelector("#prevBtn").addEventListener("click", function () {
       currentPhoto = (currentPhoto - 1 + photos.length) % photos.length;
       updateSlideshow();
     });
-
-    nextBtn.addEventListener('click', function() {
+    document.querySelector("#nextBtn").addEventListener("click", function () {
       currentPhoto = (currentPhoto + 1) % photos.length;
       updateSlideshow();
     });

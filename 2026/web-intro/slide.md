@@ -1666,7 +1666,7 @@ list.addEventListener("dragover", function(e) {
 list.addEventListener("drop", function(e) {
   e.preventDefault();
   if (e.target.tagName === "LI" && e.target !== dragItem) {
-    const all = Array.prototype.slice.call(list.querySelectorAll("li"));
+    const all = Array.from(list.querySelectorAll("li"));
     if (all.indexOf(dragItem) < all.indexOf(e.target))
       list.insertBefore(dragItem, e.target.nextSibling);
     else list.insertBefore(dragItem, e.target);

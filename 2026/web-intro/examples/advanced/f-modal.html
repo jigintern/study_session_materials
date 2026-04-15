@@ -145,13 +145,12 @@
 
     .modal-content {
       position: relative;
-      max-width: 90%;
-      max-height: 90%;
     }
 
     .modal-img {
-      max-width: 100%;
-      max-height: 80vh;
+      display: block;
+      width: min(90vw, 400px);
+      height: auto;
       border-radius: 16px;
     }
 
@@ -243,22 +242,15 @@
   </div>
 
   <script>
-    const profileImg = document.querySelector('#profileImg');
-    const modal = document.querySelector('#modal');
-    const modalClose = document.querySelector('#modalClose');
-
-    profileImg.addEventListener('click', function() {
-      modal.classList.add('show');
+    const modal = document.querySelector("#modal");
+    document.querySelector("#profileImg").addEventListener("click", function () {
+      modal.classList.add("show");
     });
-
-    modalClose.addEventListener('click', function() {
-      modal.classList.remove('show');
+    document.querySelector("#modalClose").addEventListener("click", function () {
+      modal.classList.remove("show");
     });
-
-    modal.addEventListener('click', function(e) {
-      if (e.target === modal) {
-        modal.classList.remove('show');
-      }
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) modal.classList.remove("show");
     });
   </script>
 

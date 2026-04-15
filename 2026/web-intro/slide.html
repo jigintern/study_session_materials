@@ -4900,7 +4900,7 @@ list.<span class="hljs-title function_">addEventListener</span>(<span class="hlj
 list.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&quot;drop&quot;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) {
   e.<span class="hljs-title function_">preventDefault</span>();
   <span class="hljs-keyword">if</span> (e.<span class="hljs-property">target</span>.<span class="hljs-property">tagName</span> === <span class="hljs-string">&quot;LI&quot;</span> &amp;&amp; e.<span class="hljs-property">target</span> !== dragItem) {
-    <span class="hljs-keyword">const</span> all = <span class="hljs-title class_">Array</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">slice</span>.<span class="hljs-title function_">call</span>(list.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">&quot;li&quot;</span>));
+    <span class="hljs-keyword">const</span> all = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(list.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">&quot;li&quot;</span>));
     <span class="hljs-keyword">if</span> (all.<span class="hljs-title function_">indexOf</span>(dragItem) &lt; all.<span class="hljs-title function_">indexOf</span>(e.<span class="hljs-property">target</span>))
       list.<span class="hljs-title function_">insertBefore</span>(dragItem, e.<span class="hljs-property">target</span>.<span class="hljs-property">nextSibling</span>);
     <span class="hljs-keyword">else</span> list.<span class="hljs-title function_">insertBefore</span>(dragItem, e.<span class="hljs-property">target</span>);
