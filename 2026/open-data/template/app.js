@@ -1,8 +1,10 @@
 /**
  * 福井恐竜博物館 おでかけプランナー（授業用テンプレート）
  *
- * スライドに出てきたメソッドを 1 つずつ有効にし、
- * ブラウザを再読み込みして console と画面の変化を確認します。
+ * パート 4〜8 の関数は 2 種類の方法で有効にします:
+ *   【記述】 // STUDENT: のコメントを読み、条件を満たすコードを自分で書く
+ *   【解除】 /* … * / で囲まれたブロックの先頭・末尾の行を削除する
+ * ブラウザを再読み込みして console と画面の変化を確認してください。
  */
 
 // ================================================================
@@ -82,32 +84,86 @@ const DEMO_SPOTS = [
 // 補助関数（授業運営用）
 // ================================================================
 
-function isEnabled(name) {
+// 各 STUDENT 関数が「まだ穴埋めされていない」ことを判定するためのプレースホルダ文字列辞書
+const STUDENT_PLACEHOLDER_SNIPPETS = {
+  formatDateLabel: ['return isoDate; // ← この行を書き換える'],
+  splitLines: ['return []; // ← この行を書き換える'],
+  parseDinoCsv: ['return []; // ← この行を書き換える'],
+  loadDinoData: [
+    'const res = null; // ← この行を書き換える',
+    'const text = ""; // ← この行を書き換える',
+  ],
+  splitGenres: ['return []; // ← この行を書き換える'],
+  barColor: ['return COLORS.unknown; // ← この行を書き換える'],
+  weatherScore: ['return 0; // ← この行を書き換える'],
+  loadWeatherData: [
+    'const res = null; // ← この行を書き換える',
+    'const json = {}; // ← この行を書き換える',
+  ],
+};
+
+// ----------------------------------------------------------------
+// isDefined  window にその名前の関数が定義されているか確認する
+// ----------------------------------------------------------------
+function isDefined(name) {
   return typeof window[name] === "function";
 }
 
+// ----------------------------------------------------------------
+// isEnabled  定義済みかつプレースホルダが残っていない（穴埋め完了）かを確認する
+// ----------------------------------------------------------------
+function isEnabled(name) {
+  if (!isDefined(name)) return false;
+
+  const placeholderSnippets = STUDENT_PLACEHOLDER_SNIPPETS[name];
+  if (!placeholderSnippets) return true;
+
+  const source = Function.prototype.toString.call(window[name]);
+  return !placeholderSnippets.some((snippet) => source.includes(snippet));
+}
+
+// ----------------------------------------------------------------
+// hasEnabled  複数の関数がすべて穴埋め完了かまとめて確認する
+// ----------------------------------------------------------------
 function hasEnabled(...names) {
   return names.every((name) => isEnabled(name));
 }
 
+// ----------------------------------------------------------------
+// logDemo  [demo] プレフィックス付きでコンソールにデモ結果を出力する
+// ----------------------------------------------------------------
 function logDemo(label, value) {
   console.log(`[demo] ${label}`, value);
 }
 
+// ----------------------------------------------------------------
+// warnWaiting  依存する関数がまだ完成していない旨の警告を console に出す
+// ----------------------------------------------------------------
 function warnWaiting(name, deps) {
   console.warn(`[demo] ${name}: 先に ${deps.join(" / ")} を有効にしてください`);
 }
 
+// ----------------------------------------------------------------
+// setChartStatus  グラフエリアのステータスメッセージを更新する
+// ----------------------------------------------------------------
 function setChartStatus(text) {
   const status = document.getElementById("chart-status");
   if (status) status.textContent = text;
 }
 
+// ----------------------------------------------------------------
+// setSpotsStatus  スポットエリアのステータスメッセージを更新する
+// ----------------------------------------------------------------
 function setSpotsStatus(text) {
   const status = document.getElementById("spots-status");
   if (status) status.textContent = text;
 }
 
+// ----------------------------------------------------------------
+// runPureFunctionDemos
+// 完成済みの純粋関数をサンプルデータで試し動かし、結果を console に表示する
+// ページ読み込みのたびに呼ばれ、穴埋めの進捗を console で確認できる
+// ----------------------------------------------------------------
 function runPureFunctionDemos() {
   if (isEnabled("formatDateLabel")) {
     logDemo("formatDateLabel('2026-05-03')", formatDateLabel("2026-05-03"));
@@ -166,6 +222,11 @@ function runPureFunctionDemos() {
   }
 }
 
+// ----------------------------------------------------------------
+// renderChartFallback
+// loadDinoData が完成するまでの間、サンプルデータでグラフを仮表示する
+// formatDateLabel と buildOrUpdateChart の両方が完成済みのときだけ動く
+// ----------------------------------------------------------------
 function renderChartFallback() {
   if (!hasEnabled("formatDateLabel", "buildOrUpdateChart")) return;
 
@@ -174,6 +235,11 @@ function renderChartFallback() {
   logDemo("buildOrUpdateChart()", DEMO_DINO_ROWS);
 }
 
+// ----------------------------------------------------------------
+// renderSpotsFallback
+// loadSpotsData が完成するまでの間、サンプルデータでスポット一覧を仮表示する
+// renderSpots / spotCardFromRow / normalizeSpaces がすべて完成済みのときだけ動く
+// ----------------------------------------------------------------
 function renderSpotsFallback() {
   if (!hasEnabled("renderSpots", "spotCardFromRow", "normalizeSpaces")) return;
 
@@ -186,6 +252,11 @@ function renderSpotsFallback() {
   logDemo("renderSpots('__all__')", DEMO_SPOTS.map((spot) => spot.name));
 }
 
+// ----------------------------------------------------------------
+// renderTopThreeFallback
+// renderTopThree が完成済みなら dinoRows（なければ DEMO）で TOP 3 を表示する
+// loadDinoData より前に完成している場合のフォールバックとして機能する
+// ----------------------------------------------------------------
 function renderTopThreeFallback() {
   if (!hasEnabled("renderTopThree", "formatDateLabel")) return;
 
@@ -194,22 +265,25 @@ function renderTopThreeFallback() {
   logDemo("renderTopThree()", rows.map((row) => row.date_visit));
 }
 
+// ----------------------------------------------------------------
+// logLoadedState  読み込み済みの dinoRows / allSpots の先頭 3 件を console に出力する
+// ----------------------------------------------------------------
 function logLoadedState() {
   if (dinoRows) logDemo("dinoRows loaded", dinoRows.slice(0, 3));
   if (allSpots) logDemo("allSpots loaded", allSpots.slice(0, 3));
 }
 
 // ================================================================
-// [4-1] formatDateLabel
+// [4-1] formatDateLabel  【記述】
 // ISO 日付を "M/D" に変換
-// 解除後: console に "2026-05-03" → "5/3" が出る
+// 完成後: console に "2026-05-03" → "5/3" が出る
 // ================================================================
-/*
 function formatDateLabel(isoDate) {
-  const [, m, d] = isoDate.split("-");
-  return `${Number(m)}/${Number(d)}`;
+  // STUDENT: "-" で分割して月と日を取り出し、"M/D" 形式の文字列を返してください。
+  // 例: "2026-05-03" → "5/3"（先頭ゼロは不要）
+  // ヒント: split / Number / テンプレートリテラル を使う
+  return isoDate; // ← この行を書き換える
 }
-*/
 
 // ================================================================
 // [4-2] buildOrUpdateChart
@@ -224,10 +298,9 @@ function buildOrUpdateChart(rows) {
 
   const labels = rows.map((r) => formatDateLabel(r.date_visit));
   const data = rows.map((r) => r.n_people);
-  const backgroundColor =
-    typeof barColor === "function"
-      ? rows.map((r) => barColor(r.n_people))
-      : rows.map(() => "rgba(45, 106, 79, 0.85)");
+  const backgroundColor = isEnabled("barColor")
+    ? rows.map((r) => barColor(r.n_people))
+    : rows.map(() => "rgba(45, 106, 79, 0.85)");
 
   const config = {
     type: "bar",
@@ -256,7 +329,7 @@ function buildOrUpdateChart(rows) {
             },
             label: (item) => {
               const n = item.parsed.y ?? 0;
-              if (typeof barColor !== "function") {
+              if (!isEnabled("barColor")) {
                 return `予約人数: ${n.toLocaleString("ja-JP")} 人`;
               }
               const tag =
@@ -291,58 +364,59 @@ function buildOrUpdateChart(rows) {
 */
 
 // ================================================================
-// [5-1] splitLines
+// [5-1] splitLines  【記述】
 // CSV テキストを行配列にする
-// 解除後: console に CSV が行ごとの配列で出る
+// 完成後: console に CSV が行ごとの配列で出る
 // ================================================================
-/*
 function splitLines(text) {
-  return text
-    .trim()
-    .replaceAll("\r", "")
-    .split("\n")
-    .filter((line) => line !== "");
+  // STUDENT: 次の条件を満たす処理を書いてください。
+  //   1. 前後の余分な空白・改行を取り除く
+  //   2. Windows 改行 "\r" を空文字に置き換える
+  //   3. "\n" で分割して行の配列にする
+  //   4. 空行（""）を取り除く
+  // ヒント: trim / replaceAll / split / filter を順番につなぐ
+  return []; // ← この行を書き換える
 }
-*/
 
 // ================================================================
-// [5-2] parseDinoCsv
+// [5-2] parseDinoCsv  【記述】
 // 恐竜 CSV をオブジェクト配列に変換
-// 解除後: console に rows 配列が出る
+// 完成後: console に rows 配列が出る
 // 必要: splitLines
 // ================================================================
-/*
 function parseDinoCsv(text) {
   const lines = splitLines(text);
   if (lines.length < 2) return [];
-  const rows = lines.slice(1).map((line) => {
-    const [date_visit, n_people, amount_fee] = line.split(",").map((s) => s.trim());
-    return {
-      date_visit,
-      n_people: Number(n_people) || 0,
-      amount_fee: Number(amount_fee) || 0,
-    };
-  });
-  return rows;
+  // STUDENT: lines の先頭行はヘッダーなので読み飛ばし、残りの各行を
+  //   { date_visit, n_people, amount_fee } のオブジェクトに変換してください。
+  //   - "," で分割して前後の空白を trim する
+  //   - n_people と amount_fee は Number() で数値にする（変換失敗時は 0）
+  // ヒント: slice(1) / map / split / trim / Number
+  return []; // ← この行を書き換える
 }
-*/
 
 // ================================================================
-// [5-3] loadDinoData
+// [5-3] loadDinoData  【記述】
 // 公開 CSV を fetch して rows にし、グラフを更新
-// 解除後: 棒グラフが本番データに切り替わる
+// 完成後: 棒グラフが本番データに切り替わる
 // 必要: parseDinoCsv / buildOrUpdateChart
 // ================================================================
-/*
 async function loadDinoData() {
   const thresholdEl = document.getElementById("threshold-value");
   if (thresholdEl) thresholdEl.textContent = String(CROWD_THRESHOLD);
   setChartStatus("予約データを読み込み中…");
 
-  const res = await fetch(DINO_CSV_URL);
+  // STUDENT: DINO_CSV_URL に fetch リクエストを送り、レスポンスを受け取ってください。
+  //   - await を使って非同期に待機する
+  //   - 取得に失敗したとき（res.ok が false）はエラーを throw する
+  // ヒント: const res = await fetch(...);
+  const res = null; // ← この行を書き換える
   if (!res.ok) throw new Error(`恐竜データの取得に失敗しました (${res.status})`);
 
-  const text = await res.text();
+  // STUDENT: レスポンスをテキスト（CSV 文字列）として受け取ってください。
+  // ヒント: const text = await res.text();
+  const text = ""; // ← この行を書き換える
+
   const rows = parseDinoCsv(text);
   dinoRows = rows;
 
@@ -353,7 +427,6 @@ async function loadDinoData() {
     renderTopThree(rows);
   }
 }
-*/
 
 // ================================================================
 // [6-1] normalizeSpaces
@@ -373,19 +446,20 @@ function normalizeSpaces(text) {
 */
 
 // ================================================================
-// [6-2] splitGenres
+// [6-2] splitGenres  【記述】
 // category のカンマ区切りをジャンル配列にする
-// 解除後: console にジャンル配列が出る
+// 完成後: console にジャンル配列が出る
 // ================================================================
-/*
 function splitGenres(category) {
   if (!category) return [];
-  return category
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
+  // STUDENT: 次の条件を満たす処理を書いてください。
+  //   1. "," でジャンルを分割する
+  //   2. 各ジャンルの前後の空白を取り除く
+  //   3. 空文字を取り除く
+  // 例: "テーマパーク, 家族向け" → ["テーマパーク", "家族向け"]
+  // ヒント: split / map / trim / filter(Boolean)
+  return []; // ← この行を書き換える
 }
-*/
 
 // ================================================================
 // [6-3] collectUniqueGenres
@@ -533,17 +607,18 @@ function loadSpotsData() {
 */
 
 // ================================================================
-// [7-1] barColor
+// [7-1] barColor  【記述】
 // 予約人数を棒の色に変換
-// 解除後: console に 0 / 120 / 800 の色判定が出て、グラフも色分けされる
+// 完成後: console に 0 / 120 / 800 の色判定が出て、グラフも色分けされる
 // ================================================================
-/*
 function barColor(nPeople) {
-  if (nPeople <= 0) return COLORS.unknown;
-  if (nPeople < CROWD_THRESHOLD) return COLORS.empty;
-  return COLORS.crowded;
+  // STUDENT: nPeople の値に応じて 3 種類の色を返してください。
+  //   - 0 以下（未確定）→ COLORS.unknown
+  //   - CROWD_THRESHOLD（500人）未満 → COLORS.empty（空きやすい）
+  //   - それ以上 → COLORS.crowded（混みやすい）
+  // ヒント: COLORS と CROWD_THRESHOLD は定数として定義済み
+  return COLORS.unknown; // ← この行を書き換える
 }
-*/
 
 // ================================================================
 // [7-2] renderTopThree
@@ -582,29 +657,37 @@ function renderTopThree(rows) {
 */
 
 // ================================================================
-// [8-1] weatherScore
+// [8-1] weatherScore  【記述】
 // 降水量(mm)を点数に変換する例（発展: おすすめ並びに天気を足すときに使える。メインの TOP 3 には未使用）
-// 解除後: console に晴れ / 小雨 / 雨の点数が出る
+// 完成後: console に晴れ / 小雨 / 雨の点数が出る
 // ================================================================
-/*
 function weatherScore(precipitation) {
-  if (precipitation === 0) return 30;
-  if (precipitation < 5) return 10;
-  return -20;
+  // STUDENT: 降水量(mm)に応じて点数を返してください。
+  //   - 0mm（晴れ）→ 30 点
+  //   - 5mm 未満（小雨）→ 10 点
+  //   - 5mm 以上（雨）→ -20 点
+  // ヒント: if 文の条件と戻り値を書く（=== と < を使い分ける）
+  return 0; // ← この行を書き換える
 }
-*/
 
 // ================================================================
-// [8-2] loadWeatherData
+// [8-2] loadWeatherData  【記述】
 // Open-Meteo から降水量を取得し、画面上の天気エリアに表示する（おすすめ TOP 3 の並びには使わない）
-// 解除後: console に日付→降水量の一部が出る（logDemo）
+// 完成後: console に日付→降水量の一部が出る（logDemo）
 // ================================================================
-/*
 async function loadWeatherData() {
-  const res = await fetch(OPEN_METEO_URL);
+  // STUDENT: OPEN_METEO_URL に fetch リクエストを送り、レスポンスを受け取ってください。
+  //   - await を使って非同期に待機する
+  //   - 取得失敗時はエラーを throw する
+  // ヒント: const res = await fetch(...);
+  const res = null; // ← この行を書き換える
   if (!res.ok) throw new Error(`天気データの取得に失敗しました (${res.status})`);
 
-  const json = await res.json();
+  // STUDENT: レスポンスを JSON オブジェクトとして受け取ってください。
+  //   - CSV と違い、天気 API は JSON を返すので res.json() を使う
+  // ヒント: const json = await res.json();
+  const json = {}; // ← この行を書き換える
+
   const dates = json.daily?.time ?? [];
   const precips = json.daily?.precipitation_sum ?? [];
   const weatherMap = new Map(dates.map((d, i) => [d, precips[i] ?? 0]));
@@ -632,7 +715,6 @@ async function loadWeatherData() {
   }
   logDemo("loadWeatherData()", Array.from(weatherMap.entries()).slice(0, 3));
 }
-*/
 
 // ================================================================
 // 付録 A: `map.html` 用のロジック（参考）
