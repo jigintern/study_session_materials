@@ -1313,6 +1313,8 @@ likeBtn.addEventListener("click", function() {
 
 ## ★ ページ訪問回数
 
+![bg right:35% fit](imgs/adv-c-visit-counter.png)
+
 **完成イメージ**: ヘッダーに「このページは N 回目の訪問です」と表示。ブラウザを閉じても回数が残る。
 
 ### 手順
@@ -1348,7 +1350,7 @@ document.querySelector("#visitCount").textContent = "このページは " + visi
 
 ## ★ 現在時刻の表示
 
-![bg right:35% fit](imgs/adv-c-clock.png)
+![bg right:35% fit](imgs/adv-d-clock.png)
 
 **完成イメージ**: ヘッダーに「🕐 14:32:05」のように現在時刻が表示され、毎秒更新される。
 
@@ -1391,7 +1393,7 @@ setInterval(updateClock, 1000);
 
 ## ★★ タブ切り替え
 
-![bg right:35% fit](imgs/adv-d-tabs.gif)
+![bg right:35% fit](imgs/adv-e-tabs.gif)
 
 **完成イメージ**: 「好きなもの」カードに2つのタブ。クリックで「好きなもの」と「苦手なもの」の表示が切り替わる。
 
@@ -1448,7 +1450,7 @@ for (let i = 0; i < tabBtns.length; i++) {
 
 ## ★★ 画像スライドショー
 
-![bg right:35% fit](imgs/adv-e-slideshow.gif)
+![bg right:35% fit](imgs/adv-f-slideshow.gif)
 
 **完成イメージ**: フォトギャラリーに画像1枚 + ← → ボタン。ボタンで画像が切り替わり「1 / 3」と表示。最後の次は最初に戻る。
 
@@ -1500,7 +1502,7 @@ document.querySelector("#nextBtn").addEventListener("click", function() {
 
 ## ★★ カスタムカーソル
 
-![bg right:35% fit](imgs/adv-i-cursor.png)
+![bg right:35% fit](imgs/adv-j-cursor.png)
 
 **完成イメージ**: マウスカーソルがピンクの丸に変わる。動かすとキラキラしたパーティクルが軌跡に残って消える。
 
@@ -1566,7 +1568,7 @@ document.addEventListener("mousemove", function(e) {
 
 ## ★★★ モーダル（ポップアップ）
 
-![bg right:35% fit](imgs/adv-f-modal.gif)
+![bg right:35% fit](imgs/adv-g-modal.gif)
 
 **完成イメージ**: プロフィール写真をクリック → 画面全体が暗くなり写真が拡大表示。暗い部分 or × ボタンで閉じる。
 
@@ -1626,7 +1628,7 @@ modal.addEventListener("click", function(e) {
 
 ## ★★★ ドラッグで並び替え
 
-![bg right:35% fit](imgs/adv-g-drag.gif)
+![bg right:35% fit](imgs/adv-h-drag.gif)
 
 **完成イメージ**: 好きなものリストの項目をドラッグ&ドロップで順番変更。ドラッグ中は半透明、ドロップ先はハイライト。
 
@@ -1686,7 +1688,7 @@ list.addEventListener("drop", function(e) {
 
 ## ★★★ ミニクイズゲーム
 
-![bg right:35% fit](imgs/adv-h-quiz.png)
+![bg right:35% fit](imgs/adv-i-quiz.png)
 
 **完成イメージ**: 「私の好きな食べ物は？」などの3択クイズ。正解は緑、不正解は赤。全3問、スコア表示付き。
 
