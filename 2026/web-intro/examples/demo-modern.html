@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自己紹介ページ（モダンデザイン）</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+    /* ===== 全体 ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", "Noto Sans JP", sans-serif;
+      background-color: #0a0a0a;
+      color: #f5f5f5;
+      overflow-x: hidden;
+    }
+
+    /* ===== ヒーローセクション（画面いっぱい） ===== */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%),
+        url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=80') center/cover no-repeat;
+      z-index: 0;
+      transform: scale(1.05);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 24px;
+    }
+    .hero-name {
+      font-size: clamp(48px, 10vw, 96px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-tagline {
+      font-size: clamp(16px, 3vw, 22px);
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 16px;
+    }
+    /* 応用D: 時刻 */
+    .hero-clock {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 20px;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.1em;
+    }
+    /* 応用C: 訪問回数 */
+    .hero-visits {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.25);
+      margin-top: 6px;
+    }
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ===== スクロールアニメーション（共通） ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-60px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(60px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ===== セクション共通 ===== */
+    .section {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #8b5cf6;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    /* ===== プロフィールセクション ===== */
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    .profile-img-wrap {
+      flex-shrink: 0;
+      position: relative;
+    }
+    .profile-img {
+      width: 160px;
+      height: 160px;
+      border-radius: 32px;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .profile-img-wrap:hover .profile-img {
+      transform: scale(1.03);
+    }
+    .profile-img-glow {
+      position: absolute;
+      inset: -4px;
+      border-radius: 36px;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      z-index: -1;
+      opacity: 0.5;
+      filter: blur(16px);
+    }
+    .profile-bio p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #a0a0b0;
+    }
+
+    /* 応用B: いいねボタン */
+    .like-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      padding: 8px 20px;
+      border: 1.5px solid rgba(139, 92, 246, 0.4);
+      border-radius: 100px;
+      background: none;
+      color: #a78bfa;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .like-btn:hover {
+      background: rgba(139, 92, 246, 0.15);
+      border-color: #8b5cf6;
+    }
+    .like-btn.liked {
+      background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    /* ===== フォトギャラリー（スライドショー） ===== */
+    .gallery-wrap {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .slideshow-img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.3s;
+    }
+    .slideshow-controls {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 8px 16px;
+      border-radius: 100px;
+    }
+    .slideshow-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .slideshow-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .slideshow-counter {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+      font-variant-numeric: tabular-nums;
+      min-width: 36px;
+      text-align: center;
+    }
+
+    /* ===== タブ + リスト ===== */
+    .tab-header {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 4px;
+      width: fit-content;
+    }
+    .tab-btn {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      color: #666;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #8b5cf6;
+      color: #fff;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .favorites-list {
+      list-style: none;
+    }
+    .favorites-list li {
+      padding: 14px 16px;
+      font-size: 15px;
+      color: #c0c0d0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      cursor: grab;
+      border-radius: 10px;
+      transition: all 0.15s;
+    }
+    .favorites-list li:last-child { border-bottom: none; }
+    .favorites-list li::before {
+      content: "♡ ";
+      color: #ec4899;
+    }
+    .favorites-list li:hover {
+      background: rgba(139, 92, 246, 0.06);
+    }
+    .favorites-list li.dragging { opacity: 0.3; }
+    .favorites-list li.drag-over {
+      background: rgba(139, 92, 246, 0.1);
+      box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.3);
+    }
+    .drag-hint {
+      font-size: 11px;
+      color: #444;
+      margin-top: 10px;
+    }
+
+    /* ===== スキルバッジ ===== */
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .badge {
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      color: #a78bfa;
+      background: rgba(139, 92, 246, 0.06);
+      transition: all 0.2s;
+    }
+    .badge:hover {
+      background: rgba(139, 92, 246, 0.15);
+      transform: translateY(-2px);
+    }
+
+    /* ===== SNSリンク ===== */
+    .sns-links {
+      display: flex;
+      gap: 12px;
+    }
+    .sns-link {
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #c0c0d0;
+      text-decoration: none;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.25s;
+    }
+    .sns-link:hover {
+      background: #8b5cf6;
+      border-color: #8b5cf6;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+    }
+
+    /* ===== ミニクイズ ===== */
+    .quiz-question {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .quiz-btn {
+      padding: 14px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 15px;
+      color: #c0c0d0;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+    .quiz-btn:hover {
+      border-color: #8b5cf6;
+      background: rgba(139, 92, 246, 0.08);
+    }
+    .quiz-btn.correct {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.1);
+      color: #34d399;
+    }
+    .quiz-btn.wrong {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.08);
+      color: #f87171;
+    }
+    .quiz-result {
+      margin-top: 14px;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      display: none;
+    }
+    .quiz-result.show { display: block; }
+    .quiz-next {
+      margin-top: 14px;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 100px;
+      background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: none;
+      transition: box-shadow 0.2s;
+    }
+    .quiz-next:hover { box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4); }
+    .quiz-next.show { display: inline-block; }
+    .quiz-score { margin-top: 10px; font-size: 13px; color: #666; }
+
+    /* ===== ダークモードボタン → ライトモードボタン（デフォルトがダーク） ===== */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      padding: 8px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 100px;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.7);
+      transition: all 0.2s;
+    }
+    .theme-toggle:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #fff;
+    }
+
+    /* ===== モーダル ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-content {
+      position: relative;
+      animation: modal-in 0.3s ease-out;
+    }
+    @keyframes modal-in {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-img {
+      max-width: min(90vw, 500px);
+      max-height: 80vh;
+      border-radius: 32px;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+    }
+    .modal-close {
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 50%;
+      background: #fff;
+      color: #000;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      transition: transform 0.15s;
+    }
+    .modal-close:hover { transform: scale(1.1); }
+
+    /* ===== カスタムカーソル ===== */
+    .custom-cursor {
+      position: fixed;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: screen;
+      opacity: 0.9;
+    }
+    .cursor-particle {
+      position: fixed;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #a78bfa;
+      pointer-events: none;
+      z-index: 9998;
+      animation: particle-fade 0.5s ease-out forwards;
+    }
+    @keyframes particle-fade {
+      0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+    }
+
+    /* ===== 区切り線 ===== */
+    .divider {
+      max-width: 720px;
+      margin: 0 auto;
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* ===== ライトモード ===== */
+    body.light {
+      background-color: #f5f5f7;
+      color: #1a1a2e;
+    }
+    body.light .hero-bg {
+      filter: brightness(1.1);
+    }
+    body.light .hero-tagline {
+      color: rgba(255, 255, 255, 0.85);
+    }
+    body.light .section-title {
+      color: #1a1a2e;
+    }
+    body.light .profile-bio p {
+      color: #4b5563;
+    }
+    body.light .favorites-list li {
+      color: #4b5563;
+      border-color: rgba(0, 0, 0, 0.06);
+    }
+    body.light .favorites-list li:hover {
+      background: rgba(139, 92, 246, 0.04);
+    }
+    body.light .favorites-list li.drag-over {
+      background: rgba(139, 92, 246, 0.08);
+      box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.3);
+    }
+    body.light .drag-hint {
+      color: #aaa;
+    }
+    body.light .tab-header {
+      background: rgba(0, 0, 0, 0.04);
+    }
+    body.light .tab-btn {
+      color: #999;
+    }
+    body.light .tab-btn.active {
+      background: #8b5cf6;
+      color: #fff;
+    }
+    body.light .badge {
+      background: rgba(139, 92, 246, 0.08);
+      color: #7c3aed;
+      border-color: rgba(139, 92, 246, 0.2);
+    }
+    body.light .sns-link {
+      background: rgba(0, 0, 0, 0.04);
+      color: #4b5563;
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    body.light .sns-link:hover {
+      background: #8b5cf6;
+      border-color: #8b5cf6;
+      color: #fff;
+    }
+    body.light .quiz-btn {
+      background: rgba(0, 0, 0, 0.02);
+      border-color: rgba(0, 0, 0, 0.1);
+      color: #333;
+    }
+    body.light .quiz-btn:hover {
+      border-color: #8b5cf6;
+      background: rgba(139, 92, 246, 0.05);
+    }
+    body.light .quiz-question {
+      color: #1a1a2e;
+    }
+    body.light .quiz-score {
+      color: #999;
+    }
+    body.light .like-btn {
+      border-color: rgba(139, 92, 246, 0.3);
+      color: #7c3aed;
+    }
+    body.light .like-btn:hover {
+      background: rgba(139, 92, 246, 0.1);
+    }
+    body.light .like-btn.liked {
+      background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+      border-color: transparent;
+      color: #fff;
+    }
+    body.light .divider {
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+    body.light .theme-toggle {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(0, 0, 0, 0.1);
+      color: #333;
+    }
+    body.light .slideshow-controls {
+      background: rgba(0, 0, 0, 0.6);
+    }
+    body.light .custom-cursor {
+      mix-blend-mode: difference;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- カスタムカーソル -->
+  <div class="custom-cursor" id="customCursor"></div>
+
+  <!-- テーマ切替（固定） -->
+  <button class="theme-toggle" id="themeToggle">☀️ ライトモード</button>
+
+  <!-- モーダル -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">✕</button>
+      <img src="https://api.dicebear.com/7.x/thumbs/svg?seed=Hanako&backgroundColor=ffdfbf&size=400" alt="拡大" class="modal-img">
+    </div>
+  </div>
+
+  <!-- ===== ヒーロー（画面いっぱい） ===== -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1 class="hero-name">田中 はなこ</h1>
+      <p class="hero-tagline">Web開発をはじめたばかりの大学生です！</p>
+      <div class="hero-clock" id="clock">00:00:00</div>
+      <div class="hero-visits" id="visitCount"></div>
+    </div>
+    <div class="hero-scroll-hint">scroll ↓</div>
+  </section>
+
+  <!-- ===== プロフィール ===== -->
+  <div class="section">
+    <div class="reveal-left section-label">About</div>
+    <div class="reveal-left section-title">自己紹介</div>
+    <div class="profile-section reveal">
+      <div class="profile-img-wrap" id="profileImg">
+        <div class="profile-img-glow"></div>
+        <img src="https://api.dicebear.com/7.x/thumbs/svg?seed=Hanako&backgroundColor=ffdfbf" alt="プロフィール写真" class="profile-img">
+      </div>
+      <div class="profile-bio">
+        <p>こんにちは！田中はなこです。</p>
+        <p>東京に住んでいて、カフェ巡りと猫が好きです。最近プログラミングを始めました！</p>
+        <button class="like-btn" id="likeBtn">♡ 0 いいね</button>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== フォトギャラリー ===== -->
+  <div class="section">
+    <div class="reveal-right section-label">Gallery</div>
+    <div class="reveal-right section-title">フォトギャラリー</div>
+    <div class="gallery-wrap reveal">
+      <img src="https://api.dicebear.com/7.x/shapes/svg?seed=photo1&backgroundColor=ffdfbf,ffd5dc,c0aede" alt="写真" class="slideshow-img" id="slideshowImg">
+      <div class="slideshow-controls">
+        <button class="slideshow-btn" id="prevBtn">←</button>
+        <span class="slideshow-counter" id="slideshowCounter">1 / 3</span>
+        <button class="slideshow-btn" id="nextBtn">→</button>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 好きなもの（タブ + ドラッグ） ===== -->
+  <div class="section">
+    <div class="reveal-left section-label">Favorites</div>
+    <div class="reveal-left section-title">好きなもの・苦手なもの</div>
+    <div class="reveal">
+      <div class="tab-header">
+        <button class="tab-btn active" data-tab="likes">好きなもの</button>
+        <button class="tab-btn" data-tab="dislikes">苦手なもの</button>
+      </div>
+      <div class="tab-content active" id="tab-likes">
+        <ul class="favorites-list" id="likesList">
+          <li draggable="true">カフェ巡り</li>
+          <li draggable="true">猫</li>
+          <li draggable="true">ラーメン</li>
+          <li draggable="true">音楽を聴くこと</li>
+          <li draggable="true">写真を撮ること</li>
+        </ul>
+        <div class="drag-hint">↕ ドラッグで並び替えできます</div>
+      </div>
+      <div class="tab-content" id="tab-dislikes">
+        <ul class="favorites-list">
+          <li>早起き</li>
+          <li>虫</li>
+          <li>満員電車</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== スキル ===== -->
+  <div class="section">
+    <div class="reveal-right section-label">Skills</div>
+    <div class="reveal-right section-title">できること</div>
+    <div class="badges reveal">
+      <span class="badge">HTML</span>
+      <span class="badge">CSS</span>
+      <span class="badge">JavaScript</span>
+      <span class="badge">写真</span>
+      <span class="badge">デザイン</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== SNSリンク ===== -->
+  <div class="section">
+    <div class="reveal-left section-label">Links</div>
+    <div class="reveal-left section-title">SNS</div>
+    <div class="sns-links reveal">
+      <a href="#" class="sns-link">X</a>
+      <a href="#" class="sns-link">Instagram</a>
+      <a href="#" class="sns-link">GitHub</a>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== ミニクイズ ===== -->
+  <div class="section">
+    <div class="reveal-right section-label">Quiz</div>
+    <div class="reveal-right section-title">私のことクイズ</div>
+    <div class="reveal">
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-result" id="quizResult"></div>
+      <button class="quiz-next" id="quizNext">次の問題 →</button>
+      <div class="quiz-score" id="quizScore"></div>
+    </div>
+  </div>
+
+  <div style="height: 80px;"></div>
+
+  <script>
+    // ===== スクロールアニメーション（IntersectionObserver） =====
+    const reveals = document.querySelectorAll(".reveal, .reveal-left, .reveal-right");
+    const observer = new IntersectionObserver(function(entries) {
+      for (let i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) {
+          entries[i].target.classList.add("visible");
+        }
+      }
+    }, { threshold: 0.15 });
+    for (let i = 0; i < reveals.length; i++) {
+      observer.observe(reveals[i]);
+    }
+
+    // ===== ヒーロー視差（スクロールで背景が少しずれる） =====
+    const heroBg = document.querySelector(".hero-bg");
+    window.addEventListener("scroll", function() {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        heroBg.style.transform = "scale(1.05) translateY(" + (y * 0.3) + "px)";
+      }
+    });
+
+    // ===== 応用A: ダークモード（デフォルトがダーク調なので「ライトモード」切替） =====
+    const themeToggle = document.querySelector("#themeToggle");
+    themeToggle.addEventListener("click", function() {
+      document.body.classList.toggle("light");
+      if (document.body.classList.contains("light")) {
+        themeToggle.textContent = "🌙 ダークモード";
+      } else {
+        themeToggle.textContent = "☀️ ライトモード";
+      }
+    });
+
+    // ===== 応用B: いいねボタン =====
+    let likeCount = 0;
+    const likeBtn = document.querySelector("#likeBtn");
+    likeBtn.addEventListener("click", function() {
+      likeCount++;
+      likeBtn.textContent = "♡ " + likeCount + " いいね";
+      likeBtn.classList.add("liked");
+    });
+
+    // ===== 応用C: 訪問回数 =====
+    let visits = localStorage.getItem("visitCount");
+    if (visits === null) visits = 0;
+    visits = Number(visits) + 1;
+    localStorage.setItem("visitCount", visits);
+    document.querySelector("#visitCount").textContent = visits + " 回目の訪問";
+
+    // ===== 応用D: 現在時刻 =====
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, "0");
+      const m = String(now.getMinutes()).padStart(2, "0");
+      const s = String(now.getSeconds()).padStart(2, "0");
+      document.querySelector("#clock").textContent = h + ":" + m + ":" + s;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // ===== 応用E: タブ =====
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    for (let i = 0; i < tabBtns.length; i++) {
+      tabBtns[i].addEventListener("click", function() {
+        for (let j = 0; j < tabBtns.length; j++) tabBtns[j].classList.remove("active");
+        const allTabs = document.querySelectorAll(".tab-content");
+        for (let j = 0; j < allTabs.length; j++) allTabs[j].classList.remove("active");
+        this.classList.add("active");
+        document.querySelector("#tab-" + this.getAttribute("data-tab")).classList.add("active");
+      });
+    }
+
+    // ===== 応用F: スライドショー =====
+    const photos = [
+      "https://api.dicebear.com/7.x/shapes/svg?seed=photo1&backgroundColor=ffdfbf,ffd5dc,c0aede",
+      "https://api.dicebear.com/7.x/shapes/svg?seed=photo2&backgroundColor=b6e3f4,c0aede,d1d4f9",
+      "https://api.dicebear.com/7.x/shapes/svg?seed=photo3&backgroundColor=ffd5dc,ffdfbf,d1d4f9"
+    ];
+    let currentPhoto = 0;
+    const slideshowImg = document.querySelector("#slideshowImg");
+    const slideshowCounter = document.querySelector("#slideshowCounter");
+    function updateSlideshow() {
+      slideshowImg.src = photos[currentPhoto];
+      slideshowCounter.textContent = (currentPhoto + 1) + " / " + photos.length;
+    }
+    document.querySelector("#prevBtn").addEventListener("click", function() {
+      currentPhoto = (currentPhoto - 1 + photos.length) % photos.length;
+      updateSlideshow();
+    });
+    document.querySelector("#nextBtn").addEventListener("click", function() {
+      currentPhoto = (currentPhoto + 1) % photos.length;
+      updateSlideshow();
+    });
+
+    // ===== 応用H: モーダル =====
+    const modal = document.querySelector("#modal");
+    document.querySelector("#profileImg").addEventListener("click", function() { modal.classList.add("show"); });
+    document.querySelector("#modalClose").addEventListener("click", function() { modal.classList.remove("show"); });
+    modal.addEventListener("click", function(e) { if (e.target === modal) modal.classList.remove("show"); });
+
+    // ===== 応用I: ドラッグ並び替え =====
+    const dragList = document.querySelector("#likesList");
+    let dragItem = null;
+    dragList.addEventListener("dragstart", function(e) { dragItem = e.target; e.target.classList.add("dragging"); });
+    dragList.addEventListener("dragend", function(e) {
+      e.target.classList.remove("dragging");
+      const items = dragList.querySelectorAll("li");
+      for (let i = 0; i < items.length; i++) items[i].classList.remove("drag-over");
+      dragItem = null;
+    });
+    dragList.addEventListener("dragover", function(e) {
+      e.preventDefault();
+      if (e.target.tagName === "LI" && e.target !== dragItem) {
+        const items = dragList.querySelectorAll("li");
+        for (let i = 0; i < items.length; i++) items[i].classList.remove("drag-over");
+        e.target.classList.add("drag-over");
+      }
+    });
+    dragList.addEventListener("drop", function(e) {
+      e.preventDefault();
+      if (e.target.tagName === "LI" && e.target !== dragItem) {
+        const all = Array.prototype.slice.call(dragList.querySelectorAll("li"));
+        if (all.indexOf(dragItem) < all.indexOf(e.target)) {
+          dragList.insertBefore(dragItem, e.target.nextSibling);
+        } else {
+          dragList.insertBefore(dragItem, e.target);
+        }
+      }
+    });
+
+    // ===== 応用J: ミニクイズ =====
+    const quizData = [
+      { question: "私の好きな食べ物は？", options: ["ラーメン", "寿司", "カレー"], answer: 0 },
+      { question: "私が住んでいるのは？", options: ["大阪", "東京", "福岡"], answer: 1 },
+      { question: "私の好きな動物は？", options: ["犬", "うさぎ", "猫"], answer: 2 }
+    ];
+    let currentQuiz = 0, quizCorrect = 0, quizAnswered = false;
+    function showQuiz() {
+      const q = quizData[currentQuiz];
+      document.querySelector("#quizQuestion").textContent = "Q" + (currentQuiz + 1) + ". " + q.question;
+      const optionsDiv = document.querySelector("#quizOptions");
+      optionsDiv.innerHTML = "";
+      quizAnswered = false;
+      for (let i = 0; i < q.options.length; i++) {
+        const btn = document.createElement("button");
+        btn.className = "quiz-btn";
+        btn.textContent = q.options[i];
+        btn.setAttribute("data-index", i);
+        btn.addEventListener("click", function() {
+          if (quizAnswered) return;
+          quizAnswered = true;
+          const sel = Number(this.getAttribute("data-index"));
+          const correct = quizData[currentQuiz].answer;
+          if (sel === correct) {
+            this.classList.add("correct"); quizCorrect++;
+            document.querySelector("#quizResult").textContent = "⭕ 正解！";
+            document.querySelector("#quizResult").style.backgroundColor = "rgba(16,185,129,0.1)";
+            document.querySelector("#quizResult").style.color = "#34d399";
+          } else {
+            this.classList.add("wrong");
+            optionsDiv.querySelectorAll(".quiz-btn")[correct].classList.add("correct");
+            document.querySelector("#quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
+            document.querySelector("#quizResult").style.backgroundColor = "rgba(239,68,68,0.08)";
+            document.querySelector("#quizResult").style.color = "#f87171";
+          }
+          document.querySelector("#quizResult").classList.add("show");
+          document.querySelector("#quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
+          if (currentQuiz < quizData.length - 1) {
+            document.querySelector("#quizNext").classList.add("show");
+          } else {
+            document.querySelector("#quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
+          }
+        });
+        optionsDiv.appendChild(btn);
+      }
+      document.querySelector("#quizResult").classList.remove("show");
+      document.querySelector("#quizNext").classList.remove("show");
+    }
+    document.querySelector("#quizNext").addEventListener("click", function() { currentQuiz++; showQuiz(); });
+    showQuiz();
+
+    // ===== 応用G: カスタムカーソル =====
+    const cursor = document.querySelector("#customCursor");
+    let pc = 0;
+    document.addEventListener("mousemove", function(e) {
+      cursor.style.left = e.clientX + "px";
+      cursor.style.top = e.clientY + "px";
+      pc++;
+      if (pc % 4 !== 0) return;
+      const p = document.createElement("div");
+      p.className = "cursor-particle";
+      p.style.left = e.clientX + "px";
+      p.style.top = e.clientY + "px";
+      document.body.appendChild(p);
+      setTimeout(function() { p.remove(); }, 500);
+    });
+  </script>
+
+</body>
+</html>
