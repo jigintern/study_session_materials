@@ -62,6 +62,15 @@ jobs:
       - name: Make Directory
         run: mkdir dest && cp -r ./${{ matrix.slide }}/imgs ./dest/imgs || true
 
+      - name: Copy Web App (open-data-2026 only)
+        if: matrix.output_name == 'open-data-2026'
+        run: |
+          cp ./${{ matrix.slide }}/index.html ./dest/index.html
+          cp ./${{ matrix.slide }}/styles.css ./dest/styles.css
+          cp ./${{ matrix.slide }}/app.js ./dest/app.js
+          cp ./${{ matrix.slide }}/map.html ./dest/map.html
+          cp ./${{ matrix.slide }}/open-meteo.html ./dest/open-meteo.html
+
       - name: Build Marp PDF
         run: pnpm exec marp ${{ matrix.slide }}/slide.md
           --pdf

@@ -32,7 +32,7 @@ paginate: true
 | 2   | **Web ページの三本柱** ― HTML・CSS・JavaScript             | 15分 |
 | 3   | **問いを立てる** ― 身近な問題から考える                    | 45分 |
 | 4   | **Chart.js でグラフ** ― データを見える化する               | 55分 |
-| 5   | **fetch と async/await** ― データを自動で取得する          | 55分 |
+| 5   | **CSV を読み取る** ― fetch と async/await（取得 → 確認 → 抽出） | 55分 |
 | 6   | **観光スポット一覧** ― DOM 操作と filter                   | 45分 |
 | 7   | **色分けと TOP 3** ― 直感的な UI を作る                    | 30分 |
 | 8   | **公開 API でおすすめ日を作る** ― CSV のつぎに JSON を足す | 40分 |
@@ -287,15 +287,26 @@ const backgroundColor = rows.map((r) => barColor(r.n_people)); // 色分け
 
 ---
 
+## ハンズオン：console で確認するとき
+
+- `app.js` の `main()` 冒頭にある **デバッグ用**の行から、必要な **1 行だけ**コメント解除する
+- 関数の中に一時的に `console.log(...)` を書いたら、その関数に対応する `log...Try()` を使う
+- コメントを外した `log...Try()` はそのまま対象関数を実行する（テンプレートでは、穴埋めが終わったあとも console に結果を出せます）
+- 確認が終わったらコメントを戻し、console を静かにする
+
+---
+
 ## ハンズオン：パート 4 のメソッド一覧
 
 ### `[4-1] formatDateLabel` 【記述】
 
 - 何に対する処理か: **グラフの横軸の日付**
-- なぜ必要か: CSV の `2026-05-03` をそのまま出すと長いので、`5/3` にして見やすくする
-- 確認: console に `"2026-05-03" -> "5/3"` が出る
+- なぜ必要か: `2026-05-03` は長いので、`5/3` にして見やすくする
+- 確認: `main()` で `logFormatDateLabelTry()` を一時的に有効化
+- **引数**
+  - `isoDate`（文字列）: ISO 日付（例: `"2026-05-03"`）
 
-**`app.js` の `// STUDENT:` の指示を読み、次の条件を満たすコードを書いてください。**
+**条件**
 
 1. `"-"` で分割して月（`m`）と日（`d`）を取り出す
 2. 先頭ゼロをなくす（`"05"` → `5`）
@@ -308,6 +319,8 @@ const backgroundColor = rows.map((r) => barColor(r.n_people)); // 色分け
 - 何に対する処理か: **予約人数グラフ全体**
 - なぜ必要か: 横軸・人数をまとめて Chart.js に渡し、まずは**単色の棒グラフ**を描く
 - 確認: サンプル 3 日分の棒グラフが画面に出る（この時点ではまだ色分けしない）
+- **引数**
+  - `rows`（配列）: 各要素が `{ date_visit, n_people, amount_fee }` を持つオブジェクト
 
 `app.js` の `/*` と `*/` の行を削除して有効にする
 
@@ -342,9 +355,47 @@ function buildOrUpdateChart(...) { ... }
 
 <!-- _class: lead -->
 
-# 5. fetch と async/await
+# 5. CSV を読み取って使える形にする
 
-## データを自動で取ってくる
+## fetch と async/await
+
+---
+
+## CSV を読む 3 ステップ
+
+<!-- Marp は Mermaid を描画しないため、HTML でフローを表示 -->
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; justify-content: center; margin-top: 0.35em; font-size: 0.62em; line-height: 1.38;">
+  <div style="flex: 1 1 200px; max-width: 100%; border: 2px solid var(--borderColor-accent-emphasis); border-radius: 8px; padding: 10px 12px; background: var(--bgColor-muted);">
+    <strong>Step 1</strong><br />
+    データを取得する<br />
+    <code>fetch</code> と <code>await</code>
+  </div>
+  <div style="display: flex; align-items: center; justify-content: center; font-size: 1.45em; color: var(--fgColor-muted); min-width: 0.9em;">→</div>
+  <div style="flex: 1 1 200px; max-width: 100%; border: 2px solid var(--borderColor-accent-emphasis); border-radius: 8px; padding: 10px 12px; background: var(--bgColor-muted);">
+    <strong>Step 2</strong><br />
+    何が取れたか確認する<br />
+    <code>console</code> で中身を見る
+  </div>
+  <div style="display: flex; align-items: center; justify-content: center; font-size: 1.45em; color: var(--fgColor-muted); min-width: 0.9em;">→</div>
+  <div style="flex: 1 1 200px; max-width: 100%; border: 2px solid var(--borderColor-accent-emphasis); border-radius: 8px; padding: 10px 12px; background: var(--bgColor-muted);">
+    <strong>Step 3</strong><br />
+    必要なデータを抽出する<br />
+    <code>split</code> / <code>trim</code> / <code>map</code> / <code>filter</code>
+  </div>
+</div>
+
+---
+
+## この章で使う JS 部品 早見表
+
+| 構文 | 何をする | 例 |
+| :-- | :-- | :-- |
+| `str.trim()` | 前後の空白・改行を除く | `"  hi \n".trim()` → `"hi"` |
+| `str.split(sep)` | 区切りで文字列を配列に | `"a,b,c".split(",")` → `["a","b","c"]` |
+| `arr.map(fn)` | 各要素を変換した新しい配列 | `[1,2,3].map((n) => n * 2)` → `[2,4,6]` |
+| `arr.filter(fn)` | 条件に合う要素だけ残す | `[1,2,3].filter((n) => n > 1)` → `[2,3]` |
+
+Step 3 の「抽出」では、この 4 つをつなげて **CSV 文字列 → 行 → オブジェクト** にしていきます。
 
 ---
 
@@ -408,7 +459,79 @@ loadData(); // 呼び出し
 
 ---
 
+## Step 1：データを取得する
+
+`DINO_CSV_URL` のような **公開 URL** に `fetch` → `await` で待ち、`await res.text()` で **CSV 全体を 1 本の文字列**として受け取ります（まだ「表」ではない段階）。
+
+例（[latest_dino_sum.csv](https://raw.githubusercontent.com/code4fukui/dinosaur-opendata/main/latest_dino_sum.csv) の先頭付近・実データは更新されます）:
+
+<div style="font-size: 0.52em; line-height: 1.22; margin-top: 0.2em;">
+
+```text
+date_visit,n_people,amount_fee
+2026-04-16,0,0
+2026-04-17,763,589850
+2026-04-18,1724,1402450
+```
+
+</div>
+
+<p style="font-size: 0.72em; margin: 0.35em 0 0; color: var(--fgColor-muted);">…（以下、同形式の行が続き、改行で 1 本の文字列）</p>
+
+---
+
+## Step 2：何が取れたか確認する
+
+いきなりパースせず、**生の文字列**を一度見ます。
+
+- `console.log(text.slice(0, 200));` で **先頭 200 文字**だけ出す（長すぎると Console が読みにくい）
+- 開発者ツール（F12）の **Console** で、**ヘッダ行が 1 行目**にあるか
+- **列はカンマ区切り**、**行は改行**（`\n`。Windows 由来のデータは `\r\n` になりがち）かを目で確かめる
+
+**「どんな形のテキストが届いたか」がわかると、あとの抽出が迷わなくなる**
+
+---
+
+## Step 3：必要なデータを抽出する
+
+文字列のままではグラフに渡せないので、**行の配列 → 1 行ずつオブジェクト** に変換します。
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; justify-content: center; margin-top: 0.35em; font-size: 0.68em; line-height: 1.38;">
+  <div style="flex: 1 1 200px; max-width: 100%; border: 2px solid var(--borderColor-accent-emphasis); border-radius: 8px; padding: 10px 12px; background: var(--bgColor-muted); text-align: center;">
+    <strong>CSV 文字列</strong>
+  </div>
+  <div style="display: flex; align-items: center; justify-content: center; font-size: 1.45em; color: var(--fgColor-muted); min-width: 0.9em;">→</div>
+  <div style="flex: 1 1 200px; max-width: 100%; border: 2px solid var(--borderColor-accent-emphasis); border-radius: 8px; padding: 10px 12px; background: var(--bgColor-muted); text-align: center;">
+    <strong>行の配列</strong><br />
+    <code>splitLines</code>
+  </div>
+  <div style="display: flex; align-items: center; justify-content: center; font-size: 1.45em; color: var(--fgColor-muted); min-width: 0.9em;">→</div>
+  <div style="flex: 1 1 220px; max-width: 100%; border: 2px solid var(--borderColor-accent-emphasis); border-radius: 8px; padding: 10px 12px; background: var(--bgColor-muted); text-align: center;">
+    <strong>オブジェクト配列</strong><br />
+    <code>parseDinoCsv</code>
+  </div>
+</div>
+
+---
+
 ## CSV テキストを配列に変換する
+
+**`fetch` → `await res.text()`** で届くのは **CSV 全体を 1 本にした文字列**（まだ配列でもオブジェクトでもない）。このあと **行ごとにオブジェクトへ変換する関数**を書く。例（[latest_dino_sum.csv](https://raw.githubusercontent.com/code4fukui/dinosaur-opendata/main/latest_dino_sum.csv) 先頭付近・更新あり）。
+
+```text
+date_visit,n_people,amount_fee
+2026-04-16,0,0
+2026-04-17,763,589850
+2026-04-18,1724,1402450
+```
+
+<p style="font-size: 0.85em; margin: 0.35em 0 0; color: var(--fgColor-muted);">…（以下、同形式の行が続く）</p>
+
+---
+
+## CSV テキストを配列に変換する（コード）
+
+**`parseDinoCsv(text)`** を定義します。前スライドのような CSV 文字列を仮引数 `text` に渡すと、**オブジェクトの配列**が返るようにします。
 
 ```javascript
 function parseDinoCsv(text) {
@@ -462,6 +585,20 @@ CSV テキスト → `parseDinoCsv` → オブジェクト配列
 
 ---
 
+## ハンズオン：パート 5 の実装の順番
+
+コードは **`splitLines` → `parseDinoCsv` → `loadDinoData`** の順で進めます（**後ろの関数が前の関数を使う**ため）。
+
+**3 ステップとの対応**
+
+| ステップ | 内容 | どの関数・どこで |
+| :-- | :-- | :-- |
+| Step 1 取得 | `fetch` で CSV を文字列で受け取る | `[5-3] loadDinoData` 内<br>`fetch` / `res.text()` |
+| Step 2 確認 | `text` の先頭を `console.log` | `[5-3]`・パース直前に<br>1 行足してもよい |
+| Step 3 抽出 | 行に分け、オブジェクト配列にする | `[5-1]`→`[5-2]`→`[5-3]`<br>（呼び出し〜グラフ更新） |
+
+---
+
 ## ハンズオン：パート 5 のメソッドを 1 つずつ有効にする
 
 ここで触っているのは、**公開 CSV を読んで予約人数グラフに流し込む**ための処理です。
@@ -473,14 +610,16 @@ CSV テキスト → `parseDinoCsv` → オブジェクト配列
 ### `[5-1] splitLines` 【記述】
 
 - 何に対する処理か: **CSV テキスト全体**
-- なぜ必要か: まず 1 行ずつに分けないと、ヘッダや各日のデータを扱えない
-- 確認: console に `header / row1 / row2 ...` が出る
+- なぜ必要か: ヘッダや各日のデータを 1 行ずつ扱うため
+- 確認: `main()` で `logSplitLinesTry()` を一時的に有効化
+- **引数**
+  - `text`（文字列）: 改行を含む CSV 全文
 
-**`app.js` の `// STUDENT:` の指示を読み、次の条件を満たすコードを書いてください。**
+**条件**
 
-1. 前後の余分な空白・改行を取り除く
-2. Windows 改行 `"\r"` を空文字に置き換える
-3. `"\n"` で分割して行の配列にする
+1. 前後の空白・改行を取り除く
+2. `"\r"` を空文字に置き換える
+3. `"\n"` で行の配列にする
 4. 空行（`""`）を取り除く
 
 ---
@@ -489,7 +628,9 @@ CSV テキスト → `parseDinoCsv` → オブジェクト配列
 
 - 何に対する処理か: **各行の文字列**
 - なぜ必要か: 行を `date_visit` や `n_people` を持つオブジェクトに変え、コードで使いやすくする
-- 確認: console に `[{ date_visit, n_people, amount_fee }, ...]` が出る
+- 確認: `main()` の `logParseDinoCsvTry()` でオブジェクト配列を console 確認
+- **引数**
+  - `text`（文字列）: `[5-1]` と同様、CSV 全文（内部で `splitLines(text)` を使う）
 
 **`app.js` の `// STUDENT:` の指示を読み、次の条件を満たすコードを書いてください。**
 
@@ -504,6 +645,8 @@ CSV テキスト → `parseDinoCsv` → オブジェクト配列
 - 何に対する処理か: **公開データの読み込み全体**
 - なぜ必要か: GitHub から CSV を取り、変換して、グラフを本番データで更新する
 - 確認: 棒グラフがサンプルから本番データに切り替わる
+- **引数**: なし
+- **戻り値**: `Promise<void>`（内部で `dinoRows` の更新・グラフ描画など）
 
 **`app.js` の `// STUDENT:` の指示を読み、次の条件を満たすコードを書いてください。**
 
@@ -615,7 +758,9 @@ const filtered = allSpots.filter((row) => {
 
 - 何に対する処理か: **スポットの説明やカテゴリ文字列**
 - なぜ必要か: 改行やタブが混じっても、カード上で読みやすく表示できるようにする
-- 確認: console に整形後の文字列が出る
+- 確認: `main()` の `logNormalizeSpacesTry()` を一時的に有効化
+- **引数**
+  - `text`（文字列）: 改行・タブ・連続空白が混じりうる任意テキスト
 
 `app.js` の `/*` と `*/` の行を削除して有効にする
 
@@ -625,7 +770,9 @@ const filtered = allSpots.filter((row) => {
 
 - 何に対する処理か: **`category` 列**
 - なぜ必要か: `"歴史, 自然"` を配列にして、あとで絞り込みに使えるようにする
-- 確認: console に `['歴史', '自然']` のような配列が出る
+- 確認: `main()` の `logSplitGenresTry()` で配列を console 確認
+- **引数**
+  - `category`（文字列）: カンマ区切りのジャンル（例: `"歴史, 自然"`）。空のときは `[]` を返す想定
 
 **`app.js` の `// STUDENT:` の指示を読み、次の条件を満たすコードを書いてください。**
 
@@ -639,7 +786,9 @@ const filtered = allSpots.filter((row) => {
 
 - 何に対する処理か: **スポット全体のジャンル一覧**
 - なぜ必要か: select に並べる候補を重複なく集める
-- 確認: console に select 用ジャンル配列が出る
+- 確認: `main()` の `logCollectUniqueGenresTry()` を一時的に有効化
+- **引数**
+  - `parsedRows`（配列）: 各要素が `category`（文字列）を持つスポット行オブジェクト
 
 `app.js` の `/*` と `*/` の行を削除して有効にする
 
@@ -657,7 +806,9 @@ const filtered = allSpots.filter((row) => {
 
 - 何に対する処理か: **スポット 1 件分の見た目**
 - なぜ必要か: 名前・カテゴリ・説明を 1 枚のカードに組み立てる
-- 確認: console に `article` 要素の HTML が出る
+- 確認: `main()` の `logSpotCardFromRowTry()` を一時的に有効化
+- **引数**
+  - `row`（オブジェクト）: `{ name, category, url, description }` など（Papa Parse の 1 行）
 
 `app.js` の `/*` と `*/` の行を削除して有効にする
 
@@ -668,6 +819,8 @@ const filtered = allSpots.filter((row) => {
 - 何に対する処理か: **スポット一覧エリア全体**
 - なぜ必要か: `allSpots` を順にカード化して画面へ並べる
 - 確認: サンプルのスポットカード一覧が出る
+- **引数**
+  - `filterGenre`（文字列）: `"__all__"`（全件）または 1 つのジャンル名（`splitGenres` と照合）
 
 `app.js` の `/*` と `*/` の行を削除して有効にする
 
@@ -680,6 +833,8 @@ const filtered = allSpots.filter((row) => {
 - 何に対する処理か: **絞り込み select**
 - なぜ必要か: 選べるジャンルを UI に表示し、change 時に一覧を描き直せるようにする
 - 確認: 絞り込み用 select に項目が入る
+- **引数**
+  - `genres`（文字列の配列）: 重複のないジャンル名一覧（ソート済み想定）
 
 `app.js` の `/*` と `*/` の行を削除して有効にする
 
@@ -690,6 +845,8 @@ const filtered = allSpots.filter((row) => {
 - 何に対する処理か: **公開スポットデータの読み込み全体**
 - なぜ必要か: Papa Parse で本番 CSV を読み、一覧と select を実データに切り替える
 - 確認: スポット一覧が本番データに切り替わる
+- **引数**: なし
+- **戻り値**: `Promise<void>`（読み込み完了まで非同期）
 
 `app.js` の `/*` と `*/` の行を削除して有効にする
 
@@ -763,7 +920,9 @@ function renderTopThree(rows) {
 
 - 何に対する処理か: **グラフの棒の色**
 - なぜ必要か: 空きやすい日と混みやすい日を、数字を読まなくても見分けられるようにする
-- 確認: console に `0 / 120 / 800` の色判定が出て、グラフも赤・緑・灰色に変わる
+- 確認: `main()` の `logBarColorTry()` を一時的に有効化
+- **引数**
+  - `nPeople`（数値）: その日の予約人数（0 以上の整数想定。0 は未確定扱い）
 
 **`app.js` の `// STUDENT:` の指示を読み、次の条件を満たすコードを書いてください。**
 
@@ -780,6 +939,8 @@ function renderTopThree(rows) {
 - 何に対する処理か: **おすすめ日エリア**
 - なぜ必要か: 予約人数が少ない日を 3 件に絞り、判断しやすい形で下に表示する
 - 確認: グラフの下に「おすすめ日 TOP 3」が出る
+- **引数**
+  - `rows`（配列）: `[4-2]` `buildOrUpdateChart` と同じく、`{ date_visit, n_people, ... }` の配列
 
 `app.js` の `/*` と `*/` の行を削除して有効にする
 
@@ -934,10 +1095,12 @@ const score = -r.n_people + (precip !== null ? weatherScore(precip) : 0);
 ### `[8-1] weatherScore` 【記述】
 
 - 何に対する処理か: **降水量データ**
-- なぜ触れるか: **発展**として、点数化して並べ替えに混ぜられることを示す（メインの TOP 3 には未使用）
-- 確認: console に晴れ / 小雨 / 雨の点数が出る
+- なぜ触れるか: **発展**として、降水量を点数化できることを示す
+- 確認: `main()` で `logWeatherScoreTry()` を一時的に有効化
+- **引数**
+  - `precipitation`（数値）: 1 日の降水量（mm）
 
-**`app.js` の `// STUDENT:` の指示を読み、次の条件を満たすコードを書いてください。**
+**条件**
 
 1. `precipitation` が `0`（晴れ）→ `30` 点を返す
 2. `5` 未満（小雨）→ `10` 点を返す
@@ -950,6 +1113,8 @@ const score = -r.n_people + (precip !== null ? weatherScore(precip) : 0);
 - 何に対する処理か: **Open-Meteo の天気データ全体**
 - なぜ必要か: 降水量を取得し、**天気エリア**に表示する
 - 確認: `weather-status` に取得メッセージが出て、`取得した天気（今後 5 日）` の一覧が表示される
+- **引数**: なし（URL は定数 `OPEN_METEO_URL`）
+- **戻り値**: `Promise<void>`（画面の天気一覧を更新）
 
 **`app.js` の `// STUDENT:` の指示を読み、次の条件を満たすコードを書いてください。**
 
