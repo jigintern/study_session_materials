@@ -18,8 +18,8 @@ paginate: true
 → **データで調べて、アプリで見える化する**
 
 <div style="display: flex; gap: 16px; margin-top: 20px; align-items: flex-start;">
-  <img src="./images/goal-app-home.png" width="48%">
-  <img src="./images/goal-app-spots.png" width="48%">
+  <img src="./imgs/goal-app-home.png" width="48%">
+  <img src="./imgs/goal-app-spots.png" width="48%">
 </div>
 
 ---
@@ -79,7 +79,7 @@ HTML・CSS・JavaScript などのコードを書くためのエディタ
 左側のサイドバーにある  
 **拡張機能アイコン** をクリックする
 
-<img src="./images/open-vscode-extensions.png" height="390" style="display: block; margin: 0 auto;">
+<img src="./imgs/open-vscode-extensions.png" height="390" style="display: block; margin: 0 auto;">
 
 ---
 
@@ -88,7 +88,7 @@ HTML・CSS・JavaScript などのコードを書くためのエディタ
 検索窓に拡張機能名を入力して、  
 表示された候補の **インストール** を押す
 
-<img src="./images/install-vscode-extension.png" height="390" style="display: block; margin: 0 auto;">
+<img src="./imgs/install-vscode-extension.png" height="390" style="display: block; margin: 0 auto;">
 
 ---
 
