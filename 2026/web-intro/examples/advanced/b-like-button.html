@@ -124,6 +124,10 @@
       font-weight: bold;
     }
 
+    .sns-link:hover {
+      background-color: hotpink;
+    }
+
     /* ===== いいねボタン ===== */
     .like-btn {
       display: inline-block;
@@ -135,6 +139,17 @@
       color: #ff7eb3;
       font-size: 14px;
       cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .like-btn:hover {
+      background-color: #ff7eb3;
+      color: #fff;
+    }
+
+    .like-btn.liked {
+      background-color: #ff7eb3;
+      color: #fff;
     }
   </style>
 </head>
@@ -202,11 +217,12 @@
   </div>
 
   <script>
-    let count = 0;
+    let likeCount = 0;
     const likeBtn = document.querySelector("#likeBtn");
     likeBtn.addEventListener("click", function () {
-      count = count + 1;
-      likeBtn.textContent = "♡ " + count + " いいね";
+      likeCount = likeCount + 1;
+      likeBtn.textContent = "♡ " + likeCount + " いいね";
+      likeBtn.classList.add("liked");
     });
   </script>
 

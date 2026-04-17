@@ -74,6 +74,7 @@ HTML と CSS だけでも、
 7. **SNSリンクを作ろう** — リンク・ボタン風デザイン
 8. **応用課題** — ダークモード & もっと
 9. **発表会**
+10. **まとめ**
 
 ---
 
@@ -388,7 +389,7 @@ body {
 }
 
 .header {
-  background-color: pink;       /* 背景色（ピンク */
+  background-color: pink;       /* 背景色（ピンク） */
   text-align: center;           /* 文字を中央揃え */
   padding: 40px 20px;           /* 内側の余白（上下40px、左右20px） */
   border-radius: 0 0 20px 20px; /* 角を丸くする */
@@ -526,7 +527,7 @@ border-radius: 0    0    20px  20px;
     >
     <div class="profile-text">
       <p>こんにちは！田中はなこです。</p>
-      <p>東京に住んでいて、カフェ巡りと猫が好きです。</p>
+      <p>東京に住んでいて、カフェ巡りと猫が好きです。最近プログラミングを始めました！</p>
     </div>
   </div>
 </div>
@@ -1091,9 +1092,7 @@ color: #fff;
 
 ---
 
-## Step 1: ダークモード用のCSSを追加
-
-`styles.css` の一番下に追加：
+## Step 1: ダークモード用のCSSを`styles.css`に追加
 
 ```css
 body.dark {
@@ -1108,6 +1107,24 @@ body.dark .header {
 body.dark .card {
   background-color: #16213e;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .card h2 {
+  color: #ffa0c4;
+}
+
+body.dark .badge {
+  background-color: #2d2d5e;
+  color: #e0e0e0;
+}
+
+body.dark .sns-link {
+  background-color: #2d2d5e;
+  color: #e0e0e0;
+}
+
+body.dark .sns-link:hover {
+  background-color: #3d3d7e;
 }
 ```
 
@@ -1173,6 +1190,11 @@ JavaScript で **このクラスをつけたり外したり** することで、
   font-size: 14px;
   cursor: pointer;
   color: inherit;
+  transition: border-color 0.3s;
+}
+
+.dark-mode-btn:hover {
+  border-color: #ff7eb3;
 }
 ```
 
@@ -1183,15 +1205,15 @@ JavaScript で **このクラスをつけたり外したり** することで、
 `script.js` に追加：
 
 ```js
-const btn = document.querySelector("#darkModeBtn");
+const darkModeBtn = document.querySelector("#darkModeBtn");
 
-btn.addEventListener("click", function() {
+darkModeBtn.addEventListener("click", function() {
   document.body.classList.toggle("dark");
 
   if (document.body.classList.contains("dark")) {
-    btn.textContent = "☀️ ライトモード";
+    darkModeBtn.textContent = "☀️ ライトモード";
   } else {
-    btn.textContent = "🌙 ダークモード";
+    darkModeBtn.textContent = "🌙 ダークモード";
   }
 });
 ```
@@ -1201,23 +1223,23 @@ btn.addEventListener("click", function() {
 ## JavaScript を1行ずつ解説（1/3）
 
 ```js
-const btn = document.querySelector("#darkModeBtn");
+const darkModeBtn = document.querySelector("#darkModeBtn");
 ```
 
 | パーツ | 意味 |
 |--------|------|
-| `const btn` | `btn` という名前の **変数**（データを入れる箱）を作る |
+| `const darkModeBtn` | `darkModeBtn` という名前の **変数**（データを入れる箱）を作る |
 | `document.querySelector(...)` | ページの中から要素を **探す** |
 | `"#darkModeBtn"` | id が `darkModeBtn` の要素を指定 |
 
-→ 「ページから `#darkModeBtn` ボタンを見つけて、`btn` に入れておく」
+→ 「ページから `#darkModeBtn` ボタンを見つけて、`darkModeBtn` に入れておく」
 
 ---
 
 ## JavaScript を1行ずつ解説（2/3）
 
 ```js
-btn.addEventListener("click", function() {
+darkModeBtn.addEventListener("click", function() {
   // ここに「クリックされた時にやること」を書く
 });
 ```
@@ -1228,7 +1250,7 @@ btn.addEventListener("click", function() {
 | `"click"` | 「クリック」というイベント |
 | `function() { ... }` | クリックされた時に実行する処理 |
 
-→ 「`btn` がクリックされたら、この処理を実行する」
+→ 「`darkModeBtn` がクリックされたら、この処理を実行する」
 
 ---
 
@@ -1278,14 +1300,14 @@ document.body.classList.toggle("dark");
 
 1. HTML: プロフィールカード内に `<button id="likeBtn">♡ 0 いいね</button>` を追加
 2. CSS: ボタンにピンクの枠線・角丸のスタイルを作る
-3. JS: `let count = 0` で数を記録。クリックで +1 して表示を更新
+3. JS: `let likeCount = 0` で数を記録。クリックで +1 して表示を更新
 
 ---
 
 ### ヒント
 
 - ダークモードで学んだ `querySelector` + `addEventListener` がそのまま使える
-- `btn.textContent = "♡ " + count + " いいね"` で表示を書き換え
+- `likeBtn.textContent = "♡ " + likeCount + " いいね"` で表示を書き換え
 
 ---
 
@@ -1297,12 +1319,23 @@ document.body.classList.toggle("dark");
 ```html
 <button class="like-btn" id="likeBtn">♡ 0 いいね</button>
 ```
+```css
+.like-btn {
+  display: inline-block; margin-top: 8px; padding: 6px 16px;
+  border: 2px solid #ff7eb3; border-radius: 20px;
+  background: none; color: #ff7eb3; font-size: 14px;
+  cursor: pointer; transition: all 0.2s;
+}
+.like-btn:hover { background-color: #ff7eb3; color: #fff; }
+.like-btn.liked { background-color: #ff7eb3; color: #fff; }
+```
 ```js
-let count = 0;
+let likeCount = 0;
 const likeBtn = document.querySelector("#likeBtn");
 likeBtn.addEventListener("click", function() {
-  count = count + 1;
-  likeBtn.textContent = "♡ " + count + " いいね";
+  likeCount = likeCount + 1;
+  likeBtn.textContent = "♡ " + likeCount + " いいね";
+  likeBtn.classList.add("liked");
 });
 ```
 
@@ -1323,6 +1356,8 @@ likeBtn.addEventListener("click", function() {
 2. JS: `localStorage.getItem("visitCount")` で前回の値を取得
 3. +1 して `localStorage.setItem()` で保存し、画面に表示
 
+---
+
 ### ヒント
 
 - `localStorage` はブラウザにデータを保存する仕組み（閉じても消えない）
@@ -1335,6 +1370,9 @@ likeBtn.addEventListener("click", function() {
 
 <details><summary>完成コード（クリックで開く）</summary>
 
+```html
+<div class="visit-count" id="visitCount"></div>
+```
 ```js
 let visits = localStorage.getItem("visitCount");
 if (visits === null) { visits = 0; }
@@ -1374,6 +1412,9 @@ document.querySelector("#visitCount").textContent = "このページは " + visi
 
 <details><summary>完成コード（クリックで開く）</summary>
 
+```html
+<div class="clock" id="clock">now loading...</div>
+```
 ```js
 function updateClock() {
   const now = new Date();
@@ -1424,11 +1465,22 @@ setInterval(updateClock, 1000);
   <button class="tab-btn" data-tab="dislikes">苦手なもの</button>
 </div>
 <div class="tab-content active" id="tab-likes">
-  <ul class="favorites-list"><li>カフェ巡り</li><li>猫</li><li>ラーメン</li></ul>
+  <ul class="favorites-list"><li>カフェ巡り</li><li>猫</li><li>ラーメン</li><li>音楽を聴くこと</li><li>写真を撮ること</li></ul>
 </div>
 <div class="tab-content" id="tab-dislikes">
   <ul class="favorites-list"><li>早起き</li><li>虫</li><li>満員電車</li></ul>
 </div>
+```
+```css
+.tab-header { display: flex; gap: 8px; margin-bottom: 12px; }
+.tab-btn {
+  padding: 6px 16px; border: none; border-radius: 20px;
+  background-color: #f0f0f0; color: #666; font-size: 14px;
+  cursor: pointer; transition: all 0.2s;
+}
+.tab-btn.active { background-color: #ff7eb3; color: #fff; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 ```
 ```js
 const tabBtns = document.querySelectorAll(".tab-btn");
@@ -1475,22 +1527,61 @@ for (let i = 0; i < tabBtns.length; i++) {
 
 <details><summary>完成コード（クリックで開く）</summary>
 
+```html
+<div class="card">
+  <h2>フォトギャラリー</h2>
+  <div class="slideshow">
+    <img id="slideshowImg" class="slideshow-img"
+      src="https://api.dicebear.com/7.x/shapes/svg?seed=photo1" alt="スライドショー画像">
+    <div class="slideshow-controls">
+      <button id="prevBtn" class="slideshow-btn">←</button>
+      <span id="slideshowCounter" class="slideshow-counter">1 / 3</span>
+      <button id="nextBtn" class="slideshow-btn">→</button>
+    </div>
+  </div>
+</div>
+```
+```css
+.slideshow { text-align: center; }
+.slideshow-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; }
+.slideshow-controls {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; margin-top: 12px;
+}
+.slideshow-btn {
+  width: 36px; height: 36px; border: none; border-radius: 50%;
+  background-color: #ff9a9e; color: #fff; font-size: 16px;
+  cursor: pointer; transition: background-color 0.2s;
+}
+.slideshow-btn:hover { background-color: #ff7eb3; }
+.slideshow-counter { font-size: 14px; color: #999; }
+```
 ```js
-const photos = ["画像URL1", "画像URL2", "画像URL3"];
+const photos = [
+  "https://api.dicebear.com/7.x/shapes/svg?seed=photo1",
+  "https://api.dicebear.com/7.x/shapes/svg?seed=photo2",
+  "https://api.dicebear.com/7.x/shapes/svg?seed=photo3"
+];
 let currentPhoto = 0;
-const img = document.querySelector("#slideshowImg");
-const counter = document.querySelector("#slideshowCounter");
+const slideshowImg = document.querySelector("#slideshowImg");
+const slideshowCounter = document.querySelector("#slideshowCounter");
 
 function updateSlideshow() {
-  img.src = photos[currentPhoto];
-  counter.textContent = (currentPhoto + 1) + " / " + photos.length;
+  slideshowImg.src = photos[currentPhoto];
+  slideshowCounter.textContent = (currentPhoto + 1) + " / " + photos.length;
 }
 document.querySelector("#prevBtn").addEventListener("click", function() {
-  currentPhoto = (currentPhoto - 1 + photos.length) % photos.length;
+  currentPhoto = currentPhoto - 1;
+  if (currentPhoto < 0) {
+    currentPhoto = photos.length - 1;
+  }
   updateSlideshow();
 });
 document.querySelector("#nextBtn").addEventListener("click", function() {
-  currentPhoto = (currentPhoto + 1) % photos.length;
+  currentPhoto = currentPhoto + 1;
+  if (currentPhoto >= photos.length) {
+    currentPhoto = 0;
+  }
   updateSlideshow();
 });
 ```
@@ -1502,13 +1593,13 @@ document.querySelector("#nextBtn").addEventListener("click", function() {
 
 ## ★★ カスタムカーソル
 
-![bg right:35% fit](imgs/adv-j-cursor.png)
+![bg right:35% fit](imgs/adv-g-cursor.png)
 
 **完成イメージ**: マウスカーソルがピンクの丸に変わる。動かすとキラキラしたパーティクルが軌跡に残って消える。
 
 ### 手順
 
-1. HTML: `<div id="customCursor"></div>` を追加
+1. HTML: `<div class="custom-cursor" id="customCursor"></div>` を追加
 2. CSS: 丸いスタイル + `position: fixed` + `pointer-events: none`
 3. JS: `mousemove` イベントでカーソル位置を更新。一定間隔でパーティクルを生成→自動削除
 
@@ -1518,7 +1609,7 @@ document.querySelector("#nextBtn").addEventListener("click", function() {
 
 - `e.clientX`, `e.clientY` でマウス位置が取れる
 - パーティクルは `document.createElement("div")` で動的に作り `document.body.appendChild()` で追加
-- `setTimeout(function() { p.remove(); }, 600)` で自動削除
+- `setTimeout(function() { particle.remove(); }, 600)` で自動削除
 - `@keyframes` でフェードアウトアニメーションを定義
 
 ---
@@ -1532,7 +1623,8 @@ document.querySelector("#nextBtn").addEventListener("click", function() {
 .custom-cursor {
   position: fixed; width: 20px; height: 20px; border-radius: 50%;
   background-color: #ff7eb3; pointer-events: none; z-index: 9999;
-  transform: translate(-50%, -50%); mix-blend-mode: difference;
+  transform: translate(-50%, -50%); transition: width 0.1s, height 0.1s;
+  mix-blend-mode: difference;
 }
 .cursor-particle {
   position: fixed; width: 8px; height: 8px; border-radius: 50%;
@@ -1546,18 +1638,18 @@ document.querySelector("#nextBtn").addEventListener("click", function() {
 ```
 ```js
 const cursor = document.querySelector("#customCursor");
-let pc = 0;
+let particleCount = 0;
 document.addEventListener("mousemove", function(e) {
   cursor.style.left = e.clientX + "px";
   cursor.style.top = e.clientY + "px";
-  pc++;
-  if (pc % 3 !== 0) return;
-  const p = document.createElement("div");
-  p.className = "cursor-particle";
-  p.style.left = e.clientX + "px";
-  p.style.top = e.clientY + "px";
-  document.body.appendChild(p);
-  setTimeout(function() { p.remove(); }, 600);
+  particleCount++;
+  if (particleCount % 3 !== 0) return;
+  const particle = document.createElement("div");
+  particle.className = "cursor-particle";
+  particle.style.left = e.clientX + "px";
+  particle.style.top = e.clientY + "px";
+  document.body.appendChild(particle);
+  setTimeout(function() { particle.remove(); }, 600);
 });
 ```
 
@@ -1568,7 +1660,7 @@ document.addEventListener("mousemove", function(e) {
 
 ## ★★★ モーダル（ポップアップ）
 
-![bg right:35% fit](imgs/adv-g-modal.gif)
+![bg right:35% fit](imgs/adv-h-modal.gif)
 
 **完成イメージ**: プロフィール写真をクリック → 画面全体が暗くなり写真が拡大表示。暗い部分 or × ボタンで閉じる。
 
@@ -1594,6 +1686,10 @@ document.addEventListener("mousemove", function(e) {
 <details><summary>完成コード（クリックで開く）</summary>
 
 ```html
+<!-- 既存の <img class="profile-img"> に id を追加 -->
+<img src="写真のURL" alt="プロフィール写真" class="profile-img" id="profileImg">
+
+<!-- モーダル用のオーバーレイを追加 -->
 <div class="modal-overlay" id="modal">
   <div class="modal-content">
     <button class="modal-close" id="modalClose">✕</button>
@@ -1608,13 +1704,26 @@ document.addEventListener("mousemove", function(e) {
   z-index: 1000; justify-content: center; align-items: center;
 }
 .modal-overlay.show { display: flex; }
+.modal-content { position: relative; max-width: 90%; max-height: 90%; }
+.modal-img { max-width: 100%; max-height: 80vh; border-radius: 16px; }
+.modal-close {
+  position: absolute; top: -12px; right: -12px;
+  width: 32px; height: 32px; border: none; border-radius: 50%;
+  background-color: #fff; color: #333; font-size: 18px;
+  cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.profile-img { cursor: pointer; transition: transform 0.2s; }
+.profile-img:hover { transform: scale(1.05); }
 ```
 ```js
 const modal = document.querySelector("#modal");
-document.querySelector("#profileImg").addEventListener("click", function() {
+const profileImg = document.querySelector("#profileImg");
+const modalClose = document.querySelector("#modalClose");
+
+profileImg.addEventListener("click", function() {
   modal.classList.add("show");
 });
-document.querySelector("#modalClose").addEventListener("click", function() {
+modalClose.addEventListener("click", function() {
   modal.classList.remove("show");
 });
 modal.addEventListener("click", function(e) {
@@ -1628,13 +1737,13 @@ modal.addEventListener("click", function(e) {
 
 ## ★★★ ドラッグで並び替え
 
-![bg right:35% fit](imgs/adv-h-drag.gif)
+![bg right:35% fit](imgs/adv-i-drag.gif)
 
 **完成イメージ**: 好きなものリストの項目をドラッグ&ドロップで順番変更。ドラッグ中は半透明、ドロップ先はハイライト。
 
 ### 手順
 
-1. HTML: 各 `<li>` に `draggable="true"` を追加
+1. HTML: `<ul>` に `id="likesList"` を追加し、各 `<li>` に `draggable="true"` を追加
 2. CSS: `.dragging`（半透明）`.drag-over`（ハイライト）を定義
 3. JS: `dragstart` / `dragend` / `dragover` / `drop` の4イベントを処理
 
@@ -1652,32 +1761,41 @@ modal.addEventListener("click", function(e) {
 
 <details><summary>完成コード（クリックで開く）</summary>
 
+```css
+.favorites-list li.dragging { opacity: 0.4; }
+.favorites-list li.drag-over { background-color: #fff0f3; border-radius: 8px; }
+```
 ```js
-const list = document.querySelector("#likesList");
+const dragList = document.querySelector("#likesList");
 let dragItem = null;
-list.addEventListener("dragstart", function(e) {
+dragList.addEventListener("dragstart", function(e) {
   dragItem = e.target; e.target.classList.add("dragging");
 });
-list.addEventListener("dragend", function(e) {
+dragList.addEventListener("dragend", function(e) {
   e.target.classList.remove("dragging");
-  const items = list.querySelectorAll("li");
+  const items = dragList.querySelectorAll("li");
   for (let i = 0; i < items.length; i++) items[i].classList.remove("drag-over");
+  dragItem = null;
 });
-list.addEventListener("dragover", function(e) {
+dragList.addEventListener("dragover", function(e) {
   e.preventDefault();
-  if (e.target.tagName === "LI" && e.target !== dragItem) {
-    const items = list.querySelectorAll("li");
+  const target = e.target;
+  if (target.tagName === "LI" && target !== dragItem) {
+    const items = dragList.querySelectorAll("li");
     for (let i = 0; i < items.length; i++) items[i].classList.remove("drag-over");
-    e.target.classList.add("drag-over");
+    target.classList.add("drag-over");
   }
 });
-list.addEventListener("drop", function(e) {
+dragList.addEventListener("drop", function(e) {
   e.preventDefault();
-  if (e.target.tagName === "LI" && e.target !== dragItem) {
-    const all = Array.from(list.querySelectorAll("li"));
-    if (all.indexOf(dragItem) < all.indexOf(e.target))
-      list.insertBefore(dragItem, e.target.nextSibling);
-    else list.insertBefore(dragItem, e.target);
+  const target = e.target;
+  if (target.tagName === "LI" && target !== dragItem) {
+    const allItems = Array.prototype.slice.call(dragList.querySelectorAll("li"));
+    const dragIndex = allItems.indexOf(dragItem);
+    const targetIndex = allItems.indexOf(target);
+    if (dragIndex < targetIndex)
+      dragList.insertBefore(dragItem, target.nextSibling);
+    else dragList.insertBefore(dragItem, target);
   }
 });
 ```
@@ -1688,7 +1806,7 @@ list.addEventListener("drop", function(e) {
 
 ## ★★★ ミニクイズゲーム
 
-![bg right:35% fit](imgs/adv-i-quiz.png)
+![bg right:35% fit](imgs/adv-j-quiz.png)
 
 **完成イメージ**: 「私の好きな食べ物は？」などの3択クイズ。正解は緑、不正解は赤。全3問、スコア表示付き。
 
@@ -1704,7 +1822,7 @@ list.addEventListener("drop", function(e) {
 
 - `document.createElement("button")` でボタンを動的に作れる
 - `setAttribute("data-index", i)` でどの選択肢かを記録
-- 二重クリック防止に `let answered = false` フラグを使う
+- 二重クリック防止に `let quizAnswered = false` フラグを使う
 
 ---
 
@@ -1712,41 +1830,87 @@ list.addEventListener("drop", function(e) {
 
 <details><summary>完成コード（クリックで開く）</summary>
 
+```html
+<div class="card">
+  <h2>ミニクイズ</h2>
+  <div class="quiz-question" id="quizQuestion"></div>
+  <div class="quiz-options" id="quizOptions"></div>
+  <div class="quiz-result" id="quizResult"></div>
+  <button class="quiz-next" id="quizNext">次の問題 →</button>
+  <div class="quiz-score" id="quizScore"></div>
+</div>
+```
+```css
+.quiz-question { font-size: 16px; font-weight: bold; margin-bottom: 12px; }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-btn {
+  padding: 10px 16px; border: 2px solid #fad0c4; border-radius: 12px;
+  background: none; font-size: 14px; cursor: pointer; text-align: left;
+  transition: all 0.2s;
+}
+.quiz-btn:hover { border-color: #ff7eb3; background-color: #fff0f3; }
+.quiz-btn.correct { border-color: #4caf50; background-color: #e8f5e9; color: #2e7d32; }
+.quiz-btn.wrong { border-color: #ef5350; background-color: #ffebee; color: #c62828; }
+.quiz-result {
+  margin-top: 12px; padding: 10px 16px; border-radius: 12px;
+  font-size: 14px; font-weight: bold; display: none;
+}
+.quiz-result.show { display: block; }
+.quiz-next {
+  margin-top: 12px; padding: 8px 20px; border: none; border-radius: 20px;
+  background-color: #ff9a9e; color: #fff; font-size: 14px;
+  cursor: pointer; display: none;
+}
+.quiz-next.show { display: inline-block; }
+.quiz-score { margin-top: 8px; font-size: 13px; color: #999; }
+```
 ```js
 const quizData = [
   { question: "私の好きな食べ物は？", options: ["ラーメン","寿司","カレー"], answer: 0 },
   { question: "私が住んでいるのは？", options: ["大阪","東京","福岡"], answer: 1 },
   { question: "私の好きな動物は？", options: ["犬","うさぎ","猫"], answer: 2 }
 ];
-let current = 0, score = 0, answered = false;
+let currentQuiz = 0, quizCorrect = 0, quizAnswered = false;
 function showQuiz() {
-  const q = quizData[current];
-  document.querySelector("#quizQuestion").textContent = "Q" + (current+1) + ". " + q.question;
-  const div = document.querySelector("#quizOptions");
-  div.innerHTML = ""; answered = false;
+  const q = quizData[currentQuiz];
+  document.querySelector("#quizQuestion").textContent = "Q" + (currentQuiz+1) + ". " + q.question;
+  const optionsDiv = document.querySelector("#quizOptions");
+  optionsDiv.innerHTML = ""; quizAnswered = false;
   for (let i = 0; i < q.options.length; i++) {
     const btn = document.createElement("button");
     btn.className = "quiz-btn"; btn.textContent = q.options[i];
     btn.setAttribute("data-index", i);
     btn.addEventListener("click", function() {
-      if (answered) return; answered = true;
-      const sel = Number(this.getAttribute("data-index"));
-      if (sel === quizData[current].answer) {
-        this.classList.add("correct"); score++;
+      if (quizAnswered) return; quizAnswered = true;
+      const selectedIndex = Number(this.getAttribute("data-index"));
+      const correct = quizData[currentQuiz].answer;
+      if (selectedIndex === correct) {
+        this.classList.add("correct"); quizCorrect++;
+        document.querySelector("#quizResult").textContent = "⭕ 正解！";
+        document.querySelector("#quizResult").style.backgroundColor = "#e8f5e9";
+        document.querySelector("#quizResult").style.color = "#2e7d32";
       } else {
         this.classList.add("wrong");
-        div.querySelectorAll(".quiz-btn")[quizData[current].answer]
-          .classList.add("correct");
+        optionsDiv.querySelectorAll(".quiz-btn")[correct].classList.add("correct");
+        document.querySelector("#quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
+        document.querySelector("#quizResult").style.backgroundColor = "#ffebee";
+        document.querySelector("#quizResult").style.color = "#c62828";
       }
-      if (current < quizData.length - 1)
-        document.querySelector("#quizNext").style.display = "inline-block";
+      document.querySelector("#quizResult").classList.add("show");
+      document.querySelector("#quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
+      if (currentQuiz < quizData.length - 1) {
+        document.querySelector("#quizNext").classList.add("show");
+      } else {
+        document.querySelector("#quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
+      }
     });
-    div.appendChild(btn);
+    optionsDiv.appendChild(btn);
   }
-  document.querySelector("#quizNext").style.display = "none";
+  document.querySelector("#quizResult").classList.remove("show");
+  document.querySelector("#quizNext").classList.remove("show");
 }
 document.querySelector("#quizNext").addEventListener("click",
-  function() { current++; showQuiz(); });
+  function() { currentQuiz++; showQuiz(); });
 showQuiz();
 ```
 
@@ -1756,9 +1920,11 @@ showQuiz();
 
 ## デザインのモダン化（上級チャレンジ）
 
-**完成イメージ**: 同じ内容を、モダンなページに変身させる。
+**完成イメージ**: これまで作ったページを、モダンなページに変身させる。
 
-![bg right:30% fit](imgs/modern-demo.png)
+![bg right:30% fit](imgs/demo-modern.png)
+
+
 
 ### やること
 
@@ -1776,7 +1942,7 @@ showQuiz();
 - `linear-gradient` を重ねて画像の上にオーバーレイ
 - `transform: translateX(-60px)` → `translateX(0)` で横からスライドイン
 
-> 完成版は `advanced/modern.html` を参照
+> 完成版は `examples/demo-modern.html` を参照
 
 ---
 
@@ -1920,8 +2086,6 @@ border: 3px solid pink;
 | `display` | 表示方法（`flex`, `block`, `none`） |
 | `box-shadow` | 影 |
 | `width`, `height` | 幅・高さ |
-| `display` | 表示方法（`flex`, `none` など） |
-| `box-shadow` | 影 |
 
 > 参考: [MDN CSSリファレンス](https://developer.mozilla.org/ja/docs/Web/CSS/Reference)
 

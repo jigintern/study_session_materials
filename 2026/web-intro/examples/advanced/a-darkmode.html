@@ -124,6 +124,10 @@
       font-weight: bold;
     }
 
+    .sns-link:hover {
+      background-color: hotpink;
+    }
+
     /* ===== ダークモード ===== */
     body.dark {
       background-color: #1a1a2e;
@@ -139,6 +143,24 @@
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
     }
 
+    body.dark .card h2 {
+      color: #ffa0c4;
+    }
+
+    body.dark .badge {
+      background-color: #2d2d5e;
+      color: #e0e0e0;
+    }
+
+    body.dark .sns-link {
+      background-color: #2d2d5e;
+      color: #e0e0e0;
+    }
+
+    body.dark .sns-link:hover {
+      background-color: #3d3d7e;
+    }
+
     .dark-mode-btn {
       display: block;
       margin: 24px auto 40px;
@@ -149,6 +171,11 @@
       font-size: 14px;
       cursor: pointer;
       color: inherit;
+      transition: border-color 0.3s;
+    }
+
+    .dark-mode-btn:hover {
+      border-color: #ff7eb3;
     }
   </style>
 </head>
@@ -217,15 +244,15 @@
   </div>
 
   <script>
-    const btn = document.querySelector("#darkModeBtn");
+    const darkModeBtn = document.querySelector("#darkModeBtn");
 
-    btn.addEventListener("click", function () {
+    darkModeBtn.addEventListener("click", function () {
       document.body.classList.toggle("dark");
 
       if (document.body.classList.contains("dark")) {
-        btn.textContent = "☀️ ライトモード";
+        darkModeBtn.textContent = "☀️ ライトモード";
       } else {
-        btn.textContent = "🌙 ダークモード";
+        darkModeBtn.textContent = "🌙 ダークモード";
       }
     });
   </script>
