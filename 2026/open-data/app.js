@@ -1,6 +1,9 @@
 /**
- * 福井恐竜博物館 おでかけプランナー
- * おすすめ日 TOP 3 は予約人数のみ。天気は画面表示用（発展で降水量を並びに足すこともできる）
+ * 福井恐竜博物館 おでかけプランナー（完成版）
+ *
+ * 授業用テンプレート (template/app.js) の構造に合わせた完成コード。
+ * 各 STUDENT 関数は穴埋め済み、/* … * / でコメントアウトされていた関数も
+ * 有効化されている。
  */
 
 // ================================================================
@@ -30,26 +33,6 @@ const COLORS = {
 };
 
 // ================================================================
-// UI ヘルパー
-// ================================================================
-
-// ----------------------------------------------------------------
-// setChartStatus  グラフエリアのステータスメッセージを更新する
-// ----------------------------------------------------------------
-function setChartStatus(text) {
-  const status = document.getElementById("chart-status");
-  if (status) status.textContent = text;
-}
-
-// ----------------------------------------------------------------
-// setSpotsStatus  スポットエリアのステータスメッセージを更新する
-// ----------------------------------------------------------------
-function setSpotsStatus(text) {
-  const status = document.getElementById("spots-status");
-  if (status) status.textContent = text;
-}
-
-// ================================================================
 // グローバル変数
 // ================================================================
 
@@ -59,7 +42,7 @@ let allSpots = null;
 let genreChangeBound = false;
 
 // ================================================================
-// 授業用サンプルデータ
+// 授業用のサンプルデータ
 // ================================================================
 
 const DEMO_DINO_ROWS = [
@@ -97,7 +80,7 @@ const DEMO_SPOTS = [
 ];
 
 // ================================================================
-// 授業進行管理（有効化判定・デモ出力・フォールバック）
+// 補助関数（授業運営用）
 // ================================================================
 
 // 各 STUDENT 関数が「まだ穴埋めされていない」ことを判定するためのプレースホルダ文字列辞書
@@ -119,22 +102,17 @@ const STUDENT_PLACEHOLDER_SNIPPETS = {
 };
 
 // ----------------------------------------------------------------
-// isDefined  window にその名前の関数が定義されているか確認する
-// ----------------------------------------------------------------
-function isDefined(name) {
-  return typeof window[name] === "function";
-}
-
-// ----------------------------------------------------------------
-// isEnabled  定義済みかつプレースホルダが残っていない（穴埋め完了）かを確認する
+// isEnabled  その名前の関数があり、プレースホルダが残っていない（穴埋め完了）かを確認する
+// main や hasEnabled では名前で参照（globalThis）。log*Try はスクリプト内の関数を直接呼ぶ。
 // ----------------------------------------------------------------
 function isEnabled(name) {
-  if (!isDefined(name)) return false;
+  const fn = globalThis[name];
+  if (typeof fn !== "function") return false;
 
   const placeholderSnippets = STUDENT_PLACEHOLDER_SNIPPETS[name];
   if (!placeholderSnippets) return true;
 
-  const source = Function.prototype.toString.call(window[name]);
+  const source = Function.prototype.toString.call(fn);
   return !placeholderSnippets.some((snippet) => source.includes(snippet));
 }
 
@@ -146,10 +124,96 @@ function hasEnabled(...names) {
 }
 
 // ----------------------------------------------------------------
-// logDemo  [demo] プレフィックス付きでコンソールにデモ結果を出力する
+// logFormatDateLabelTry  [4-1]  main 内のコメント解除で有効化（関数内の console.log もここで走る）
 // ----------------------------------------------------------------
-function logDemo(label, value) {
-  console.log(`[demo] ${label}`, value);
+function logFormatDateLabelTry() {
+  formatDateLabel("2026-05-03");
+}
+
+// ----------------------------------------------------------------
+// logSplitLinesTry  [5-1]
+// ----------------------------------------------------------------
+function logSplitLinesTry() {
+  splitLines(DEMO_DINO_CSV);
+}
+
+// ----------------------------------------------------------------
+// logParseDinoCsvTry  [5-2]  splitLines 完了後に使う
+// ----------------------------------------------------------------
+function logParseDinoCsvTry() {
+  if (!hasEnabled("splitLines")) {
+    warnWaiting("parseDinoCsv", ["splitLines"]);
+    return;
+  }
+  parseDinoCsv(DEMO_DINO_CSV);
+}
+
+// ----------------------------------------------------------------
+// logNormalizeSpacesTry  [6-1]  解除後に使う
+// ----------------------------------------------------------------
+function logNormalizeSpacesTry() {
+  normalizeSpaces("歴史,\n  自然\t 家族向け");
+}
+
+// ----------------------------------------------------------------
+// logSplitGenresTry  [6-2]
+// ----------------------------------------------------------------
+function logSplitGenresTry() {
+  splitGenres("テーマパーク, 家族向け, 自然");
+}
+
+// ----------------------------------------------------------------
+// logCollectUniqueGenresTry  [6-3]  splitGenres 完了後に使う
+// ----------------------------------------------------------------
+function logCollectUniqueGenresTry() {
+  if (!hasEnabled("splitGenres")) {
+    warnWaiting("collectUniqueGenres", ["splitGenres"]);
+    return;
+  }
+  collectUniqueGenres(DEMO_SPOTS);
+}
+
+// ----------------------------------------------------------------
+// logSpotCardFromRowTry  [6-4]  normalizeSpaces 有効化後に使う
+// ----------------------------------------------------------------
+function logSpotCardFromRowTry() {
+  if (typeof normalizeSpaces !== "function") {
+    warnWaiting("spotCardFromRow", ["normalizeSpaces"]);
+    return;
+  }
+  spotCardFromRow(DEMO_SPOTS[0]);
+}
+
+// ----------------------------------------------------------------
+// logBarColorTry  [7-1]
+// ----------------------------------------------------------------
+function logBarColorTry() {
+  barColor(0);
+  barColor(120);
+  barColor(800);
+}
+
+// ----------------------------------------------------------------
+// logWeatherScoreTry  [8-1]
+// ----------------------------------------------------------------
+function logWeatherScoreTry() {
+  weatherScore(0);
+  weatherScore(2.5);
+  weatherScore(8);
+}
+
+// ----------------------------------------------------------------
+// logLoadDinoDataTry  [5-3]  未完成時は fetch が失敗しうる（エラーは console に出る）
+// ----------------------------------------------------------------
+async function logLoadDinoDataTry() {
+  await loadDinoData();
+}
+
+// ----------------------------------------------------------------
+// logLoadWeatherDataTry  [8-2]
+// ----------------------------------------------------------------
+async function logLoadWeatherDataTry() {
+  await loadWeatherData();
 }
 
 // ----------------------------------------------------------------
@@ -160,66 +224,19 @@ function warnWaiting(name, deps) {
 }
 
 // ----------------------------------------------------------------
-// runPureFunctionDemos
-// 完成済みの純粋関数をサンプルデータで試し動かし、結果を console に表示する
-// ページ読み込みのたびに呼ばれ、穴埋めの進捗を console で確認できる
+// setChartStatus  グラフエリアのステータスメッセージを更新する
 // ----------------------------------------------------------------
-function runPureFunctionDemos() {
-  if (isEnabled("formatDateLabel")) {
-    logDemo("formatDateLabel('2026-05-03')", formatDateLabel("2026-05-03"));
-  }
+function setChartStatus(text) {
+  const status = document.getElementById("chart-status");
+  if (status) status.textContent = text;
+}
 
-  if (isEnabled("barColor")) {
-    logDemo("barColor()", {
-      zero: barColor(0),
-      low: barColor(120),
-      high: barColor(800),
-    });
-  }
-
-  if (isEnabled("splitLines")) {
-    logDemo("splitLines()", splitLines(DEMO_DINO_CSV));
-  }
-
-  if (isEnabled("parseDinoCsv")) {
-    if (hasEnabled("splitLines")) {
-      logDemo("parseDinoCsv()", parseDinoCsv(DEMO_DINO_CSV));
-    } else {
-      warnWaiting("parseDinoCsv", ["splitLines"]);
-    }
-  }
-
-  if (isEnabled("normalizeSpaces")) {
-    logDemo("normalizeSpaces()", normalizeSpaces("歴史,\n  自然\t 家族向け"));
-  }
-
-  if (isEnabled("splitGenres")) {
-    logDemo("splitGenres()", splitGenres("テーマパーク, 家族向け, 自然"));
-  }
-
-  if (isEnabled("collectUniqueGenres")) {
-    if (hasEnabled("splitGenres")) {
-      logDemo("collectUniqueGenres()", collectUniqueGenres(DEMO_SPOTS));
-    } else {
-      warnWaiting("collectUniqueGenres", ["splitGenres"]);
-    }
-  }
-
-  if (isEnabled("spotCardFromRow")) {
-    if (hasEnabled("normalizeSpaces")) {
-      logDemo("spotCardFromRow()", spotCardFromRow(DEMO_SPOTS[0]).outerHTML);
-    } else {
-      warnWaiting("spotCardFromRow", ["normalizeSpaces"]);
-    }
-  }
-
-  if (isEnabled("weatherScore")) {
-    logDemo("weatherScore()", {
-      sunny: weatherScore(0),
-      drizzle: weatherScore(2.5),
-      rainy: weatherScore(8),
-    });
-  }
+// ----------------------------------------------------------------
+// setSpotsStatus  スポットエリアのステータスメッセージを更新する
+// ----------------------------------------------------------------
+function setSpotsStatus(text) {
+  const status = document.getElementById("spots-status");
+  if (status) status.textContent = text;
 }
 
 // ----------------------------------------------------------------
@@ -232,7 +249,6 @@ function renderChartFallback() {
 
   setChartStatus("サンプル 3 日分で棒グラフを表示中。パート 5 で公開 CSV に切り替わります。");
   buildOrUpdateChart(DEMO_DINO_ROWS);
-  logDemo("buildOrUpdateChart()", DEMO_DINO_ROWS);
 }
 
 // ----------------------------------------------------------------
@@ -249,7 +265,6 @@ function renderSpotsFallback() {
   }
   renderSpots("__all__");
   setSpotsStatus("サンプル 3 件でスポット一覧を表示中。loadSpotsData で公開 CSV に切り替わります。");
-  logDemo("renderSpots('__all__')", DEMO_SPOTS.map((spot) => spot.name));
 }
 
 // ----------------------------------------------------------------
@@ -262,20 +277,11 @@ function renderTopThreeFallback() {
 
   const rows = dinoRows || DEMO_DINO_ROWS;
   renderTopThree(rows);
-  logDemo("renderTopThree()", rows.map((row) => row.date_visit));
-}
-
-// ----------------------------------------------------------------
-// logLoadedState  読み込み済みの dinoRows / allSpots の先頭 3 件を console に出力する
-// ----------------------------------------------------------------
-function logLoadedState() {
-  if (dinoRows) logDemo("dinoRows loaded", dinoRows.slice(0, 3));
-  if (allSpots) logDemo("allSpots loaded", allSpots.slice(0, 3));
 }
 
 // ================================================================
-// [4-1] formatDateLabel  ISO 日付を "M/D" 形式のラベルに変換する
-// 例: "2026-05-03" → "5/3"（先頭ゼロを除去）
+// [4-1] formatDateLabel
+// ISO 日付を "M/D" に変換する（例: "2026-05-03" → "5/3"、先頭ゼロは除去）
 // グラフの横軸ラベルや TOP 3 の表示に使う
 // ================================================================
 function formatDateLabel(isoDate) {
@@ -284,9 +290,11 @@ function formatDateLabel(isoDate) {
 }
 
 // ================================================================
-// [4-2] buildOrUpdateChart  rows を Chart.js の棒グラフに変換して描画・更新する
+// [4-2] buildOrUpdateChart
+// rows を Chart.js の data に変換して描画・更新する
 // 初回は新規作成、2 回目以降はデータだけ差し替えて再描画する
-// barColor が完成済みなら色分けを行い、未完成なら単色で描く
+// barColor が完成済みなら色分けし、未完成時は単色で描く
+// 必要: formatDateLabel
 // ================================================================
 function buildOrUpdateChart(rows) {
   const canvas = document.getElementById("reservation-chart");
@@ -359,7 +367,8 @@ function buildOrUpdateChart(rows) {
 }
 
 // ================================================================
-// [5-1] splitLines  CSV テキストを空行除去・改行正規化した行の配列に変換する
+// [5-1] splitLines
+// CSV テキストを空行除去・改行正規化した行の配列に変換する
 // Windows 改行（\r\n）にも対応するため \r を先に除去してから分割する
 // ================================================================
 function splitLines(text) {
@@ -371,8 +380,10 @@ function splitLines(text) {
 }
 
 // ================================================================
-// [5-2] parseDinoCsv  恐竜 CSV 文字列を { date_visit, n_people, amount_fee } の配列に変換する
-// 先頭行はヘッダーなので読み飛ばし、残りの各行をオブジェクトに変換する
+// [5-2] parseDinoCsv
+// 恐竜 CSV を { date_visit, n_people, amount_fee } のオブジェクト配列に変換する
+// 先頭行はヘッダーなので読み飛ばし、数値列は Number() で数値化（失敗時 0）
+// 必要: splitLines
 // ================================================================
 function parseDinoCsv(text) {
   const lines = splitLines(text);
@@ -389,8 +400,10 @@ function parseDinoCsv(text) {
 }
 
 // ================================================================
-// [5-3] loadDinoData  公開 CSV を fetch してグラフと TOP 3 を最新データに切り替える
+// [5-3] loadDinoData
+// 公開 CSV を fetch して rows にし、グラフを更新する
 // renderTopThree が完成済みの場合のみ TOP 3 も更新する
+// 必要: parseDinoCsv / buildOrUpdateChart
 // ================================================================
 async function loadDinoData() {
   const thresholdEl = document.getElementById("threshold-value");
@@ -413,8 +426,9 @@ async function loadDinoData() {
 }
 
 // ================================================================
-// [6-1] normalizeSpaces  改行・タブ・連続スペースを半角スペース 1 つに整える
-// スポットのカテゴリや説明文に混在しがちな空白文字を統一するために使う
+// [6-1] normalizeSpaces
+// 改行やタブ入りの文字列を半角スペース 1 つで整える
+// スポットのカテゴリや説明文の空白文字を統一するために使う
 // ================================================================
 function normalizeSpaces(text) {
   return text
@@ -427,7 +441,8 @@ function normalizeSpaces(text) {
 }
 
 // ================================================================
-// [6-2] splitGenres  カンマ区切りのカテゴリ文字列をトリム済みジャンル配列に分割する
+// [6-2] splitGenres
+// category のカンマ区切り文字列をトリム済みジャンル配列に分割する
 // 例: "テーマパーク, 家族向け" → ["テーマパーク", "家族向け"]
 // ================================================================
 function splitGenres(category) {
@@ -439,8 +454,10 @@ function splitGenres(category) {
 }
 
 // ================================================================
-// [6-3] collectUniqueGenres  全スポット行から重複のないジャンル一覧を五十音順で作る
+// [6-3] collectUniqueGenres
+// 全スポットから重複なしジャンル一覧を五十音順で作る
 // ジャンル絞り込み select の選択肢を生成するために使う
+// 必要: splitGenres
 // ================================================================
 function collectUniqueGenres(parsedRows) {
   const set = new Set();
@@ -452,8 +469,10 @@ function collectUniqueGenres(parsedRows) {
 }
 
 // ================================================================
-// [6-4] spotCardFromRow  スポット 1 件のデータから画面に表示するカード DOM 要素を作る
-// 名前（リンク付き）・カテゴリ・説明文を article 要素にまとめて返す
+// [6-4] spotCardFromRow
+// スポット 1 件のデータからカード DOM 要素（article）を作る
+// 名前（リンク付き）・カテゴリ・説明文をまとめて返す
+// 必要: normalizeSpaces
 // ================================================================
 function spotCardFromRow(row) {
   const name = row.name || "";
@@ -487,8 +506,10 @@ function spotCardFromRow(row) {
 }
 
 // ================================================================
-// [6-5] renderSpots  allSpots をジャンルで絞り込んでスポット一覧エリアに描画する
+// [6-5] renderSpots
+// allSpots をジャンルで絞り込んでスポット一覧エリアに描画する
 // filterGenre が "__all__" または未指定の場合はすべて表示する
+// 必要: spotCardFromRow
 // ================================================================
 function renderSpots(filterGenre) {
   const container = document.getElementById("spot-list");
@@ -512,8 +533,10 @@ function renderSpots(filterGenre) {
 }
 
 // ================================================================
-// [6-6] populateGenreSelect  ジャンル select に option を追加し change で絞り込みを登録する
-// イベントリスナーの二重登録を防ぐため genreChangeBound フラグで管理する
+// [6-6] populateGenreSelect
+// ジャンル select に option を追加し、change で renderSpots を呼ぶ
+// イベントリスナーの二重登録を防ぐため genreChangeBound で管理する
+// 必要: renderSpots
 // ================================================================
 function populateGenreSelect(genres) {
   const sel = document.getElementById("genre-select");
@@ -538,8 +561,10 @@ function populateGenreSelect(genres) {
 }
 
 // ================================================================
-// [6-7] loadSpotsData  Papa Parse で公開スポット CSV を取得し一覧と select を本番データに切り替える
+// [6-7] loadSpotsData
+// Papa Parse で公開 CSV を読み込み、本番の一覧と select に切り替える
 // 列数が多いためライブラリに任せ、header: true でオブジェクト配列として受け取る
+// 必要: collectUniqueGenres / populateGenreSelect / renderSpots
 // ================================================================
 function loadSpotsData() {
   setSpotsStatus("観光スポットを読み込み中…");
@@ -564,8 +589,11 @@ function loadSpotsData() {
 }
 
 // ================================================================
-// [7-1] barColor  予約人数に応じて棒グラフの棒色（緑・赤・灰）を返す
-// CROWD_THRESHOLD（500 人）を境に空きやすい・混みやすいを色で区別する
+// [7-1] barColor
+// 予約人数に応じて棒の色を返す
+//   - 0 以下（未確定）→ COLORS.unknown
+//   - CROWD_THRESHOLD（500 人）未満 → COLORS.empty
+//   - それ以上 → COLORS.crowded
 // ================================================================
 function barColor(nPeople) {
   if (nPeople <= 0) return COLORS.unknown;
@@ -574,8 +602,10 @@ function barColor(nPeople) {
 }
 
 // ================================================================
-// [7-2] renderTopThree  予約が少ない順に上位 3 日を絞り込んで「おすすめ日」として表示する
+// [7-2] renderTopThree
+// 「空きやすい日」を 3 件表示する（予約人数のみで並べる。天気は TOP 3 に使わない）
 // 予約人数が 0 の日（未確定）は除外してから並べ替える
+// 必要: formatDateLabel
 // ================================================================
 function renderTopThree(rows) {
   const list = document.getElementById("top-days-list");
@@ -606,8 +636,11 @@ function renderTopThree(rows) {
 }
 
 // ================================================================
-// [8-1] weatherScore  降水量(mm)を晴れ/小雨/雨の 3 段階の点数に変換する（発展用）
-// TOP 3 の並び替えに天気を組み合わせたい場合の点数化ロジックとして使える
+// [8-1] weatherScore
+// 降水量(mm)を点数に変換する（発展用。メインの TOP 3 には未使用）
+//   - 0mm（晴れ）→ 30 点
+//   - 5mm 未満（小雨）→ 10 点
+//   - 5mm 以上（雨）→ -20 点
 // ================================================================
 function weatherScore(precipitation) {
   if (precipitation === 0) return 30;
@@ -616,14 +649,17 @@ function weatherScore(precipitation) {
 }
 
 // ================================================================
-// [8-2] loadWeatherData  Open-Meteo から降水量予報を取得して天気エリアを更新する
+// [8-2] loadWeatherData
+// Open-Meteo から降水量を取得し、画面上の天気エリアに表示する
 // weather-status にサマリー、weather-list に今後 5 日の一覧を表示する
+// （おすすめ TOP 3 の並びには使わない）
 // ================================================================
 async function loadWeatherData() {
   const res = await fetch(OPEN_METEO_URL);
   if (!res.ok) throw new Error(`天気データの取得に失敗しました (${res.status})`);
 
   const json = await res.json();
+
   const dates = json.daily?.time ?? [];
   const precips = json.daily?.precipitation_sum ?? [];
   const weatherMap = new Map(dates.map((d, i) => [d, precips[i] ?? 0]));
@@ -649,15 +685,195 @@ async function loadWeatherData() {
       weatherList.appendChild(li);
     }
   }
-  logDemo("loadWeatherData()", Array.from(weatherMap.entries()).slice(0, 3));
 }
 
 // ================================================================
-// main  アプリを起動し、完成済みの関数を順番に呼び出す
-// 未完成の関数があるときはフォールバック表示に切り替える
+// 付録 A: `map.html` 用のロジック（参考）
+// `index.html` 本体では使わず、Leaflet を読み込んだ単体ページで使う
 // ================================================================
+/*
+let leafletMap = null;
+let mapMarkers = [];
+
+function initMap() {
+  leafletMap = L.map("map").setView([36.06, 136.22], 10);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution:
+      '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }).addTo(leafletMap);
+}
+
+function renderMarkers(spots) {
+  for (const marker of mapMarkers) marker.remove();
+  mapMarkers = [];
+
+  for (const spot of spots) {
+    const lat = Number(spot.lat);
+    const lng = Number(spot.lng);
+    if (!lat || !lng) continue;
+
+    const marker = L.marker([lat, lng])
+      .addTo(leafletMap)
+      .bindPopup(`<b>${spot.name}</b><br>${spot.category}`);
+    mapMarkers.push(marker);
+  }
+}
+
+function applyMapFilter(filterGenre) {
+  if (!allSpots) return;
+
+  const filtered =
+    !filterGenre || filterGenre === "__all__"
+      ? allSpots
+      : allSpots.filter((row) => splitGenres(row.category || "").includes(filterGenre));
+
+  renderMarkers(filtered);
+}
+*/
+
+// ================================================================
+// 付録 B: `open-meteo.html` 用のロジック（参考）
+// `index.html` 本体の `loadWeatherData()` とは別に、単体デモではグラフと表を作る
+// ================================================================
+/*
+let precipChart = null;
+
+function labelFromPrecip(precipitation) {
+  if (precipitation === 0) return "晴れ (+30)";
+  if (precipitation < 5) return "小雨 (+10)";
+  return "雨 (-20)";
+}
+
+function barColorForPrecip(precipitation) {
+  if (precipitation === 0) return "rgba(82, 183, 136, 0.85)";
+  if (precipitation < 5) return "rgba(255, 179, 71, 0.9)";
+  return "rgba(224, 122, 95, 0.85)";
+}
+
+function buildOrUpdatePrecipChart(dates, precips) {
+  const canvas = document.getElementById("precip-chart");
+  if (!canvas || typeof Chart === "undefined") return;
+
+  const labels = dates.map((date) => formatDateLabel(date));
+  const data = precips.map((precip) => precip ?? 0);
+
+  const config = {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "降水量 (mm)",
+          data,
+          backgroundColor: data.map((precip) => barColorForPrecip(precip)),
+          borderWidth: 0,
+          borderRadius: 4,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: (items) => {
+              const index = items[0]?.dataIndex ?? 0;
+              return dates[index] ?? "";
+            },
+            label: (item) => {
+              const value = item.parsed.y ?? 0;
+              return [
+                `降水量: ${value} mm`,
+                `${labelFromPrecip(value)}（スコア ${weatherScore(value)}）`,
+              ];
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            maxRotation: 45,
+            minRotation: 45,
+            autoSkip: true,
+          },
+          grid: { display: false },
+        },
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: "降水量 (mm)" },
+        },
+      },
+    },
+  };
+
+  if (precipChart) {
+    precipChart.data.labels = labels;
+    precipChart.data.datasets[0].data = data;
+    precipChart.data.datasets[0].backgroundColor = data.map((precip) => barColorForPrecip(precip));
+    precipChart.update();
+  } else {
+    precipChart = new Chart(canvas.getContext("2d"), config);
+  }
+}
+
+async function loadOpenMeteoDemo() {
+  const status = document.getElementById("weather-status");
+  const tbody = document.getElementById("weather-rows");
+  if (!tbody) return;
+
+  const res = await fetch(OPEN_METEO_URL);
+  if (!res.ok) throw new Error(`取得に失敗しました (${res.status})`);
+
+  const json = await res.json();
+  const dates = json.daily?.time ?? [];
+  const precips = json.daily?.precipitation_sum ?? [];
+
+  buildOrUpdatePrecipChart(dates, precips);
+
+  tbody.innerHTML = "";
+  for (let i = 0; i < dates.length; i += 1) {
+    const date = dates[i];
+    const precipitation = precips[i] ?? 0;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${date}</td>
+      <td class="weather-code">${precipitation}</td>
+      <td>${labelFromPrecip(precipitation)}（スコア ${weatherScore(precipitation)}）</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  if (status) {
+    status.textContent = `${dates.length} 日分の予報をグラフと表で表示しています。`;
+  }
+}
+*/
+
+// ================================================================
+// 起動
+// コメント解除済みのメソッドだけ使って画面に変化を出す（console は main 内のデバッグ用コメントで）
+// ================================================================
+
 async function main() {
-  runPureFunctionDemos();
+  // ------------------------------------------------------------
+  // デバッグ用: 必要な行だけコメント解除し、終わったら戻す（console を静かに保つ）
+  // 穴埋め途中に入れた console.log は、対応する log*Try() を 1 行だけ外すと表示される
+  //
+  // logFormatDateLabelTry();
+  // logSplitLinesTry();
+  // logParseDinoCsvTry();
+  // logNormalizeSpacesTry();
+  // logSplitGenresTry();
+  // logCollectUniqueGenresTry();
+  // logSpotCardFromRowTry();
+  // logBarColorTry();
+  // logWeatherScoreTry();
+  // await logLoadDinoDataTry();
+  // await logLoadWeatherDataTry();
+  // ------------------------------------------------------------
 
   try {
     if (hasEnabled("loadDinoData", "parseDinoCsv", "buildOrUpdateChart", "formatDateLabel")) {
@@ -685,7 +901,6 @@ async function main() {
     }
 
     renderTopThreeFallback();
-    logLoadedState();
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     setChartStatus(`エラー: ${msg}`);

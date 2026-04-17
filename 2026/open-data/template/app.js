@@ -4,7 +4,7 @@
  * パート 4〜8 の関数は 2 種類の方法で有効にします:
  *   【記述】 // STUDENT: のコメントを読み、条件を満たすコードを自分で書く
  *   【解除】 /* … * / で囲まれたブロックの先頭・末尾の行を削除する
- * ブラウザを再読み込みして console と画面の変化を確認してください。
+ * ブラウザを再読み込みして画面の変化を確認。console で試すときは main() 内のデバッグ用コメントを必要な行だけ外す。
  */
 
 // ================================================================
@@ -103,22 +103,17 @@ const STUDENT_PLACEHOLDER_SNIPPETS = {
 };
 
 // ----------------------------------------------------------------
-// isDefined  window にその名前の関数が定義されているか確認する
-// ----------------------------------------------------------------
-function isDefined(name) {
-  return typeof window[name] === "function";
-}
-
-// ----------------------------------------------------------------
-// isEnabled  定義済みかつプレースホルダが残っていない（穴埋め完了）かを確認する
+// isEnabled  その名前の関数があり、プレースホルダが残っていない（穴埋め完了）かを確認する
+// main や hasEnabled では名前で参照（globalThis）。log*Try はスクリプト内の関数を直接呼ぶ。
 // ----------------------------------------------------------------
 function isEnabled(name) {
-  if (!isDefined(name)) return false;
+  const fn = globalThis[name];
+  if (typeof fn !== "function") return false;
 
   const placeholderSnippets = STUDENT_PLACEHOLDER_SNIPPETS[name];
   if (!placeholderSnippets) return true;
 
-  const source = Function.prototype.toString.call(window[name]);
+  const source = Function.prototype.toString.call(fn);
   return !placeholderSnippets.some((snippet) => source.includes(snippet));
 }
 
@@ -130,10 +125,96 @@ function hasEnabled(...names) {
 }
 
 // ----------------------------------------------------------------
-// logDemo  [demo] プレフィックス付きでコンソールにデモ結果を出力する
+// logFormatDateLabelTry  [4-1]  main 内のコメント解除で有効化（関数内の console.log もここで走る）
 // ----------------------------------------------------------------
-function logDemo(label, value) {
-  console.log(`[demo] ${label}`, value);
+function logFormatDateLabelTry() {
+  formatDateLabel("2026-05-03");
+}
+
+// ----------------------------------------------------------------
+// logSplitLinesTry  [5-1]
+// ----------------------------------------------------------------
+function logSplitLinesTry() {
+  splitLines(DEMO_DINO_CSV);
+}
+
+// ----------------------------------------------------------------
+// logParseDinoCsvTry  [5-2]  splitLines 完了後に使う
+// ----------------------------------------------------------------
+function logParseDinoCsvTry() {
+  if (!hasEnabled("splitLines")) {
+    warnWaiting("parseDinoCsv", ["splitLines"]);
+    return;
+  }
+  parseDinoCsv(DEMO_DINO_CSV);
+}
+
+// ----------------------------------------------------------------
+// logNormalizeSpacesTry  [6-1]  解除後に使う
+// ----------------------------------------------------------------
+function logNormalizeSpacesTry() {
+  normalizeSpaces("歴史,\n  自然\t 家族向け");
+}
+
+// ----------------------------------------------------------------
+// logSplitGenresTry  [6-2]
+// ----------------------------------------------------------------
+function logSplitGenresTry() {
+  splitGenres("テーマパーク, 家族向け, 自然");
+}
+
+// ----------------------------------------------------------------
+// logCollectUniqueGenresTry  [6-3]  splitGenres 完了後に使う
+// ----------------------------------------------------------------
+function logCollectUniqueGenresTry() {
+  if (!hasEnabled("splitGenres")) {
+    warnWaiting("collectUniqueGenres", ["splitGenres"]);
+    return;
+  }
+  collectUniqueGenres(DEMO_SPOTS);
+}
+
+// ----------------------------------------------------------------
+// logSpotCardFromRowTry  [6-4]  normalizeSpaces 有効化後に使う
+// ----------------------------------------------------------------
+function logSpotCardFromRowTry() {
+  if (typeof normalizeSpaces !== "function") {
+    warnWaiting("spotCardFromRow", ["normalizeSpaces"]);
+    return;
+  }
+  spotCardFromRow(DEMO_SPOTS[0]);
+}
+
+// ----------------------------------------------------------------
+// logBarColorTry  [7-1]
+// ----------------------------------------------------------------
+function logBarColorTry() {
+  barColor(0);
+  barColor(120);
+  barColor(800);
+}
+
+// ----------------------------------------------------------------
+// logWeatherScoreTry  [8-1]
+// ----------------------------------------------------------------
+function logWeatherScoreTry() {
+  weatherScore(0);
+  weatherScore(2.5);
+  weatherScore(8);
+}
+
+// ----------------------------------------------------------------
+// logLoadDinoDataTry  [5-3]  未完成時は fetch が失敗しうる（エラーは console に出る）
+// ----------------------------------------------------------------
+async function logLoadDinoDataTry() {
+  await loadDinoData();
+}
+
+// ----------------------------------------------------------------
+// logLoadWeatherDataTry  [8-2]
+// ----------------------------------------------------------------
+async function logLoadWeatherDataTry() {
+  await loadWeatherData();
 }
 
 // ----------------------------------------------------------------
@@ -160,69 +241,6 @@ function setSpotsStatus(text) {
 }
 
 // ----------------------------------------------------------------
-// runPureFunctionDemos
-// 完成済みの純粋関数をサンプルデータで試し動かし、結果を console に表示する
-// ページ読み込みのたびに呼ばれ、穴埋めの進捗を console で確認できる
-// ----------------------------------------------------------------
-function runPureFunctionDemos() {
-  if (isEnabled("formatDateLabel")) {
-    logDemo("formatDateLabel('2026-05-03')", formatDateLabel("2026-05-03"));
-  }
-
-  if (isEnabled("barColor")) {
-    logDemo("barColor()", {
-      zero: barColor(0),
-      low: barColor(120),
-      high: barColor(800),
-    });
-  }
-
-  if (isEnabled("splitLines")) {
-    logDemo("splitLines()", splitLines(DEMO_DINO_CSV));
-  }
-
-  if (isEnabled("parseDinoCsv")) {
-    if (hasEnabled("splitLines")) {
-      logDemo("parseDinoCsv()", parseDinoCsv(DEMO_DINO_CSV));
-    } else {
-      warnWaiting("parseDinoCsv", ["splitLines"]);
-    }
-  }
-
-  if (isEnabled("normalizeSpaces")) {
-    logDemo("normalizeSpaces()", normalizeSpaces("歴史,\n  自然\t 家族向け"));
-  }
-
-  if (isEnabled("splitGenres")) {
-    logDemo("splitGenres()", splitGenres("テーマパーク, 家族向け, 自然"));
-  }
-
-  if (isEnabled("collectUniqueGenres")) {
-    if (hasEnabled("splitGenres")) {
-      logDemo("collectUniqueGenres()", collectUniqueGenres(DEMO_SPOTS));
-    } else {
-      warnWaiting("collectUniqueGenres", ["splitGenres"]);
-    }
-  }
-
-  if (isEnabled("spotCardFromRow")) {
-    if (hasEnabled("normalizeSpaces")) {
-      logDemo("spotCardFromRow()", spotCardFromRow(DEMO_SPOTS[0]).outerHTML);
-    } else {
-      warnWaiting("spotCardFromRow", ["normalizeSpaces"]);
-    }
-  }
-
-  if (isEnabled("weatherScore")) {
-    logDemo("weatherScore()", {
-      sunny: weatherScore(0),
-      drizzle: weatherScore(2.5),
-      rainy: weatherScore(8),
-    });
-  }
-}
-
-// ----------------------------------------------------------------
 // renderChartFallback
 // loadDinoData が完成するまでの間、サンプルデータでグラフを仮表示する
 // formatDateLabel と buildOrUpdateChart の両方が完成済みのときだけ動く
@@ -232,7 +250,6 @@ function renderChartFallback() {
 
   setChartStatus("サンプル 3 日分で棒グラフを表示中。パート 5 で公開 CSV に切り替わります。");
   buildOrUpdateChart(DEMO_DINO_ROWS);
-  logDemo("buildOrUpdateChart()", DEMO_DINO_ROWS);
 }
 
 // ----------------------------------------------------------------
@@ -249,7 +266,6 @@ function renderSpotsFallback() {
   }
   renderSpots("__all__");
   setSpotsStatus("サンプル 3 件でスポット一覧を表示中。loadSpotsData で公開 CSV に切り替わります。");
-  logDemo("renderSpots('__all__')", DEMO_SPOTS.map((spot) => spot.name));
 }
 
 // ----------------------------------------------------------------
@@ -262,21 +278,12 @@ function renderTopThreeFallback() {
 
   const rows = dinoRows || DEMO_DINO_ROWS;
   renderTopThree(rows);
-  logDemo("renderTopThree()", rows.map((row) => row.date_visit));
-}
-
-// ----------------------------------------------------------------
-// logLoadedState  読み込み済みの dinoRows / allSpots の先頭 3 件を console に出力する
-// ----------------------------------------------------------------
-function logLoadedState() {
-  if (dinoRows) logDemo("dinoRows loaded", dinoRows.slice(0, 3));
-  if (allSpots) logDemo("allSpots loaded", allSpots.slice(0, 3));
 }
 
 // ================================================================
 // [4-1] formatDateLabel  【記述】
 // ISO 日付を "M/D" に変換
-// 完成後: console に "2026-05-03" → "5/3" が出る
+// デバッグは main の logFormatDateLabelTry をコメント解除して確認
 // ================================================================
 function formatDateLabel(isoDate) {
   // STUDENT: "-" で分割して月と日を取り出し、"M/D" 形式の文字列を返してください。
@@ -366,7 +373,7 @@ function buildOrUpdateChart(rows) {
 // ================================================================
 // [5-1] splitLines  【記述】
 // CSV テキストを行配列にする
-// 完成後: console に CSV が行ごとの配列で出る
+// 完成後: splitLines が有効になる（確認は main の logSplitLinesTry）
 // ================================================================
 function splitLines(text) {
   // STUDENT: 次の条件を満たす処理を書いてください。
@@ -381,7 +388,7 @@ function splitLines(text) {
 // ================================================================
 // [5-2] parseDinoCsv  【記述】
 // 恐竜 CSV をオブジェクト配列に変換
-// 完成後: console に rows 配列が出る
+// 完成後: parseDinoCsv が有効になる（確認は main の logParseDinoCsvTry）
 // 必要: splitLines
 // ================================================================
 function parseDinoCsv(text) {
@@ -431,7 +438,7 @@ async function loadDinoData() {
 // ================================================================
 // [6-1] normalizeSpaces
 // 改行やタブ入りの文字列を 1 行に整える
-// 解除後: console に整形後の文字列が出る
+// 解除後: logNormalizeSpacesTry() で試せる
 // ================================================================
 /*
 function normalizeSpaces(text) {
@@ -448,7 +455,7 @@ function normalizeSpaces(text) {
 // ================================================================
 // [6-2] splitGenres  【記述】
 // category のカンマ区切りをジャンル配列にする
-// 完成後: console にジャンル配列が出る
+// 完成後: splitGenres が有効になる（確認は main の logSplitGenresTry）
 // ================================================================
 function splitGenres(category) {
   if (!category) return [];
@@ -464,7 +471,7 @@ function splitGenres(category) {
 // ================================================================
 // [6-3] collectUniqueGenres
 // 全スポットから重複なしジャンル一覧を作る
-// 解除後: console にジャンル一覧が出る
+// 解除後: logCollectUniqueGenresTry() で試せる
 // 必要: splitGenres
 // ================================================================
 /*
@@ -481,7 +488,7 @@ function collectUniqueGenres(parsedRows) {
 // ================================================================
 // [6-4] spotCardFromRow
 // 1 件分のスポットデータからカード DOM を作る
-// 解除後: console に article 要素の HTML が出る
+// 解除後: logSpotCardFromRowTry() で試せる
 // 必要: normalizeSpaces
 // ================================================================
 /*
@@ -609,7 +616,7 @@ function loadSpotsData() {
 // ================================================================
 // [7-1] barColor  【記述】
 // 予約人数を棒の色に変換
-// 完成後: console に 0 / 120 / 800 の色判定が出て、グラフも色分けされる
+// 完成後: グラフが色分けされる（確認は main の logBarColorTry）
 // ================================================================
 function barColor(nPeople) {
   // STUDENT: nPeople の値に応じて 3 種類の色を返してください。
@@ -659,7 +666,7 @@ function renderTopThree(rows) {
 // ================================================================
 // [8-1] weatherScore  【記述】
 // 降水量(mm)を点数に変換する例（発展: おすすめ並びに天気を足すときに使える。メインの TOP 3 には未使用）
-// 完成後: console に晴れ / 小雨 / 雨の点数が出る
+// 完成後: 点数ロジックが有効になる（確認は main の logWeatherScoreTry）
 // ================================================================
 function weatherScore(precipitation) {
   // STUDENT: 降水量(mm)に応じて点数を返してください。
@@ -673,7 +680,7 @@ function weatherScore(precipitation) {
 // ================================================================
 // [8-2] loadWeatherData  【記述】
 // Open-Meteo から降水量を取得し、画面上の天気エリアに表示する（おすすめ TOP 3 の並びには使わない）
-// 完成後: console に日付→降水量の一部が出る（logDemo）
+// 完成後: 天気エリアに予報が表示される（デバッグは main の logLoadWeatherDataTry をコメント解除）
 // ================================================================
 async function loadWeatherData() {
   // STUDENT: OPEN_METEO_URL に fetch リクエストを送り、レスポンスを受け取ってください。
@@ -713,7 +720,6 @@ async function loadWeatherData() {
       weatherList.appendChild(li);
     }
   }
-  logDemo("loadWeatherData()", Array.from(weatherMap.entries()).slice(0, 3));
 }
 
 // ================================================================
@@ -883,11 +889,26 @@ async function loadOpenMeteoDemo() {
 
 // ================================================================
 // 起動
-// コメント解除済みのメソッドだけ使って、console と画面に変化を出す
+// コメント解除済みのメソッドだけ使って画面に変化を出す（console は main 内のデバッグ用コメントで）
 // ================================================================
 
 async function main() {
-  runPureFunctionDemos();
+  // ------------------------------------------------------------
+  // デバッグ用: 必要な行だけコメント解除し、終わったら戻す（console を静かに保つ）
+  // 穴埋め途中に入れた console.log は、対応する log*Try() を 1 行だけ外すと表示される
+  //
+  // logFormatDateLabelTry();
+  // logSplitLinesTry();
+  // logParseDinoCsvTry();
+  // logNormalizeSpacesTry();
+  // logSplitGenresTry();
+  // logCollectUniqueGenresTry();
+  // logSpotCardFromRowTry();
+  // logBarColorTry();
+  // logWeatherScoreTry();
+  // await logLoadDinoDataTry();
+  // await logLoadWeatherDataTry();
+  // ------------------------------------------------------------
 
   try {
     if (hasEnabled("loadDinoData", "parseDinoCsv", "buildOrUpdateChart", "formatDateLabel")) {
@@ -915,7 +936,6 @@ async function main() {
     }
 
     renderTopThreeFallback();
-    logLoadedState();
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     setChartStatus(`エラー: ${msg}`);

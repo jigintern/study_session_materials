@@ -19,24 +19,37 @@
 | **【記述】（穴埋め）** | 関数の中に `// STUDENT:` のコメントがある | 条件を読み、空欄を自分で埋める |
 | **【解除】** | 関数が `/*` … `*/` で囲まれている | `/*` と `*/` の行だけを削除する |
 
-どちらも保存してブラウザを再読み込みすると、**画面** または **ブラウザの console** に変化が出ます。
+どちらも保存してブラウザを再読み込みすると、**主に画面**に変化が出ます。
 
 | パート | ラベル | 種類 | 確認できること |
 | :----- | :----- | :--- | :------------- |
-| パート 4 | `[4-1] formatDateLabel` | **記述** | console に `"2026-05-03"` → `"5/3"` が出る |
+| パート 4 | `[4-1] formatDateLabel` | **記述** | `logFormatDateLabelTry` で途中確認できる |
 | パート 4 | `[4-2] buildOrUpdateChart` | 解除 | サンプル 3 日分の棒グラフが出る |
-| パート 5 | `[5-1] splitLines` | **記述** | console に行ごとの配列が出る |
-| パート 5 | `[5-2] parseDinoCsv` | **記述** | console にオブジェクト配列が出る |
-| パート 5 | `[5-3] loadDinoData` | **記述** | グラフが公開データに切り替わる |
-| パート 6 | `[6-1] normalizeSpaces` | 解除 | console に整形後の文字列が出る |
-| パート 6 | `[6-2] splitGenres` | **記述** | console にジャンル配列が出る |
+| パート 5 | `[5-1] splitLines` | **記述** | CSV が行に分かれる（中身は `main` の `logSplitLinesTry` で確認可） |
+| パート 5 | `[5-2] parseDinoCsv` | **記述** | 行がオブジェクト配列になる（`logParseDinoCsvTry`） |
+| パート 5 | `[5-3] loadDinoData` | **記述** | グラフが公開データに切り替わる（`logLoadDinoDataTry`） |
+| パート 6 | `[6-1] normalizeSpaces` | 解除 | 文字列が 1 行に整う（`logNormalizeSpacesTry`） |
+| パート 6 | `[6-2] splitGenres` | **記述** | カテゴリがジャンル配列になる（`logSplitGenresTry`） |
 | パート 6 | `[6-3]`〜`[6-7]` | 解除 | スポット一覧・絞り込みが表示される |
-| パート 7 | `[7-1] barColor` | **記述** | グラフが緑・赤・灰色に色分けされる |
+| パート 7 | `[7-1] barColor` | **記述** | グラフが緑・赤・灰色に色分けされる（`logBarColorTry`） |
 | パート 7 | `[7-2] renderTopThree` | 解除 | おすすめ日 TOP 3 が表示される |
-| パート 8 | `[8-1] weatherScore` | **記述** | console に晴れ/小雨/雨の点数が出る |
-| パート 8 | `[8-2] loadWeatherData` | **記述** | 天気エリアに予報一覧が表示される |
+| パート 8 | `[8-1] weatherScore` | **記述** | 降水量から点数が付く（`logWeatherScoreTry`） |
+| パート 8 | `[8-2] loadWeatherData` | **記述** | 天気エリアに予報一覧が表示される（`logLoadWeatherDataTry`） |
 
-> **穴埋めを直す前でも** ブラウザを開いてエラーにはなりません。ただし console の出力が期待と違う（例: 日付がそのまま ISO 形式のまま）ので、完成させて違いを確かめてみましょう。  
+### ブラウザの console で確認したいとき（任意）
+
+`app.js` の `main()` 冒頭にある **デバッグ用**のコメントのうち、必要な **1 行だけ** `//` を外してください。関数の中に一時的に入れた `console.log` も、その行で対象関数が実行されると表示されます。用が済んだら `//` を戻すと、再読み込みのたびに余計な log は出ません。
+
+| 目的 | `main()` でコメント解除する行の例 |
+| :--- | :--- |
+| `[4-1]` | `logFormatDateLabelTry();` |
+| `[5-1]`〜`[5-2]` | `logSplitLinesTry();` / `logParseDinoCsvTry();` |
+| `[6-1]` / `[6-3]` / `[6-4]` | `logNormalizeSpacesTry();` / `logCollectUniqueGenresTry();` / `logSpotCardFromRowTry();` |
+| `[5-3]` 全体の流れ | `await logLoadDinoDataTry();`（未完成だと fetch で失敗しうる） |
+| `[6-2]` / `[7-1]` / `[8-1]` | `logSplitGenresTry();` / `logBarColorTry();` / `logWeatherScoreTry();` |
+| `[8-2]` | `await logLoadWeatherDataTry();` |
+
+> **穴埋めを直す前でも** ブラウザを開いてエラーにはなりません（上記のデバッグ行を外していない限り、console は静かです）。完成させて画面の違いを確かめてみましょう。  
 > 完成版は一つ上のディレクトリの [`app.js`](../app.js) または [`CODE_REFERENCE.md`](../CODE_REFERENCE.md) を参照してください。
 
 ## 使い方
