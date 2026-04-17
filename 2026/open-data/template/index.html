@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>福井恐竜博物館 おでかけプランナー</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <h1 class="site-title">福井恐竜博物館 おでかけプランナー</h1>
+        <p class="site-lead">
+          公開されている予約人数データで混雑の傾向を把握し、周辺の観光スポットをジャンルから探せます。
+        </p>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="panel panel--chart" aria-labelledby="chart-heading">
+        <div class="panel__header">
+          <h2 id="chart-heading">予約人数（公開データ）</h2>
+          <p class="panel__note">
+            データ出典:
+            <a
+              href="https://github.com/code4fukui/dinosaur-opendata"
+              target="_blank"
+              rel="noopener noreferrer"
+              >code4fukui / dinosaur-opendata</a
+            >
+            （毎日更新の CSV を取得）
+          </p>
+        </div>
+        <p class="threshold-hint">
+          混雑の目安: 予約人数が <strong id="threshold-value">500</strong> 人未満を「空きやすい」、それ以上を「混みやすい」として色分けしています（目安です）。
+        </p>
+        <div class="chart-wrap">
+          <canvas id="reservation-chart" role="img" aria-label="日ごとの予約人数の棒グラフ"></canvas>
+        </div>
+        <p id="chart-status" class="status" role="status"></p>
+        <div class="legend" aria-hidden="true">
+          <span class="legend__item legend__item--empty">空きやすい</span>
+          <span class="legend__item legend__item--crowded">混みやすい</span>
+          <span class="legend__item legend__item--unknown">未確定・0件</span>
+        </div>
+        <div class="top-days">
+          <h3 id="top-days-title" class="top-days__title">おすすめ日 TOP 3（予約が少ない順）</h3>
+          <ol id="top-days-list" class="top-days__list"></ol>
+        </div>
+        <p id="weather-status" class="status" role="status"></p>
+        <div class="weather-preview" aria-labelledby="weather-preview-title">
+          <h3 id="weather-preview-title" class="weather-preview__title">取得した天気（今後 5 日）</h3>
+          <ul id="weather-list" class="weather-preview__list">
+            <li>まだ取得していません</li>
+          </ul>
+        </div>
+        <p style="margin: 0.75rem 0 0; font-size: 0.88rem;">
+          <a href="open-meteo.html">天気 API（Open-Meteo）のサンプルページ →</a>
+        </p>
+      </section>
+
+      <section class="panel panel--spots" aria-labelledby="spots-heading">
+        <div class="panel__header">
+          <h2 id="spots-heading">周辺の観光スポット</h2>
+          <p class="panel__note">
+            データ出典:
+            <a
+              href="https://github.com/code4fukui/fukui-spot"
+              target="_blank"
+              rel="noopener noreferrer"
+              >code4fukui / fukui-spot</a
+            >
+            （恐竜MAP掲載スポット）
+          </p>
+        </div>
+        <div class="spots-toolbar">
+          <label class="spots-toolbar__label" for="genre-select">ジャンルで絞り込み</label>
+          <select id="genre-select" class="spots-toolbar__select"></select>
+        </div>
+        <p id="spots-status" class="status" role="status"></p>
+        <p style="margin: 0.75rem 0 0; font-size: 0.88rem;">
+          <a href="map.html">地図で見る →</a>
+        </p>
+        <div id="spot-list" class="spot-list"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>教材デモ — HTML / CSS / Chart.js / fetch / CSV</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
