@@ -8,6 +8,9 @@
 
 ### 2026年作成
 
+* [自己紹介ページを作ろう — Web開発入門](./2026/web-intro/README.md)
+  * HTML、CSS、JavaScriptの3つの言語を使って、自己紹介ページを作ります。
+  * [スライド](https://jigintern.github.io/study_session_materials/web-intro-2026/slide.html)
 * [オープンデータで課題を解決する Web アプリ開発](./2026/open-data/README.md)
   * オープンデータを使って「福井恐竜博物館 おでかけプランナー」を作りながら、fetch・Chart.js・DOM 操作・filter を学ぶハンズオンです
   * [スライド](https://jigintern.github.io/study_session_materials/open-data-2026/slide.html)
