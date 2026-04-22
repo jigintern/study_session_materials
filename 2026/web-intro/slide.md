@@ -915,7 +915,7 @@ padding: 40px 20px;
 <div class="card">
   <h2>SNS</h2>
   <div class="sns-links">
-    <a href="#" class="sns-link">X</a>
+    <a href="https://x.com" class="sns-link">X</a>
     <a href="#" class="sns-link">Instagram</a>
     <a href="#" class="sns-link">GitHub</a>
   </div>
@@ -928,7 +928,7 @@ padding: 40px 20px;
 |------|------|
 | `href` | リンク先のURL（`#` は仮のリンク） |
 
-`href` に自分のSNSのURLを入れると、本物のリンクになります。
+> `href="https://x.com"` とすると、Xへのリンクになります。
 
 ---
 
