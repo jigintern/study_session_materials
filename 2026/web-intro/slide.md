@@ -411,7 +411,53 @@ body {
   border-radius: 0 0 20px 20px; /* 角を丸くする */
 }
 ```
-> `px` = ピクセル。画面上の点の数で大きさを指定する単位。
+> `px` = ピクセル。画面上の点の数で大きさを指定する単位。現実でいうと「cm」や「m」のようなもの。
+---
+
+## padding と margin
+
+bodyの余白をなくすために `margin: 0; padding: 0;` と書きましたが、**余白には2種類ある** あります
+
+![bg right:40% fit](imgs/boxmodel.png)
+
+- **padding** = 内側の余白
+- **margin** = 外側の余白
+
+> デフォルトでブラウザは `body` に余白をついけていますが、今回は自分で余白をコントロールしたいので、両方とも0にしています。
+---
+
+## padding: 内側の余白
+
+![bg right:50% fit](imgs/padding-compare.png)
+
+要素の**内側**の余白が **padding**
+内側に余白を作ることでテキストが枠にくっつかず、見やすくなります。
+
+---
+
+## margin: 外側の余白
+
+![bg right:50% fit](imgs/margin-compare.png)
+
+要素の**外側**の余白が **margin**
+外側に余白を作ることで、要素同士がくっつかず、見やすくなります。
+
+---
+
+## padding / margin の値の書き方
+
+```css
+/* 値が1つ → 上下左右すべて同じ */
+padding: 24px;
+
+/* 値が2つ → 上下 / 左右 */
+padding: 40px 20px;
+/*        ↑上下  ↑左右 */
+```
+
+> 値が3つ以上の書き方もありますが、今日は2つまで覚えればOKです。
+
+あとで、`padding` と `margin` を使う場面がたくさん出てくるので、違いを意識してみてください。
 
 ---
 
@@ -570,49 +616,6 @@ border-radius: 0    0    20px  20px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); /* 影 */
 }
 ```
-
----
-
-## padding と margin
-
-カードのCSSに `padding` と `margin` が出てきました。
-これがCSSで **一番混乱しやすい** ところです。
-
-![bg right:40% fit](imgs/boxmodel.png)
-
-- **padding** = 内側の余白
-- **margin** = 外側の余白
-
----
-
-## padding の違い
-
-![bg right:50% fit](imgs/padding-compare.png)
-
-**padding**（内側）がないと、テキストが枠にくっつく。
-
----
-
-## margin の違い
-
-![bg right:50% fit](imgs/margin-compare.png)
-
-**margin**（外側）がないと、カード同士がくっつく。
-
----
-
-## padding / margin の値の書き方
-
-```css
-/* 値が1つ → 上下左右すべて同じ */
-padding: 24px;
-
-/* 値が2つ → 上下 / 左右 */
-padding: 40px 20px;
-/*        ↑上下  ↑左右 */
-```
-
-> よく使うのは **1つ（全方向同じ）** と **2つ（上下/左右）** です。
 
 ---
 
