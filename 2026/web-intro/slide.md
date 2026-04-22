@@ -525,30 +525,6 @@ padding: 40px 20px;
 - その中に「写真」と「説明文」を入れる
 - 説明文の中に文章を2つ入れる
 
----
-
-<!-- _class: record -->
-
-## まず、カードを置く場所を作る
-
-ヘッダーの下にカードを並べたい。でも画面幅いっぱいに広がると見づらい。
-→ **コンテナ**（入れ物）を作って、中央に寄せます。
-
-`index.html` と `styles.css` にそれぞれ追加：
-
-```html
-<div class="container">
-  <!-- ここにカードを追加していく -->
-</div>
-```
-
-```css
-.container {
-  max-width: 600px;    /* 横幅を制限 */
-  margin: 0 auto;      /* 中央寄せ */
-  padding: 20px;       /* 内側の余白 */
-}
-```
 
 ---
 
@@ -571,7 +547,7 @@ padding: 40px 20px;
 
 ## プロフィールのHTML
 
-`<div class="container">` の中に追加：
+先ほど書いたヘッダーの下に、新しいカードを追加します。
 
 ```html
 <div class="card">
@@ -662,6 +638,31 @@ padding: 40px 20px;
 `line-height: 1.6` = 行間を1.6倍にする。
 文章が読みやすくなります。
 
+---
+
+<!-- _class: record -->
+
+## カード全体の幅を制限する
+
+今のままだと、画面全体にカードが広がってしまいます
+
+`index.html` と `styles.css` にそれぞれ追加：
+
+```html
+<div class="container">
+  <!-- プロフィールカードはこの中に入れる -->
+</div>
+```
+
+```css
+.container {
+  max-width: 600px;    /* 横幅を制限 */
+  margin: 0 auto;      /* 中央寄せ */
+  padding: 20px;       /* 内側の余白 */
+}
+```
+
+> 今後は、カードはすべてこの `.container` の中に入れていきます。
 ---
 
 ## ここまでの結果
