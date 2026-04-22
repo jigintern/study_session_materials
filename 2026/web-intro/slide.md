@@ -15,6 +15,18 @@ style: |
     text-align: center;
     margin: 0.5em 0;
   }
+    section.record::before {
+    content: "記述";
+    position: absolute;
+    border: 3px solid black;
+    top: 42px;
+    right: 42px;
+    padding: 4px 14px;
+    font-size: 1.2em;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    z-index: 10;
+  }
 ---
 
 <!-- _class: lead -->
@@ -319,6 +331,8 @@ HTMLは **タグ** という目印を使って書きます。
 
 ---
 
+<!-- _class: record -->
+
 ## ヘッダーのHTML
 
 `index.html` の `<body>` の中に追加します。
@@ -377,6 +391,8 @@ body {              ← 「body に対して」
 
 ---
 
+<!-- _class: record -->
+
 ## ヘッダーのCSS
 
 `styles.css` に追加：
@@ -411,6 +427,8 @@ border-radius: 0    0    20px  20px;
 → 上は角ばったまま、下だけ丸くなる。
 
 ---
+
+<!-- _class: record -->
 
 ## ヘッダーの文字のCSS
 
@@ -475,6 +493,8 @@ border-radius: 0    0    20px  20px;
 
 ---
 
+<!-- _class: record -->
+
 ## まず、カードを置く場所を作る
 
 ヘッダーの下にカードを並べたい。でも画面幅いっぱいに広がると見づらい。
@@ -513,6 +533,8 @@ border-radius: 0    0    20px  20px;
 
 ---
 
+<!-- _class: record -->
+
 ## プロフィールのHTML
 
 `<div class="container">` の中に追加：
@@ -534,6 +556,8 @@ border-radius: 0    0    20px  20px;
 ```
 
 ---
+
+<!-- _class: record -->
 
 ## カードのCSS
 
@@ -592,6 +616,8 @@ padding: 40px 20px;
 
 ---
 
+<!-- _class: record -->
+
 ## 横並びにする: Flexbox
 
 写真とテキストを **横に並べ** たい。`display: flex` を使います。
@@ -612,6 +638,8 @@ padding: 40px 20px;
 
 ---
 
+<!-- _class: record -->
+
 ## 写真を丸くする
 
 ```css
@@ -627,6 +655,8 @@ padding: 40px 20px;
 > `border-radius: 50%` で正方形が **正円** になる。よく使うテクニック。
 
 ---
+
+<!-- _class: record -->
 
 ## テキストのCSS
 
@@ -705,6 +735,8 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 
 ---
 
+<!-- _class: record -->
+
 ## リストのHTML
 
 `<div class="container">` の中に、新しいカードを追加：
@@ -724,6 +756,8 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 
 ---
 
+<!-- _class: record -->
+
 ## 見出しのCSS
 
 ```css
@@ -738,6 +772,8 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 すべての h2 ではなく、**カード内の見出しだけ** をピンクにします。
 
 ---
+
+<!-- _class: record -->
 
 ## リストの見た目をカスタマイズ
 
@@ -832,6 +868,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 
 ---
 
+<!-- _class: record -->
+
 ## バッジのHTML
 
 ```html
@@ -849,6 +887,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 
 
 ---
+
+<!-- _class: record -->
 
 ## バッジのCSS
 
@@ -916,6 +956,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 
 ---
 
+<!-- _class: record -->
+
 ## リンクのHTML
 
 ```html
@@ -938,6 +980,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 `href` に自分のSNSのURLを入れると、本物のリンクになります。
 
 ---
+
+<!-- _class: record -->
 
 ## ボタン風のデザイン
 
@@ -968,6 +1012,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 > `text-decoration: none` と `color: white` で、それをリセットしてボタン風に見せています。
 
 ---
+
+<!-- _class: record -->
 
 ## ホバー効果をつける
 
@@ -1092,6 +1138,8 @@ color: #fff;
 
 ---
 
+<!-- _class: record -->
+
 ## Step 1: ダークモード用のCSSを`styles.css`に追加
 
 ```css
@@ -1147,6 +1195,8 @@ JavaScript で **このクラスをつけたり外したり** することで、
 
 ---
 
+<!-- _class: record -->
+
 ## Step 2: 切り替えボタンのHTML
 
 `index.html` の container の中、一番下に追加：
@@ -1177,6 +1227,8 @@ JavaScript で **このクラスをつけたり外したり** することで、
 
 ---
 
+<!-- _class: record -->
+
 ## ボタンのCSS
 
 ```css
@@ -1199,6 +1251,8 @@ JavaScript で **このクラスをつけたり外したり** することで、
 ```
 
 ---
+
+<!-- _class: record -->
 
 ## Step 3: JavaScriptで切り替える
 
