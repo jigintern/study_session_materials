@@ -73,22 +73,6 @@
       color: hotpink;
     }
 
-    .favorites-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .favorites-list li {
-      padding: 6px 0;
-      font-size: 15px;
-    }
-
-    .favorites-list li::before {
-      content: "♡ ";
-      color: hotpink;
-    }
-
     /* ===== スキルバッジ ===== */
     .badges {
       display: flex;
@@ -193,7 +177,7 @@
         <button class="tab-btn" data-tab="dislikes">苦手なもの</button>
       </div>
       <div id="tab-likes" class="tab-content active">
-        <ul class="favorites-list">
+        <ul>
           <li>カフェ巡り</li>
           <li>猫</li>
           <li>ラーメン</li>
@@ -202,7 +186,7 @@
         </ul>
       </div>
       <div id="tab-dislikes" class="tab-content">
-        <ul class="favorites-list">
+        <ul>
           <li>早起き</li>
           <li>虫</li>
           <li>満員電車</li>

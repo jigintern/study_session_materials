@@ -689,13 +689,11 @@ padding: 40px 20px;
 
 ![bg right:50% fit](imgs/part-favorites.png)
 
-♡マーク付きの **箇条書きリスト** で好きなものを表示します。
-
-CSSの `::before` で装飾をカスタマイズする方法を学びます。
+好きなものを **箇条書き** で表示するリストを作ります。
 
 ### できるようになること
 - 情報を箇条書きで整理して見せられる
-- CSSだけでリストの見た目を変えられる
+
 
 ---
 
@@ -736,7 +734,7 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 ```html
 <div class="card">
   <h2>好きなもの</h2>
-  <ul class="favorites-list">
+  <ul>
     <li>カフェ巡り</li>
     <li>猫</li>
     <li>ラーメン</li>
@@ -762,45 +760,6 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 
 `.card h2` = 「card の中にある h2」にだけ適用。
 すべての h2 ではなく、**カード内の見出しだけ** をピンクにします。
-
----
-
-<!-- _class: record -->
-
-## リストの見た目をカスタマイズ
-
-```css
-.favorites-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.favorites-list li {
-  padding: 6px 0;
-  font-size: 15px;
-}
-
-.favorites-list li::before {
-  content: "♡ ";
-  color: hotpink;
-}
-```
-
----
-
-## ポイント解説
-
-| コード | 意味 |
-|--------|------|
-| `list-style: none` | デフォルトの黒丸（・）を消す |
-| `li::before` | 各 li の **前に** 何かを挿入する |
-| `content: "♡ "` | 挿入する中身（ハートマーク） |
-
-`::before` は **疑似要素** と呼ばれるもの。
-HTMLを変えずに、CSSだけで飾りを追加できます。
-
-> ♡ の部分を ✨ や ★ に変えても面白いです。
 
 ---
 
@@ -1040,7 +999,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 `<h1>` `<h2>` `<p>` `<div>` `<img>` `<ul>` `<li>` `<span>` `<a>`
 
 ### 今日使った CSS プロパティ
-`background-color` `color` `padding` `margin` `border-radius` `box-shadow` `display: flex` `text-align` `::before` `:hover`
+`background-color` `color` `padding` `margin` `border-radius` `box-shadow` `display: flex` `text-align` `:hover`
 
 ---
 
