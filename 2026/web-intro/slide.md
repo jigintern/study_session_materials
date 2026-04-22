@@ -1067,7 +1067,7 @@ padding: 40px 20px;
 
 ```css
 background-color: #1a1a2e;
-color: #fff;
+color: #ffffff;
 ```
 
 `#` の後に **赤(R)・緑(G)・青(B)** を2桁ずつ指定する。
