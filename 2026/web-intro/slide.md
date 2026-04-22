@@ -589,7 +589,7 @@ padding: 40px 20px;
 
 写真とテキストを **横に並べ** たい。`display: flex` を使います。
 
-![bg right:55% fit](imgs/flexbox-compare.png)
+![bg right:40% fit](imgs/flexbox-compare.png)
 
 ```css
 .profile {
