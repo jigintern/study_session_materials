@@ -2097,5 +2097,5 @@ border: 3px solid pink;
 ## 参考リンク
 
 - [MDN Web Docs](https://developer.mozilla.org/ja/) — HTML/CSS/JS のリファレンス
-- [Can I use](https://caniuse.com/) — ブラウザ対応状況の確認
-- [Google カラーピッカー](https://g.co/kgs/HwVnkZs) — カラーコードを選ぶ
+- [Can I use](https://caniuse.com/) — ブラウザの機能対応状況を確認する
+- [Google カラーピッカー](https://www.google.com/search?q=google+color+picker) — カラーコードを選ぶ
