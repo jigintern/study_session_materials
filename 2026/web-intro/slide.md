@@ -995,11 +995,69 @@ padding: 40px 20px;
 
 ---
 
-### 今日使った HTML タグ
-`<h1>` `<h2>` `<p>` `<div>` `<img>` `<ul>` `<li>` `<span>` `<a>`
+### 今日使ったHTMLタグ
 
-### 今日使った CSS プロパティ
-`background-color` `color` `padding` `margin` `border-radius` `box-shadow` `display: flex` `text-align` `:hover`
+<div class="columns">
+<div>
+
+| タグ | 意味 |
+|------|------|
+| `<h1>` | 見出し |
+| `<h2>` | 小見出し |
+| `<p>` | 段落 |
+| `<div>` | グループ化する箱 |
+| `<span>` | インラインのグループ化 |
+
+</div>
+<div>
+
+| タグ | 意味 |
+|------|------|
+| `<img>` | 画像 |
+| `<ul>` | 箇条書き |
+| `<li>` | リストの各項目 |
+| `<a>` | リンク |
+
+</div>
+</div>
+
+---
+
+### 今日使ったCSSプロパティ
+
+<div class="columns">
+<div>
+
+| プロパティ | 意味 |
+|------------|------|
+| `background-color` | 背景色 |
+| `color` | 文字色 |
+| `font-size` | 文字の大きさ |
+| `font-weight` | 文字の太さ |
+| `line-height` | 行間 |
+| `text-decoration` | テキストの装飾 |
+| `padding` | 内側の余白 |
+| `margin` | 外側の余白 |
+| `width` / `height` | 要素の幅と高さ |
+
+</div>
+<div>
+
+| プロパティ | 意味 |
+|------------|------|
+| `max-width` | 要素の最大幅 |
+| `border` | 枠線 |
+| `border-radius` | 角を丸くする |
+| `box-shadow` | 影 |
+| `display` | 要素の表示方法 |
+| `align-items` | Flexboxで縦方向の配置 |
+| `gap` | 要素同士の間隔 |
+| `flex-wrap` | Flexboxで折り返しを指定 |
+| `:hover` | ホバー時のスタイル |
+
+</div>
+</div>
+
 
 ---
 
