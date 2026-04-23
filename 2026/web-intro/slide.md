@@ -556,7 +556,7 @@ padding: 10px 15px 20px 25px;
 <div class="card">
   <div class="profile">
     <img
-      src="写真のURL"
+      src="https://api.dicebear.com/7.x/thumbs/svg"
       alt="プロフィール写真"
       class="profile-img"
     >
@@ -567,6 +567,8 @@ padding: 10px 15px 20px 25px;
   </div>
 </div>
 ```
+
+> srcに指定するURLは、好きな画像のURLに変えてOKです。
 
 ---
 
