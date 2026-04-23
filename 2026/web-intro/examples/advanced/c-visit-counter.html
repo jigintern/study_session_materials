@@ -188,7 +188,7 @@
     if (visits === null) { visits = 0; }
     visits = Number(visits) + 1;
     localStorage.setItem("visitCount", visits);
-    document.querySelector("#visitCount").textContent = "このページは " + visits + " 回目の訪問です";
+    document.getElementById("visitCount").textContent = "このページは " + visits + " 回目の訪問です";
   </script>
 
 </body>

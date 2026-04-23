@@ -581,7 +581,7 @@
     // ===========================================
     // 応用A: ダークモード切替
     // ===========================================
-    const darkModeBtn = document.querySelector("#darkModeBtn");
+    const darkModeBtn = document.getElementById("darkModeBtn");
     darkModeBtn.addEventListener("click", function() {
       document.body.classList.toggle("dark");
       if (document.body.classList.contains("dark")) {
@@ -595,7 +595,7 @@
     // 応用B: いいねボタン
     // ===========================================
     let likeCount = 0;
-    const likeBtn = document.querySelector("#likeBtn");
+    const likeBtn = document.getElementById("likeBtn");
     likeBtn.addEventListener("click", function() {
       likeCount = likeCount + 1;
       likeBtn.textContent = "♡ " + likeCount + " いいね";
@@ -611,7 +611,7 @@
     }
     visits = Number(visits) + 1;
     localStorage.setItem("visitCount", visits);
-    document.querySelector("#visitCount").textContent = "このページは " + visits + " 回目の訪問です";
+    document.getElementById("visitCount").textContent = "このページは " + visits + " 回目の訪問です";
 
     // ===========================================
     // 応用D: 現在時刻の表示
@@ -621,7 +621,7 @@
       const h = String(now.getHours()).padStart(2, "0");
       const m = String(now.getMinutes()).padStart(2, "0");
       const s = String(now.getSeconds()).padStart(2, "0");
-      document.querySelector("#clock").textContent = "🕐 " + h + ":" + m + ":" + s;
+      document.getElementById("clock").textContent = "🕐 " + h + ":" + m + ":" + s;
     }
     updateClock();
     setInterval(updateClock, 1000);
@@ -643,7 +643,7 @@
         // クリックされたタブをアクティブに
         this.classList.add("active");
         const tabId = "tab-" + this.getAttribute("data-tab");
-        document.querySelector("#" + tabId).classList.add("active");
+        document.getElementById(tabId).classList.add("active");
       });
     }
 
@@ -656,15 +656,15 @@
       "https://api.dicebear.com/7.x/shapes/svg?seed=photo3"
     ];
     let currentPhoto = 0;
-    const slideshowImg = document.querySelector("#slideshowImg");
-    const slideshowCounter = document.querySelector("#slideshowCounter");
+    const slideshowImg = document.getElementById("slideshowImg");
+    const slideshowCounter = document.getElementById("slideshowCounter");
 
     function updateSlideshow() {
       slideshowImg.src = photos[currentPhoto];
       slideshowCounter.textContent = (currentPhoto + 1) + " / " + photos.length;
     }
 
-    document.querySelector("#prevBtn").addEventListener("click", function() {
+    document.getElementById("prevBtn").addEventListener("click", function() {
       currentPhoto = currentPhoto - 1;
       if (currentPhoto < 0) {
         currentPhoto = photos.length - 1;
@@ -672,7 +672,7 @@
       updateSlideshow();
     });
 
-    document.querySelector("#nextBtn").addEventListener("click", function() {
+    document.getElementById("nextBtn").addEventListener("click", function() {
       currentPhoto = currentPhoto + 1;
       if (currentPhoto >= photos.length) {
         currentPhoto = 0;
@@ -683,9 +683,9 @@
     // ===========================================
     // 応用H: モーダル（ポップアップ）
     // ===========================================
-    const modal = document.querySelector("#modal");
-    const profileImg = document.querySelector("#profileImg");
-    const modalClose = document.querySelector("#modalClose");
+    const modal = document.getElementById("modal");
+    const profileImg = document.getElementById("profileImg");
+    const modalClose = document.getElementById("modalClose");
 
     profileImg.addEventListener("click", function() {
       modal.classList.add("show");
@@ -704,7 +704,7 @@
     // ===========================================
     // 応用I: ドラッグで並び替え
     // ===========================================
-    const dragList = document.querySelector("#likesList");
+    const dragList = document.getElementById("likesList");
     let dragItem = null;
 
     dragList.addEventListener("dragstart", function(e) {
@@ -774,9 +774,9 @@
 
     function showQuiz() {
       const q = quizData[currentQuiz];
-      document.querySelector("#quizQuestion").textContent = "Q" + (currentQuiz + 1) + ". " + q.question;
+      document.getElementById("quizQuestion").textContent = "Q" + (currentQuiz + 1) + ". " + q.question;
 
-      const optionsDiv = document.querySelector("#quizOptions");
+      const optionsDiv = document.getElementById("quizOptions");
       optionsDiv.innerHTML = "";
       quizAnswered = false;
 
@@ -795,35 +795,35 @@
           if (selectedIndex === correct) {
             this.classList.add("correct");
             quizCorrect++;
-            document.querySelector("#quizResult").textContent = "⭕ 正解！";
-            document.querySelector("#quizResult").style.backgroundColor = "#e8f5e9";
-            document.querySelector("#quizResult").style.color = "#2e7d32";
+            document.getElementById("quizResult").textContent = "⭕ 正解！";
+            document.getElementById("quizResult").style.backgroundColor = "#e8f5e9";
+            document.getElementById("quizResult").style.color = "#2e7d32";
           } else {
             this.classList.add("wrong");
             const allBtns = optionsDiv.querySelectorAll(".quiz-btn");
             allBtns[correct].classList.add("correct");
-            document.querySelector("#quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
-            document.querySelector("#quizResult").style.backgroundColor = "#ffebee";
-            document.querySelector("#quizResult").style.color = "#c62828";
+            document.getElementById("quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
+            document.getElementById("quizResult").style.backgroundColor = "#ffebee";
+            document.getElementById("quizResult").style.color = "#c62828";
           }
 
-          document.querySelector("#quizResult").classList.add("show");
-          document.querySelector("#quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
+          document.getElementById("quizResult").classList.add("show");
+          document.getElementById("quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
 
           if (currentQuiz < quizData.length - 1) {
-            document.querySelector("#quizNext").classList.add("show");
+            document.getElementById("quizNext").classList.add("show");
           } else {
-            document.querySelector("#quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
+            document.getElementById("quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
           }
         });
         optionsDiv.appendChild(btn);
       }
 
-      document.querySelector("#quizResult").classList.remove("show");
-      document.querySelector("#quizNext").classList.remove("show");
+      document.getElementById("quizResult").classList.remove("show");
+      document.getElementById("quizNext").classList.remove("show");
     }
 
-    document.querySelector("#quizNext").addEventListener("click", function() {
+    document.getElementById("quizNext").addEventListener("click", function() {
       currentQuiz++;
       showQuiz();
     });
@@ -833,7 +833,7 @@
     // ===========================================
     // 応用G: カスタムカーソル + パーティクル
     // ===========================================
-    const cursor = document.querySelector("#customCursor");
+    const cursor = document.getElementById("customCursor");
     let particleCount = 0;
 
     document.addEventListener("mousemove", function(e) {

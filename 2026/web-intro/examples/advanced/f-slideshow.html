@@ -236,21 +236,21 @@
       "https://api.dicebear.com/7.x/shapes/svg?seed=photo3"
     ];
     let currentPhoto = 0;
-    const slideshowImg = document.querySelector("#slideshowImg");
-    const slideshowCounter = document.querySelector("#slideshowCounter");
+    const slideshowImg = document.getElementById("slideshowImg");
+    const slideshowCounter = document.getElementById("slideshowCounter");
 
     function updateSlideshow() {
       slideshowImg.src = photos[currentPhoto];
       slideshowCounter.textContent = (currentPhoto + 1) + " / " + photos.length;
     }
-    document.querySelector("#prevBtn").addEventListener("click", function () {
+    document.getElementById("prevBtn").addEventListener("click", function () {
       currentPhoto = currentPhoto - 1;
       if (currentPhoto < 0) {
         currentPhoto = photos.length - 1;
       }
       updateSlideshow();
     });
-    document.querySelector("#nextBtn").addEventListener("click", function () {
+    document.getElementById("nextBtn").addEventListener("click", function () {
       currentPhoto = currentPhoto + 1;
       if (currentPhoto >= photos.length) {
         currentPhoto = 0;

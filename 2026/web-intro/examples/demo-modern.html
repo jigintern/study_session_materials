@@ -770,7 +770,7 @@
     }
 
     // ===== ヒーロー視差（スクロールで背景が少しずれる） =====
-    const heroBg = document.querySelector(".hero-bg");
+    const heroBg = document.getElementById("heroBg");
     window.addEventListener("scroll", function() {
       const y = window.scrollY;
       if (y < window.innerHeight) {
@@ -779,7 +779,7 @@
     });
 
     // ===== 応用A: ダークモード（デフォルトがダーク調なので「ライトモード」切替） =====
-    const themeToggle = document.querySelector("#themeToggle");
+    const themeToggle = document.getElementById("themeToggle");
     themeToggle.addEventListener("click", function() {
       document.body.classList.toggle("light");
       if (document.body.classList.contains("light")) {
@@ -791,7 +791,7 @@
 
     // ===== 応用B: いいねボタン =====
     let likeCount = 0;
-    const likeBtn = document.querySelector("#likeBtn");
+    const likeBtn = document.getElementById("likeBtn");
     likeBtn.addEventListener("click", function() {
       likeCount++;
       likeBtn.textContent = "♡ " + likeCount + " いいね";
@@ -803,7 +803,7 @@
     if (visits === null) visits = 0;
     visits = Number(visits) + 1;
     localStorage.setItem("visitCount", visits);
-    document.querySelector("#visitCount").textContent = visits + " 回目の訪問";
+    document.getElementById("visitCount").textContent = visits + " 回目の訪問";
 
     // ===== 応用D: 現在時刻 =====
     function updateClock() {
@@ -811,7 +811,7 @@
       const h = String(now.getHours()).padStart(2, "0");
       const m = String(now.getMinutes()).padStart(2, "0");
       const s = String(now.getSeconds()).padStart(2, "0");
-      document.querySelector("#clock").textContent = h + ":" + m + ":" + s;
+      document.getElementById("clock").textContent = h + ":" + m + ":" + s;
     }
     updateClock();
     setInterval(updateClock, 1000);
@@ -824,7 +824,7 @@
         const allTabs = document.querySelectorAll(".tab-content");
         for (let j = 0; j < allTabs.length; j++) allTabs[j].classList.remove("active");
         this.classList.add("active");
-        document.querySelector("#tab-" + this.getAttribute("data-tab")).classList.add("active");
+        document.getElementById("tab-" + this.getAttribute("data-tab")).classList.add("active");
       });
     }
 
@@ -835,29 +835,29 @@
       "https://api.dicebear.com/7.x/shapes/svg?seed=photo3&backgroundColor=ffd5dc,ffdfbf,d1d4f9"
     ];
     let currentPhoto = 0;
-    const slideshowImg = document.querySelector("#slideshowImg");
-    const slideshowCounter = document.querySelector("#slideshowCounter");
+    const slideshowImg = document.getElementById("slideshowImg");
+    const slideshowCounter = document.getElementById("slideshowCounter");
     function updateSlideshow() {
       slideshowImg.src = photos[currentPhoto];
       slideshowCounter.textContent = (currentPhoto + 1) + " / " + photos.length;
     }
-    document.querySelector("#prevBtn").addEventListener("click", function() {
+    document.getElementById("prevBtn").addEventListener("click", function() {
       currentPhoto = (currentPhoto - 1 + photos.length) % photos.length;
       updateSlideshow();
     });
-    document.querySelector("#nextBtn").addEventListener("click", function() {
+    document.getElementById("nextBtn").addEventListener("click", function() {
       currentPhoto = (currentPhoto + 1) % photos.length;
       updateSlideshow();
     });
 
     // ===== 応用H: モーダル =====
-    const modal = document.querySelector("#modal");
-    document.querySelector("#profileImg").addEventListener("click", function() { modal.classList.add("show"); });
-    document.querySelector("#modalClose").addEventListener("click", function() { modal.classList.remove("show"); });
+    const modal = document.getElementById("modal");
+    document.getElementById("profileImg").addEventListener("click", function() { modal.classList.add("show"); });
+    document.getElementById("modalClose").addEventListener("click", function() { modal.classList.remove("show"); });
     modal.addEventListener("click", function(e) { if (e.target === modal) modal.classList.remove("show"); });
 
     // ===== 応用I: ドラッグ並び替え =====
-    const dragList = document.querySelector("#likesList");
+    const dragList = document.getElementById("likesList");
     let dragItem = null;
     dragList.addEventListener("dragstart", function(e) { dragItem = e.target; e.target.classList.add("dragging"); });
     dragList.addEventListener("dragend", function(e) {
@@ -895,8 +895,8 @@
     let currentQuiz = 0, quizCorrect = 0, quizAnswered = false;
     function showQuiz() {
       const q = quizData[currentQuiz];
-      document.querySelector("#quizQuestion").textContent = "Q" + (currentQuiz + 1) + ". " + q.question;
-      const optionsDiv = document.querySelector("#quizOptions");
+      document.getElementById("quizQuestion").textContent = "Q" + (currentQuiz + 1) + ". " + q.question;
+      const optionsDiv = document.getElementById("quizOptions");
       optionsDiv.innerHTML = "";
       quizAnswered = false;
       for (let i = 0; i < q.options.length; i++) {
@@ -911,34 +911,34 @@
           const correct = quizData[currentQuiz].answer;
           if (sel === correct) {
             this.classList.add("correct"); quizCorrect++;
-            document.querySelector("#quizResult").textContent = "⭕ 正解！";
-            document.querySelector("#quizResult").style.backgroundColor = "rgba(16,185,129,0.1)";
-            document.querySelector("#quizResult").style.color = "#34d399";
+            document.getElementById("quizResult").textContent = "⭕ 正解！";
+            document.getElementById("quizResult").style.backgroundColor = "rgba(16,185,129,0.1)";
+            document.getElementById("quizResult").style.color = "#34d399";
           } else {
             this.classList.add("wrong");
             optionsDiv.querySelectorAll(".quiz-btn")[correct].classList.add("correct");
-            document.querySelector("#quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
-            document.querySelector("#quizResult").style.backgroundColor = "rgba(239,68,68,0.08)";
-            document.querySelector("#quizResult").style.color = "#f87171";
+            document.getElementById("quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
+            document.getElementById("quizResult").style.backgroundColor = "rgba(239,68,68,0.08)";
+            document.getElementById("quizResult").style.color = "#f87171";
           }
-          document.querySelector("#quizResult").classList.add("show");
-          document.querySelector("#quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
+          document.getElementById("quizResult").classList.add("show");
+          document.getElementById("quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
           if (currentQuiz < quizData.length - 1) {
-            document.querySelector("#quizNext").classList.add("show");
+            document.getElementById("quizNext").classList.add("show");
           } else {
-            document.querySelector("#quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
+            document.getElementById("quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
           }
         });
         optionsDiv.appendChild(btn);
       }
-      document.querySelector("#quizResult").classList.remove("show");
-      document.querySelector("#quizNext").classList.remove("show");
+      document.getElementById("quizResult").classList.remove("show");
+      document.getElementById("quizNext").classList.remove("show");
     }
-    document.querySelector("#quizNext").addEventListener("click", function() { currentQuiz++; showQuiz(); });
+    document.getElementById("quizNext").addEventListener("click", function() { currentQuiz++; showQuiz(); });
     showQuiz();
 
     // ===== 応用G: カスタムカーソル =====
-    const cursor = document.querySelector("#customCursor");
+    const cursor = document.getElementById("customCursor");
     let pc = 0;
     document.addEventListener("mousemove", function(e) {
       cursor.style.left = e.clientX + "px";

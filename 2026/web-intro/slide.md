@@ -1210,7 +1210,7 @@ JavaScript で **このクラスをつけたり外したり** することで、
 `script.js` に追加：
 
 ```js
-const darkModeBtn = document.querySelector("#darkModeBtn");
+const darkModeBtn = document.getElementById("darkModeBtn");
 
 darkModeBtn.addEventListener("click", function() {
   document.body.classList.toggle("dark");
@@ -1228,16 +1228,16 @@ darkModeBtn.addEventListener("click", function() {
 ## JavaScript を1行ずつ解説（1/3）
 
 ```js
-const darkModeBtn = document.querySelector("#darkModeBtn");
+const darkModeBtn = document.getElementById("darkModeBtn");
 ```
 
 | パーツ | 意味 |
 |--------|------|
 | `const darkModeBtn` | `darkModeBtn` という名前の **変数**（データを入れる箱）を作る |
-| `document.querySelector(...)` | ページの中から要素を **探す** |
-| `"#darkModeBtn"` | id が `darkModeBtn` の要素を指定 |
+| `document.getElementById(...)` | ページの中から id が指定された要素を **探す** |
+| `"darkModeBtn"` | id が `darkModeBtn` の要素を指定 |
 
-→ 「ページから `#darkModeBtn` ボタンを見つけて、`darkModeBtn` に入れておく」
+→ 「ページから `darkModeBtn` ボタンを見つけて、`darkModeBtn` に入れておく」
 
 ---
 
@@ -1311,7 +1311,7 @@ document.body.classList.toggle("dark");
 
 ### ヒント
 
-- ダークモードで学んだ `querySelector` + `addEventListener` がそのまま使える
+- ダークモードで学んだ `getElementById` + `addEventListener` がそのまま使える
 - `likeBtn.textContent = "♡ " + likeCount + " いいね"` で表示を書き換え
 
 ---
@@ -1336,7 +1336,7 @@ document.body.classList.toggle("dark");
 ```
 ```js
 let likeCount = 0;
-const likeBtn = document.querySelector("#likeBtn");
+const likeBtn = document.getElementById("likeBtn");
 likeBtn.addEventListener("click", function() {
   likeCount = likeCount + 1;
   likeBtn.textContent = "♡ " + likeCount + " いいね";
@@ -1383,7 +1383,7 @@ let visits = localStorage.getItem("visitCount");
 if (visits === null) { visits = 0; }
 visits = Number(visits) + 1;
 localStorage.setItem("visitCount", visits);
-document.querySelector("#visitCount").textContent = "このページは " + visits + " 回目の訪問です";
+document.getElementById("visitCount").textContent = "このページは " + visits + " 回目の訪問です";
 ```
 
 </details>
@@ -1426,7 +1426,7 @@ function updateClock() {
   const h = String(now.getHours()).padStart(2, "0");
   const m = String(now.getMinutes()).padStart(2, "0");
   const s = String(now.getSeconds()).padStart(2, "0");
-  document.querySelector("#clock").textContent = "🕐 " + h + ":" + m + ":" + s;
+  document.getElementById("clock").textContent = "🕐 " + h + ":" + m + ":" + s;
 }
 updateClock();
 setInterval(updateClock, 1000);
@@ -1495,7 +1495,7 @@ for (let i = 0; i < tabBtns.length; i++) {
     const allTabs = document.querySelectorAll(".tab-content");
     for (let j = 0; j < allTabs.length; j++) allTabs[j].classList.remove("active");
     this.classList.add("active");
-    document.querySelector("#tab-" + this.getAttribute("data-tab")).classList.add("active");
+    document.getElementById("tab-" + this.getAttribute("data-tab")).classList.add("active");
   });
 }
 ```
@@ -1568,21 +1568,21 @@ const photos = [
   "https://api.dicebear.com/7.x/shapes/svg?seed=photo3"
 ];
 let currentPhoto = 0;
-const slideshowImg = document.querySelector("#slideshowImg");
-const slideshowCounter = document.querySelector("#slideshowCounter");
+const slideshowImg = document.getElementById("slideshowImg");
+const slideshowCounter = document.getElementById("slideshowCounter");
 
 function updateSlideshow() {
   slideshowImg.src = photos[currentPhoto];
   slideshowCounter.textContent = (currentPhoto + 1) + " / " + photos.length;
 }
-document.querySelector("#prevBtn").addEventListener("click", function() {
+document.getElementById("prevBtn").addEventListener("click", function() {
   currentPhoto = currentPhoto - 1;
   if (currentPhoto < 0) {
     currentPhoto = photos.length - 1;
   }
   updateSlideshow();
 });
-document.querySelector("#nextBtn").addEventListener("click", function() {
+document.getElementById("nextBtn").addEventListener("click", function() {
   currentPhoto = currentPhoto + 1;
   if (currentPhoto >= photos.length) {
     currentPhoto = 0;
@@ -1642,7 +1642,7 @@ document.querySelector("#nextBtn").addEventListener("click", function() {
 }
 ```
 ```js
-const cursor = document.querySelector("#customCursor");
+const cursor = document.getElementById("customCursor");
 let particleCount = 0;
 document.addEventListener("mousemove", function(e) {
   cursor.style.left = e.clientX + "px";
@@ -1721,9 +1721,9 @@ document.addEventListener("mousemove", function(e) {
 .profile-img:hover { transform: scale(1.05); }
 ```
 ```js
-const modal = document.querySelector("#modal");
-const profileImg = document.querySelector("#profileImg");
-const modalClose = document.querySelector("#modalClose");
+const modal = document.getElementById("modal");
+const profileImg = document.getElementById("profileImg");
+const modalClose = document.getElementById("modalClose");
 
 profileImg.addEventListener("click", function() {
   modal.classList.add("show");
@@ -1771,7 +1771,7 @@ modal.addEventListener("click", function(e) {
 .favorites-list li.drag-over { background-color: #fff0f3; border-radius: 8px; }
 ```
 ```js
-const dragList = document.querySelector("#likesList");
+const dragList = document.getElementById("likesList");
 let dragItem = null;
 dragList.addEventListener("dragstart", function(e) {
   dragItem = e.target; e.target.classList.add("dragging");
@@ -1878,8 +1878,8 @@ const quizData = [
 let currentQuiz = 0, quizCorrect = 0, quizAnswered = false;
 function showQuiz() {
   const q = quizData[currentQuiz];
-  document.querySelector("#quizQuestion").textContent = "Q" + (currentQuiz+1) + ". " + q.question;
-  const optionsDiv = document.querySelector("#quizOptions");
+  document.getElementById("quizQuestion").textContent = "Q" + (currentQuiz+1) + ". " + q.question;
+  const optionsDiv = document.getElementById("quizOptions");
   optionsDiv.innerHTML = ""; quizAnswered = false;
   for (let i = 0; i < q.options.length; i++) {
     const btn = document.createElement("button");
@@ -1891,30 +1891,30 @@ function showQuiz() {
       const correct = quizData[currentQuiz].answer;
       if (selectedIndex === correct) {
         this.classList.add("correct"); quizCorrect++;
-        document.querySelector("#quizResult").textContent = "⭕ 正解！";
-        document.querySelector("#quizResult").style.backgroundColor = "#e8f5e9";
-        document.querySelector("#quizResult").style.color = "#2e7d32";
+        document.getElementById("quizResult").textContent = "⭕ 正解！";
+        document.getElementById("quizResult").style.backgroundColor = "#e8f5e9";
+        document.getElementById("quizResult").style.color = "#2e7d32";
       } else {
         this.classList.add("wrong");
         optionsDiv.querySelectorAll(".quiz-btn")[correct].classList.add("correct");
-        document.querySelector("#quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
-        document.querySelector("#quizResult").style.backgroundColor = "#ffebee";
-        document.querySelector("#quizResult").style.color = "#c62828";
+        document.getElementById("quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
+        document.getElementById("quizResult").style.backgroundColor = "#ffebee";
+        document.getElementById("quizResult").style.color = "#c62828";
       }
-      document.querySelector("#quizResult").classList.add("show");
-      document.querySelector("#quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
+      document.getElementById("quizResult").classList.add("show");
+      document.getElementById("quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
       if (currentQuiz < quizData.length - 1) {
-        document.querySelector("#quizNext").classList.add("show");
+        document.getElementById("quizNext").classList.add("show");
       } else {
-        document.querySelector("#quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
+        document.getElementById("quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
       }
     });
     optionsDiv.appendChild(btn);
   }
-  document.querySelector("#quizResult").classList.remove("show");
-  document.querySelector("#quizNext").classList.remove("show");
+  document.getElementById("quizResult").classList.remove("show");
+  document.getElementById("quizNext").classList.remove("show");
 }
-document.querySelector("#quizNext").addEventListener("click",
+document.getElementById("quizNext").addEventListener("click",
   function() { currentQuiz++; showQuiz(); });
 showQuiz();
 ```

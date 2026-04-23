@@ -271,9 +271,9 @@
 
     function showQuiz() {
       const q = quizData[currentQuiz];
-      document.querySelector("#quizQuestion").textContent = "Q" + (currentQuiz + 1) + ". " + q.question;
+      document.getElementById("quizQuestion").textContent = "Q" + (currentQuiz + 1) + ". " + q.question;
 
-      const optionsDiv = document.querySelector("#quizOptions");
+      const optionsDiv = document.getElementById("quizOptions");
       optionsDiv.innerHTML = "";
       quizAnswered = false;
 
@@ -292,35 +292,35 @@
           if (selectedIndex === correct) {
             this.classList.add("correct");
             quizCorrect++;
-            document.querySelector("#quizResult").textContent = "⭕ 正解！";
-            document.querySelector("#quizResult").style.backgroundColor = "#e8f5e9";
-            document.querySelector("#quizResult").style.color = "#2e7d32";
+            document.getElementById("quizResult").textContent = "⭕ 正解！";
+            document.getElementById("quizResult").style.backgroundColor = "#e8f5e9";
+            document.getElementById("quizResult").style.color = "#2e7d32";
           } else {
             this.classList.add("wrong");
             const allBtns = optionsDiv.querySelectorAll(".quiz-btn");
             allBtns[correct].classList.add("correct");
-            document.querySelector("#quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
-            document.querySelector("#quizResult").style.backgroundColor = "#ffebee";
-            document.querySelector("#quizResult").style.color = "#c62828";
+            document.getElementById("quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
+            document.getElementById("quizResult").style.backgroundColor = "#ffebee";
+            document.getElementById("quizResult").style.color = "#c62828";
           }
 
-          document.querySelector("#quizResult").classList.add("show");
-          document.querySelector("#quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
+          document.getElementById("quizResult").classList.add("show");
+          document.getElementById("quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
 
           if (currentQuiz < quizData.length - 1) {
-            document.querySelector("#quizNext").classList.add("show");
+            document.getElementById("quizNext").classList.add("show");
           } else {
-            document.querySelector("#quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
+            document.getElementById("quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
           }
         });
         optionsDiv.appendChild(btn);
       }
 
-      document.querySelector("#quizResult").classList.remove("show");
-      document.querySelector("#quizNext").classList.remove("show");
+      document.getElementById("quizResult").classList.remove("show");
+      document.getElementById("quizNext").classList.remove("show");
     }
 
-    document.querySelector("#quizNext").addEventListener("click", function() {
+    document.getElementById("quizNext").addEventListener("click", function() {
       currentQuiz++;
       showQuiz();
     });
