@@ -1,1 +1,102 @@
-/* ここにCSSを書く */
+/* CSSを穴埋めして完成させてください */
+
+/* ===== Ch3: 全体の設定 ===== */
+body {
+
+}
+
+/* ===== Ch3: ヘッダー ===== */
+.header {
+
+}
+
+.header h1 {
+
+}
+
+.header p {
+
+}
+
+/* ===== Ch4: カード ===== */
+.card {
+  background-color: ;                         /* 白い背景 */
+  border-radius: ;                        /* 角を丸く */
+  padding: ;                              /* 内側の余白 */
+  margin-top: ;                           /* カード同士の間隔 */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); /* 影 */
+}
+
+/* ===== Ch4: プロフィール ===== */
+.profile {
+  display: ;         /* 子要素を横に並べる */
+  align-items: ;     /* 縦方向を真ん中に */
+  gap: ;         /* 要素同士の間隔 */
+}
+
+.profile-img {
+  width: 100px;
+  height: 100px;
+  border-radius: ;          /* 50%で正円 */
+  object-fit: cover;        /* 枠に合わせてトリミング */
+  border: ;   /* ピンクの枠線 */
+}
+
+.profile-text p {
+  margin: 4px 0;
+  font-size: 15px;
+  line-height: ;
+}
+
+/* ===== Ch4: レイアウト ===== */
+.container {
+  max-width: ;    /* 横幅を制限 */
+  margin: ;      /* 中央寄せ */
+  padding: ;       /* 内側の余白 */
+}
+
+/* ===== Ch5: 好きなものリストの見出し ===== */
+.card h2 {
+  font-size: 20px;
+  margin: 0 0 12px;
+  color: ;
+}
+
+/* ===== Ch6: スキルバッジ ===== */
+.badges {
+  display: ;       /* 横に並べる */
+  flex-wrap: ;     /* 1行に収まらなければ折り返す */
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.badge {
+  background-color: ;
+  color: ;
+  padding: 6px 14px;
+  border-radius: ;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* ===== Ch7: SNSリンク ===== */
+.sns-links {
+  display: ;       /* 横に並べる */
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.sns-link {
+  display: ;            /* inline-block */
+  padding: 10px 20px;
+  background-color: ;
+  color: ;
+  text-decoration: ;    /* リンクの下線を消す */
+  border-radius: ;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.sns-link:hover {
+  background-color: ;
+}
