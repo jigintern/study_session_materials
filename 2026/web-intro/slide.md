@@ -15,6 +15,18 @@ style: |
     text-align: center;
     margin: 0.5em 0;
   }
+    section.record::before {
+    content: "記述";
+    position: absolute;
+    border: 3px solid black;
+    top: 42px;
+    right: 42px;
+    padding: 4px 14px;
+    font-size: 1.2em;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    z-index: 10;
+  }
 ---
 
 <!-- _class: lead -->
@@ -245,7 +257,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
 ## 各パーツの意味
 
 最初は **おまじない** だと思ってOKです。
-大事なのは **`<body>` の中に書く** ということ。
+大事なのは **`<body>`と`</body>`の間に書く** ということ。
 
 | コード | 意味 |
 |--------|------|
@@ -319,6 +331,8 @@ HTMLは **タグ** という目印を使って書きます。
 
 ---
 
+<!-- _class: record -->
+
 ## ヘッダーのHTML
 
 `index.html` の `<body>` の中に追加します。
@@ -377,6 +391,8 @@ body {              ← 「body に対して」
 
 ---
 
+<!-- _class: record -->
+
 ## ヘッダーのCSS
 
 `styles.css` に追加：
@@ -392,25 +408,64 @@ body {
   background-color: pink;       /* 背景色（ピンク） */
   text-align: center;           /* 文字を中央揃え */
   padding: 40px 20px;           /* 内側の余白（上下40px、左右20px） */
-  border-radius: 0 0 20px 20px; /* 角を丸くする */
+  border-radius: 0 0 20px 20px; /* 角を丸くする（左上・右上・右下・左下） */
 }
 ```
-> `px` = ピクセル。画面上の点の数で大きさを指定する単位。
+> `px` = ピクセル。画面上の点の数で大きさを指定する単位。現実でいうと「cm」や「m」のようなもの。
+---
+
+## padding と margin
+
+bodyの余白をなくすために `margin: 0; padding: 0;` と書きましたが、**余白には2種類ある** あります
+
+![bg right:40% fit](imgs/boxmodel.png)
+
+- **padding** = 内側の余白
+- **margin** = 外側の余白
+
+> デフォルトでブラウザは `body` に余白をついけていますが、今回は自分で余白をコントロールしたいので、両方とも0にしています。
+---
+
+## padding: 内側の余白
+
+![bg right:50% fit](imgs/padding-compare.png)
+
+要素の**内側**の余白が **padding**
+内側に余白を作ることでテキストが枠にくっつかず、見やすくなります。
 
 ---
 
-## `border-radius` の4つの値
+## margin: 外側の余白
 
-`border-radius` に4つの値を書くと、**左上・右上・右下・左下**（時計回り）を個別に指定できる。
+![bg right:50% fit](imgs/margin-compare.png)
 
-```
-border-radius: 0    0    20px  20px;
-/*             左上  右上  右下  左下  */
-```
-
-→ 上は角ばったまま、下だけ丸くなる。
+要素の**外側**の余白が **margin**
+外側に余白を作ることで、要素同士がくっつかず、見やすくなります。
 
 ---
+
+## padding / margin の値の書き方
+
+```css
+/* 値が1つ → 上下左右すべて同じ */
+padding: 24px;
+
+/* 値が2つ → 上下 / 左右 */
+padding: 40px 20px;
+/*        ↑上下  ↑左右 */
+
+/* 値が4つ → 上 / 右 / 下 / 左 */
+padding: 10px 15px 20px 25px;
+/*        ↑上  ↑右  ↑下  ↑左 */
+```
+
+
+あとで、`padding` と `margin` を使う場面がたくさん出てくるので、違いを意識してみてください。
+
+---
+
+
+<!-- _class: record -->
 
 ## ヘッダーの文字のCSS
 
@@ -421,7 +476,7 @@ border-radius: 0    0    20px  20px;
 }
 
 .header p {
-  margin: 8px 0 0;
+  margin: 8px 0 0 0; /* 上 / 右 / 下 / 左 */
   color: white;
 }
 ```
@@ -473,28 +528,6 @@ border-radius: 0    0    20px  20px;
 - その中に「写真」と「説明文」を入れる
 - 説明文の中に文章を2つ入れる
 
----
-
-## まず、カードを置く場所を作る
-
-ヘッダーの下にカードを並べたい。でも画面幅いっぱいに広がると見づらい。
-→ **コンテナ**（入れ物）を作って、中央に寄せます。
-
-`index.html` と `styles.css` にそれぞれ追加：
-
-```html
-<div class="container">
-  <!-- ここにカードを追加していく -->
-</div>
-```
-
-```css
-.container {
-  max-width: 600px;    /* 横幅を制限 */
-  margin: 0 auto;      /* 中央寄せ */
-  padding: 20px;       /* 内側の余白 */
-}
-```
 
 ---
 
@@ -513,15 +546,17 @@ border-radius: 0    0    20px  20px;
 
 ---
 
+<!-- _class: record -->
+
 ## プロフィールのHTML
 
-`<div class="container">` の中に追加：
+先ほど書いたヘッダーの下に、新しいカードを追加します。
 
 ```html
 <div class="card">
   <div class="profile">
     <img
-      src="写真のURL"
+      src="https://api.dicebear.com/7.x/thumbs/svg"
       alt="プロフィール写真"
       class="profile-img"
     >
@@ -533,7 +568,11 @@ border-radius: 0    0    20px  20px;
 </div>
 ```
 
+> srcに指定するURLは、好きな画像のURLに変えてOKです。
+
 ---
+
+<!-- _class: record -->
 
 ## カードのCSS
 
@@ -549,54 +588,13 @@ border-radius: 0    0    20px  20px;
 
 ---
 
-## padding と margin
-
-カードのCSSに `padding` と `margin` が出てきました。
-これがCSSで **一番混乱しやすい** ところです。
-
-![bg right:40% fit](imgs/boxmodel.png)
-
-- **padding** = 内側の余白
-- **margin** = 外側の余白
-
----
-
-## padding の違い
-
-![bg right:50% fit](imgs/padding-compare.png)
-
-**padding**（内側）がないと、テキストが枠にくっつく。
-
----
-
-## margin の違い
-
-![bg right:50% fit](imgs/margin-compare.png)
-
-**margin**（外側）がないと、カード同士がくっつく。
-
----
-
-## padding / margin の値の書き方
-
-```css
-/* 値が1つ → 上下左右すべて同じ */
-padding: 24px;
-
-/* 値が2つ → 上下 / 左右 */
-padding: 40px 20px;
-/*        ↑上下  ↑左右 */
-```
-
-> よく使うのは **1つ（全方向同じ）** と **2つ（上下/左右）** です。
-
----
+<!-- _class: record -->
 
 ## 横並びにする: Flexbox
 
 写真とテキストを **横に並べ** たい。`display: flex` を使います。
 
-![bg right:55% fit](imgs/flexbox-compare.png)
+![bg right:40% fit](imgs/flexbox-compare.png)
 
 ```css
 .profile {
@@ -611,6 +609,8 @@ padding: 40px 20px;
 `gap: 20px` → 要素同士の間隔
 
 ---
+
+<!-- _class: record -->
 
 ## 写真を丸くする
 
@@ -628,6 +628,8 @@ padding: 40px 20px;
 
 ---
 
+<!-- _class: record -->
+
 ## テキストのCSS
 
 ```css
@@ -641,6 +643,31 @@ padding: 40px 20px;
 `line-height: 1.6` = 行間を1.6倍にする。
 文章が読みやすくなります。
 
+---
+
+<!-- _class: record -->
+
+## カード全体の幅を制限する
+
+今のままだと、画面全体にカードが広がってしまいます
+
+`index.html` と `styles.css` にそれぞれ追加：
+
+```html
+<div class="container">
+  <!-- プロフィールカードはこの中に入れる -->
+</div>
+```
+
+```css
+.container {
+  max-width: 600px;    /* 横幅を制限 */
+  margin: 0 auto;      /* 中央寄せ */
+  padding: 20px;       /* 内側の余白 */
+}
+```
+
+> 今後は、カードはすべてこの `.container` の中に入れていきます。
 ---
 
 ## ここまでの結果
@@ -667,13 +694,11 @@ padding: 40px 20px;
 
 ![bg right:50% fit](imgs/part-favorites.png)
 
-♡マーク付きの **箇条書きリスト** で好きなものを表示します。
-
-CSSの `::before` で装飾をカスタマイズする方法を学びます。
+好きなものを **箇条書き** で表示するリストを作ります。
 
 ### できるようになること
 - 情報を箇条書きで整理して見せられる
-- CSSだけでリストの見た目を変えられる
+
 
 ---
 
@@ -705,6 +730,8 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 
 ---
 
+<!-- _class: record -->
+
 ## リストのHTML
 
 `<div class="container">` の中に、新しいカードを追加：
@@ -712,7 +739,7 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 ```html
 <div class="card">
   <h2>好きなもの</h2>
-  <ul class="favorites-list">
+  <ul>
     <li>カフェ巡り</li>
     <li>猫</li>
     <li>ラーメン</li>
@@ -723,6 +750,8 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 ```
 
 ---
+
+<!-- _class: record -->
 
 ## 見出しのCSS
 
@@ -736,43 +765,6 @@ CSSの `::before` で装飾をカスタマイズする方法を学びます。
 
 `.card h2` = 「card の中にある h2」にだけ適用。
 すべての h2 ではなく、**カード内の見出しだけ** をピンクにします。
-
----
-
-## リストの見た目をカスタマイズ
-
-```css
-.favorites-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.favorites-list li {
-  padding: 6px 0;
-  font-size: 15px;
-}
-
-.favorites-list li::before {
-  content: "♡ ";
-  color: hotpink;
-}
-```
-
----
-
-## ポイント解説
-
-| コード | 意味 |
-|--------|------|
-| `list-style: none` | デフォルトの黒丸（・）を消す |
-| `li::before` | 各 li の **前に** 何かを挿入する |
-| `content: "♡ "` | 挿入する中身（ハートマーク） |
-
-`::before` は **疑似要素** と呼ばれるもの。
-HTMLを変えずに、CSSだけで飾りを追加できます。
-
-> ♡ の部分を ✨ や ★ に変えても面白いです。
 
 ---
 
@@ -832,6 +824,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 
 ---
 
+<!-- _class: record -->
+
 ## バッジのHTML
 
 ```html
@@ -849,6 +843,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 
 
 ---
+
+<!-- _class: record -->
 
 ## バッジのCSS
 
@@ -916,13 +912,15 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 
 ---
 
+<!-- _class: record -->
+
 ## リンクのHTML
 
 ```html
 <div class="card">
   <h2>SNS</h2>
   <div class="sns-links">
-    <a href="#" class="sns-link">X</a>
+    <a href="https://x.com" class="sns-link">X</a>
     <a href="#" class="sns-link">Instagram</a>
     <a href="#" class="sns-link">GitHub</a>
   </div>
@@ -935,9 +933,11 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 |------|------|
 | `href` | リンク先のURL（`#` は仮のリンク） |
 
-`href` に自分のSNSのURLを入れると、本物のリンクになります。
+> `href="https://x.com"` とすると、Xへのリンクになります。
 
 ---
+
+<!-- _class: record -->
 
 ## ボタン風のデザイン
 
@@ -969,6 +969,8 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 
 ---
 
+<!-- _class: record -->
+
 ## ホバー効果をつける
 
 ```css
@@ -998,17 +1000,101 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 
 ---
 
-### 今日使った HTML タグ
-`<h1>` `<h2>` `<p>` `<div>` `<img>` `<ul>` `<li>` `<span>` `<a>`
+### 今日使ったHTMLタグ
 
-### 今日使った CSS プロパティ
-`background-color` `color` `padding` `margin` `border-radius` `box-shadow` `display: flex` `text-align` `::before` `:hover`
+<div class="columns">
+<div>
+
+| タグ | 意味 |
+|------|------|
+| `<h1>` | 見出し |
+| `<h2>` | 小見出し |
+| `<p>` | 段落 |
+| `<div>` | グループ化する箱 |
+| `<span>` | インラインのグループ化 |
+
+</div>
+<div>
+
+| タグ | 意味 |
+|------|------|
+| `<img>` | 画像 |
+| `<ul>` | 箇条書き |
+| `<li>` | リストの各項目 |
+| `<a>` | リンク |
+
+</div>
+</div>
+
+---
+
+### 今日使ったCSSプロパティ
+
+<div class="columns">
+<div>
+
+| プロパティ | 意味 |
+|------------|------|
+| `background-color` | 背景色 |
+| `color` | 文字色 |
+| `font-size` | 文字の大きさ |
+| `font-weight` | 文字の太さ |
+| `line-height` | 行間 |
+| `text-decoration` | テキストの装飾 |
+| `padding` | 内側の余白 |
+| `margin` | 外側の余白 |
+| `width` / `height` | 要素の幅と高さ |
+
+</div>
+<div>
+
+| プロパティ | 意味 |
+|------------|------|
+| `max-width` | 要素の最大幅 |
+| `border` | 枠線 |
+| `border-radius` | 角を丸くする |
+| `box-shadow` | 影 |
+| `display` | 要素の表示方法 |
+| `align-items` | Flexboxで縦方向の配置 |
+| `gap` | 要素同士の間隔 |
+| `flex-wrap` | Flexboxで折り返しを指定 |
+| `:hover` | ホバー時のスタイル |
+
+</div>
+</div>
+
 
 ---
 
 <!-- _class: lead -->
 
 # Chapter 8
+
+## 発表会
+
+---
+
+## 発表会
+
+今回作成したWebサイトを使用して自己紹介をしてみましょう！
+
+### 発表の内容
+- 自分のページを画面に映す
+- ページを使って **自己紹介**
+- 応用課題をやった人はそれも見せてください
+- 「どこを工夫したか」を1つ話せるとさらによいです
+
+> 例えば...
+> 「ヘッダーの背景色を青色にして、かっこいい雰囲気にしました！」
+> 「プロフィールカードの写真を四角にして、クールな印象にしました！」
+> 「カードを1つ追加して、好きな本を紹介しました！」
+
+---
+
+
+<!-- _class: lead -->
+
+# Chapter 9
 
 ## 応用課題
 
@@ -1070,7 +1156,7 @@ HTMLを変えずに、CSSだけで飾りを追加できます。
 
 ```css
 background-color: #1a1a2e;
-color: #fff;
+color: #ffffff;
 ```
 
 `#` の後に **赤(R)・緑(G)・青(B)** を2桁ずつ指定する。
@@ -1091,6 +1177,8 @@ color: #fff;
 > ネットで **「カラーピッカー」** と検索すると好きな色を選べます。
 
 ---
+
+<!-- _class: record -->
 
 ## Step 1: ダークモード用のCSSを`styles.css`に追加
 
@@ -1147,6 +1235,8 @@ JavaScript で **このクラスをつけたり外したり** することで、
 
 ---
 
+<!-- _class: record -->
+
 ## Step 2: 切り替えボタンのHTML
 
 `index.html` の container の中、一番下に追加：
@@ -1177,6 +1267,8 @@ JavaScript で **このクラスをつけたり外したり** することで、
 
 ---
 
+<!-- _class: record -->
+
 ## ボタンのCSS
 
 ```css
@@ -1200,12 +1292,14 @@ JavaScript で **このクラスをつけたり外したり** することで、
 
 ---
 
+<!-- _class: record -->
+
 ## Step 3: JavaScriptで切り替える
 
 `script.js` に追加：
 
 ```js
-const darkModeBtn = document.querySelector("#darkModeBtn");
+const darkModeBtn = document.getElementById("darkModeBtn");
 
 darkModeBtn.addEventListener("click", function() {
   document.body.classList.toggle("dark");
@@ -1223,16 +1317,16 @@ darkModeBtn.addEventListener("click", function() {
 ## JavaScript を1行ずつ解説（1/3）
 
 ```js
-const darkModeBtn = document.querySelector("#darkModeBtn");
+const darkModeBtn = document.getElementById("darkModeBtn");
 ```
 
 | パーツ | 意味 |
 |--------|------|
 | `const darkModeBtn` | `darkModeBtn` という名前の **変数**（データを入れる箱）を作る |
-| `document.querySelector(...)` | ページの中から要素を **探す** |
-| `"#darkModeBtn"` | id が `darkModeBtn` の要素を指定 |
+| `document.getElementById(...)` | ページの中から id が指定された要素を **探す** |
+| `"darkModeBtn"` | id が `darkModeBtn` の要素を指定 |
 
-→ 「ページから `#darkModeBtn` ボタンを見つけて、`darkModeBtn` に入れておく」
+→ 「ページから `darkModeBtn` ボタンを見つけて、`darkModeBtn` に入れておく」
 
 ---
 
@@ -1277,8 +1371,6 @@ document.body.classList.toggle("dark");
 - 1回押す → 背景が暗くなる（ダークモード ON）
 - もう1回押す → 元に戻る（ダークモード OFF）
 
-> うまく動かない場合は、ブラウザの開発者ツール（F12）でエラーを確認
-
 ---
 
 ## その他の応用課題（自走用）
@@ -1306,7 +1398,7 @@ document.body.classList.toggle("dark");
 
 ### ヒント
 
-- ダークモードで学んだ `querySelector` + `addEventListener` がそのまま使える
+- ダークモードで学んだ `getElementById` + `addEventListener` がそのまま使える
 - `likeBtn.textContent = "♡ " + likeCount + " いいね"` で表示を書き換え
 
 ---
@@ -1331,7 +1423,7 @@ document.body.classList.toggle("dark");
 ```
 ```js
 let likeCount = 0;
-const likeBtn = document.querySelector("#likeBtn");
+const likeBtn = document.getElementById("likeBtn");
 likeBtn.addEventListener("click", function() {
   likeCount = likeCount + 1;
   likeBtn.textContent = "♡ " + likeCount + " いいね";
@@ -1378,7 +1470,7 @@ let visits = localStorage.getItem("visitCount");
 if (visits === null) { visits = 0; }
 visits = Number(visits) + 1;
 localStorage.setItem("visitCount", visits);
-document.querySelector("#visitCount").textContent = "このページは " + visits + " 回目の訪問です";
+document.getElementById("visitCount").textContent = "このページは " + visits + " 回目の訪問です";
 ```
 
 </details>
@@ -1421,7 +1513,7 @@ function updateClock() {
   const h = String(now.getHours()).padStart(2, "0");
   const m = String(now.getMinutes()).padStart(2, "0");
   const s = String(now.getSeconds()).padStart(2, "0");
-  document.querySelector("#clock").textContent = "🕐 " + h + ":" + m + ":" + s;
+  document.getElementById("clock").textContent = "🕐 " + h + ":" + m + ":" + s;
 }
 updateClock();
 setInterval(updateClock, 1000);
@@ -1490,7 +1582,7 @@ for (let i = 0; i < tabBtns.length; i++) {
     const allTabs = document.querySelectorAll(".tab-content");
     for (let j = 0; j < allTabs.length; j++) allTabs[j].classList.remove("active");
     this.classList.add("active");
-    document.querySelector("#tab-" + this.getAttribute("data-tab")).classList.add("active");
+    document.getElementById("tab-" + this.getAttribute("data-tab")).classList.add("active");
   });
 }
 ```
@@ -1563,21 +1655,21 @@ const photos = [
   "https://api.dicebear.com/7.x/shapes/svg?seed=photo3"
 ];
 let currentPhoto = 0;
-const slideshowImg = document.querySelector("#slideshowImg");
-const slideshowCounter = document.querySelector("#slideshowCounter");
+const slideshowImg = document.getElementById("slideshowImg");
+const slideshowCounter = document.getElementById("slideshowCounter");
 
 function updateSlideshow() {
   slideshowImg.src = photos[currentPhoto];
   slideshowCounter.textContent = (currentPhoto + 1) + " / " + photos.length;
 }
-document.querySelector("#prevBtn").addEventListener("click", function() {
+document.getElementById("prevBtn").addEventListener("click", function() {
   currentPhoto = currentPhoto - 1;
   if (currentPhoto < 0) {
     currentPhoto = photos.length - 1;
   }
   updateSlideshow();
 });
-document.querySelector("#nextBtn").addEventListener("click", function() {
+document.getElementById("nextBtn").addEventListener("click", function() {
   currentPhoto = currentPhoto + 1;
   if (currentPhoto >= photos.length) {
     currentPhoto = 0;
@@ -1637,7 +1729,7 @@ document.querySelector("#nextBtn").addEventListener("click", function() {
 }
 ```
 ```js
-const cursor = document.querySelector("#customCursor");
+const cursor = document.getElementById("customCursor");
 let particleCount = 0;
 document.addEventListener("mousemove", function(e) {
   cursor.style.left = e.clientX + "px";
@@ -1716,9 +1808,9 @@ document.addEventListener("mousemove", function(e) {
 .profile-img:hover { transform: scale(1.05); }
 ```
 ```js
-const modal = document.querySelector("#modal");
-const profileImg = document.querySelector("#profileImg");
-const modalClose = document.querySelector("#modalClose");
+const modal = document.getElementById("modal");
+const profileImg = document.getElementById("profileImg");
+const modalClose = document.getElementById("modalClose");
 
 profileImg.addEventListener("click", function() {
   modal.classList.add("show");
@@ -1766,7 +1858,7 @@ modal.addEventListener("click", function(e) {
 .favorites-list li.drag-over { background-color: #fff0f3; border-radius: 8px; }
 ```
 ```js
-const dragList = document.querySelector("#likesList");
+const dragList = document.getElementById("likesList");
 let dragItem = null;
 dragList.addEventListener("dragstart", function(e) {
   dragItem = e.target; e.target.classList.add("dragging");
@@ -1873,8 +1965,8 @@ const quizData = [
 let currentQuiz = 0, quizCorrect = 0, quizAnswered = false;
 function showQuiz() {
   const q = quizData[currentQuiz];
-  document.querySelector("#quizQuestion").textContent = "Q" + (currentQuiz+1) + ". " + q.question;
-  const optionsDiv = document.querySelector("#quizOptions");
+  document.getElementById("quizQuestion").textContent = "Q" + (currentQuiz+1) + ". " + q.question;
+  const optionsDiv = document.getElementById("quizOptions");
   optionsDiv.innerHTML = ""; quizAnswered = false;
   for (let i = 0; i < q.options.length; i++) {
     const btn = document.createElement("button");
@@ -1886,30 +1978,30 @@ function showQuiz() {
       const correct = quizData[currentQuiz].answer;
       if (selectedIndex === correct) {
         this.classList.add("correct"); quizCorrect++;
-        document.querySelector("#quizResult").textContent = "⭕ 正解！";
-        document.querySelector("#quizResult").style.backgroundColor = "#e8f5e9";
-        document.querySelector("#quizResult").style.color = "#2e7d32";
+        document.getElementById("quizResult").textContent = "⭕ 正解！";
+        document.getElementById("quizResult").style.backgroundColor = "#e8f5e9";
+        document.getElementById("quizResult").style.color = "#2e7d32";
       } else {
         this.classList.add("wrong");
         optionsDiv.querySelectorAll(".quiz-btn")[correct].classList.add("correct");
-        document.querySelector("#quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
-        document.querySelector("#quizResult").style.backgroundColor = "#ffebee";
-        document.querySelector("#quizResult").style.color = "#c62828";
+        document.getElementById("quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
+        document.getElementById("quizResult").style.backgroundColor = "#ffebee";
+        document.getElementById("quizResult").style.color = "#c62828";
       }
-      document.querySelector("#quizResult").classList.add("show");
-      document.querySelector("#quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
+      document.getElementById("quizResult").classList.add("show");
+      document.getElementById("quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
       if (currentQuiz < quizData.length - 1) {
-        document.querySelector("#quizNext").classList.add("show");
+        document.getElementById("quizNext").classList.add("show");
       } else {
-        document.querySelector("#quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
+        document.getElementById("quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
       }
     });
     optionsDiv.appendChild(btn);
   }
-  document.querySelector("#quizResult").classList.remove("show");
-  document.querySelector("#quizNext").classList.remove("show");
+  document.getElementById("quizResult").classList.remove("show");
+  document.getElementById("quizNext").classList.remove("show");
 }
-document.querySelector("#quizNext").addEventListener("click",
+document.getElementById("quizNext").addEventListener("click",
   function() { currentQuiz++; showQuiz(); });
 showQuiz();
 ```
@@ -1943,26 +2035,6 @@ showQuiz();
 - `transform: translateX(-60px)` → `translateX(0)` で横からスライドイン
 
 > 完成版は `examples/demo-modern.html` を参照
-
----
-
-<!-- _class: lead -->
-
-# Chapter 9
-
-## 発表会
-
----
-
-## 発表会
-
-今回作成したWebサイトを使用して自己紹介をしてみましょう！
-
-### 発表の内容
-- 自分のページを画面に映す
-- ページを使って **自己紹介**
-- 応用課題をやった人はそれも見せてください
-- 「どこを工夫したか」を1つ話せるとさらによいです
 
 ---
 
@@ -2094,5 +2166,5 @@ border: 3px solid pink;
 ## 参考リンク
 
 - [MDN Web Docs](https://developer.mozilla.org/ja/) — HTML/CSS/JS のリファレンス
-- [Can I use](https://caniuse.com/) — ブラウザ対応状況の確認
-- [Google カラーピッカー](https://g.co/kgs/HwVnkZs) — カラーコードを選ぶ
+- [Can I use](https://caniuse.com/) — ブラウザの機能対応状況を確認する
+- [Google カラーピッカー](https://www.google.com/search?q=google+color+picker) — カラーコードを選ぶ
