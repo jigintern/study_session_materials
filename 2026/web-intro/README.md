@@ -25,4 +25,5 @@ Webページがどのように作られているかを体験し、「自分で�
 - [markdown版](./slide.md)
 - [HTML版](https://jigintern.github.io/study_session_materials/web-intro-2026/slide.html)
 
-https://jigintern.github.io/study_session_materials/web-intro-2026/slide.html
+
+https://stackblitz.com/edit/web-platform-huvviw7d?file=index.html
