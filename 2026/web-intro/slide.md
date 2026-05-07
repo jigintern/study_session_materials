@@ -211,16 +211,11 @@ JSを足すと **便利な家** になる。
 
 ---
 
-## 今日使うファイル
+## ファイルの切り替え方
 
-```
-index.html    ← HTMLを書くファイル
-styles.css    ← CSSを書くファイル
-script.js     ← JSを書くファイル（応用課題で使う）
-```
+![bg fit right:65%](imgs/html-css-js-switcher.png)
 
-- `index.html` にページの構造を書く
-- `styles.css` に見た目を書く
+画面上部にある「HTML」「CSS」を押すと切り替えられます。
 
 ---
 
