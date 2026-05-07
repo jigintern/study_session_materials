@@ -577,7 +577,7 @@ padding: 10px 15px 20px 25px;
 
 ## 横並びにする: Flexbox
 
-写真とテキストを **横に並べ** たい。`display: flex` を使います。
+写真とテキストを **横に並べたい** 時は`display: flex` を使います。
 
 ![bg right:40% fit](imgs/flexbox-compare.png)
 
