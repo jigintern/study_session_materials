@@ -82,11 +82,10 @@ HTML と CSS だけでも、
 3. **ヘッダーを作ろう** — 見出し・テキスト・背景色
 4. **プロフィールカードを作ろう** — 画像・横並び・影
 5. **好きなものリストを作ろう** — リスト・装飾
-6. **スキルバッジを作ろう** — インライン要素・折り返し
-7. **SNSリンクを作ろう** — リンク・ボタン風デザイン
-8. **応用課題** — ダークモード & もっと
-9. **発表会**
-10. **まとめ**
+6. **SNSリンクを作ろう** — リンク・ボタン風デザイン
+7. **応用課題** — ダークモード & もっと
+8. **発表会**
+9. **まとめ**
 
 ---
 
@@ -819,108 +818,6 @@ LiveCodes は **ブラウザのタブを閉じる** / **別のPCで開く** と�
 <!-- _class: lead -->
 
 # Chapter 6
-
-## スキルバッジを作ろう
-
----
-
-## このチャプターで作るもの
-
-![bg right:50% fit](imgs/part-badges.png)
-
-スキルや趣味を **バッジ（タグ）** 風に横並びで表示します。
-
-### できるようになること
-- 短いキーワードを見やすく並べられる
-- スマホでも崩れにくい並び方を作れる
-
----
-
-## コードにする前に、完成画面を部品で見てみよう
-
-![bg right:55% fit](imgs/visual-ch6-badges.png)
-
-- カードの中に見出しを置く
-- その下にバッジを入れる箱を作る
-- 小さいラベルをたくさん並べる
-
----
-
-## 新しいタグ: `<span>`
-
-![bg right:50% fit](imgs/block-vs-inline.png)
-
-`<span>` は `<div>` と似た入れ物タグ。
-
-違いは **占める領域**。
-- `<div>` → 横幅いっぱいに広がる
-- `<span>` → 中身の幅だけ
-
-バッジのような小さなラベルには `<span>` が適切。
-
----
-
-<!-- _class: record -->
-
-## バッジのHTML
-
-```html
-<div class="card">
-  <h2>できること・学んでいること</h2>
-  <div class="badges">
-    <span class="badge">HTML</span>
-    <span class="badge">CSS</span>
-    <span class="badge">JavaScript</span>
-    <span class="badge">写真</span>
-    <span class="badge">デザイン</span>
-  </div>
-</div>
-```
-
-
----
-
-<!-- _class: record -->
-
-## バッジのCSS
-
-```css
-.badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.badge {
-  background-color: mistyrose;
-  color: hotpink;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-}
-```
-
-`flex-wrap: wrap` → 1行に収まらない場合に **折り返す**
-
----
-
-## ここまでの結果
-
-![bg right:40% fit](imgs/step4-badges.png)
-
-バッジが横並びで表示されていればOK！
-
-### 今できるようになったこと
-- スキル、趣味、特徴をタグのように見せられる
-- `flex-wrap` で内容が増えても折り返せる
-
----
-
-<!-- _class: lead -->
-
-# Chapter 7
 
 ## SNSリンクを作ろう
 
