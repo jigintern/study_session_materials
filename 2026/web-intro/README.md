@@ -10,9 +10,9 @@ Webページがどのように作られているかを体験し、「自分で�
 
 ## 準備
 
-- ブラウザのみ（[LiveCodes](https://v48.livecodes.io/) を使用）
+- ブラウザのみ（[LiveCodes](https://v48.livecodes.io/?appLanguage=ja) を使用）
 - 開発環境のインストール不要
-- テンプレート: https://v48.livecodes.io/?x=id/3gmtujzjfmk
+- テンプレート: https://v48.livecodes.io/?appLanguage=ja&x=id/3gmtujzjfmk
 
 ## 困ったときは
 
