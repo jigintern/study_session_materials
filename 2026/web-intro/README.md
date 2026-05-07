@@ -10,9 +10,9 @@ Webページがどのように作られているかを体験し、「自分で�
 
 ## 準備
 
-- ブラウザのみ（[StackBlitz](https://stackblitz.com/) を使用）
+- ブラウザのみ（[LiveCodes](https://v48.livecodes.io/) を使用）
 - 開発環境のインストール不要
-- テンプレート: https://stackblitz.com/edit/web-platform-erj9nbfe
+- テンプレート: https://v48.livecodes.io/?x=id/3gmtujzjfmk
 
 ## 困ったときは
 

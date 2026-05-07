@@ -183,11 +183,11 @@ JSを足すと **便利な家** になる。
 
 ---
 
-![bg right fit](imgs/stackblitz.png)
+![bg right fit](imgs/livecodes.png)
 
-## 開発環境: StackBlitz
+## 開発環境: LiveCodes
 
-今日は **StackBlitz** というWebサービスを使います。
+今日は **LiveCodes** というWebサービスを使います。
 
 - ブラウザだけで動く
 - 左側: コードを書く場所
@@ -197,9 +197,9 @@ JSを足すと **便利な家** になる。
 
 ---
 
-## StackBlitz を開こう
+## LiveCodes を開こう
 
-1. https://stackblitz.com/edit/web-platform-erj9nbfe をクリック
+1. https://v48.livecodes.io/?x=id/3gmtujzjfmk をクリック
 2. 画面が表示されたら準備完了
 
 ### 確認すること
