@@ -188,7 +188,7 @@ JSを足すと **便利な家** になる。
 
 ## LiveCodes を開こう
 
-1. https://v48.livecodes.io/?appLanguage=ja&x=id/9ej3q5ctbwe をクリック
+1. https://v48.livecodes.io/?appLanguage=ja&formatOnsave=true&x=id/9ej3q5ctbwe をクリック
 2. 画面が表示されたら準備完了
 
 ### 確認すること
@@ -697,7 +697,7 @@ LiveCodes は **ブラウザのタブを閉じる** / **別のPCで開く** と�
 
 次に LiveCodes を開いた時に ZIP ファイルを読み込むと続きから始められます。
 
-1. LiveCodes を開く: https://v48.livecodes.io/?appLanguage=ja&x=id/9ej3q5ctbwe
+1. LiveCodes を開く: https://v48.livecodes.io/?appLanguage=ja&formatOnsave=true&x=id/9ej3q5ctbwe
 2. **プロジェクト** メニュー → **インポート** をクリック
 3. **ローカルファイルをインポート** をクリックして、保存した ZIP を選ぶ
 

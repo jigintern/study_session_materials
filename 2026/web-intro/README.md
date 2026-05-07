@@ -12,7 +12,7 @@ Webページがどのように作られているかを体験し、「自分で�
 
 - ブラウザのみ（[LiveCodes](https://v48.livecodes.io/?appLanguage=ja) を使用）
 - 開発環境のインストール不要
-- テンプレート: https://v48.livecodes.io/?appLanguage=ja&x=id/9ej3q5ctbwe
+- テンプレート: https://v48.livecodes.io/?appLanguage=ja&formatOnsave=true&x=id/9ej3q5ctbwe
 
 ## 困ったときは
 
