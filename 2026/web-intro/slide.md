@@ -82,11 +82,10 @@ HTML と CSS だけでも、
 3. **ヘッダーを作ろう** — 見出し・テキスト・背景色
 4. **プロフィールカードを作ろう** — 画像・横並び・影
 5. **好きなものリストを作ろう** — リスト・装飾
-6. **スキルバッジを作ろう** — インライン要素・折り返し
-7. **SNSリンクを作ろう** — リンク・ボタン風デザイン
-8. **応用課題** — ダークモード & もっと
-9. **発表会**
-10. **まとめ**
+6. **リンクを作ろう** — リンク・ボタン風デザイン
+7. **応用課題** — ダークモード & もっと
+8. **発表会**
+9. **まとめ**
 
 ---
 
@@ -100,25 +99,15 @@ HTML と CSS だけでも、
 
 ## ふだん見ているWebページの裏側
 
-ブラウザで Web ページを開くと、裏側では **3種類のファイル** が読み込まれています。
+ブラウザで Web ページを開くと、裏側では **3種類のファイル形式** が読み込まれています。
 
-```
-index.html   ← ページの構造（何があるか）
-styles.css   ← 見た目の設定（どう見えるか）
-script.js    ← 動きの設定（どう動くか）
-```
-
-この3つを書けば、Web ページが作れます。
-
----
-
-## Webページを構成する3つの言語
-
-| 言語 | 役割 | やること |
+| ファイル形式 | 役割 | やること |
 |------|------|----------|
 | **HTML** | 構造 | ページに「何を置くか」を決める |
 | **CSS** | 見た目 | 「どう見えるか」を決める |
 | **JavaScript** | 動き | 「どう動くか」を決める |
+
+この3つを書けば、Web ページが作れます。
 
 ---
 
@@ -199,28 +188,22 @@ JSを足すと **便利な家** になる。
 
 ## LiveCodes を開こう
 
-1. https://v48.livecodes.io/?appLanguage=ja&x=id/3gmtujzjfmk をクリック
+1. https://v48.livecodes.io/?appLanguage=ja&formatOnsave=true&x=id/9ej3q5ctbwe をクリック
 2. 画面が表示されたら準備完了
 
 ### 確認すること
 
-- 左側にファイル一覧が見える
-- `index.html`, `styles.css`, `script.js` がある
-- 右側にプレビューが表示されている
-- コードを変えると **自動で画面が更新される**（ホットリロード）
+- 左側に編集画面が表示される
+- 右側にプレビューが表示される
+- コードを変えると **自動で画面が更新される**
 
 ---
 
-## 今日使うファイル
+## ファイルの切り替え方
 
-```
-index.html    ← HTMLを書くファイル
-styles.css    ← CSSを書くファイル
-script.js     ← JSを書くファイル（応用課題で使う）
-```
+![bg fit right:65%](imgs/html-css-js-switcher.png)
 
-- `index.html` にページの構造を書く
-- `styles.css` に見た目を書く
+画面上部にある「HTML」「CSS」を押すと切り替えられます。
 
 ---
 
@@ -234,7 +217,7 @@ script.js     ← JSを書くファイル（応用課題で使う）
 
 ## HTMLの基本構造
 
-`index.html` を開くと、こんなコードが入っています。
+HTML を開くと、こんなコードが入っています。
 
 ```html
 <!DOCTYPE html>
@@ -246,8 +229,12 @@ script.js     ← JSを書くファイル（応用課題で使う）
     <title>自己紹介ページ</title>
   </head>
   <body>
-    <!-- ここにコードを記入 -->
-    <script src="script.js"></script>
+    <!-- ヘッダーのHTML -->
+    <div class="header">
+      <h1>田中 はなこ</h1>
+      <p>Web開発をはじめたばかりの大学生です！</p>
+    </div>
+    <!-- 省略 -->
   </body>
 </html>
 ```
@@ -335,23 +322,23 @@ HTMLは **タグ** という目印を使って書きます。
 
 ## ヘッダーのHTML
 
-`index.html` の `<body>` の中に追加します。
+HTML の `<body>` の下に次のような記述があります。
 
 ```html
-<body>
-  <div class="header">
-    <h1>田中 はなこ</h1>
-    <p>Web開発をはじめたばかりの大学生です！</p>
-  </div>
-  <script src="script.js"></script>
-</body>
+<!-- ヘッダーのHTML -->
+<div class="header">
+  <h1>田中 はなこ</h1>
+  <p>Web開発をはじめたばかりの大学生です！</p>
+</div>
 ```
+
+名前や説明文を変更して画面が更新されることを確認しましょう。
 
 ---
 
 ## CSSの書き方
 
-次に見た目を整えます。CSSは `styles.css` に書きます。
+次に見た目を整えます。
 
 ```css
 セレクタ {
@@ -395,15 +382,10 @@ body {              ← 「body に対して」
 
 ## ヘッダーのCSS
 
-`styles.css` に追加：
+CSS に追加：
 
 ```css
-body {
-  /* ページのデフォルト余白をなくす */
-  margin: 0;
-  padding: 0;
-}
-
+/* ヘッダーのCSS */
 .header {
   background-color: pink;       /* 背景色（ピンク） */
   text-align: center;           /* 文字を中央揃え */
@@ -470,6 +452,7 @@ padding: 10px 15px 20px 25px;
 ## ヘッダーの文字のCSS
 
 ```css
+/* ヘッダーの文字のCSS */
 .header h1 {
   margin: 0;
   color: white;
@@ -550,25 +533,26 @@ padding: 10px 15px 20px 25px;
 
 ## プロフィールのHTML
 
-先ほど書いたヘッダーの下に、新しいカードを追加します。
+`<!-- プロフィールのHTML -->` と書かれた部分の下側にコードを4行追加しましょう。
 
 ```html
-<div class="card">
-  <div class="profile">
-    <img
-      src="https://api.dicebear.com/7.x/thumbs/svg"
-      alt="プロフィール写真"
-      class="profile-img"
-    >
-    <div class="profile-text">
-      <p>こんにちは！田中はなこです。</p>
-      <p>東京に住んでいて、カフェ巡りと猫が好きです。最近プログラミングを始めました！</p>
+<div class="container">
+  <div class="card">
+    <div class="profile">
+      <img
+        src="https://api.dicebear.com/7.x/thumbs/svg"
+        alt="プロフィール写真"
+        class="profile-img"
+      >
+      <!-- プロフィールのHTML -->
+      <div class="profile-text">
+        <p>こんにちは！田中はなこです。</p>
+        <p>東京に住んでいて、カフェ巡りと猫が好きです。最近プログラミングを始めました！</p>
+      </div>
     </div>
   </div>
 </div>
 ```
-
-> srcに指定するURLは、好きな画像のURLに変えてOKです。
 
 ---
 
@@ -577,6 +561,7 @@ padding: 10px 15px 20px 25px;
 ## カードのCSS
 
 ```css
+/* カードのCSS */
 .card {
   background-color: white;    /* 白い背景 */
   border-radius: 16px;        /* 角を丸く */
@@ -592,11 +577,12 @@ padding: 10px 15px 20px 25px;
 
 ## 横並びにする: Flexbox
 
-写真とテキストを **横に並べ** たい。`display: flex` を使います。
+写真とテキストを **横に並べたい** 時は`display: flex` を使います。
 
 ![bg right:40% fit](imgs/flexbox-compare.png)
 
 ```css
+/* 横並びにする: Flexbox */
 .profile {
   display: flex;
   align-items: center;
@@ -615,6 +601,7 @@ padding: 10px 15px 20px 25px;
 ## 写真を丸くする
 
 ```css
+/* 写真を丸くする */
 .profile-img {
   width: 100px;
   height: 100px;
@@ -633,6 +620,7 @@ padding: 10px 15px 20px 25px;
 ## テキストのCSS
 
 ```css
+/* テキストのCSS */
 .profile-text p {
   margin: 4px 0;
   font-size: 15px;
@@ -649,17 +637,10 @@ padding: 10px 15px 20px 25px;
 
 ## カード全体の幅を制限する
 
-今のままだと、画面全体にカードが広がってしまいます
-
-`index.html` と `styles.css` にそれぞれ追加：
-
-```html
-<div class="container">
-  <!-- プロフィールカードはこの中に入れる -->
-</div>
-```
+今のままだと画面全体にカードが広がってしまうので、CSSに追加しましょう。
 
 ```css
+/* カード全体の幅を制限する */
 .container {
   max-width: 600px;    /* 横幅を制限 */
   margin: 0 auto;      /* 中央寄せ */
@@ -667,7 +648,6 @@ padding: 10px 15px 20px 25px;
 }
 ```
 
-> 今後は、カードはすべてこの `.container` の中に入れていきます。
 ---
 
 ## ここまでの結果
@@ -717,7 +697,7 @@ LiveCodes は **ブラウザのタブを閉じる** / **別のPCで開く** と�
 
 次に LiveCodes を開いた時に ZIP ファイルを読み込むと続きから始められます。
 
-1. LiveCodes を開く: https://v48.livecodes.io/?appLanguage=ja&x=id/3gmtujzjfmk
+1. LiveCodes を開く: https://v48.livecodes.io/?appLanguage=ja&formatOnsave=true&x=id/9ej3q5ctbwe
 2. **プロジェクト** メニュー → **インポート** をクリック
 3. **ローカルファイルをインポート** をクリックして、保存した ZIP を選ぶ
 
@@ -775,17 +755,17 @@ LiveCodes は **ブラウザのタブを閉じる** / **別のPCで開く** と�
 
 ## リストのHTML
 
-`<div class="container">` の中に、新しいカードを追加：
+HTML で、`<!-- === 好きなものリスト === -->` と書かれた場所を次のように穴埋めしましょう。
 
 ```html
+<!-- === 好きなものリスト === -->
 <div class="card">
   <h2>好きなもの</h2>
+  <!-- リストのHTML -->
   <ul>
     <li>カフェ巡り</li>
     <li>猫</li>
     <li>ラーメン</li>
-    <li>音楽を聴くこと</li>
-    <li>写真を撮ること</li>
   </ul>
 </div>
 ```
@@ -797,6 +777,7 @@ LiveCodes は **ブラウザのタブを閉じる** / **別のPCで開く** と�
 ## 見出しのCSS
 
 ```css
+/* 見出しのCSS */
 .card h2 {
   font-size: 20px;
   margin: 0 0 12px;
@@ -825,117 +806,15 @@ LiveCodes は **ブラウザのタブを閉じる** / **別のPCで開く** と�
 
 # Chapter 6
 
-## スキルバッジを作ろう
+## リンクを作ろう
 
 ---
 
 ## このチャプターで作るもの
 
-![bg right:50% fit](imgs/part-badges.png)
+![bg right:50% fit](imgs/part-link.png)
 
-スキルや趣味を **バッジ（タグ）** 風に横並びで表示します。
-
-### できるようになること
-- 短いキーワードを見やすく並べられる
-- スマホでも崩れにくい並び方を作れる
-
----
-
-## コードにする前に、完成画面を部品で見てみよう
-
-![bg right:55% fit](imgs/visual-ch6-badges.png)
-
-- カードの中に見出しを置く
-- その下にバッジを入れる箱を作る
-- 小さいラベルをたくさん並べる
-
----
-
-## 新しいタグ: `<span>`
-
-![bg right:50% fit](imgs/block-vs-inline.png)
-
-`<span>` は `<div>` と似た入れ物タグ。
-
-違いは **占める領域**。
-- `<div>` → 横幅いっぱいに広がる
-- `<span>` → 中身の幅だけ
-
-バッジのような小さなラベルには `<span>` が適切。
-
----
-
-<!-- _class: record -->
-
-## バッジのHTML
-
-```html
-<div class="card">
-  <h2>できること・学んでいること</h2>
-  <div class="badges">
-    <span class="badge">HTML</span>
-    <span class="badge">CSS</span>
-    <span class="badge">JavaScript</span>
-    <span class="badge">写真</span>
-    <span class="badge">デザイン</span>
-  </div>
-</div>
-```
-
-
----
-
-<!-- _class: record -->
-
-## バッジのCSS
-
-```css
-.badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.badge {
-  background-color: mistyrose;
-  color: hotpink;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: bold;
-}
-```
-
-`flex-wrap: wrap` → 1行に収まらない場合に **折り返す**
-
----
-
-## ここまでの結果
-
-![bg right:40% fit](imgs/step4-badges.png)
-
-バッジが横並びで表示されていればOK！
-
-### 今できるようになったこと
-- スキル、趣味、特徴をタグのように見せられる
-- `flex-wrap` で内容が増えても折り返せる
-
----
-
-<!-- _class: lead -->
-
-# Chapter 7
-
-## SNSリンクを作ろう
-
----
-
-## このチャプターで作るもの
-
-![bg right:50% fit](imgs/part-sns.png)
-
-ボタン風の **SNSリンク** を横並びで表示します。
+ボタン風の **リンク** を横並びで表示します。
 
 ### できるようになること
 - 自分のSNSや作品ページへ案内できる
@@ -957,24 +836,28 @@ LiveCodes は **ブラウザのタブを閉じる** / **別のPCで開く** と�
 
 ## リンクのHTML
 
+- `<!-- リンクのHTML -->`の下にリンクを追加しましょう。
+
 ```html
+<!-- リンク  -->
 <div class="card">
-  <h2>SNS</h2>
-  <div class="sns-links">
-    <a href="https://x.com" class="sns-link">X</a>
-    <a href="#" class="sns-link">Instagram</a>
-    <a href="#" class="sns-link">GitHub</a>
+  <h2>リンク</h2>
+  <div class="links">
+    <a target="_blank" href="https://jig.jp" class="link">jig.jp</a>
+    <!-- リンクのHTML -->
+    <a target="_blank" href="https://toyota-ct.ac.jp" class="link">豊田高専</a>
   </div>
 </div>
 ```
 
-### `<a>` タグ = リンクを作るタグ
+---
+
+## `<a>` タグ = リンクを作るタグ
 
 | 属性 | 意味 |
 |------|------|
-| `href` | リンク先のURL（`#` は仮のリンク） |
-
-> `href="https://x.com"` とすると、Xへのリンクになります。
+| `target` | `"_blank"`を指定するとブラウザの新しいタブで開きます。 |
+| `href` | リンク先のURL（例: `https://jig.jp`） |
 
 ---
 
@@ -983,13 +866,14 @@ LiveCodes は **ブラウザのタブを閉じる** / **別のPCで開く** と�
 ## ボタン風のデザイン
 
 ```css
-.sns-links {
+/*  リンクのCSS */
+.links {
   display: flex;
   gap: 10px;
   margin-top: 8px;
 }
 
-.sns-link {
+.link {
   display: inline-block;
   padding: 10px 20px;
   background-color: pink;
@@ -1015,6 +899,7 @@ LiveCodes は **ブラウザのタブを閉じる** / **別のPCで開く** と�
 ## ホバー効果をつける
 
 ```css
+/* ホバー効果をつける */
 .sns-link:hover {
   background-color: hotpink;
 }
@@ -1052,7 +937,6 @@ LiveCodes は **ブラウザのタブを閉じる** / **別のPCで開く** と�
 | `<h2>` | 小見出し |
 | `<p>` | 段落 |
 | `<div>` | グループ化する箱 |
-| `<span>` | インラインのグループ化 |
 
 </div>
 <div>
@@ -1221,7 +1105,7 @@ color: #ffffff;
 
 <!-- _class: record -->
 
-## Step 1: ダークモード用のCSSを`styles.css`に追加
+## Step 1: ダークモード用の CSS を追加
 
 ```css
 body.dark {
@@ -1280,7 +1164,7 @@ JavaScript で **このクラスをつけたり外したり** することで、
 
 ## Step 2: 切り替えボタンのHTML
 
-`index.html` の container の中、一番下に追加：
+HTML の container の中、一番下に追加：
 
 ```html
 <button class="dark-mode-btn" id="darkModeBtn">
@@ -2097,7 +1981,7 @@ showQuiz();
 - リンクやボタン風デザインでページを使いやすくできた
 
 ### 使った主な道具
-- HTML: `h1` `h2` `p` `div` `img` `ul` `li` `span` `a`
+- HTML: `h1` `h2` `p` `div` `img` `ul` `li` `a`
 - CSS: 背景色・文字色・配置・角丸・影・Flexbox・ホバー効果
 
 ---
@@ -2175,7 +2059,6 @@ border: 3px solid pink;
 | `<h1>` 〜 `<h6>` | 見出し（h1が最大） |
 | `<p>` | 段落（文章） |
 | `<div>` | ブロックのグループ化 |
-| `<span>` | インラインのグループ化 |
 | `<a href="URL">` | リンク |
 | `<img src="URL" alt="説明">` | 画像（終了タグなし） |
 | `<ul>`, `<ol>`, `<li>` | リスト |
