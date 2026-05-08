@@ -812,7 +812,7 @@ HTML で、`<!-- === 好きなものリスト === -->` と書かれた場所を�
 
 ## このチャプターで作るもの
 
-![bg right:50% fit](imgs/part-sns.png)
+![bg right:50% fit](imgs/part-link.png)
 
 ボタン風の **リンク** を横並びで表示します。
 
