@@ -1027,32 +1027,32 @@ HTML で、`<!-- === 好きなものリスト === -->` と書かれた場所を�
 
 ## 目次 (1/2)
 
-- **ダークモード切替**（★）
+- [**ダークモード切替**](#adv-darkmode)（★）
   - 配色を明るい色 ↔ 暗い色に切り替え
-- **いいねボタン**（★）
+- [**いいねボタン**](#adv-like)（★）
   - 押すたびに数字が増えるボタン
-- **ページ訪問回数**（★）
+- [**ページ訪問回数**](#adv-visit)（★）
   - ページが訪問された回数を表示、ブラウザを閉じても残る
-- **現在時刻の表示**（★）
+- [**現在時刻の表示**](#adv-clock)（★）
   - ヘッダーに現在時刻を記載
-- **タブ切り替え**（★★）
+- [**タブ切り替え**](#adv-tabs)（★★）
   - 好きなもの / 苦手なもの をタブで切替
-- **画像スライドショー**（★★）
+- [**画像スライドショー**](#adv-slideshow)（★★）
   - ← / → で画像を切り替え、ループする
-- **カスタムカーソル**（★★）
+- [**カスタムカーソル**](#adv-cursor)（★★）
   - カーソルが丸に変化 + 軌跡パーティクル
 
 ---
 
 ## 目次 (2/2)
 
-- **モーダル**（★★★）
+- [**モーダル**](#adv-modal)（★★★）
   - 写真をクリックで拡大表示
-- **ドラッグで並び替え**（★★★）
+- [**ドラッグで並び替え**](#adv-drag)（★★★）
   - リスト項目をドラッグ&ドロップで順番変更
-- **ミニクイズゲーム**（★★★）
+- [**ミニクイズゲーム**](#adv-quiz)（★★★）
   - 3 択クイズ、スコア表示付き
-- **デザインのモダン化**（上級）
+- [**デザインのモダン化**](#adv-modern)（上級）
   - ページ全体をモダンなデザインに
 
 ---
@@ -1067,7 +1067,7 @@ HTML で、`<!-- === 好きなものリスト === -->` と書かれた場所を�
 
 <!-- _class: lead -->
 
-# ダークモード切替
+# ダークモード切替<a id="adv-darkmode"></a>
 
 ## JavaScript を使います
 
@@ -1339,7 +1339,7 @@ document.body.classList.toggle("dark");
 ---
 
 
-## ★ いいねボタン
+## ★ いいねボタン<a id="adv-like"></a>
 
 ![bg right:35% fit](imgs/adv-b-like.png)
 
@@ -1393,7 +1393,7 @@ likeBtn.addEventListener("click", function() {
 ---
 
 
-## ★ ページ訪問回数
+## ★ ページ訪問回数<a id="adv-visit"></a>
 
 ![bg right:35% fit](imgs/adv-c-visit-counter.png)
 
@@ -1435,7 +1435,7 @@ document.getElementById("visitCount").textContent = "このページは " + visi
 ---
 
 
-## ★ 現在時刻の表示
+## ★ 現在時刻の表示<a id="adv-clock"></a>
 
 ![bg right:35% fit](imgs/adv-d-clock.png)
 
@@ -1481,7 +1481,7 @@ setInterval(updateClock, 1000);
 ---
 
 
-## ★★ タブ切り替え
+## ★★ タブ切り替え<a id="adv-tabs"></a>
 
 ![bg right:35% fit](imgs/adv-e-tabs.gif)
 
@@ -1549,7 +1549,7 @@ for (let i = 0; i < tabBtns.length; i++) {
 ---
 
 
-## ★★ 画像スライドショー
+## ★★ 画像スライドショー<a id="adv-slideshow"></a>
 
 ![bg right:35% fit](imgs/adv-f-slideshow.gif)
 
@@ -1640,7 +1640,7 @@ document.getElementById("nextBtn").addEventListener("click", function() {
 ---
 
 
-## ★★ カスタムカーソル
+## ★★ カスタムカーソル<a id="adv-cursor"></a>
 
 ![bg right:35% fit](imgs/adv-g-cursor.png)
 
@@ -1707,7 +1707,7 @@ document.addEventListener("mousemove", function(e) {
 ---
 
 
-## ★★★ モーダル（ポップアップ）
+## ★★★ モーダル（ポップアップ）<a id="adv-modal"></a>
 
 ![bg right:35% fit](imgs/adv-h-modal.gif)
 
@@ -1784,7 +1784,7 @@ modal.addEventListener("click", function(e) {
 
 ---
 
-## ★★★ ドラッグで並び替え
+## ★★★ ドラッグで並び替え<a id="adv-drag"></a>
 
 ![bg right:35% fit](imgs/adv-i-drag.gif)
 
@@ -1853,7 +1853,7 @@ dragList.addEventListener("drop", function(e) {
 
 ---
 
-## ★★★ ミニクイズゲーム
+## ★★★ ミニクイズゲーム<a id="adv-quiz"></a>
 
 ![bg right:35% fit](imgs/adv-j-quiz.png)
 
@@ -1967,7 +1967,7 @@ showQuiz();
 
 ---
 
-## デザインのモダン化（上級チャレンジ）
+## デザインのモダン化（上級チャレンジ）<a id="adv-modern"></a>
 
 **完成イメージ**: これまで作ったページを、モダンなページに変身させる。
 
