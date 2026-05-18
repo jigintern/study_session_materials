@@ -83,8 +83,8 @@ HTML と CSS だけでも、
 4. **プロフィールカードを作ろう** — 画像・横並び・影
 5. **好きなものリストを作ろう** — リスト・装飾
 6. **リンクを作ろう** — リンク・ボタン風デザイン
-7. **応用課題** — ダークモード & もっと
-8. **発表会**
+7. **発表会**
+8. **応用課題** — ダークモード & もっと
 9. **まとめ**
 
 ---
@@ -398,14 +398,14 @@ CSS に追加：
 
 ## padding と margin
 
-bodyの余白をなくすために `margin: 0; padding: 0;` と書きましたが、**余白には2種類ある** あります
+bodyの余白をなくすために `margin: 0; padding: 0;` と書きましたが、**余白には2種類** あります
 
 ![bg right:40% fit](imgs/boxmodel.png)
 
 - **padding** = 内側の余白
 - **margin** = 外側の余白
 
-> デフォルトでブラウザは `body` に余白をついけていますが、今回は自分で余白をコントロールしたいので、両方とも0にしています。
+> デフォルトでブラウザは `body` に余白をつけていますが、今回は自分で余白をコントロールしたいので、両方とも0にしています。
 ---
 
 ## padding: 内側の余白
@@ -845,7 +845,7 @@ HTML で、`<!-- === 好きなものリスト === -->` と書かれた場所を�
   <div class="links">
     <a target="_blank" href="https://jig.jp" class="link">jig.jp</a>
     <!-- リンクのHTML -->
-    <a target="_blank" href="https://www.tokuyama.ac.jp/" class="link">徳山高専</a>
+    <a target="_blank" href="https://www.tsuyama-ct.ac.jp/" class="link">津山高専</a>
   </div>
 </div>
 ```
@@ -900,7 +900,7 @@ HTML で、`<!-- === 好きなものリスト === -->` と書かれた場所を�
 
 ```css
 /* ホバー効果をつける */
-.sns-link:hover {
+.link:hover {
   background-color: hotpink;
 }
 ```
@@ -993,7 +993,7 @@ HTML で、`<!-- === 好きなものリスト === -->` と書かれた場所を�
 
 <!-- _class: lead -->
 
-# Chapter 8
+# Chapter 7
 
 ## 発表会
 
@@ -1019,7 +1019,7 @@ HTML で、`<!-- === 好きなものリスト === -->` と書かれた場所を�
 
 <!-- _class: lead -->
 
-# Chapter 9
+# Chapter 8
 
 ## 応用課題
 
@@ -1039,13 +1039,13 @@ HTML で、`<!-- === 好きなものリスト === -->` と書かれた場所を�
   - 好きなもの / 苦手なもの をタブで切替
 - [**画像スライドショー**](#adv-slideshow)（★★）
   - ← / → で画像を切り替え、ループする
-- [**カスタムカーソル**](#adv-cursor)（★★）
-  - カーソルが丸に変化 + 軌跡パーティクル
 
 ---
 
 ## 目次 (2/2)
 
+- [**カスタムカーソル**](#adv-cursor)（★★）
+  - カーソルが丸に変化 + 軌跡パーティクル
 - [**モーダル**](#adv-modal)（★★★）
   - 写真をクリックで拡大表示
 - [**ドラッグで並び替え**](#adv-drag)（★★★）
@@ -1158,17 +1158,12 @@ body.dark .card h2 {
   color: #ffa0c4;
 }
 
-body.dark .badge {
+body.dark .link {
   background-color: #2d2d5e;
   color: #e0e0e0;
 }
 
-body.dark .sns-link {
-  background-color: #2d2d5e;
-  color: #e0e0e0;
-}
-
-body.dark .sns-link:hover {
+body.dark .link:hover {
   background-color: #3d3d7e;
 }
 ```
@@ -1363,32 +1358,7 @@ document.body.classList.toggle("dark");
 
 ## ★ いいねボタン — 答え
 
-<details><summary>完成コード（クリックで開く）</summary>
-
-```html
-<button class="like-btn" id="likeBtn">♡ 0 いいね</button>
-```
-```css
-.like-btn {
-  display: inline-block; margin-top: 8px; padding: 6px 16px;
-  border: 2px solid #ff7eb3; border-radius: 20px;
-  background: none; color: #ff7eb3; font-size: 14px;
-  cursor: pointer; transition: all 0.2s;
-}
-.like-btn:hover { background-color: #ff7eb3; color: #fff; }
-.like-btn.liked { background-color: #ff7eb3; color: #fff; }
-```
-```js
-let likeCount = 0;
-const likeBtn = document.getElementById("likeBtn");
-likeBtn.addEventListener("click", function() {
-  likeCount = likeCount + 1;
-  likeBtn.textContent = "♡ " + likeCount + " いいね";
-  likeBtn.classList.add("liked");
-});
-```
-
-</details>
+解答例: [`examples/advanced/b-like-button.html`](https://github.com/jigintern/study_session_materials/blob/main/2026/web-intro/examples/advanced/b-like-button.html)
 
 ---
 
@@ -1417,20 +1387,7 @@ likeBtn.addEventListener("click", function() {
 
 ## ★ ページ訪問回数 — 答え
 
-<details><summary>完成コード（クリックで開く）</summary>
-
-```html
-<div class="visit-count" id="visitCount"></div>
-```
-```js
-let visits = localStorage.getItem("visitCount");
-if (visits === null) { visits = 0; }
-visits = Number(visits) + 1;
-localStorage.setItem("visitCount", visits);
-document.getElementById("visitCount").textContent = "このページは " + visits + " 回目の訪問です";
-```
-
-</details>
+解答例: [`examples/advanced/c-visit-counter.html`](https://github.com/jigintern/study_session_materials/blob/main/2026/web-intro/examples/advanced/c-visit-counter.html)
 
 ---
 
@@ -1459,24 +1416,7 @@ document.getElementById("visitCount").textContent = "このページは " + visi
 
 ## ★ 現在時刻の表示 — 答え
 
-<details><summary>完成コード（クリックで開く）</summary>
-
-```html
-<div class="clock" id="clock">now loading...</div>
-```
-```js
-function updateClock() {
-  const now = new Date();
-  const h = String(now.getHours()).padStart(2, "0");
-  const m = String(now.getMinutes()).padStart(2, "0");
-  const s = String(now.getSeconds()).padStart(2, "0");
-  document.getElementById("clock").textContent = "🕐 " + h + ":" + m + ":" + s;
-}
-updateClock();
-setInterval(updateClock, 1000);
-```
-
-</details>
+解答例: [`examples/advanced/d-clock.html`](https://github.com/jigintern/study_session_materials/blob/main/2026/web-intro/examples/advanced/d-clock.html)
 
 ---
 
@@ -1506,45 +1446,7 @@ setInterval(updateClock, 1000);
 
 ## ★★ タブ切り替え — 答え
 
-<details><summary>完成コード（クリックで開く）</summary>
-
-```html
-<div class="tab-header">
-  <button class="tab-btn active" data-tab="likes">好きなもの</button>
-  <button class="tab-btn" data-tab="dislikes">苦手なもの</button>
-</div>
-<div class="tab-content active" id="tab-likes">
-  <ul class="favorites-list"><li>カフェ巡り</li><li>猫</li><li>ラーメン</li><li>音楽を聴くこと</li><li>写真を撮ること</li></ul>
-</div>
-<div class="tab-content" id="tab-dislikes">
-  <ul class="favorites-list"><li>早起き</li><li>虫</li><li>満員電車</li></ul>
-</div>
-```
-```css
-.tab-header { display: flex; gap: 8px; margin-bottom: 12px; }
-.tab-btn {
-  padding: 6px 16px; border: none; border-radius: 20px;
-  background-color: #f0f0f0; color: #666; font-size: 14px;
-  cursor: pointer; transition: all 0.2s;
-}
-.tab-btn.active { background-color: #ff7eb3; color: #fff; }
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-```
-```js
-const tabBtns = document.querySelectorAll(".tab-btn");
-for (let i = 0; i < tabBtns.length; i++) {
-  tabBtns[i].addEventListener("click", function() {
-    for (let j = 0; j < tabBtns.length; j++) tabBtns[j].classList.remove("active");
-    const allTabs = document.querySelectorAll(".tab-content");
-    for (let j = 0; j < allTabs.length; j++) allTabs[j].classList.remove("active");
-    this.classList.add("active");
-    document.getElementById("tab-" + this.getAttribute("data-tab")).classList.add("active");
-  });
-}
-```
-
-</details>
+解答例: [`examples/advanced/e-tabs.html`](https://github.com/jigintern/study_session_materials/blob/main/2026/web-intro/examples/advanced/e-tabs.html)
 
 ---
 
@@ -1574,68 +1476,7 @@ for (let i = 0; i < tabBtns.length; i++) {
 
 ## ★★ 画像スライドショー — 答え
 
-<details><summary>完成コード（クリックで開く）</summary>
-
-```html
-<div class="card">
-  <h2>フォトギャラリー</h2>
-  <div class="slideshow">
-    <img id="slideshowImg" class="slideshow-img"
-      src="https://api.dicebear.com/7.x/shapes/svg?seed=photo1" alt="スライドショー画像">
-    <div class="slideshow-controls">
-      <button id="prevBtn" class="slideshow-btn">←</button>
-      <span id="slideshowCounter" class="slideshow-counter">1 / 3</span>
-      <button id="nextBtn" class="slideshow-btn">→</button>
-    </div>
-  </div>
-</div>
-```
-```css
-.slideshow { text-align: center; }
-.slideshow-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; }
-.slideshow-controls {
-  display: flex; align-items: center; justify-content: center;
-  gap: 16px; margin-top: 12px;
-}
-.slideshow-btn {
-  width: 36px; height: 36px; border: none; border-radius: 50%;
-  background-color: #ff9a9e; color: #fff; font-size: 16px;
-  cursor: pointer; transition: background-color 0.2s;
-}
-.slideshow-btn:hover { background-color: #ff7eb3; }
-.slideshow-counter { font-size: 14px; color: #999; }
-```
-```js
-const photos = [
-  "https://api.dicebear.com/7.x/shapes/svg?seed=photo1",
-  "https://api.dicebear.com/7.x/shapes/svg?seed=photo2",
-  "https://api.dicebear.com/7.x/shapes/svg?seed=photo3"
-];
-let currentPhoto = 0;
-const slideshowImg = document.getElementById("slideshowImg");
-const slideshowCounter = document.getElementById("slideshowCounter");
-
-function updateSlideshow() {
-  slideshowImg.src = photos[currentPhoto];
-  slideshowCounter.textContent = (currentPhoto + 1) + " / " + photos.length;
-}
-document.getElementById("prevBtn").addEventListener("click", function() {
-  currentPhoto = currentPhoto - 1;
-  if (currentPhoto < 0) {
-    currentPhoto = photos.length - 1;
-  }
-  updateSlideshow();
-});
-document.getElementById("nextBtn").addEventListener("click", function() {
-  currentPhoto = currentPhoto + 1;
-  if (currentPhoto >= photos.length) {
-    currentPhoto = 0;
-  }
-  updateSlideshow();
-});
-```
-
-</details>
+解答例: [`examples/advanced/f-slideshow.html`](https://github.com/jigintern/study_session_materials/blob/main/2026/web-intro/examples/advanced/f-slideshow.html)
 
 ---
 
@@ -1666,43 +1507,7 @@ document.getElementById("nextBtn").addEventListener("click", function() {
 
 ## ★★ カスタムカーソル — 答え
 
-<details><summary>完成コード（クリックで開く）</summary>
-
-```css
-.custom-cursor {
-  position: fixed; width: 20px; height: 20px; border-radius: 50%;
-  background-color: #ff7eb3; pointer-events: none; z-index: 9999;
-  transform: translate(-50%, -50%); transition: width 0.1s, height 0.1s;
-  mix-blend-mode: difference;
-}
-.cursor-particle {
-  position: fixed; width: 8px; height: 8px; border-radius: 50%;
-  background-color: #ff9a9e; pointer-events: none; z-index: 9998;
-  animation: particle-fade 0.6s ease-out forwards;
-}
-@keyframes particle-fade {
-  0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
-}
-```
-```js
-const cursor = document.getElementById("customCursor");
-let particleCount = 0;
-document.addEventListener("mousemove", function(e) {
-  cursor.style.left = e.clientX + "px";
-  cursor.style.top = e.clientY + "px";
-  particleCount++;
-  if (particleCount % 3 !== 0) return;
-  const particle = document.createElement("div");
-  particle.className = "cursor-particle";
-  particle.style.left = e.clientX + "px";
-  particle.style.top = e.clientY + "px";
-  document.body.appendChild(particle);
-  setTimeout(function() { particle.remove(); }, 600);
-});
-```
-
-</details>
+解答例: [`examples/advanced/g-cursor.html`](https://github.com/jigintern/study_session_materials/blob/main/2026/web-intro/examples/advanced/g-cursor.html)
 
 ---
 
@@ -1732,55 +1537,7 @@ document.addEventListener("mousemove", function(e) {
 
 ## ★★★ モーダル — 答え
 
-<details><summary>完成コード（クリックで開く）</summary>
-
-```html
-<!-- 既存の <img class="profile-img"> に id を追加 -->
-<img src="写真のURL" alt="プロフィール写真" class="profile-img" id="profileImg">
-
-<!-- モーダル用のオーバーレイを追加 -->
-<div class="modal-overlay" id="modal">
-  <div class="modal-content">
-    <button class="modal-close" id="modalClose">✕</button>
-    <img src="画像URL" class="modal-img">
-  </div>
-</div>
-```
-```css
-.modal-overlay {
-  display: none; position: fixed; top: 0; left: 0;
-  width: 100%; height: 100%; background: rgba(0,0,0,0.7);
-  z-index: 1000; justify-content: center; align-items: center;
-}
-.modal-overlay.show { display: flex; }
-.modal-content { position: relative; max-width: 90%; max-height: 90%; }
-.modal-img { max-width: 100%; max-height: 80vh; border-radius: 16px; }
-.modal-close {
-  position: absolute; top: -12px; right: -12px;
-  width: 32px; height: 32px; border: none; border-radius: 50%;
-  background-color: #fff; color: #333; font-size: 18px;
-  cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-.profile-img { cursor: pointer; transition: transform 0.2s; }
-.profile-img:hover { transform: scale(1.05); }
-```
-```js
-const modal = document.getElementById("modal");
-const profileImg = document.getElementById("profileImg");
-const modalClose = document.getElementById("modalClose");
-
-profileImg.addEventListener("click", function() {
-  modal.classList.add("show");
-});
-modalClose.addEventListener("click", function() {
-  modal.classList.remove("show");
-});
-modal.addEventListener("click", function(e) {
-  if (e.target === modal) modal.classList.remove("show");
-});
-```
-
-</details>
+解答例: [`examples/advanced/h-modal.html`](https://github.com/jigintern/study_session_materials/blob/main/2026/web-intro/examples/advanced/h-modal.html)
 
 ---
 
@@ -1808,48 +1565,7 @@ modal.addEventListener("click", function(e) {
 
 ## ★★★ ドラッグで並び替え — 答え
 
-<details><summary>完成コード（クリックで開く）</summary>
-
-```css
-.favorites-list li.dragging { opacity: 0.4; }
-.favorites-list li.drag-over { background-color: #fff0f3; border-radius: 8px; }
-```
-```js
-const dragList = document.getElementById("likesList");
-let dragItem = null;
-dragList.addEventListener("dragstart", function(e) {
-  dragItem = e.target; e.target.classList.add("dragging");
-});
-dragList.addEventListener("dragend", function(e) {
-  e.target.classList.remove("dragging");
-  const items = dragList.querySelectorAll("li");
-  for (let i = 0; i < items.length; i++) items[i].classList.remove("drag-over");
-  dragItem = null;
-});
-dragList.addEventListener("dragover", function(e) {
-  e.preventDefault();
-  const target = e.target;
-  if (target.tagName === "LI" && target !== dragItem) {
-    const items = dragList.querySelectorAll("li");
-    for (let i = 0; i < items.length; i++) items[i].classList.remove("drag-over");
-    target.classList.add("drag-over");
-  }
-});
-dragList.addEventListener("drop", function(e) {
-  e.preventDefault();
-  const target = e.target;
-  if (target.tagName === "LI" && target !== dragItem) {
-    const allItems = Array.prototype.slice.call(dragList.querySelectorAll("li"));
-    const dragIndex = allItems.indexOf(dragItem);
-    const targetIndex = allItems.indexOf(target);
-    if (dragIndex < targetIndex)
-      dragList.insertBefore(dragItem, target.nextSibling);
-    else dragList.insertBefore(dragItem, target);
-  }
-});
-```
-
-</details>
+解答例: [`examples/advanced/i-drag.html`](https://github.com/jigintern/study_session_materials/blob/main/2026/web-intro/examples/advanced/i-drag.html)
 
 ---
 
@@ -1877,93 +1593,7 @@ dragList.addEventListener("drop", function(e) {
 
 ## ★★★ ミニクイズゲーム — 答え
 
-<details><summary>完成コード（クリックで開く）</summary>
-
-```html
-<div class="card">
-  <h2>ミニクイズ</h2>
-  <div class="quiz-question" id="quizQuestion"></div>
-  <div class="quiz-options" id="quizOptions"></div>
-  <div class="quiz-result" id="quizResult"></div>
-  <button class="quiz-next" id="quizNext">次の問題 →</button>
-  <div class="quiz-score" id="quizScore"></div>
-</div>
-```
-```css
-.quiz-question { font-size: 16px; font-weight: bold; margin-bottom: 12px; }
-.quiz-options { display: flex; flex-direction: column; gap: 8px; }
-.quiz-btn {
-  padding: 10px 16px; border: 2px solid #fad0c4; border-radius: 12px;
-  background: none; font-size: 14px; cursor: pointer; text-align: left;
-  transition: all 0.2s;
-}
-.quiz-btn:hover { border-color: #ff7eb3; background-color: #fff0f3; }
-.quiz-btn.correct { border-color: #4caf50; background-color: #e8f5e9; color: #2e7d32; }
-.quiz-btn.wrong { border-color: #ef5350; background-color: #ffebee; color: #c62828; }
-.quiz-result {
-  margin-top: 12px; padding: 10px 16px; border-radius: 12px;
-  font-size: 14px; font-weight: bold; display: none;
-}
-.quiz-result.show { display: block; }
-.quiz-next {
-  margin-top: 12px; padding: 8px 20px; border: none; border-radius: 20px;
-  background-color: #ff9a9e; color: #fff; font-size: 14px;
-  cursor: pointer; display: none;
-}
-.quiz-next.show { display: inline-block; }
-.quiz-score { margin-top: 8px; font-size: 13px; color: #999; }
-```
-```js
-const quizData = [
-  { question: "私の好きな食べ物は？", options: ["ラーメン","寿司","カレー"], answer: 0 },
-  { question: "私が住んでいるのは？", options: ["大阪","東京","福岡"], answer: 1 },
-  { question: "私の好きな動物は？", options: ["犬","うさぎ","猫"], answer: 2 }
-];
-let currentQuiz = 0, quizCorrect = 0, quizAnswered = false;
-function showQuiz() {
-  const q = quizData[currentQuiz];
-  document.getElementById("quizQuestion").textContent = "Q" + (currentQuiz+1) + ". " + q.question;
-  const optionsDiv = document.getElementById("quizOptions");
-  optionsDiv.innerHTML = ""; quizAnswered = false;
-  for (let i = 0; i < q.options.length; i++) {
-    const btn = document.createElement("button");
-    btn.className = "quiz-btn"; btn.textContent = q.options[i];
-    btn.setAttribute("data-index", i);
-    btn.addEventListener("click", function() {
-      if (quizAnswered) return; quizAnswered = true;
-      const selectedIndex = Number(this.getAttribute("data-index"));
-      const correct = quizData[currentQuiz].answer;
-      if (selectedIndex === correct) {
-        this.classList.add("correct"); quizCorrect++;
-        document.getElementById("quizResult").textContent = "⭕ 正解！";
-        document.getElementById("quizResult").style.backgroundColor = "#e8f5e9";
-        document.getElementById("quizResult").style.color = "#2e7d32";
-      } else {
-        this.classList.add("wrong");
-        optionsDiv.querySelectorAll(".quiz-btn")[correct].classList.add("correct");
-        document.getElementById("quizResult").textContent = "❌ 残念！正解は「" + quizData[currentQuiz].options[correct] + "」";
-        document.getElementById("quizResult").style.backgroundColor = "#ffebee";
-        document.getElementById("quizResult").style.color = "#c62828";
-      }
-      document.getElementById("quizResult").classList.add("show");
-      document.getElementById("quizScore").textContent = quizCorrect + " / " + (currentQuiz + 1) + " 問正解";
-      if (currentQuiz < quizData.length - 1) {
-        document.getElementById("quizNext").classList.add("show");
-      } else {
-        document.getElementById("quizScore").textContent = "結果: " + quizCorrect + " / " + quizData.length + " 問正解！";
-      }
-    });
-    optionsDiv.appendChild(btn);
-  }
-  document.getElementById("quizResult").classList.remove("show");
-  document.getElementById("quizNext").classList.remove("show");
-}
-document.getElementById("quizNext").addEventListener("click",
-  function() { currentQuiz++; showQuiz(); });
-showQuiz();
-```
-
-</details>
+解答例: [`examples/advanced/j-quiz.html`](https://github.com/jigintern/study_session_materials/blob/main/2026/web-intro/examples/advanced/j-quiz.html)
 
 ---
 
@@ -1991,13 +1621,17 @@ showQuiz();
 - `linear-gradient` を重ねて画像の上にオーバーレイ
 - `transform: translateX(-60px)` → `translateX(0)` で横からスライドイン
 
-> 完成版は `examples/demo-modern.html` を参照
+---
+
+## デザインのモダン化 — 答え
+
+解答例: [`examples/demo-modern.html`](https://github.com/jigintern/study_session_materials/blob/main/2026/web-intro/examples/demo-modern.html)
 
 ---
 
 <!-- _class: lead -->
 
-# Chapter 10
+# Chapter 9
 
 ## まとめ
 
@@ -2100,7 +1734,7 @@ border: 3px solid pink;
 
 ---
 
-## よく使う CSS プロパティ一覧
+## よく使う CSS プロパティ一覧 (1/2)
 
 | プロパティ | 意味 |
 |-----------|------|
@@ -2109,6 +1743,13 @@ border: 3px solid pink;
 | `font-size` | 文字の大きさ |
 | `text-align` | 文字の揃え方（`center` など） |
 | `padding` / `margin` | 内側 / 外側の余白 |
+
+---
+
+## よく使う CSS プロパティ一覧 (2/2)
+
+| プロパティ | 意味 |
+|-----------|------|
 | `border` | 枠線（太さ 種類 色） |
 | `border-radius` | 角の丸み |
 | `display` | 表示方法（`flex`, `block`, `none`） |
