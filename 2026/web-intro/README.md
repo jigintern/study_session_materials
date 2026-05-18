@@ -14,6 +14,8 @@ Webページがどのように作られているかを体験し、「自分で�
 - 開発環境のインストール不要
 - テンプレート: https://v48.livecodes.io/?appLanguage=ja&formatOnsave=true&x=id/9ej3q5ctbwe
 
+※ LiveCodes が上手く動かない場合、StackBlitz ([テンプレート](https://stackblitz.com/edit/web-platform-9bcxgoh3))を使用してください。
+
 ## 困ったときは
 
 * 質問がある場合、章節項に割り振られた通し番号といっしょに質問してもらえると対応しやすいです。
