@@ -900,7 +900,7 @@ HTML で、`<!-- === 好きなものリスト === -->` と書かれた場所を�
 
 ```css
 /* ホバー効果をつける */
-.sns-link:hover {
+.link:hover {
   background-color: hotpink;
 }
 ```
@@ -1163,12 +1163,12 @@ body.dark .badge {
   color: #e0e0e0;
 }
 
-body.dark .sns-link {
+body.dark .link {
   background-color: #2d2d5e;
   color: #e0e0e0;
 }
 
-body.dark .sns-link:hover {
+body.dark .link:hover {
   background-color: #3d3d7e;
 }
 ```
