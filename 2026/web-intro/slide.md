@@ -1734,7 +1734,7 @@ border: 3px solid pink;
 
 ---
 
-## よく使う CSS プロパティ一覧
+## よく使う CSS プロパティ一覧 (1/2)
 
 | プロパティ | 意味 |
 |-----------|------|
@@ -1743,6 +1743,13 @@ border: 3px solid pink;
 | `font-size` | 文字の大きさ |
 | `text-align` | 文字の揃え方（`center` など） |
 | `padding` / `margin` | 内側 / 外側の余白 |
+
+---
+
+## よく使う CSS プロパティ一覧 (2/2)
+
+| プロパティ | 意味 |
+|-----------|------|
 | `border` | 枠線（太さ 種類 色） |
 | `border-radius` | 角の丸み |
 | `display` | 表示方法（`flex`, `block`, `none`） |
