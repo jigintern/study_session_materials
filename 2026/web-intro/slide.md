@@ -1158,11 +1158,6 @@ body.dark .card h2 {
   color: #ffa0c4;
 }
 
-body.dark .badge {
-  background-color: #2d2d5e;
-  color: #e0e0e0;
-}
-
 body.dark .link {
   background-color: #2d2d5e;
   color: #e0e0e0;
