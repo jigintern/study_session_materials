@@ -845,7 +845,7 @@ HTML で、`<!-- === 好きなものリスト === -->` と書かれた場所を�
   <div class="links">
     <a target="_blank" href="https://jig.jp" class="link">jig.jp</a>
     <!-- リンクのHTML -->
-    <a target="_blank" href="https://www.tsuyama-ct.ac.jp/" class="link">津山高専</a>
+    <a target="_blank" href="https://www.oyama-ct.ac.jp/" class="link">小山高専</a>
   </div>
 </div>
 ```
