@@ -39,7 +39,7 @@ style: |
 
 <!-- _class: lead -->
 
-# 🧠 N拓クイズをつくろう！
+# N拓クイズをつくろう！
 
 ## JavaScript入門 基礎編
 
@@ -63,9 +63,9 @@ JavaScriptを使って **自分だけのN拓クイズアプリ** を作ります
 
 | 技術 | 役割 | たとえると |
 |------|------|----------|
-| HTML | 構造（骨組み） | 🏗️ 家の骨組み |
-| CSS | 見た目（デザイン） | 🎨 壁紙・インテリア |
-| **JavaScript** | **動き（プログラム）** | **⚡ 電気・水道** |
+| HTML | 構造（骨組み） | 家の骨組み |
+| CSS | 見た目（デザイン） | 壁紙・インテリア |
+| **JavaScript** | **動き（プログラム）** | **電気・水道** |
 
 前回は HTML と CSS で「自己紹介ページ」を作りました。
 今回は **JavaScript（JS）** でページに「動き」をつけます！
@@ -89,11 +89,11 @@ JavaScriptを使って **自分だけのN拓クイズアプリ** を作ります
 ## テンプレートを開こう
 
 1. ブラウザで LiveCodes のテンプレートを開く
-   👉 **[テンプレートURL（準備中）]**
+   **[テンプレートURL（準備中）]**
 2. 左のタブで **HTML** / **CSS** / **JS** を切り替え
 3. 右側にプレビューがリアルタイム表示
 
-> 💡 テンプレートにはクイズの **HTMLの骨組み** がすでに用意されています。
+> テンプレートにはクイズの **HTMLの骨組み** がすでに用意されています。
 > CSS と JS の中身はほぼ空なので、これから一緒に書いていきましょう！
 
 ---
@@ -102,7 +102,7 @@ JavaScriptを使って **自分だけのN拓クイズアプリ** を作ります
 
 # Chapter 2
 ボタンをクリックしたら反応させよう
-⏱ 20分
+20分
 
 ---
 
@@ -118,7 +118,7 @@ HTMLのボタンに `onclick` を書くと、クリック時にJSを実行でき
 
 <div class="check">
 
-✅ 「富士山」ボタンを押すとポップアップが出ましたか？
+「富士山」ボタンを押すとポップアップが出ましたか？
 
 </div>
 
@@ -157,7 +157,7 @@ function checkAnswer(selected) {
 
 <div class="tip">
 
-💡 プログラミングでは番号を **0 から数え始める** のが基本です！
+プログラミングでは番号を **0 から数え始める** のが基本です！
 
 </div>
 
@@ -173,10 +173,10 @@ function checkAnswer(selected) {
   const resultEl = document.getElementById("result");
 
   if (selected === 0) {
-    resultEl.textContent = "⭕ 正解！すごい！";
+    resultEl.textContent = "正解！すごい！";
     resultEl.style.color = "#4caf50";
   } else {
-    resultEl.textContent = "❌ 不正解... 正解は「富士山」でした";
+    resultEl.textContent = "不正解... 正解は「富士山」でした";
     resultEl.style.color = "#e53935";
   }
 }
@@ -195,7 +195,7 @@ function checkAnswer(selected) {
 | `if (...) { } else { }` | **条件分岐** |
 | `===` | 「等しいか？」の比較（`=` は代入！） |
 
-> 💡 `document.getElementById()` で HTML の要素を見つけて操作する
+> `document.getElementById()` で HTML の要素を見つけて操作する
 > → これを **DOM操作** と呼びます
 
 ---
@@ -204,7 +204,7 @@ function checkAnswer(selected) {
 
 # Chapter 3
 問題をたくさん出題しよう
-⏱ 25分
+25分
 
 ---
 
@@ -260,7 +260,7 @@ let score = 0;
 
 <div class="tip">
 
-💡 `const` = 変えない値の箱 ／ `let` = あとで変える値の箱
+`const` = 変えない値の箱 ／ `let` = あとで変える値の箱
 `quizData` はデータを入れ替えないので `const`、
 `currentQuestion` と `score` は変わるので `let`
 
@@ -303,7 +303,7 @@ function showQuestion() {
 
 <div class="tip">
 
-💡 `for` ループが `quiz.choices.length` の分だけ繰り返すので、
+`for` ループが `quiz.choices.length` の分だけ繰り返すので、
 選択肢が **3つなら3つ**、**4つなら4つ** のボタンが **自動で** 作られます！
 
 </div>
@@ -322,12 +322,12 @@ function checkAnswer(selected) {
   for (let i = 0; i < buttons.length; i++) { buttons[i].disabled = true; }
 
   if (selected === quiz.answer) {
-    resultEl.textContent = "⭕ 正解！";
+    resultEl.textContent = "正解！";
     resultEl.style.color = "#4caf50";
     buttons[selected].classList.add("correct");
     score++;
   } else {
-    resultEl.textContent = "❌ 不正解... 正解は「" + quiz.choices[quiz.answer] + "」";
+    resultEl.textContent = "不正解... 正解は「" + quiz.choices[quiz.answer] + "」";
     resultEl.style.color = "#e53935";
     buttons[selected].classList.add("wrong");
     buttons[quiz.answer].classList.add("correct");
@@ -358,7 +358,7 @@ showQuestion();   // ← // を消す
 
 <div class="check">
 
-✅ 問題が表示されて、選択肢を選ぶと正解/不正解が出ますか？
+問題が表示されて、選択肢を選ぶと正解/不正解が出ますか？
 
 </div>
 
@@ -368,7 +368,7 @@ showQuestion();   // ← // を消す
 
 # Chapter 4
 スコアと結果を表示しよう
-⏱ 15分
+15分
 
 ---
 
@@ -393,7 +393,7 @@ function nextQuestion() {
 }
 ```
 
-> 📝 `currentQuestion++` は `currentQuestion = currentQuestion + 1` と同じ
+> `currentQuestion++` は `currentQuestion = currentQuestion + 1` と同じ
 
 ---
 
@@ -411,11 +411,11 @@ function showResult() {
 
   const resultEl = document.getElementById("result");
   if (score === quizData.length) {
-    resultEl.textContent = "🏆 パーフェクト！天才！";
+    resultEl.textContent = "パーフェクト！天才！";
   } else if (score >= quizData.length / 2) {
-    resultEl.textContent = "🎉 なかなかやるね！";
+    resultEl.textContent = "なかなかやるね！";
   } else {
-    resultEl.textContent = "📚 次はもっといけるはず！";
+    resultEl.textContent = "次はもっといけるはず！";
   }
   resultEl.style.color = "#333";
 }
@@ -425,7 +425,7 @@ function showResult() {
 
 <!-- _class: lead -->
 
-# 🎊 完成！
+# 完成！
 
 ## N拓クイズアプリが動きました！
 おめでとうございます！
@@ -454,11 +454,11 @@ function showResult() {
 **選択肢の数は自由！** 2択〜5択以上もOK
 
 ### クイズのアイデア
-🎮 推しクイズ ／ 🏠 地元クイズ ／ 🏫 学校クイズ ／ 💻 IT雑学 ／ 🍔 グルメクイズ
+推しクイズ ／ 地元クイズ ／ 学校クイズ ／ IT雑学 ／ グルメクイズ
 
 ---
 
-# JS豆知識 🤓
+# JS豆知識
 
 ### 3問目の答え、知ってた？
 
@@ -515,12 +515,12 @@ function showResult() {
 | スペルミス | `getElementById` の大文字小文字 |
 | カンマ忘れ | 配列・オブジェクトの要素間 |
 
-> 📝 質問するときは **Chapter番号** を伝えてね！
+> 質問するときは **Chapter番号** を伝えてね！
 
 ---
 
 <!-- _class: lead -->
 
-# おつかれさまでした！ 🎉
+# おつかれさまでした！
 
 楽しいクイズができたら、ぜひ見せてください！
