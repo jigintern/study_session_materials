@@ -224,20 +224,19 @@ const person = { name: "太郎", age: 18 };
 
 <!-- _class: chapter -->
 
-# Chapter 2
-ボタンをクリックしたら反応させよう
-20分
+# Chapter 1
+クリックに反応させよう
 
 ---
 
-# 2-1. まずはクリックに反応しよう
+# 1-1. まずはクリックに反応しよう
 
-HTMLのボタンに `onclick` を書くと、クリック時にJSを実行できます
+HTMLのボタンに `onclick` を書くと、クリックしたときに JS を実行できます。
 
-1つ目のボタンを試しにこう書き換えてみよう：
+テンプレートの1つ目のボタンを、試しにこう書き換えてみよう：
 
 ```html
-<button class="choice-btn" onclick="alert('クリックされた！')">富士山</button>
+<button id="choice-0" onclick="alert('クリックされた！')">富士山</button>
 ```
 
 <div class="check">
@@ -246,21 +245,23 @@ HTMLのボタンに `onclick` を書くと、クリック時にJSを実行でき
 
 </div>
 
-> これが **イベント処理** — 「何かが起きたら、何かをする」という仕組み
+> これが **イベント処理** — 「何かが起きたら、何かをする」という仕組みです。
 
 ---
 
-# 2-2. 関数をつくろう
+# 1-2. 関数をつくろう
 
-`<!-- Chapter 2 -->` コメントを参考に、3つのボタンを書き換えよう
+毎回 `alert(...)` を書くのは大変。処理に名前をつけた **関数** にまとめます。
+
+HTMLの3つのボタンを書き換えよう：
 
 ```html
-<button class="choice-btn" onclick="checkAnswer(0)">富士山</button>
-<button class="choice-btn" onclick="checkAnswer(1)">北岳</button>
-<button class="choice-btn" onclick="checkAnswer(2)">奥穂高岳</button>
+<button id="choice-0" onclick="checkAnswer(0)">富士山</button>
+<button id="choice-1" onclick="checkAnswer(1)">北岳</button>
+<button id="choice-2" onclick="checkAnswer(2)">奥穂高岳</button>
 ```
 
-**JS** の `[1]` セクションに関数を書こう
+`script.js` に関数を書こう：
 
 ```javascript
 function checkAnswer(selected) {
@@ -270,7 +271,7 @@ function checkAnswer(selected) {
 
 ---
 
-# 2-2. 新しいJSの書き方
+# 1-2. 新しいJSの書き方
 
 | 書き方 | 意味 |
 |--------|------|
@@ -282,15 +283,16 @@ function checkAnswer(selected) {
 <div class="tip">
 
 プログラミングでは番号を **0 から数え始める** のが基本です！
+富士山=0, 北岳=1, 奥穂高岳=2 になっています。
 
 </div>
 
 ---
 
-# 2-3. 画面の文字を書き換えよう（DOM操作）
+# 1-3. 画面の文字を書き換えよう（DOM操作）
 
-`alert` の代わりに **ページ上に結果を表示** しよう！
-**JS** の `[1]` セクションを書き換え：
+`alert` の代わりに、**ページ上に結果を表示** しましょう！
+`script.js` の `checkAnswer` を書き換え：
 
 ```javascript
 function checkAnswer(selected) {
@@ -298,37 +300,39 @@ function checkAnswer(selected) {
 
   if (selected === 0) {
     resultEl.textContent = "正解！すごい！";
-    resultEl.style.color = "#4caf50";
   } else {
     resultEl.textContent = "不正解... 正解は「富士山」でした";
-    resultEl.style.color = "#e53935";
   }
 }
 ```
 
 ---
 
-# 2-3. 新しいJSの書き方
+# 1-3. 新しいJSの書き方
 
 | 書き方 | 意味 |
 |--------|------|
 | `const resultEl = ...` | **変数**（データの箱）を作る |
 | `document.getElementById("result")` | `id="result"` の要素を取得 |
 | `resultEl.textContent = "..."` | 要素の文字を書き換える |
-| `resultEl.style.color = "..."` | CSSスタイルを変更 |
 | `if (...) { } else { }` | **条件分岐** |
 | `===` | 「等しいか？」の比較（`=` は代入！） |
 
-> `document.getElementById()` で HTML の要素を見つけて操作する
+> `document.getElementById()` で HTML の要素を **id で** 見つけて操作する
 > → これを **DOM操作** と呼びます
+
+<div class="check">
+
+ボタンを押すと、ページ上に正解/不正解が表示されましたか？
+
+</div>
 
 ---
 
 <!-- _class: chapter -->
 
-# Chapter 3
+# Chapter 2
 問題をたくさん出題しよう
-25分
 
 ---
 
@@ -353,175 +357,152 @@ let score = 0;
 
 ---
 
-# 3-2. ここがN拓のポイント！
+# 2-1. データの読み解き方
 
-問題によって **`choices` の数が違う**！
-
-- 1問目: `["富士山", "北岳", "奥穂高岳"]` → **3択**
-- 2問目: `["High", "Hyper", "Hybrid", "Home"]` → **4択**
+| 書き方 | 意味 |
+|--------|------|
+| `quizData` | 問題をまとめた **配列** |
+| `{ question, choices, answer }` | 1問ぶんの **オブジェクト** |
+| `choices` | 選択肢の配列（今回は **3つに統一**） |
+| `answer` | 正解の番号（0から数える） |
 
 <div class="tip">
 
-`const` = 変えない値の箱 ／ `let` = あとで変える値の箱
 `quizData` はデータを入れ替えないので `const`、
-`currentQuestion` と `score` は変わるので `let`
+`currentQuestion`（今何問目か）と `score`（得点）は変わるので `let`。
 
 </div>
 
 ---
 
-# 3-3. 問題を表示する関数
+# 2-2. 問題を表示する関数
 
-**JS** の `[3]` セクションに書こう
+`showQuestion()` を作ります。今の問題を取り出して、問題番号・問題文・選択肢をまとめて画面に表示します。
 
 ```javascript
 function showQuestion() {
-  const quiz = quizData[currentQuestion];
-  document.getElementById("question-number").textContent =
-    "第" + (currentQuestion + 1) + "問 / 全" + quizData.length + "問";
-  document.getElementById("question").textContent = quiz.question;
-  document.getElementById("result").textContent = "";
+  const quiz = quizData[currentQuestion];   // 今の問題を取り出す
 
-  let buttonsHTML = "";
-  for (let i = 0; i < quiz.choices.length; i++) {
-    buttonsHTML += '<button class="choice-btn" onclick="checkAnswer(' + i + ')">'
-      + quiz.choices[i] + '</button>';
-  }
-  document.getElementById("choices").innerHTML = buttonsHTML;
+  // 問題番号（計算してから結合する）
+  const number = currentQuestion + 1;
+  document.getElementById("question-number").textContent =
+    "第" + number + "問 / 全" + quizData.length + "問";
+
+  // 問題文
+  document.getElementById("question").textContent = quiz.question;
+
+  // 選択肢（id の番号と choices の番号をそろえる）
+  document.getElementById("choice-0").textContent = quiz.choices[0];
+  document.getElementById("choice-1").textContent = quiz.choices[1];
+  document.getElementById("choice-2").textContent = quiz.choices[2];
+
+  document.getElementById("result").textContent = "";        // 前の結果を消す
   document.getElementById("next-btn").style.display = "none";
 }
 ```
 
----
-
-# 3-3. N拓のキモ：for ループ
-
-| 書き方 | 意味 |
-|--------|------|
-| `for (let i = 0; i < ...; i++)` | **ループ** — 処理を繰り返す |
-| `quiz.choices.length` | 配列の長さ |
-| `buttonsHTML += "..."` | 文字列を後ろにつなげる |
-| `.innerHTML = "..."` | HTML文字列で中身を書き換える |
-
-<div class="tip">
-
-`for` ループが `quiz.choices.length` の分だけ繰り返すので、
-選択肢が **3つなら3つ**、**4つなら4つ** のボタンが **自動で** 作られます！
-
-</div>
+> `currentQuestion + 1` を先に `number` に入れてから結合しています（計算と結合は分ける）。
 
 ---
 
-# 3-4. 正解判定をアップデート
+# 2-3. 正解判定をアップデート
 
-**JS** の `[1]` セクションの `checkAnswer` を書き換えよう
+`checkAnswer` を、`quizData` の `answer` で判定するように書き換えよう：
 
 ```javascript
 function checkAnswer(selected) {
   const quiz = quizData[currentQuestion];
   const resultEl = document.getElementById("result");
-  const buttons = document.querySelectorAll(".choice-btn");
-  for (let i = 0; i < buttons.length; i++) { buttons[i].disabled = true; }
 
   if (selected === quiz.answer) {
     resultEl.textContent = "正解！";
-    resultEl.style.color = "#4caf50";
-    buttons[selected].classList.add("correct");
-    score++;
+    score = score + 1;
   } else {
-    resultEl.textContent = "不正解... 正解は「" + quiz.choices[quiz.answer] + "」";
-    resultEl.style.color = "#e53935";
-    buttons[selected].classList.add("wrong");
-    buttons[quiz.answer].classList.add("correct");
+    const correctText = quiz.choices[quiz.answer];
+    resultEl.textContent = "不正解... 正解は「" + correctText + "」";
   }
+
   document.getElementById("next-btn").style.display = "inline-block";
 }
 ```
 
+> `score = score + 1` で正解したら得点を1増やします。
+
 ---
 
-# 3-5. HTML を修正 & 3-6. スタート
+# 2-4. 最初の問題を表示しよう
 
-### HTML の修正
-`<!-- Chapter 3 -->` コメントに従って中身を空にする：
-
-```html
-<p id="question-number"></p>
-<h2 id="question"></h2>
-<div id="choices"></div>
-```
-
-### JS の `[6]` セクション
-コメント（`//`）を外して有効化：
+`script.js` の **いちばん下** に、1行だけ追加：
 
 ```javascript
-showQuestion();   // ← // を消す
+showQuestion();   // ページを開いたら最初の問題を表示
 ```
 
 <div class="check">
 
-問題が表示されて、選択肢を選ぶと正解/不正解が出ますか？
+1問目が `quizData` から表示され、選んだら正解/不正解が出ますか？
+（まだ「次の問題へ」は動かなくてOK）
 
 </div>
+
+> これで HTML に決めうちしていた1問目を、
+> **JS のデータから表示** できるようになりました！
 
 ---
 
 <!-- _class: chapter -->
 
-# Chapter 4
+# Chapter 3
 スコアと結果を表示しよう
-15分
 
 ---
 
-# 4-1.「次の問題へ」の処理
+# 3-1.「次の問題へ」の処理
 
-**HTML**: `<!-- Chapter 4 -->` に従って onclick 追加
-
-```html
-<button id="next-btn" onclick="nextQuestion()" style="display: none;">次の問題へ</button>
-```
-
-**JS** の `[4]` セクションに書こう
+`script.js` に `nextQuestion` を追加しよう：
 
 ```javascript
 function nextQuestion() {
-  currentQuestion++;
+  currentQuestion = currentQuestion + 1;
+
   if (currentQuestion < quizData.length) {
-    showQuestion();
+    showQuestion();   // まだ問題がある → 次を表示
   } else {
-    showResult();
+    showResult();     // 最後まで終わった → 結果へ
   }
 }
 ```
 
-> `currentQuestion++` は `currentQuestion = currentQuestion + 1` と同じ
+HTMLの「次の問題へ」ボタンに `onclick` を付けよう：
+
+```html
+<button id="next-btn" onclick="nextQuestion()">次の問題へ</button>
+```
 
 ---
 
-# 4-2. 結果画面をつくろう
+# 3-2. 結果画面をつくろう
 
-**JS** の `[5]` セクションに書こう
+`script.js` に `showResult` を追加しよう：
 
 ```javascript
 function showResult() {
   document.getElementById("question-number").textContent = "結果発表！";
+
   document.getElementById("question").textContent =
     quizData.length + "問中 " + score + "問正解！";
-  document.getElementById("choices").innerHTML = "";
-  document.getElementById("next-btn").style.display = "none";
 
-  const resultEl = document.getElementById("result");
-  if (score === quizData.length) {
-    resultEl.textContent = "パーフェクト！天才！";
-  } else if (score >= quizData.length / 2) {
-    resultEl.textContent = "なかなかやるね！";
-  } else {
-    resultEl.textContent = "次はもっといけるはず！";
-  }
-  resultEl.style.color = "#333";
+  document.getElementById("choices").style.display = "none";
+  document.getElementById("next-btn").style.display = "none";
+  document.getElementById("result").textContent = "おつかれさま！";
 }
 ```
+
+<div class="check">
+
+最後の問題のあと「次の問題へ」を押すと、結果が表示されますか？
+
+</div>
 
 ---
 
@@ -529,21 +510,21 @@ function showResult() {
 
 # 完成！
 
-## N拓クイズアプリが動きました！
+## 3択クイズアプリが動きました！
 おめでとうございます！
 
 ---
 
 <!-- _class: chapter -->
 
-# Chapter 5
+# Chapter 4
 自分だけのクイズを作ろう！
 
 ---
 
 # オリジナルクイズの作り方
 
-**JS** の `[2]` にある `quizData` を書き換えるだけ！
+`script.js` の `quizData` を書き換えるだけ！
 
 ```javascript
 {
@@ -553,38 +534,10 @@ function showResult() {
 }
 ```
 
-**選択肢の数は自由！** 2択〜5択以上もOK
+問題はいくつ増やしてもOK（`,` で区切る）。
 
 ### クイズのアイデア
 推しクイズ ／ 地元クイズ ／ 学校クイズ ／ IT雑学 ／ グルメクイズ
-
----
-
-# JS豆知識
-
-### 3問目の答え、知ってた？
-
-```javascript
-1 + '1'    // → "11"（文字列！）
-```
-
-数字の `1` と文字列の `'1'` を `+` で足すと
-数字が文字列に変換されてくっつく！
-
-こういう JavaScript のちょっと不思議な動きも
-クイズのネタにすると面白いですよ！
-
----
-
-# チャレンジ課題
-
-| 難度 | 課題 | ヒント |
-|------|------|--------|
-| ★ | もう一度チャレンジボタン | `currentQuestion` と `score` を 0 に戻す |
-| ★ | 正解数で背景色変更 | `document.body.style.background` |
-| ★★ | 選択肢シャッフル | `answer` の番号も一緒に変える |
-| ★★ | タイマー機能 | `setInterval` + `clearInterval` |
-| ★★★ | 画像つきクイズ | `<img>` タグを動的に生成 |
 
 ---
 
@@ -593,12 +546,12 @@ function showResult() {
 | 概念 | 使った場面 |
 |------|-----------|
 | 変数（`const` / `let`） | クイズデータ、スコア管理 |
+| 計算と文字列の結合 | 問題番号・結果の表示 |
 | 関数（`function`） | `showQuestion`, `checkAnswer` など |
-| DOM操作 | `getElementById`, `textContent` |
+| DOM操作（`getElementById`） | id で要素を取得して書き換え |
 | イベント処理（`onclick`） | ボタンクリック時の処理 |
-| 条件分岐（`if / else`） | 正解判定、結果メッセージ |
+| 条件分岐（`if / else`） | 正解判定 |
 | 配列・オブジェクト | クイズデータの管理 |
-| for ループ | 選択肢ボタンの動的生成 |
 
 ---
 
