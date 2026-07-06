@@ -1,58 +1,28 @@
 ---
 marp: true
-theme: default
+theme: academic
 paginate: true
 backgroundColor: #f8f9fa
 style: |
-  section {
-    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
-  }
-  section.lead {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-  }
-  section.lead h1 {
-    font-size: 2.5em;
-    margin-bottom: 0.3em;
-  }
-  section.lead h2 {
-    font-size: 1.3em;
-    font-weight: normal;
-    opacity: 0.9;
-  }
-  section.lead p {
-    opacity: 0.8;
-  }
+  /* academic テーマに無い章扉を中央寄せに */
   section.chapter {
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
   }
-  section.chapter h1 {
-    font-size: 2.2em;
-  }
-  section.chapter p {
-    font-size: 1.2em;
-    opacity: 0.9;
-  }
-  h1 { color: #333; }
-  h2 { color: #667eea; }
-  code { background: #eef; border-radius: 4px; padding: 2px 6px; }
-  table { font-size: 0.85em; }
-  th { background: #667eea; color: white; }
   blockquote {
-    border-left: 4px solid #667eea;
-    background: #f0f0ff;
+    position: static;
+    max-width: 100%;
+    border-top: none;
+    border-left: 4px solid #800000;
+    background: #f7f2f2;
     padding: 0.5em 1em;
     font-size: 0.9em;
   }
+  blockquote::before,
+  blockquote::after { content: ""; }
+  /* 確認・ヒント用ボックス */
   .check {
     background: #e8f5e9;
     border-left: 4px solid #4caf50;
