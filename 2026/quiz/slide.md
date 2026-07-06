@@ -555,6 +555,68 @@ function showResult() {
 
 ---
 
+<!-- _class: chapter -->
+
+# 応用課題
+余裕がある人はチャレンジ！
+
+---
+
+# 応用①：選択肢の数を自由にする（N択）
+
+3択に固定していた選択肢を、`for` ループで自動生成すると
+**2択でも4択でも5択でも** 出せるようになります。
+
+```javascript
+// showQuestion の選択肢表示を、for ループに置き換える
+let buttonsHTML = "";
+for (let i = 0; i < quiz.choices.length; i++) {
+  buttonsHTML +=
+    '<button id="choice-' + i + '" onclick="checkAnswer(' + i + ')">'
+    + quiz.choices[i] + '</button>';
+}
+document.getElementById("choices").innerHTML = buttonsHTML;
+```
+
+> `quiz.choices.length` の数だけボタンが作られます。
+> `quizData` の `choices` を4つにすれば、自動で4択になります！
+
+---
+
+# 応用②：結果メッセージを変える
+
+得点に応じて、結果のメッセージを変えてみよう。
+`showResult` に `if / else if / else` を足します。
+
+```javascript
+const resultEl = document.getElementById("result");
+const half = quizData.length / 2;
+
+if (score === quizData.length) {
+  resultEl.textContent = "パーフェクト！天才！";
+} else if (score >= half) {
+  resultEl.textContent = "なかなかやるね！";
+} else {
+  resultEl.textContent = "次はもっといけるはず！";
+}
+```
+
+> `else if` で「3つ以上の場合分け」ができます。
+
+---
+
+# 応用③：もっとチャレンジ
+
+| 難度 | 課題 | ヒント |
+|------|------|--------|
+| ★ | もう一度チャレンジボタン | `currentQuestion` と `score` を 0 に戻す |
+| ★ | 正解した選択肢を緑にする | `.style.background = "#4caf50"` |
+| ★★ | 選択肢シャッフル | `answer` の番号も一緒に変える |
+| ★★ | タイマー機能 | `setInterval` + `clearInterval` |
+| ★★★ | 画像つきクイズ | `<img>` タグを動的に生成 |
+
+---
+
 # 困ったときは
 
 ### エラーの調べ方
