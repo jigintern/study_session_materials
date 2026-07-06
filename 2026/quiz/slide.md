@@ -227,23 +227,21 @@ const person = { name: "太郎", age: 18 };
 
 ---
 
-# 3-2. クイズデータを用意しよう
+# 2-1. クイズデータを用意しよう
 
-**JS** の `[2]` セクションに書こう
+入門で学んだ **配列とオブジェクト** でクイズをまとめます。
+`script.js` の先頭に書こう：
 
 ```javascript
 const quizData = [
   { question: "日本で一番高い山は？",
     choices: ["富士山", "北岳", "奥穂高岳"], answer: 0 },
-  { question: "HTMLの「H」は何の略？",
-    choices: ["High", "Hyper", "Hybrid", "Home"], answer: 1 },
-  { question: "JavaScriptで 1 + '1' の結果は？",
-    choices: ["2", "11", "エラーになる"], answer: 1 },
-  { question: "CSSで文字の色を変えるプロパティは？",
-    choices: ["font-color", "text-color", "color"], answer: 2 },
-  { question: "Webページを見るためのソフトは？",
-    choices: ["コンパイラ", "ブラウザ", "エディタ", "ターミナル"], answer: 1 }
+  { question: "jig.jp の本社がある福井県の市は？",
+    choices: ["鯖江市", "福井市", "敦賀市"], answer: 0 },
+  { question: "Webページの「動き」を担当する言語は？",
+    choices: ["HTML", "CSS", "JavaScript"], answer: 2 }
 ];
+
 let currentQuestion = 0;
 let score = 0;
 ```
