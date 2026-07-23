@@ -1,0 +1,8 @@
+{
+  "themeVariables": {
+    "fontFamily": "'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans CJK JP', sans-serif"
+  },
+  "flowchart": {
+    "defaultRenderer": "elk"
+  }
+}
