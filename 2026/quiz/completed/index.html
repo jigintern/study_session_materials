@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3択クイズ</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="quiz-card">
+      <p id="question-number">第1問 / 全3問</p>
+      <h1 id="question">日本で一番高い山は？</h1>
+      <div id="choices">
+        <button id="choice-0" onclick="checkAnswer(0)">富士山</button>
+        <button id="choice-1" onclick="checkAnswer(1)">北岳</button>
+        <button id="choice-2" onclick="checkAnswer(2)">奥穂高岳</button>
+      </div>
+      <p id="result"></p>
+      <button id="next-btn" onclick="nextQuestion()">次の問題へ</button>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
