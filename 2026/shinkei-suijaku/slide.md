@@ -401,7 +401,24 @@ function createCard(symbol, index) {
 }
 ```
 
-`card` の中に `inner`、その中に `front` と `back` を入れた入れ子構造を組み立てて `return` します。
+`card` の中に `inner`、その中に `front` と `back` を入れた入れ子構造を組み立てて `return` します。できあがる形は次のスライドで見ます。
+
+---
+
+## 1-3 補足: できあがる HTML
+
+`createCard("🍎", 0)` を呼ぶと、この HTML が組み立てられて返ってきます。
+
+```html
+<div class="card" data-index="0" data-symbol="🍎">
+  <div class="card-inner">
+    <div class="card-front">?</div>
+    <div class="card-back">🍎</div>
+  </div>
+</div>
+```
+
+`className` で付けたクラスは `class` 属性、`dataset` で付けた値は `data-` 属性、`textContent` で入れた文字はタグの中身になります。
 
 ---
 
