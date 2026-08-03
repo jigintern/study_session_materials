@@ -156,7 +156,7 @@ style: |
 
 ```javascript
 function checkAnswer(selected) {
-  alert("あなたは " + selected + " 番を選びました！");
+  alert('あなたは ' + selected + ' 番を選びました！');
 }
 ```
 
@@ -219,15 +219,15 @@ total = total + 1;  // まちがい！ 得点と書きまちがえて問題数�
 | 種類 | 書き方 | できること |
 |------|--------|-----------|
 | 数値 | `18` | 計算できる |
-| 文字列 | `"鯖江"` | 文字として表示・つなげられる |
+| 文字列 | `'鯖江'` | 文字として表示・つなげられる |
 
 型はほかにもありますが（`true` / `false` の真偽値など）、今日使うのは主にこの2つです。
 
-文字列は `"..."`（ダブルクォーテーション）で囲む。
+文字列は `'...'`（シングルクォーテーション）で囲む（`"..."` でも同じ意味です）。
 囲まないと「変数の名前」として扱われる。
 
 ```javascript
-const a = "score";   // 文字列の "score"
+const a = 'score';   // 文字列の 'score'
 const b = score;     // 変数 score の中身
 ```
 
@@ -238,16 +238,16 @@ const b = score;     // 変数 score の中身
 ### 「2問正解！」のような表示を作りたい
 
 ```javascript
-const hello = "こんにちは" + "！";   // → "こんにちは！"
+const hello = 'こんにちは' + '！';   // → 'こんにちは！'
 
 const score = 2;
-const result = score + "問正解！";   // → "2問正解！"（数値は文字列に変わる）
+const result = score + '問正解！';   // → '2問正解！'（数値は文字列に変わる）
 ```
 
 逆に、数値のつもりが文字列だと計算になりません。
 
 ```javascript
-console.log("18" + 1);   // → "181"（文字列としてつながる）
+console.log('18' + 1);   // → '181'（文字列としてつながる）
 console.log(18 + 1);     // → 19（数値として計算）
 ```
 
@@ -262,10 +262,10 @@ console.log(18 + 1);     // → 19（数値として計算）
 
 ```javascript
 function sayHello() {
-  console.log("こんにちは！");
+  console.log('こんにちは！');
 }
 
-sayHello();   // → "こんにちは！"（名前で呼び出すと実行される）
+sayHello();   // → 'こんにちは！'（名前で呼び出すと実行される）
 ```
 
 ---
@@ -278,11 +278,11 @@ sayHello();   // → "こんにちは！"（名前で呼び出すと実行され
 
 ```javascript
 function sayHello(name) {
-  console.log("こんにちは、" + name + "さん！");
+  console.log('こんにちは、' + name + 'さん！');
 }
 
-sayHello("太郎");   // → こんにちは、太郎さん！
-sayHello("花子");   // → こんにちは、花子さん！
+sayHello('太郎');   // → こんにちは、太郎さん！
+sayHello('花子');   // → こんにちは、花子さん！
 ```
 
 ---
@@ -314,7 +314,7 @@ if (条件) {
 
 ```javascript
 if (selected === 0) {   // selected は 0 と等しい？
-  console.log("0番が選ばれた！");
+  console.log('0番が選ばれた！');
 }
 ```
 
@@ -343,7 +343,7 @@ for (let i = 0; i < 回数; i++) {
 ```javascript
 for (let i = 0; i < 3; i++) {
   const number = i + 1;
-  console.log("第" + number + "問");   // → 第1問, 第2問, 第3問
+  console.log('第' + number + '問');   // → 第1問, 第2問, 第3問
 }
 ```
 
@@ -361,13 +361,13 @@ for (let i = 0; i < 3; i++) {
 
 | 番号 | 0 | 1 | 2 |
 |------|---|---|---|
-| 中身 | `"富士山"` | `"北岳"` | `"奥穂高岳"` |
+| 中身 | `'富士山'` | `'北岳'` | `'奥穂高岳'` |
 
 ```javascript
-const choices = ["富士山", "北岳", "奥穂高岳"];
+const choices = ['富士山', '北岳', '奥穂高岳'];
 
-console.log(choices[0]);   // → "富士山"
-console.log(choices[2]);   // → "奥穂高岳"
+console.log(choices[0]);   // → '富士山'
+console.log(choices[2]);   // → '奥穂高岳'
 ```
 
 `[番号]` で取り出す。番号は 0 から数える。
@@ -380,12 +380,12 @@ console.log(choices[2]);   // → "奥穂高岳"
 
 | 名前（プロパティ） | `question` | `answer` |
 |------|-----------|----------|
-| 中身（値） | `"日本で一番高い山は？"` | `0` |
+| 中身（値） | `'日本で一番高い山は？'` | `0` |
 
 ```javascript
-const quiz = { question: "日本で一番高い山は？", answer: 0 };
+const quiz = { question: '日本で一番高い山は？', answer: 0 };
 
-console.log(quiz.question);   // → "日本で一番高い山は？"
+console.log(quiz.question);   // → '日本で一番高い山は？'
 console.log(quiz.answer);     // → 0
 ```
 
@@ -497,7 +497,7 @@ JS では `"` と `'` のどちらも文字列に使えます。
 
 ```javascript
 function checkAnswer(selected) {
-  alert("あなたは " + selected + " 番を選びました！");
+  alert('あなたは ' + selected + ' 番を選びました！');
 }
 ```
 
@@ -521,12 +521,12 @@ alert をやめて、④ 結果の表示欄の文字を書き換えます。
 
 ```javascript
 function checkAnswer(selected) {
-  const resultEl = document.getElementById("result");
+  const resultEl = document.getElementById('result');
 
   if (selected === 0) {
-    resultEl.textContent = "正解！すごい！";
+    resultEl.textContent = '正解！すごい！';
   } else {
-    resultEl.textContent = "不正解... 正解は「富士山」でした";
+    resultEl.textContent = '不正解... 正解は「富士山」でした';
   }
 }
 ```
@@ -539,7 +539,7 @@ function checkAnswer(selected) {
 
 ボタンを押して、正解 / 不正解が表示されたら成功
 
-1. `getElementById("result")` で ④ 結果の表示欄を取得
+1. `getElementById('result')` で ④ 結果の表示欄を取得
 2. `.textContent` で文字を書き換え
 3. `if` と `===` で正解を判定
 
@@ -569,12 +569,12 @@ id で要素を取得して書き換える = **DOM操作**
 
 ```javascript
 const quizData = [
-  { question: "日本で一番高い山は？",
-    choices: ["富士山", "北岳", "奥穂高岳"], answer: 0 },
-  { question: "jig.jp の本社がある福井県の市は？",
-    choices: ["鯖江市", "福井市", "敦賀市"], answer: 0 },
-  { question: "Webページの「動き」を担当する言語は？",
-    choices: ["HTML", "CSS", "JavaScript"], answer: 2 }
+  { question: '日本で一番高い山は？',
+    choices: ['富士山', '北岳', '奥穂高岳'], answer: 0 },
+  { question: 'jig.jp の本社がある福井県の市は？',
+    choices: ['鯖江市', '福井市', '敦賀市'], answer: 0 },
+  { question: 'Webページの「動き」を担当する言語は？',
+    choices: ['HTML', 'CSS', 'JavaScript'], answer: 2 }
 ];
 
 let currentQuestion = 0;
@@ -623,19 +623,19 @@ function showQuestion() {
 
   // 問題番号（計算してから結合する）
   const number = currentQuestion + 1;
-  document.getElementById("question-number").textContent =
-    "第" + number + "問 / 全" + quizData.length + "問";
+  document.getElementById('question-number').textContent =
+    '第' + number + '問 / 全' + quizData.length + '問';
 
   // 問題文
-  document.getElementById("question").textContent = quiz.question;
+  document.getElementById('question').textContent = quiz.question;
 
   // 選択肢（id の番号と choices の番号をそろえる）
-  document.getElementById("choice-0").textContent = quiz.choices[0];
-  document.getElementById("choice-1").textContent = quiz.choices[1];
-  document.getElementById("choice-2").textContent = quiz.choices[2];
+  document.getElementById('choice-0').textContent = quiz.choices[0];
+  document.getElementById('choice-1').textContent = quiz.choices[1];
+  document.getElementById('choice-2').textContent = quiz.choices[2];
 
-  document.getElementById("result").textContent = "";        // 前の結果を消す
-  document.getElementById("next-btn").style.display = "none";
+  document.getElementById('result').textContent = '';        // 前の結果を消す
+  document.getElementById('next-btn').style.display = 'none';
 }
 ```
 
@@ -652,17 +652,17 @@ function showQuestion() {
 ```javascript
 function checkAnswer(selected) {
   const quiz = quizData[currentQuestion];
-  const resultEl = document.getElementById("result");
+  const resultEl = document.getElementById('result');
 
   if (selected === quiz.answer) {
-    resultEl.textContent = "正解！";
+    resultEl.textContent = '正解！';
     score = score + 1;
   } else {
     const correctText = quiz.choices[quiz.answer];
-    resultEl.textContent = "不正解... 正解は「" + correctText + "」";
+    resultEl.textContent = '不正解... 正解は「' + correctText + '」';
   }
 
-  document.getElementById("next-btn").style.display = "inline-block";
+  document.getElementById('next-btn').style.display = 'inline-block';
 }
 ```
 
@@ -741,14 +741,14 @@ function nextQuestion() {
 
 ```javascript
 function showResult() {
-  document.getElementById("question-number").textContent = "結果発表！";
+  document.getElementById('question-number').textContent = '結果発表！';
 
-  document.getElementById("question").textContent =
-    quizData.length + "問中 " + score + "問正解！";
+  document.getElementById('question').textContent =
+    quizData.length + '問中 ' + score + '問正解！';
 
-  document.getElementById("choices").style.display = "none";
-  document.getElementById("next-btn").style.display = "none";
-  document.getElementById("result").textContent = "おつかれさま！";
+  document.getElementById('choices').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('result').textContent = 'おつかれさま！';
 }
 ```
 
@@ -787,8 +787,8 @@ function showResult() {
 
 ```javascript
 {
-  question: "ここに問題文を書く",
-  choices: ["選択肢1", "選択肢2", "選択肢3"],
+  question: 'ここに問題文を書く',
+  choices: ['選択肢1', '選択肢2', '選択肢3'],
   answer: 0    // 正解の番号（0から数える）
 }
 ```
@@ -831,13 +831,13 @@ function showResult() {
 `showQuestion` の選択肢3行（`choice-0`〜`choice-2`）を、次のコードに置き換えます。
 
 ```javascript
-let buttonsHTML = "";
+let buttonsHTML = '';
 for (let i = 0; i < quiz.choices.length; i++) {
   buttonsHTML +=
     '<button id="choice-' + i + '" onclick="checkAnswer(' + i + ')">'
     + quiz.choices[i] + '</button>';
 }
-document.getElementById("choices").innerHTML = buttonsHTML;
+document.getElementById('choices').innerHTML = buttonsHTML;
 ```
 
 `innerHTML` = 要素の中身を HTML ごと書き換える（`textContent` は文字だけ）
@@ -852,15 +852,15 @@ document.getElementById("choices").innerHTML = buttonsHTML;
 得点に応じてメッセージを変えます。`showResult` の最後に追加します。
 
 ```javascript
-const resultEl = document.getElementById("result");
+const resultEl = document.getElementById('result');
 const half = quizData.length / 2;
 
 if (score === quizData.length) {
-  resultEl.textContent = "パーフェクト！天才！";
+  resultEl.textContent = 'パーフェクト！天才！';
 } else if (score >= half) {
-  resultEl.textContent = "なかなかやるね！";
+  resultEl.textContent = 'なかなかやるね！';
 } else {
-  resultEl.textContent = "次はもっといけるはず！";
+  resultEl.textContent = '次はもっといけるはず！';
 }
 ```
 
@@ -875,7 +875,7 @@ if (score === quizData.length) {
 | 難度 | 課題 | ヒント |
 |------|------|--------|
 | ★ | もう一度チャレンジボタン | `currentQuestion` と `score` を 0 に戻す |
-| ★ | 正解した選択肢を緑にする | `.style.background = "#4caf50"` |
+| ★ | 正解した選択肢を緑にする | `.style.background = '#4caf50'` |
 | ★★ | 一度答えたら押せなくする（いまは連打で得点が増える） | 答えたかを覚える変数 + `checkAnswer` の最初で `return` |
 | ★★ | 選択肢シャッフル | `answer` の番号も一緒に変える |
 | ★★ | タイマー機能 | `setInterval` + `clearInterval` |
