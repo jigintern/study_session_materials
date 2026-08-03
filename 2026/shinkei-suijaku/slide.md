@@ -333,9 +333,7 @@ Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + O
 
 ---
 
-<!-- _class: tight -->
-
-## HTML を JS から触る仕組み (DOM)
+## HTML には空の入れ物だけ置く
 
 16 枚のカードは、`index.html` に `<div class="card">` を 16 個書いても並べられます。ただ手で 16 個書くのは大変で、絵柄を変えるときもペア数を変えるときも、そのぶん書き直しになります。
 
@@ -353,7 +351,17 @@ Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + O
 
 そこで HTML には空の入れ物だけ置いて、中身は JS が作ります。
 
-`#board` の中に `.card` が入っているように、HTML の要素は入れ子になっています。ブラウザはこの入れ子をツリーの形で持っていて、これを DOM と呼びます。JavaScript から読み書きできます。今日やるのは 2 つだけで、ツリーから要素を探す (1-2) と、新しい要素を作って差し込む (1-3) です。ツリーの実物は 1-3 のあとに見ます。
+---
+
+<!-- _class: tight -->
+
+## HTML を JS から触る仕組み (DOM)
+
+DOM (Document Object Model) とは、ブラウザが持っている HTML のツリーのことです。JavaScript から触るときの入口が `document` で、たとえば `document.getElementById("board")` と書くと、このツリーから `div#board` を取り出せます。
+
+![w:600](./diagrams/board-tree.svg)
+
+図は配布した `index.html` のツリーです。点線が、これから JS で作って差し込む部分です。
 
 ---
 
@@ -420,7 +428,7 @@ function createCard(symbol, index) {
 
 `className` で付けたクラスは `class` 属性、`dataset` で付けた値は `data-` 属性、`textContent` で入れた文字はタグの中身になります。
 
-ブラウザはこの入れ子を、右の図のようなツリーとして持っています。これが DOM です。
+この入れ子を DOM のツリーで見ると、右の図の形になります。盤面のツリーで 1 つの箱だった `div.card` の中身です。
 
 ![bg right:34% h:300](./diagrams/dom-tree.svg)
 
