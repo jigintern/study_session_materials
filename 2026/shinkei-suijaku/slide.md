@@ -1422,9 +1422,9 @@ resetGame();
 
 - 状態: 8 個 (`deck`, `firstCard`, `secondCard`, `lockBoard`, `moves`, `matchedPairs`, `timerId`, `startTime`)
 - イベント (ユーザー操作): カードクリック、リセットボタンクリック
-- 時間 (非同期): `setInterval` のタイマー、`setTimeout` の不一致待ち
+- 時間 (非同期): `setInterval()` のタイマー、`setTimeout()` の不一致待ち
 - 判定: 一致 / 不一致 / クリア
-- 描画: `renderBoard`, `timerEl.textContent`, `pairsEl.textContent`, `clearMessageEl.textContent`
+- 描画: `renderBoard()`, `timerEl.textContent`, `pairsEl.textContent`, `clearMessageEl.textContent`
 - そのほか: 関数 10 個、DOM 参照 6 個、コードを見ずに自分で書いた場面 2 箇所
 
 <div class="aside">
@@ -1521,14 +1521,14 @@ setTimeout(() => allCards.forEach((c) => c.classList.remove("flipped")), 3000);
 
 ## 付録: 今日出てきた道具
 
-- 動的 DOM 生成 — `createElement`, `appendChild`, `replaceChildren`
+- 動的 DOM 生成 — `createElement()`, `appendChild()`, `replaceChildren()`
 - DOM とデータの紐付け — `dataset`
 - 中身の文字列の置き換え — `textContent`
-- クラス操作 — `classList.add/remove/contains`
+- クラス操作 — `classList.add()`, `remove()`, `contains()`
 - イベント — `addEventListener("click", ...)`
-- 非同期 — `setTimeout`, `setInterval`, `clearInterval`
+- 非同期 — `setTimeout()`, `setInterval()`, `clearInterval()`
 - アルゴリズム — Fisher-Yates シャッフル
-- 文字列整形 — テンプレートリテラル、`padStart`
+- 文字列整形 — テンプレートリテラル、`padStart()`
 - 設計 — ガード節、状態→描画の分離
 
 ---
