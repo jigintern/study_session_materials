@@ -1,0 +1,9 @@
+---
+config:
+  flowchart:
+    defaultRenderer: dagre
+---
+flowchart TD
+  card["div.card<br/>data-symbol=🍎"] --> inner["div.card-inner"]
+  inner --> front["div.card-front<br/>?"]
+  inner --> back["div.card-back<br/>🍎"]
