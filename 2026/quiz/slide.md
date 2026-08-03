@@ -14,6 +14,9 @@ style: |
   section strong {
     color: var(--primary);
   }
+  section a {
+    color: var(--primary);
+  }
   .columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -113,7 +116,8 @@ style: |
 
 ## 準備
 
-1. ブラウザで StackBlitz のテンプレートを開く（TODO: URL）
+1. ブラウザで StackBlitz のテンプレートを開く
+   https://stackblitz.com/edit/web-quiz-2026?file=index.html
 2. 左に HTML / CSS / JS のファイル、右にプレビュー
 3. 今日さわるのは `script.js`
 

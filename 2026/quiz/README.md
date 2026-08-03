@@ -12,7 +12,7 @@ HTML と CSS で作ったページに「動き」をつける体験を通して�
 
 - ブラウザのみ（StackBlitz を使用）
 - 開発環境のインストール不要
-- テンプレート: **[テンプレートURL（準備中）]**
+- テンプレート: https://stackblitz.com/edit/web-quiz-2026?file=index.html
 
 テンプレートには「1問目が決めうちで表示された状態」の HTML と CSS が用意されています。今日さわるのは `script.js`（JS）だけです。
 
