@@ -75,6 +75,9 @@ style: |
   section.compact pre {
     font-size: 0.65em;
   }
+  section.compact table {
+    font-size: 0.8em;
+  }
   section mark {
     background: #ffe066;
     color: inherit;
@@ -862,12 +865,15 @@ if (score === quizData.length) {
 
 ---
 
+<!-- _class: compact -->
+
 ## 応用③：もっとチャレンジ
 
 | 難度 | 課題 | ヒント |
 |------|------|--------|
 | ★ | もう一度チャレンジボタン | `currentQuestion` と `score` を 0 に戻す |
 | ★ | 正解した選択肢を緑にする | `.style.background = "#4caf50"` |
+| ★★ | 一度答えたら押せなくする（いまは連打で得点が増える） | 答えたかを覚える変数 + `checkAnswer` の最初で `return` |
 | ★★ | 選択肢シャッフル | `answer` の番号も一緒に変える |
 | ★★ | タイマー機能 | `setInterval` + `clearInterval` |
 | ★★★ | 画像つきクイズ | `<img>` タグを動的に生成 |
