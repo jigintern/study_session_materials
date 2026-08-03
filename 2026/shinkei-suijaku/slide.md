@@ -1153,7 +1153,7 @@ function stopTimer() {
 
 貼ったコードに出てくるものを押さえておきます。
 
-- `startTime`: `Date.now()` で取った開始時刻 (ミリ秒)。経過秒は「今 − 開始」で出る
+- `startTime`: `Date.now()` で取った開始時刻 (ミリ秒)。経過秒は `(Date.now() - startTime) / 1000` で出る
 - `timerId`: 動いている `setInterval` の識別子。あとで止めるために保持する。5-4 で `!timerId` として再登場
 - `` `${mm}:${ss}` ``: テンプレートリテラル。変数を埋め込める
 
