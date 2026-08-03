@@ -455,7 +455,7 @@ function createCard(symbol, index) {
 - `parent.replaceChildren()` — 親の中身を全部削除
 - `array.forEach((要素, index) => { ... })` — 配列の全要素に処理を実行
 
-<span class="tag-write">記述</span> 【A】〜【B】を埋めましょう。
+<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【B】を書き換えましょう。
 
 <div class="timer-box" data-seconds="180">
   <button class="timer-btn" data-delta="-60">−</button>
