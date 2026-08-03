@@ -744,7 +744,7 @@ Chapter 3 の `setTimeout` も同じ形です。きっかけがクリックか�
 
 ## 3-1. handleCardClick に判定分岐を追加
 
-<span class="tag-write">記述</span> `secondCard = card;` の下に判定処理を書き足します。【A】を埋めましょう。
+<span class="tag-write">記述</span> `handleCardClick` の中、`secondCard = card;` の下に判定処理を書き足します。【A】を埋めましょう。
 
 <div class="timer-box" data-seconds="180">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -880,12 +880,13 @@ secondCard.classList.remove("flipped");
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
-一致でも不一致でも、2 枚判定した後は「次のターンを迎える」ための後片付けが必要です。3 行の関数 `resetTurn` を作ります。
+一致でも不一致でも、2 枚判定した後は「次のターンを迎える」ための後片付けが必要です。
 
 <div class="task">
 
 やること
 
+- `resetTurn` という関数を作る (3 行)
 - 2-1 で用意した 3 つの状態変数を、それぞれ最初の値に戻す
 
 </div>
@@ -1050,7 +1051,7 @@ Chapter 6 のリセットでも `deck` に新しい配列を入れ直します�
 
 ## 5-1. 状態変数と DOM 参照を追加
 
-<span class="tag-unlock">コピペ</span> 末尾ではなく、2-1 で書いた状態変数のすぐ下にまとめて追加します。
+<span class="tag-unlock">コピペ</span> 末尾ではなく、2-1 で書いた `let lockBoard = false;` の下にまとめて追加します。
 
 ```javascript
 // STUDENT [5-1]: 手数、ペア数、タイマー用の状態を用意
@@ -1081,11 +1082,11 @@ const clearMessageEl = document.getElementById("clear-message");
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
-`handleCardClick` の `secondCard = card;` と、3-1 で書いた `const isMatch = ...` の間に、2 枚目をめくった瞬間の処理を 2 行書きます。この 2 行が「状態を変えたら描画を更新する」という型です。
+書く場所は `handleCardClick` の中、`secondCard = card;` と 3-1 で書いた `const isMatch = ...` の間です。この 2 行が「状態を変えたら描画を更新する」という型になります。
 
 <div class="task">
 
-やること
+やること (2 行)
 
 - 5-1 で用意した「手数」の状態を 1 増やす
 - 手数を表示している要素 (5-1 で取得した DOM 参照) のテキストを、更新後の値に書き換える
@@ -1104,6 +1105,8 @@ const clearMessageEl = document.getElementById("clear-message");
 ---
 
 ## 5-2 答え合わせ
+
+`handleCardClick` の中、2 枚目をめくった直後です。
 
 ```javascript
 secondCard = card;
@@ -1167,7 +1170,7 @@ function stopTimer() {
 
 ## 5-4. タイマー開始を組み込む
 
-<span class="tag-write">記述</span> `handleCardClick` の 1 枚目分岐に 1 行追加します。【A】を埋めましょう。
+<span class="tag-write">記述</span> `handleCardClick` の `if (!firstCard)` の分岐に 1 行追加します。【A】を埋めましょう。
 
 <div class="timer-box" data-seconds="180">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -1239,7 +1242,7 @@ function handleMatch() {
 <details class="hint">
 <summary>ヒント</summary>
 
-A は 5-2 で書いた `moves` の 2 行と同じ形。B は `8` と直接書くと絵柄を 6 種類に減らしたときにクリアできなくなります
+A は 5-2 で書いた `moves` の 2 行と同じ形。B は `8` と直接書くと絵柄の種類を減らしたときにクリアできなくなります
 
 </details>
 
