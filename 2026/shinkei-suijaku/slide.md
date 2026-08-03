@@ -368,7 +368,7 @@ DOM とは、ブラウザが持っている HTML のツリーのことです。J
 const boardEl = document.getElementById("board");
 ```
 
-この資料では、DOM 要素を入れる変数の末尾に `El` を付けて統一します。
+この資料では、DOM 要素を入れる変数の末尾に `El` (Element の略) を付けて統一します。
 
 ---
 
