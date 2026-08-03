@@ -22,7 +22,8 @@ HTML と CSS で作ったページに「動き」をつける体験を通して�
 
 - [スライド（markdown版）](./slide.md)
 - [スライド（HTML版）](https://jigintern.github.io/study_session_materials/quiz-2026/slide.html)
-- [完成版アプリ（completed/）](./completed/) — 講師用の完成形。テンプレート作成の元にもなる
+- [完成版アプリ（completed/）](./completed/) — 講師用の完成形
+- [テンプレート（template/）](./template/) — StackBlitz プロジェクト作成の元。1問目が表示された状態で、script.js は空、onclick は未記入
 
 ### テンプレートに必要な id（HTML）
 
