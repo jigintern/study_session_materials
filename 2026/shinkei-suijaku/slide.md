@@ -282,7 +282,7 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 <!-- _class: lead -->
 
 # Chapter 1
-## カードを盤面に並べる (23 分)
+## カードを盤面に並べる
 
 ---
 
@@ -508,7 +508,7 @@ renderBoard();
 <!-- _class: lead -->
 
 # Chapter 2
-## クリックでカードをめくる (27 分)
+## クリックでカードをめくる
 
 ---
 
@@ -725,7 +725,7 @@ Chapter 3 の `setTimeout` も同じ形です。きっかけがクリックか�
 <!-- _class: lead -->
 
 # Chapter 3
-## 2 枚めくって一致判定 (28 分)
+## 2 枚めくって一致判定
 
 ---
 
@@ -953,7 +953,7 @@ function resetTurn() {
 <!-- _class: lead -->
 
 # Chapter 4
-## カードをシャッフル (10 分)
+## カードをシャッフル
 
 ---
 
@@ -1033,7 +1033,7 @@ Chapter 6 のリセットでも `deck` に新しい配列を入れ直します�
 <!-- _class: lead -->
 
 # Chapter 5
-## タイマー・手数・クリア判定 (28 分)
+## タイマー・手数・クリア判定
 
 ---
 
@@ -1281,7 +1281,7 @@ A は 5-2 で書いた `moves` の 2 行と同じ形。B は `8` と直接書く
 <!-- _class: lead -->
 
 # Chapter 6
-## リセット機能 (15 分)
+## リセット機能
 
 ---
 
