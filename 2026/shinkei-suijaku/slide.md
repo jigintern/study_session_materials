@@ -1020,12 +1020,6 @@ let deck = shuffle(symbols.concat(symbols));
 
 Chapter 6 のリセットでも `deck` に新しい配列を入れ直します。`const` のままだと再代入で `TypeError` になるので `let` に変えます。
 
-<div class="aside">
-
-`shuffle` はファイルの末尾に書いたのに、それより上の行から呼べています。`function` で宣言した関数は、書いた場所より前の行からでも呼べるためです (巻き上げ、hoisting と呼びます)。`let` と `const` はそうではありません。この違いは Chapter 6 の 6-3 でもう一度出てきます。
-
-</div>
-
 ---
 
 ## Chapter 4 チェックポイント
@@ -1126,8 +1120,6 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol; // 3-1 �
 ```
 
 `moves++` は `moves = moves + 1` の短縮形。状態を +1 したら、その直後に描画を更新する。この 2 行 1 セットが、今日の講座で一番繰り返される型です。
-
-書けた人へ: `moves++` の行を消して動かすとどうなるか、`movesEl.textContent = moves;` だけ消すとどうなるか、頭の中で予想してから試してみると「状態」と「描画」が別物だと実感できます。
 
 ---
 
