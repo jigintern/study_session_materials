@@ -563,6 +563,21 @@ JS 側はクラスを付けるだけで見た目が動きます。
 
 ---
 
+## クラスの付け外し
+
+1 つの要素には複数のクラスを付けられます。カードは `card` を持ったまま `flipped` が足されて `class="card flipped"` になり、両方が付いた要素にだけ効く `.card.flipped` の CSS が反応します。
+
+足し引きに使うのは `classList` です。要素に付いているクラスの一覧を扱うプロパティで、追加・削除・有無の確認ができます。`className` のほうは class 属性を丸ごと置き換える書き方なので、めくるときに使うと `card` が消えてしまいます。
+
+```javascript
+card.className = "flipped";      // class="flipped" になり、card が消える
+card.classList.add("flipped");   // class="card flipped" になる
+```
+
+要素を 0 から組み立てるときは `className`、すでにあるクラスに足し引きするときは `classList` を使います。
+
+---
+
 ## 2-1. 状態変数を用意する
 
 「1 枚目にめくったカード」「2 枚目にめくったカード」「ロック中か」の 3 つを変数で持ちます。
