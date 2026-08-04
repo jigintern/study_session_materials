@@ -434,23 +434,27 @@ function createCard(symbol, index) {
 
 ---
 
-<!-- _class: tight -->
-
-## 1-3 補足: dataset と使っている DOM API
-
-`dataset` は DOM 要素に自前のデータを紐付ける仕組みです。
-
-- `card.dataset.symbol = "🍎"` と書くと HTML に `data-symbol="🍎"` として保存される
-- あとで `card.dataset.symbol` で取り出せる
-- 使わない場合、絵柄と DOM 要素の対応を別配列で管理する必要が出る。DOM 要素と関連情報を一緒に持てるのが利点
-- `dataset.index` のほうは今日書くコードでは使いません。診断パネルがカードを識別するために読んでいます
-
-### 新しく出てきた書き方
+## 1-3 補足: 使っている DOM API
 
 - `document.createElement("div")` — 新しい `<div>` 要素を作る
 - `element.className = "..."` — class 属性を設定
 - `element.textContent = "..."` — 中身の文字列を置き換える
 - `parent.appendChild(child)` — 親要素の中に子要素を入れる
+- `element.dataset.symbol = "..."` — 要素に自前のデータを紐付ける (詳しくは次のスライド)
+
+---
+
+<!-- _class: tight -->
+
+## 1-3 補足: dataset
+
+`dataset` は、DOM 要素に自分で決めた名前でデータを持たせる仕組みです。`card.dataset.symbol = "🍎"` と書くと `data-symbol="🍎"` として要素に残り、あとから `card.dataset.symbol` で読み出せます。`class` や `id` は意味が決まっていますが、`data-` に続く名前は自分で決められます。
+
+![w:700](./diagrams/dataset-flow.svg)
+
+絵柄は裏面にも文字として入っていますが、`card.textContent` で取得すると表の `?` まで付いて `?🍎` になります。1-3 で `dataset` にも絵文字を入れたのは、`card.dataset.symbol` で絵文字部分だけを取り出しやすくするためです。
+
+`dataset.index` のほうは今日書くコードでは使いません。診断パネルがカードを識別するために読んでいます。
 
 ---
 
