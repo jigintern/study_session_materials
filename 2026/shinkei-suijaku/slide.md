@@ -246,8 +246,6 @@ HTML と CSS だけで作られたページは、開いたら同じものが表�
 
 ---
 
-<!-- _class: tight -->
-
 ## 準備: StackBlitz テンプレを開こう
 
 https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
@@ -263,8 +261,6 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 ![bg right:32% contain](./screenshots/stackblitz-initial.png)
 
 ---
-
-<!-- _class: tight -->
 
 ## 準備: 診断パネルの見方
 
