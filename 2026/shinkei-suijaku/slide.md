@@ -1108,7 +1108,7 @@ const clearMessageEl = document.getElementById("clear-message");
 
 ## 5-2 答え合わせ
 
-`handleCardClick` の中、2 枚目をめくった直後です。
+`handleCardClick` の中、`secondCard = card;` の直後、判定の前です。
 
 ```javascript
 secondCard = card;
