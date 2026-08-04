@@ -677,38 +677,9 @@ function createCard(symbol, index) {
 
 <!-- _class: tight -->
 
-## 名前のない関数 (アロー関数)
+## 2-3 補足: アロー関数と使っている API
 
-JavaScript の関数は、名前を付けずに書けます。`() => { ... }` がその書き方です。
-
-```javascript
-// 名前のある関数。名前を書けば何度でも呼べる
-function double(n) {
-  return n * 2;
-}
-
-// 同じ処理を名前なしで書いたもの
-(n) => { return n * 2; }
-
-// 中身が 1 つの式だけなら、{} と return を省ける
-(n) => n * 2;
-```
-
-名前がないので、呼ぶ手段はその場で誰かに渡すか、変数に入れるかのどちらかです。1-4 の `deck.forEach((symbol, index) => { ... })` も、forEach に渡す処理を名前なしでその場に書いていました。
-
-- 名前なしで書く: その場で 1 回渡すだけの短い処理
-- 名前を付ける: 何度も呼ぶ処理、名前で意図を説明したい処理 (`createCard` など)
-
----
-
-## 2-3 補足: 使っている API
-
-- `element.addEventListener("click", 関数)` — クリック時に関数を実行
-- `element.classList.add("xxx")` — クラスを追加
-- `element.classList.remove("xxx")` — クラスを削除
-- `element.classList.contains("xxx")` — クラスが付いているか (真偽値)
-
-`() => ...` で包んでいる理由です。渡したいのは実行した結果ではなく、あとで実行してほしい処理そのものなので、関数を渡します。
+2-3 で貼った `() => ...` は、名前のない関数を作る書き方で、アロー関数と呼びます。`addEventListener` に渡したいのは実行した結果ではなく、あとで実行してほしい処理そのものなので、処理を関数で包んで渡します。
 
 ```javascript
 // カードを作った瞬間に実行される → 16 枚とも最初からめくれてしまう
@@ -717,6 +688,13 @@ card.addEventListener("click", handleCardClick(card));
 // クリックされたときに実行される
 card.addEventListener("click", () => handleCardClick(card));
 ```
+
+`=>` の左が引数です。今回は空ですが、1-4 の `deck.forEach((symbol, index) => { ... })` では、forEach が配列の要素と番号をここに渡していました。
+
+- `element.addEventListener("click", 関数)` — クリック時に関数を実行
+- `element.classList.add("xxx")` — クラスを追加
+- `element.classList.remove("xxx")` — クラスを削除
+- `element.classList.contains("xxx")` — クラスが付いているか (真偽値)
 
 ---
 
