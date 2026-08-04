@@ -609,7 +609,7 @@ let lockBoard = false;   // 2 枚めくったあとに他のカードを押さ�
 // STUDENT [2-2]: フロー図に沿って書く
 // A: すでに用意した状態変数のどれか (ロック用)
 // B: CSS 側が反応するクラス名 (文字列)
-// C: classList のメソッド名 (追加する側)
+// C: クラスを追加する classList のメソッド名
 // D: すでに用意した状態変数のどれか (1 枚目)
 function handleCardClick(card) {
   if (【A】) return;
@@ -623,7 +623,6 @@ function handleCardClick(card) {
   }
 
   secondCard = card;
-  // Chapter 3 でここに判定処理を書きます
 }
 ```
 
@@ -649,16 +648,10 @@ function handleCardClick(card) {
 }
 ```
 
-- A: `lockBoard` — 判定待ちの間はクリック無視。Chapter 3 で意味が生きる
+- A: `lockBoard` — ロック中はここで打ち切り、めくる処理まで進ませない
 - B: `"flipped"` — 配布 CSS がこのクラスで表向きアニメを流す
-- C: `add` — B と反対の操作は `remove` (Chapter 3 で使う)
+- C: `add` — 上の `contains` と同じ `classList` のメソッド。クラスを付けるのが `add`
 - D: `firstCard` — `null` (falsy) のとき `!firstCard` が真になる
-
-<div class="aside">
-
-最初の `if (…) return;` を並べる書き方は「ガード節」と呼ばれる、前提チェックを先に済ませる読みやすさ重視のパターンです。Chapter 3 でも使います。
-
-</div>
 
 ---
 
@@ -857,7 +850,7 @@ function handleMatch() {
 
 ```javascript
 // STUDENT [3-3]: 不一致は 800ms 待って伏せに戻す
-// A: 2-2 で使った classList のメソッドの「逆」
+// A: クラスを削除する classList のメソッド名
 function handleMismatch() {
   lockBoard = true;
 
@@ -878,7 +871,7 @@ firstCard.classList.remove("flipped");
 secondCard.classList.remove("flipped");
 ```
 
-- A: `remove` — 2-2 の `add` と対になる操作。表向きにしたクラスを剥がす
+- A: `remove` — 2-2 で付けた `flipped` を外すと、CSS が伏せ表示に戻す
 
 `setTimeout(関数, ミリ秒)` は、指定時間後にその関数を 1 回だけ実行します。
 繰り返し実行したい場合は `setInterval` を使います。
@@ -1562,7 +1555,7 @@ setTimeout(() => allCards.forEach((c) => c.classList.remove("flipped")), 3000);
 - 非同期 — `setTimeout()`, `setInterval()`, `clearInterval()`
 - アルゴリズム — Fisher-Yates シャッフル
 - 文字列整形 — テンプレートリテラル、`padStart()`
-- 設計 — ガード節、状態→描画の分離
+- 設計 — 状態→描画の分離
 
 ---
 
