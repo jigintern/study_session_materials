@@ -351,13 +351,13 @@ Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + O
 
 <!-- _class: tight -->
 
-## HTML を JS から触る仕組み (DOM)
+## JS から HTML を動的に作る (DOM)
 
-DOM (Document Object Model) とは、ブラウザが持っている HTML のツリーのことです。JavaScript から触るときの入口が `document` で、たとえば `document.getElementById("board")` と書くと、このツリーから `div#board` を取り出せます。
+HTML に書いていない要素も、JS から作って足せます。`document.createElement()` で要素を作り、`appendChild()` で `div#board` の中に入れると、その時点でカードが画面に出ます。
 
 ![w:600](./diagrams/board-tree.svg)
 
-図は配布した `index.html` のツリーです。点線が、これから JS で作って差し込む部分です。
+図は配布した `index.html` の構造です。ブラウザはこの形で HTML を持っていて、これを DOM (Document Object Model) と呼びます。点線が、これから JS で作って差し込む部分です。
 
 ---
 
