@@ -420,7 +420,7 @@ function createCard(symbol, index) {
 
 - `document.createElement("div")` — 新しい `<div>` 要素を作る
 - `element.className = "..."` — class 属性を設定
-- `element.textContent = "..."` — テキストとして中身を書き換える (安全)
+- `element.textContent = "..."` — 中身の文字列を置き換える
 - `parent.appendChild(child)` — 親要素の中に子要素を入れる
 
 ---
@@ -431,7 +431,7 @@ function createCard(symbol, index) {
 
 `deck` の各要素をカードにして `#board` に並べる `renderBoard` 関数を書きます。今回初めて使うもの:
 
-- `parent.replaceChildren()` — 親の中身を全部削除 (`innerHTML = ""` の安全版)
+- `parent.replaceChildren()` — 親の中身を全部削除
 - `array.forEach((要素, index) => { ... })` — 配列の全要素に処理を実行
 
 <span class="tag-write">記述</span> 【A】〜【B】を埋めましょう。
@@ -1520,7 +1520,7 @@ setTimeout(() => allCards.forEach((c) => c.classList.remove("flipped")), 3000);
 
 - 動的 DOM 生成 — `createElement`, `appendChild`, `replaceChildren`
 - DOM とデータの紐付け — `dataset`
-- 安全な文字列挿入 — `textContent`
+- 中身の文字列の置き換え — `textContent`
 - クラス操作 — `classList.add/remove/contains`
 - イベント — `addEventListener("click", ...)`
 - 非同期 — `setTimeout`, `setInterval`, `clearInterval`
