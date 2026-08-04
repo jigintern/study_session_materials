@@ -668,7 +668,7 @@ function handleCardClick(card) {
 
 ## 2-3. カードにクリックイベントを付ける
 
-`createCard` 関数の中の `return card;` の直前に 1 行追加します。
+`element.addEventListener("click", 関数)` で、その要素がクリックされたときに実行する関数を紐づけられます。`createCard` 関数の中の `return card;` の直前に 1 行追加します。
 
 <span class="tag-unlock">コピペ</span>
 
@@ -686,9 +686,7 @@ function createCard(symbol, index) {
 
 ---
 
-<!-- _class: tight -->
-
-## 2-3 補足: アロー関数と使っている API
+## 2-3 補足: アロー関数
 
 2-3 で貼った `() => ...` は、名前のない関数を作る書き方で、アロー関数と呼びます。`addEventListener` に渡したいのは実行した結果ではなく、あとで実行してほしい処理そのものなので、処理を関数で包んで渡します。
 
@@ -701,11 +699,6 @@ card.addEventListener("click", () => handleCardClick(card));
 ```
 
 `=>` の左が引数です。今回は空ですが、1-4 の `deck.forEach((symbol, index) => { ... })` では、forEach が配列の要素と番号をここに渡していました。
-
-- `element.addEventListener("click", 関数)` — クリック時に関数を実行
-- `element.classList.add("xxx")` — クラスを追加
-- `element.classList.remove("xxx")` — クラスを削除
-- `element.classList.contains("xxx")` — クラスが付いているか (真偽値)
 
 ---
 
