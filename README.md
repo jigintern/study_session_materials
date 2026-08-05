@@ -8,6 +8,9 @@
 
 ### 2026年作成
 
+* [1から学ぶ JavaScript！ クイズアプリを作ってみよう](./2026/quiz/README.md)
+  * JavaScript の基本を学びながら、自分だけの3択クイズアプリを作ります。
+  * [スライド](https://jigintern.github.io/study_session_materials/quiz-2026/slide.html)
 * [自己紹介ページを作ろう — Web開発入門](./2026/web-intro/README.md)
   * HTML、CSS、JavaScriptの3つの言語を使って、自己紹介ページを作ります。
   * [スライド](https://jigintern.github.io/study_session_materials/web-intro-2026/slide.html)
