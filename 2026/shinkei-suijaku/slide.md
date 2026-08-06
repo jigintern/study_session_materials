@@ -115,6 +115,14 @@ style: |
   }
   .task ul, .hint-box ul { padding-left: 1.4em; margin: 4px 0; }
   .task li, .hint-box li { margin: 3px 0; }
+  .syntax {
+    background: #f1f8f9;
+    border-left: 4px solid #00897b;
+    padding: 8px 16px;
+    margin: 16px 0;
+  }
+  .syntax > *:first-child { margin-top: 0; }
+  .syntax > *:last-child { margin-bottom: 0; }
   .aside {
     border-left: 3px solid #cfd8dc;
     padding: 0 14px;
@@ -283,10 +291,13 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 
 同じ配列をうしろにもう 1 つつなげれば、どの絵柄もちょうど 2 枚になります。
 
-`concat` は 2 つの配列をつなげた新しい配列を返します。元の配列は変わりません。
-例: `["🍎", "🍌"].concat(["🍎", "🍌"])` → `["🍎", "🍌", "🍎", "🍌"]`
+<div class="syntax">
 
-`array.length` は配列の要素数です。
+- `concat` — 2 つの配列をつなげた新しい配列を返す。元の配列は変わらない
+  例: `["🍎", "🍌"].concat(["🍎", "🍌"])` → `["🍎", "🍌", "🍎", "🍌"]`
+- `array.length` — 配列の要素数
+
+</div>
 
 <span class="tag-unlock">コピペ</span> `script.js` のいちばん最後に書き足します。
 
