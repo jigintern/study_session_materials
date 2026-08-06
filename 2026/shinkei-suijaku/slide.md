@@ -415,7 +415,7 @@ const boardEl = document.getElementById("board");
 
 ## 1-3. カード 1 枚を作る関数
 
-<span class="tag-unlock">コピペ</span> 要素の組み立てが長いのでそのまま貼って OK。中身は次のスライドで説明します。
+<span class="tag-unlock">コピペ</span> 要素の組み立てが長いのでそのまま貼って OK。中身はこのあと説明します。
 
 ```javascript
 function createCard(symbol, index) {
@@ -441,6 +441,22 @@ function createCard(symbol, index) {
 ```
 
 貼っても画面は変わりませんが、それで OK です。
+
+---
+
+<!-- _class: tight -->
+
+## 1-3 の確認: 1 枚だけ出してみる
+
+<span class="tag-unlock">コピペ</span> 作った関数を 1 回だけ呼びます。
+
+```javascript
+boardEl.appendChild(createCard("🍎", 0));
+```
+
+青い「?」のカードが 1 枚出れば OK です。確認できたらこの 1 行は消します。
+
+![w:480](./screenshots/one-real-card.png)
 
 ---
 
