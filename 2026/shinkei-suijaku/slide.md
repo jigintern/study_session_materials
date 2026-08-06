@@ -281,8 +281,10 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 
 神経衰弱は同じ絵柄が 2 枚ずつ必要です。`symbols` を自分自身と連結して、16 枚の `deck` を作ります。
 
-`concat` は 2 つの配列をつなげた新しい配列を返します。
+`concat` は 2 つの配列をつなげた新しい配列を返します。元の配列は変わりません。
 例: `[1, 2].concat([3, 4])` → `[1, 2, 3, 4]`
+
+`array.length` は配列の要素数です。
 
 <span class="tag-unlock">コピペ</span> `script.js` のいちばん最後に書き足します。
 
@@ -296,13 +298,9 @@ console.log("枚数:", deck.length);
 
 ---
 
-<!-- _class: tight -->
+## 1-1 の確認: Console で見る
 
-## 1-1 補足: 新しい書き方
-
-- `array1.concat(array2)` — 新しい配列を返す。元の `array1` は変わらない
-- `array.length` — 配列の要素数
-- `console.log(...)` — 開発者ツールの Console にログを出す
+`console.log(...)` は、開発者ツールの Console に値を出す命令です。書いたコードが思ったとおりに動いているか確かめるのに使います。
 
 Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + Option + I) で開けます。下のように配列が 1 行、続いて「枚数: 16」が出ていれば OK です。
 
