@@ -271,7 +271,7 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 - カード 1 枚を作る関数を用意する
 - 盤面全体を描く関数を作って呼ぶ
 
-この章で身につけるのは、JavaScript から画面を組み立てるやり方です。HTML と CSS で決め打ちしていた画面を、JS がその場で作って差し込むように変えます。この時点ではカードが並ぶだけで、まだクリックには反応しません。
+この章では JavaScript から HTML/CSS を組み立てていきます。
 
 ![bg right:36% h:520](./screenshots/chapter1-initial.png)
 
