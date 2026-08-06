@@ -251,6 +251,13 @@
     }
   };
 
+  // 同じ絵柄のカードが 2 枚あるので、絵柄だけでは firstCard と secondCard が
+  // 別の 2 枚なのか同じカードなのか区別できません。盤面での位置を添えて見分けます。
+  // renderBoard は deck の順に appendChild していくだけで並べ替えないので、
+  // 親の中での位置が deck のインデックスと一致します。
+  const cardPosition = (el) =>
+    el.parentNode ? Array.prototype.indexOf.call(el.parentNode.children, el) : -1;
+
   const appendValue = (parent, v) => {
     if (v === UNDEF) {
       const s = document.createElement("span");
@@ -291,9 +298,8 @@
       return;
     }
     if (v instanceof Element) {
-      const idx = v.dataset ? v.dataset.index : undefined;
       const sym = v.dataset ? v.dataset.symbol : undefined;
-      const text = sym !== undefined ? `Card(${sym} @${idx})` : `<${v.tagName.toLowerCase()}>`;
+      const text = sym !== undefined ? `Card(${sym} @${cardPosition(v)})` : `<${v.tagName.toLowerCase()}>`;
       parent.appendChild(document.createTextNode(text));
       return;
     }
@@ -732,9 +738,8 @@
     if (typeof v === "string") return JSON.stringify(v);
     if (Array.isArray(v)) return `[Array length=${v.length}]`;
     if (v instanceof Element) {
-      const idx = v.dataset ? v.dataset.index : undefined;
       const sym = v.dataset ? v.dataset.symbol : undefined;
-      return sym !== undefined ? `Card(${sym} @${idx})` : `<${v.tagName.toLowerCase()}>`;
+      return sym !== undefined ? `Card(${sym} @${cardPosition(v)})` : `<${v.tagName.toLowerCase()}>`;
     }
     return Object.prototype.toString.call(v);
   };
