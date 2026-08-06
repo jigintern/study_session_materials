@@ -347,28 +347,31 @@ Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + O
 
 ## JS で HTML を作る
 
-HTML に書いていない要素も、JS から作って足せます。この 3 行で、カードが 1 枚画面に出ます。
+HTML に書いていない要素も、JS から作って足せます。
 
 ```javascript
-const card = document.createElement("div");
-card.textContent = "🍎";
+const card = document.createElement("div");   // <div></div> ができる
+card.textContent = "🍎";                      // <div>🍎</div> になる
 document.getElementById("board").appendChild(card);
 ```
 
-<div class="syntax">
+3 行目まで実行すると、空だった `#board` の中がこうなります。
 
-- `document.createElement("div")` — `<div></div>` を作る。この時点ではまだ画面に出ない
-- `parent.appendChild(子)` — 既にある要素の中に入れる。ここで初めて画面に出る
-
+```html
+<div id="board">
+  <div>🍎</div>
 </div>
+```
 
-右は配布した `index.html` の構造 (DOM) です。点線が、これから JS で作って差し込む 16 枚です。
+`createElement` が作った要素は、この時点では `card` 変数の中にあるだけで、ページと紐づいていません。`appendChild` でページ上の要素 (ここでは `#board`) の子として入れると、その時点で画面に現れます。
 
-![bg right:34% contain](./diagrams/board-tree.svg)
+<span class="tag-unlock">コピペ</span> 実際に貼って 🍎 が 1 つ出るのを確かめたら、この 3 行は消してください。
 
 ---
 
 ## 1-2. DOM 要素を取得する
+
+ブラウザが読み込んだ HTML の構造を DOM と呼びます。`getElementById` は、そこから id を指定して要素を 1 つ取り出します。
 
 `#board` は何度も使うので、最初に取得して変数にしておきます。
 
@@ -380,6 +383,10 @@ const boardEl = document.getElementById("board");
 ```
 
 この資料では、DOM 要素を入れる変数の末尾に `El` (Element の略) を付けて統一します。
+
+右は配布した `index.html` の構造です。点線が、これから JS で作って差し込む 16 枚です。
+
+![bg right:34% contain](./diagrams/board-tree.svg)
 
 ---
 
