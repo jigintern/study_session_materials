@@ -1375,23 +1375,6 @@ resetGame();
 
 ---
 
-<!-- _class: tight -->
-
-## 今日、あなたが書いたもの
-
-状態を変数で持つ → イベントや時間経過で状態を変える → 変えたらその場で描画も更新する。今日組み立てたのはこの流れです。
-
-- 状態: 8 個 (`deck`, `firstCard`, `secondCard`, `lockBoard`, `moves`, `matchedPairs`, `timerId`, `startTime`)
-- イベント (ユーザー操作): カードクリック、リセットボタンクリック
-- 時間 (非同期): `setInterval()` のタイマー、`setTimeout()` の不一致待ち
-- 判定: 一致 / 不一致 / クリア
-- 描画: `renderBoard()`, `timerEl.textContent`, `pairsEl.textContent`, `clearMessageEl.textContent`
-- そのほか: 関数 10 個、DOM 参照 6 個、コードを見ずに自分で書いた場面 2 箇所
-
-これは小さな Webアプリ 1 個ぶんの規模です。状態を持つ画面、ユーザー操作に反応する画面、時間で動く画面 — Webアプリの中身が全部入っています。
-
----
-
 ## 学びの持ち帰り
 
 このゲームと同じ考え方で作れるものの例:
