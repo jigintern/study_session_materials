@@ -39,6 +39,8 @@ jobs:
             output_name: web-intro-2026
           - slide: 2026/quiz
             output_name: quiz-2026
+          - slide: 2026/shinkei-suijaku
+            output_name: shinkei-suijaku-2026
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

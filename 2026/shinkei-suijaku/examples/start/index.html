@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>神経衰弱ゲーム</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header id="status-bar">
+        <div class="status-item">
+          <span class="status-label">時間</span>
+          <span id="timer">00:00</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">手数</span>
+          <span id="moves">0</span>
+        </div>
+        <div class="status-item">
+          <span class="status-label">ペア</span>
+          <!-- JS が動く前の初期表示。実際のペア数は script.js の symbols から決まり、
+               Chapter 6 の resetGame() が `0 / ${symbols.length}` で上書きする。
+               絵柄の種類を増減しても、ここを直す必要はない -->
+          <span id="pairs">0 / 8</span>
+        </div>
+      </header>
+
+      <div id="board"></div>
+
+      <footer id="controls">
+        <button id="reset-btn">もう一度</button>
+      </footer>
+
+      <div id="clear-message"></div>
+    </div>
+
+    <script src="debug.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

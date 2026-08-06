@@ -8,6 +8,9 @@
 
 ### 2026年作成
 
+* [神経衰弱ゲームを作ろう — JavaScript 中級講座](./2026/shinkei-suijaku/README.md)
+  * JavaScript で神経衰弱ゲームを作りながら、Webアプリを支える 3 つの考え方 (状態・イベント・時間) を体験するハンズオンです
+  * [スライド](https://jigintern.github.io/study_session_materials/shinkei-suijaku-2026/slide.html)
 * [1から学ぶ JavaScript！ クイズアプリを作ってみよう](./2026/quiz/README.md)
   * JavaScript の基本を学びながら、自分だけの3択クイズアプリを作ります。
   * [スライド](https://jigintern.github.io/study_session_materials/quiz-2026/slide.html)
