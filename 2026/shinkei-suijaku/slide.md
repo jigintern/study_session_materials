@@ -349,7 +349,7 @@ Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + O
 
 HTML に書いていない要素も、JS から作って足せます。
 
-<span class="tag-unlock">コピペ</span> `script.js` のいちばん最後に貼って、動きを見てみます。
+<span class="tag-unlock">コピペ</span> `script.js` のいちばん最後に貼ります。
 
 ```javascript
 const card = document.createElement("div");   // <div></div> ができる
@@ -357,21 +357,38 @@ card.textContent = "🍎";                      // <div>🍎</div> になる
 document.getElementById("board").appendChild(card);
 ```
 
-3 行目まで実行すると、空だった `#board` の中がこうなり、画面には 🍎 が 1 つ出ます。
+貼ると、盤面のところに 🍎 が 1 つ出ます。
+
+![w:620](./screenshots/one-card.png)
+
+---
+
+## `#board` の中身が変わった
+
+```javascript
+// さっき貼った 3 行
+const card = document.createElement("div");
+card.textContent = "🍎";
+document.getElementById("board").appendChild(card);
+```
 
 <div class="fig-row">
 
 ```html
+<!-- 貼る前 -->
+<div id="board"></div>
+```
+
+```html
+<!-- 貼った後 -->
 <div id="board">
   <div>🍎</div>
 </div>
 ```
 
-![w:370](./screenshots/one-card.png)
-
 </div>
 
-`createElement` が作った要素は、この時点では `card` 変数の中にあるだけで、ページと紐づいていません。`appendChild` でページ上の要素 (ここでは `#board`) の子として入れると、その時点で画面に現れます。
+`createElement` で作った要素は、`appendChild` で HTML の中に入れて、はじめて表示されます。
 
 🍎 が 1 つ出るのを確かめたら、この 3 行は消します。
 
@@ -379,7 +396,7 @@ document.getElementById("board").appendChild(card);
 
 ## 1-2. DOM 要素を取得する
 
-ブラウザが読み込んだ HTML の構造を DOM と呼びます。`getElementById` は、そこから id を指定して要素を 1 つ取り出します。
+ブラウザが読み込んだ HTML の構造を DOM と呼びます。
 
 `#board` は何度も使うので、最初に取得して変数にしておきます。
 
@@ -391,10 +408,6 @@ const boardEl = document.getElementById("board");
 ```
 
 この資料では、DOM 要素を入れる変数の末尾に `El` (Element の略) を付けて統一します。
-
-右は配布した `index.html` の構造です。点線が、これから JS で作って差し込む 16 枚です。
-
-![bg right:34% contain](./diagrams/board-tree.svg)
 
 ---
 
@@ -450,7 +463,7 @@ function createCard(symbol, index) {
 
 `dataset` は自分で決めた名前でデータを要素に持たせる仕組みです。絵柄をここにも入れておくと、あとから `card.dataset.symbol` で絵柄だけを取り出せます。Chapter 3 の一致判定で使います。
 
-この入れ子を DOM のツリーで見ると、右の図の形になります。盤面のツリーで 1 つの箱だった `div.card` の中身です。
+この入れ子を DOM のツリーで見ると、右の図の形になります。
 
 ![bg right:34% h:300](./diagrams/dom-tree.svg)
 
