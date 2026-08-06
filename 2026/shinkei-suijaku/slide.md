@@ -222,8 +222,6 @@ style: |
 | <span class="tag-write">記述</span> | 【A】等の穴 | 構造は見えている中で埋める箇所を考える |
 | <span class="tag-unlock">コピペ</span> | 完成コードが載っている | そのまま手元に貼る (数行の写経も含む) |
 
-設計判断のキモは <span class="tag-write">記述</span>、大事な型は <span class="tag-challenge">自力</span>、定型コードは <span class="tag-unlock">コピペ</span> で進めます。演習には制限時間を出すので、書けたらリアクションで教えてください。
-
 間に合わなくても大丈夫です。各章のチェックポイントに「追いつき用」のコードを出すので、`script.js` を丸ごと置き換えれば次の章から始められます。
 
 ---
