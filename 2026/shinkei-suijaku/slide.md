@@ -1551,8 +1551,6 @@ setTimeout(() => allCards.forEach((c) => c.classList.remove("flipped")), 3000);
 
 `dataset` は、DOM 要素に自分で決めた名前でデータを持たせる仕組みです。`card.dataset.symbol = "🍎"` と書くと `data-symbol="🍎"` として要素に残り、あとから `card.dataset.symbol` で読み出せます。`class` や `id` は意味が決まっていますが、`data-` に続く名前は自分で決められます。
 
-![w:700](./diagrams/dataset-flow.svg)
-
 絵柄は裏面にも文字として入っていますが、`card.textContent` で取得すると表の `?` まで付いて `?🍎` になります。1-3 で `dataset` にも絵文字を入れたのは、`card.dataset.symbol` で絵文字部分だけを取り出しやすくするためです。
 
 `dataset.index` のほうは今日書くコードでは使いません。診断パネルがカードを識別するために読んでいます。
