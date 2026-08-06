@@ -238,7 +238,7 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 
 今日さわるのはほぼ `script.js` だけです。最初には `symbols` 配列だけが用意されているので、ここから 1 行ずつ書き足していきます。
 
-新しい関数・変数の追加は、指示がなければ `script.js` の末尾に足します。既存コードへの追記や書き換えのときは、周囲の行をアンカーとしてスライドに載せます。
+新しい関数・変数の追加は、指示がなければ `script.js` のいちばん最後に足します。既存コードへの追記や書き換えのときは、周囲の行をアンカーとしてスライドに載せます。
 
 ![bg right:32% contain](./screenshots/stackblitz-initial.png)
 
@@ -284,7 +284,7 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 `concat` は 2 つの配列をつなげた新しい配列を返します。
 例: `[1, 2].concat([3, 4])` → `[1, 2, 3, 4]`
 
-<span class="tag-unlock">コピペ</span> `script.js` の続きに書きます。
+<span class="tag-unlock">コピペ</span> `script.js` のいちばん最後に書き足します。
 
 ```javascript
 // STUDENT [1-1]: symbols を 2 回連結して 16 枚の deck を作る
@@ -1024,7 +1024,7 @@ Chapter 6 のリセットでも `deck` に新しい配列を入れ直します�
 
 ## 5-1. 状態変数と DOM 参照を追加
 
-<span class="tag-unlock">コピペ</span> 末尾ではなく、2-1 で書いた `let lockBoard = false;` の下にまとめて追加します。
+<span class="tag-unlock">コピペ</span> いちばん最後ではなく、2-1 で書いた `let lockBoard = false;` の下にまとめて追加します。
 
 ```javascript
 // STUDENT [5-1]: 手数、ペア数、タイマー用の状態を用意
@@ -1357,7 +1357,7 @@ resetGame();
 
 <div class="note">
 <code>resetGame();</code> は必ず 5-1 で書いた変数より後ろに置きます。<code>let</code> と <code>const</code> は宣言より前で読むとエラー (<code>Cannot access ... before initialization</code>) になるためです。
-4-2 で <code>shuffle</code> を末尾に書いても上の行から呼べたのは、<code>function</code> の宣言だけの性質です。
+4-2 で <code>shuffle</code> をいちばん最後に書いても上の行から呼べたのは、<code>function</code> の宣言だけの性質です。
 </div>
 
 ---
