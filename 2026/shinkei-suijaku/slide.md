@@ -349,13 +349,17 @@ Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + O
 
 HTML に書いていない要素も、JS から作って足せます。
 
+<span class="tag-unlock">コピペ</span> `script.js` のいちばん最後に貼って、動きを見てみます。
+
 ```javascript
 const card = document.createElement("div");   // <div></div> ができる
 card.textContent = "🍎";                      // <div>🍎</div> になる
 document.getElementById("board").appendChild(card);
 ```
 
-3 行目まで実行すると、空だった `#board` の中がこうなります。
+3 行目まで実行すると、空だった `#board` の中がこうなり、画面には 🍎 が 1 つ出ます。
+
+<div class="fig-row">
 
 ```html
 <div id="board">
@@ -363,9 +367,13 @@ document.getElementById("board").appendChild(card);
 </div>
 ```
 
+![w:370](./screenshots/one-card.png)
+
+</div>
+
 `createElement` が作った要素は、この時点では `card` 変数の中にあるだけで、ページと紐づいていません。`appendChild` でページ上の要素 (ここでは `#board`) の子として入れると、その時点で画面に現れます。
 
-<span class="tag-unlock">コピペ</span> 実際に貼って 🍎 が 1 つ出るのを確かめたら、この 3 行は消してください。
+🍎 が 1 つ出るのを確かめたら、この 3 行は消します。
 
 ---
 
