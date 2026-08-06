@@ -445,7 +445,7 @@ function createCard(symbol, index) {
 
 <span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【B】を書き換えましょう。
 
-<div class="timer-box" data-seconds="180">
+<div class="timer-box" data-seconds="120">
   <button class="timer-btn" data-delta="-60">−</button>
   <div class="timer"></div>
   <button class="timer-btn" data-delta="60">＋</button>
@@ -722,7 +722,7 @@ card.addEventListener("click", () => handleCardClick(card));
 
 <span class="tag-write">記述</span> `handleCardClick` の中、`secondCard = card;` の下に判定処理を書き足します。【A】を埋めましょう。
 
-<div class="timer-box" data-seconds="180">
+<div class="timer-box" data-seconds="90">
   <button class="timer-btn" data-delta="-60">−</button>
   <div class="timer"></div>
   <button class="timer-btn" data-delta="60">＋</button>
@@ -771,12 +771,45 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 
 ---
 
-## 3-2. 一致したときの処理
+<!-- _class: tight -->
 
-<span class="tag-unlock">コピペ</span>
+## 3-2. 一致したときの処理 (自力で書く)
+
+<span class="tag-challenge">自力</span> コードは見せません。3 分書いてから次のスライドで答え合わせします。書けたらリアクションで教えてください。
+
+<div class="timer-box" data-seconds="180">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
+
+3-1 で `handleMatch()` を呼ぶところまでは書けています。呼ばれる側を作ります。
+
+<div class="task">
+
+やること
+
+- `handleMatch` という関数を作る (3 行)
+- めくった 2 枚に、CSS が緑に光らせるクラスを付ける
+- 次のターンに向けた片付けを呼ぶ
+
+</div>
+
+<div class="hint-box">
+
+ヒント
+
+- クラス名は「配布 CSS の約束」で出てきた 2 つのうちの片方
+- クラスを付けるメソッドは 2-2 で使ったもの
+- 片付けは `resetTurn()` という名前で呼び出しておく。中身は 3-4 で書きます
+
+</div>
+
+---
+
+## 3-2 答え合わせ
 
 ```javascript
-// STUDENT [3-2]: 一致したら matched クラスを付けて、次のターンへ
 function handleMatch() {
   firstCard.classList.add("matched");
   secondCard.classList.add("matched");
@@ -791,43 +824,28 @@ function handleMatch() {
 
 ---
 
+<!-- _class: tight -->
+
 ## 3-3. 一致しなかったときの処理
 
-<span class="tag-write">記述</span> 【A】を埋めましょう。
-
-<div class="timer-box" data-seconds="180">
-  <button class="timer-btn" data-delta="-60">−</button>
-  <div class="timer"></div>
-  <button class="timer-btn" data-delta="60">＋</button>
-</div>
+<span class="tag-unlock">コピペ</span>
 
 ```javascript
 // STUDENT [3-3]: 不一致は 800ms 待って伏せに戻す
-// A: クラスを削除する classList のメソッド名
 function handleMismatch() {
   lockBoard = true;
 
   setTimeout(() => {
-    firstCard.classList.【A】("flipped");
-    secondCard.classList.【A】("flipped");
+    firstCard.classList.remove("flipped");
+    secondCard.classList.remove("flipped");
     resetTurn();
   }, 800);
 }
 ```
 
----
+`remove` は 2-2 で付けた `flipped` を外すメソッドです。外すと CSS が伏せ表示に戻します。
 
-## 3-3 答え合わせ + setTimeout
-
-```javascript
-firstCard.classList.remove("flipped");
-secondCard.classList.remove("flipped");
-```
-
-- A: `remove` — 2-2 で付けた `flipped` を外すと、CSS が伏せ表示に戻す
-
-`setTimeout(関数, ミリ秒)` は、指定時間後にその関数を 1 回だけ実行します。
-繰り返し実行したい場合は `setInterval` を使います。
+`setTimeout(関数, ミリ秒)` は、指定時間後にその関数を 1 回だけ実行します。繰り返し実行したい場合は `setInterval` を使います。
 
 <div class="aside">
 
@@ -1131,40 +1149,16 @@ function stopTimer() {
 
 ## 5-4. タイマー開始を組み込む
 
-<span class="tag-write">記述</span> `handleCardClick` の `if (!firstCard)` の分岐に 1 行追加します。【A】を埋めましょう。
-
-<div class="timer-box" data-seconds="180">
-  <button class="timer-btn" data-delta="-60">−</button>
-  <div class="timer"></div>
-  <button class="timer-btn" data-delta="60">＋</button>
-</div>
+<span class="tag-unlock">コピペ</span> `handleCardClick` の `if (!firstCard)` の分岐に 1 行追加します。
 
 ```javascript
 // STUDENT [5-4]: 1 枚目をめくった瞬間にタイマー開始 (まだ動いていなければ)
-// A: 「タイマーが動いているか」を表している状態変数
 if (!firstCard) {
   firstCard = card;
-  if (!【A】) startTimer();
+  if (!timerId) startTimer();
   return;
 }
 ```
-
-<details class="hint">
-<summary>ヒント</summary>
-
-`startTimer` を呼ぶと、`setInterval` の ID がこの変数に入ります
-
-</details>
-
----
-
-## 5-4 答え合わせ
-
-```javascript
-if (!timerId) startTimer();
-```
-
-- A: `timerId` — `startTimer` が動くと `setInterval` の ID が入る
 
 `!timerId` は「まだタイマーが動いていない (ID が `null` のまま)」を意味します。2 枚目、3 枚目のクリックでは既に ID が入っているので、`startTimer` は呼ばれず、最初の 1 回だけ動きます。
 
@@ -1176,7 +1170,7 @@ if (!timerId) startTimer();
 
 <span class="tag-write">記述</span> 3-2 で書いた `handleMatch` を書き換えます。【A】〜【C】を埋めましょう。
 
-<div class="timer-box" data-seconds="300">
+<div class="timer-box" data-seconds="240">
   <button class="timer-btn" data-delta="-60">−</button>
   <div class="timer"></div>
   <button class="timer-btn" data-delta="60">＋</button>
@@ -1324,15 +1318,43 @@ function resetGame() {
 
 ## 6-2. リセットボタンにイベントを付ける
 
-<span class="tag-unlock">コピペ</span>
+<span class="tag-write">記述</span> 【A】はどちらでしょうか。理由も考えてみてください。
+
+<div class="timer-box" data-seconds="60">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ```javascript
 // STUDENT [6-2]: もう一度ボタンで resetGame を呼ぶ
+// A: resetGame  または  resetGame()
 const resetBtn = document.getElementById("reset-btn");
+resetBtn.addEventListener("click", 【A】);
+```
+
+<details class="hint">
+<summary>ヒント</summary>
+
+2-3 補足で、`handleCardClick(card)` をそのまま渡すと何が起きたかを思い出してみましょう
+
+</details>
+
+---
+
+## 6-2 答え合わせ
+
+```javascript
 resetBtn.addEventListener("click", resetGame);
 ```
 
-`resetGame` はカッコなしで渡します。カッコを付けて `resetGame()` と書くと、クリック時ではなく `addEventListener` を呼んだ瞬間に関数が実行されてしまいます。「クリック時に実行したい」ならカッコなし、「今すぐ実行したい」ならカッコあり、というイメージです。
+- A: `resetGame` — カッコなし
+
+カッコを付けて `resetGame()` と書くと、クリック時ではなく `addEventListener` を呼んだ瞬間に関数が実行されてしまいます。2-3 でカードのクリックを付けたときと同じ話です。
+
+「クリック時に実行したい」ならカッコなし、「今すぐ実行したい」ならカッコあり、というイメージです。
+
+2-3 では `() => handleCardClick(card)` とアロー関数で包みました。あちらは `card` を渡す必要があったためで、渡す引数がなければ、ここのように関数名をそのまま書けます。
 
 ---
 
