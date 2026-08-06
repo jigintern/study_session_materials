@@ -459,13 +459,37 @@ function createCard(symbol, index) {
 </div>
 ```
 
-`className` で付けたクラスは `class` 属性、`dataset` で付けた値は `data-` 属性、`textContent` で入れた文字はタグの中身になります。
+JS で書いた 1 行が、HTML のどこになるかの対応です。
 
-`dataset` は自分で決めた名前でデータを要素に持たせる仕組みです。絵柄をここにも入れておくと、あとから `card.dataset.symbol` で絵柄だけを取り出せます。Chapter 3 の一致判定で使います。
+<div class="syntax">
 
-この入れ子を DOM のツリーで見ると、右の図の形になります。
+- `card.className = "card"` → `class="card"`
+- `card.dataset.symbol = symbol` → `data-symbol="🍎"`
+- `front.textContent = "?"` → `card-front` タグに挟まれた `?`
+- `inner.appendChild(front)` → `card-front` が `card-inner` の内側に入る
 
-![bg right:34% h:300](./diagrams/dom-tree.svg)
+</div>
+
+表と裏を `card-inner` にまとめてあるのは、配布 CSS がこの入れ子を前提にめくるアニメーションを作っているからです。
+
+---
+
+<!-- _class: tight -->
+
+## 1-3 補足: dataset で絵柄を持たせる
+
+`dataset` は、DOM 要素に自分で決めた名前でデータを持たせる仕組みです。`card.dataset.symbol = "🍎"` と書くと `data-symbol="🍎"` として要素に残り、あとから `card.dataset.symbol` で読み出せます。`class` や `id` は意味が決まっていますが、`data-` に続く名前は自分で決められます。
+
+絵柄は `card-back` の中身としても入っています。ただ `card.textContent` で取り出すと、表の `?` まで付いてきます。
+
+```javascript
+card.textContent      // "?🍎" — 表と裏の文字がつながる
+card.dataset.symbol   // "🍎"  — 絵柄だけ取れる
+```
+
+絵柄だけを見比べたいので、`dataset` にも同じ値を入れておきます。Chapter 3 の一致判定で使います。
+
+`dataset.index` のほうは今日書くコードでは使いません。診断パネルがカードを識別するために読んでいます。
 
 ---
 
@@ -1542,18 +1566,6 @@ setTimeout(() => allCards.forEach((c) => c.classList.remove("flipped")), 3000);
 - アルゴリズム — Fisher-Yates シャッフル
 - 文字列整形 — テンプレートリテラル、`padStart()`
 - 設計 — 状態→描画の分離
-
----
-
-<!-- _class: tight -->
-
-## 付録: dataset
-
-`dataset` は、DOM 要素に自分で決めた名前でデータを持たせる仕組みです。`card.dataset.symbol = "🍎"` と書くと `data-symbol="🍎"` として要素に残り、あとから `card.dataset.symbol` で読み出せます。`class` や `id` は意味が決まっていますが、`data-` に続く名前は自分で決められます。
-
-絵柄は裏面にも文字として入っていますが、`card.textContent` で取得すると表の `?` まで付いて `?🍎` になります。1-3 で `dataset` にも絵文字を入れたのは、`card.dataset.symbol` で絵文字部分だけを取り出しやすくするためです。
-
-`dataset.index` のほうは今日書くコードでは使いません。診断パネルがカードを識別するために読んでいます。
 
 ---
 
