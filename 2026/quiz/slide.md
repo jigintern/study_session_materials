@@ -84,6 +84,37 @@ style: |
     padding: 0 0.15em;
     border-radius: 4px;
   }
+  .timer-box {
+    position: absolute; top: 44px; right: 190px;
+    display: flex; align-items: center; gap: 8px;
+    user-select: none;
+    z-index: 10;
+  }
+  .timer {
+    font-size: 40px; font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    color: #888;
+    cursor: pointer;
+    padding: 2px 12px; border-radius: 8px;
+    background: rgba(0,0,0,0.04);
+    line-height: 1.2;
+  }
+  .timer.running { color: #e33; }
+  .timer.warn    { color: #f80; }
+  .timer.done    {
+    color: #fff; background: #e33;
+    animation: timer-done-flash 0.8s step-end infinite;
+  }
+  .timer-btn {
+    font-size: 18px; font-weight: bold;
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 2px solid #888; background: white; color: #888;
+    cursor: pointer; line-height: 1; padding: 0;
+  }
+  .timer-btn:hover { background: #eee; }
+  @keyframes timer-done-flash {
+    50% { color: #e33; background: rgba(0,0,0,0.04); }
+  }
 ---
 
 <!-- _class: lead -->
@@ -457,6 +488,12 @@ console.log(quiz.answer);     // → 0
 
 ## 1-2. ボタンを押したら、メッセージを出そう
 
+<div class="timer-box" data-seconds="240">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
+
 ### `onclick` — クリックされたら、書いた JS を実行する
 
 **書く場所** — `index.html` の1つ目のボタン
@@ -475,6 +512,12 @@ console.log(quiz.answer);     // → 0
 <!-- _class: record -->
 
 ## 1-3. どのボタンが押されたか、分かるようにしよう
+
+<div class="timer-box" data-seconds="420">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### 3つのボタンから同じ関数を呼び、押されたボタンの番号を引数で渡す
 
@@ -507,6 +550,12 @@ function checkAnswer(selected) {
 <!-- _class: record -->
 
 ## 1-4. 正解 / 不正解を、ページの上に表示しよう
+
+<div class="timer-box" data-seconds="420">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### `document.getElementById()` — id を指定して、HTML の要素を取得する
 
@@ -554,6 +603,12 @@ id で要素を取得して書き換える = **DOM操作**
 <!-- _class: record -->
 
 ## 2-1. クイズデータを用意しよう
+
+<div class="timer-box" data-seconds="480">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### 1問分をオブジェクトに、問題ぜんぶを配列にまとめる
 
@@ -607,6 +662,12 @@ let score = 0;
 
 ## 2-2. `showQuestion()` を書く
 
+<div class="timer-box" data-seconds="600">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
+
 **書く場所** — `script.js` に追加
 
 ```javascript
@@ -637,6 +698,12 @@ function showQuestion() {
 
 ## 2-3. 正解判定をアップデートしよう
 
+<div class="timer-box" data-seconds="480">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
+
 ### 「0番が正解」の決めうちを、`quiz.answer` との比較に変える
 
 **書く場所** — `script.js` の `checkAnswer` を **丸ごと置き換え**（前のものは消す）
@@ -663,6 +730,12 @@ function checkAnswer(selected) {
 <!-- _class: record -->
 
 ## 2-4. 最初の問題を表示しよう
+
+<div class="timer-box" data-seconds="180">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### 関数は、呼ばれてはじめて動く
 
@@ -699,6 +772,12 @@ showQuestion();   // ページを開いたら最初の問題を表示
 
 ## 3-1.「次の問題へ」を動かそう
 
+<div class="timer-box" data-seconds="420">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
+
 **script.js** — `nextQuestion` を追加（押すたびに1問進め、最後まで行ったら結果へ）
 
 ```javascript
@@ -726,6 +805,12 @@ function nextQuestion() {
 <!-- _class: record -->
 
 ## 3-2. 結果画面をつくろう
+
+<div class="timer-box" data-seconds="420">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### 全問終わったら「◯問中◯問正解！」を出す
 
@@ -890,3 +975,49 @@ if (score === quizData.length) {
 | 配列・オブジェクト | クイズデータの管理 |
 | DOM操作（`getElementById`） | id で要素を取得して書き換え |
 | イベント処理（`onclick`） | ボタンクリック時の処理 |
+
+<script>
+document.querySelectorAll('.timer-box').forEach(box => {
+  const el = box.querySelector('.timer');
+  const initial = Number(box.dataset.seconds);
+  let remain = initial;
+  let id = null;
+
+  const render = () => {
+    const r = Math.max(remain, 0);
+    const m = String(Math.floor(r / 60)).padStart(2, '0');
+    const s = String(r % 60).padStart(2, '0');
+    el.textContent = `${m}:${s}`;
+    el.classList.toggle('warn', remain <= 60 && remain > 0);
+    el.classList.toggle('done', remain <= 0);
+  };
+  const stop = () => { clearInterval(id); id = null; el.classList.remove('running'); };
+  const start = () => {
+    if (remain <= 0) return;
+    el.classList.add('running');
+    id = setInterval(() => {
+      remain--;
+      render();
+      if (remain <= 0) stop();
+    }, 1000);
+  };
+
+  el.addEventListener('click', () => {
+    if (remain <= 0) { el.classList.remove('done'); return; }
+    id ? stop() : start();
+  });
+  el.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    stop();
+    remain = initial;
+    render();
+  });
+  box.querySelectorAll('.timer-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      remain = Math.max(0, remain + Number(btn.dataset.delta));
+      render();
+    });
+  });
+  render();
+});
+</script>
