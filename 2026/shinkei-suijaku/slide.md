@@ -503,7 +503,7 @@ card.textContent      // "?🍎" — 表と裏の文字がつながる
 card.dataset.symbol   // "🍎"  — 絵柄だけ取れる
 ```
 
-絵柄だけを見比べたいので、`dataset` にも同じ値を入れておきます。Chapter 3 の一致判定で使います。
+絵柄だけを見比べたいので、`dataset` にも同じ値を入れておきます。めくった 2 枚が同じ絵柄かを判定するときに使います。
 
 `dataset.index` のほうは今日書くコードでは使いません。診断パネルがカードを識別するために読んでいます。
 
@@ -605,7 +605,7 @@ renderBoard();
 カードをクリックすると表向きになるようにします。ただし次のルールを守ります。
 
 - すでにめくったカードは再クリックしても反応しない
-- 2 枚めくったあとの判定中は、クリックしてもめくれないようにする (Chapter 3 で使う)
+- 2 枚めくったあとの判定中は、クリックしてもめくれないようにする (一致判定を入れるときに使う)
 
 どちらも、クリックされた時点で次のことが分かっていないと判定できません。
 
@@ -771,7 +771,7 @@ card.addEventListener("click", () => handleCardClick(card));
 
 - カードをクリックすると絵柄が表向きに反転する
 - 一度めくったカードは、二度目のクリックでは反応しない
-- 3 枚目以降もめくれてしまう (これは Chapter 3 で止めます)
+- 3 枚目以降もめくれてしまう (これは一致判定を入れるときに止めます)
 
 <div class="rescue">
 追いつき用: <code>ch2.js</code>
@@ -907,7 +907,7 @@ function handleMatch() {
 `matched` クラスが付くと CSS 側が緑に光らせます。
 一致・不一致どちらも次ターンへの片付けは共通なので `resetTurn` にまとめます。
 
-この `handleMatch` は Chapter 5 でペア数の更新とクリア判定を足して書き換えます。
+この `handleMatch` には、あとでペア数の更新とクリア判定を足して書き換えます。
 
 ---
 
@@ -1000,7 +1000,7 @@ function resetTurn() {
 }
 ```
 
-一致でも不一致でも同じ後片付けを行うので関数にまとめておくと、変更が必要になっても 1 箇所で済みます。この関数は Chapter 6 のリセット機能でも再利用します。
+一致でも不一致でも同じ後片付けを行うので関数にまとめておくと、変更が必要になっても 1 箇所で済みます。この関数はリセット機能を作るときにも再利用します。
 
 書けた人へ: `lockBoard = false;` の行を消すとどうなるか予想してから試してみてください。「判定待ちのフラグ」が戻らないと、以降のクリックがすべて弾かれます。
 
@@ -1096,7 +1096,7 @@ const deck = symbols.concat(symbols);
 let deck = shuffle(symbols.concat(symbols));
 ```
 
-Chapter 6 のリセットでも `deck` に新しい配列を入れ直します。`const` のままだと再代入で `TypeError` になるので `let` に変えます。
+あとで作るリセット機能でも `deck` に新しい配列を入れ直します。`const` のままだと再代入で `TypeError` になるので `let` に変えます。
 
 ---
 
@@ -1146,7 +1146,7 @@ const pairsEl = document.getElementById("pairs");
 const clearMessageEl = document.getElementById("clear-message");
 ```
 
-状態変数は 1 箇所に集めておくと、Chapter 6 のリセットで「何を戻せばよいか」が一目で分かります。
+状態変数は 1 箇所に集めておくと、リセット機能を作るときに「何を戻せばよいか」が一目で分かります。
 
 ---
 
@@ -1307,7 +1307,7 @@ A は 5-2 で書いた `moves` の 2 行と同じ形。B は `8` と直接書く
 - B: `symbols.length` — シンボルの種類数 = 揃えるべきペア数。`8` と直接書いても動きますが、絵柄の種類を変えると判定が追従しません
 - C: `stopTimer()` — `setInterval` は `clearInterval` を呼ぶまで止まりません
 
-マジックナンバーを避けて由来のある値を使うのは、可読性を上げる基本的な習慣です。この 2 行 1 セットは今日 2 回目で、Chapter 6 のリセットでも同じ形が出てきます。
+マジックナンバーを避けて由来のある値を使うのは、可読性を上げる基本的な習慣です。この 2 行 1 セットは今日 2 回目で、リセット機能でも同じ形が出てきます。
 
 ---
 
@@ -1450,7 +1450,7 @@ resetBtn.addEventListener("click", resetGame);
 
 ## 6-3. 初回描画を resetGame に統一
 
-<span class="tag-unlock">コピペ</span> Chapter 1 で書いた `renderBoard();` の呼び出しを消して、代わりに `resetGame();` をファイルのいちばん最後に置きます。
+<span class="tag-unlock">コピペ</span> 1-4 で書いた `renderBoard();` の呼び出しを消して、代わりに `resetGame();` をファイルのいちばん最後に置きます。
 
 ```javascript
 // 削除 (renderBoard 関数の下にある呼び出し)
@@ -1535,7 +1535,7 @@ allCards.forEach((c) => c.classList.add("flipped"));
 setTimeout(() => allCards.forEach((c) => c.classList.remove("flipped")), 3000);
 ```
 
-使っているのは Chapter 2 の `classList` と Chapter 3 の `setTimeout` だけです。それでも、運任せだったゲームが記憶を試すゲームに変わります。
+使っているのは、めくる処理で書いた `classList` と、不一致のときに書いた `setTimeout` だけです。それでも、運任せだったゲームが記憶を試すゲームに変わります。
 
 `3000` を `1000` にすると一気に難しくなります。ちょうどいい長さを探してみてください。
 
@@ -1697,7 +1697,7 @@ deck.sort(() => Math.random() - 0.5);
 
 ブラウザです。`addEventListener` で関数を預けると、待つのも呼ぶのもブラウザがやります。この作りをイベント駆動と呼びます。
 
-Chapter 3 の `setTimeout` も同じ形です。きっかけがクリックから時間に変わるだけです。
+不一致のカードを伏せ直す `setTimeout` も同じ形です。きっかけがクリックから時間に変わるだけです。
 
 ---
 
