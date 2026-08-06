@@ -249,9 +249,8 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 プレビュー右上の黒い小窓が診断パネルです。`debug.js` が作っているので、このファイルは触らなくて大丈夫です。
 
 - 章ごとの `N/M ✓` が進み具合です。書いた分が動いていれば数が増えます
-- エラーは直近 3 件を表示。打ち間違いには「もしかして `createCard`?」が付きます
-- `getElementById` の id ミスや `clik` のようなイベント名のミスも捕まえます
-- 詰まったら「コピー」ボタンでチャットに貼ってください
+- `getElementById` の id ミスや `clik` のようなイベント名のミスなど、エラーが出ずに静かに壊れるミスも捕まえます
+- 詰まったら、お気軽にチャットなどでメンターにご連絡ください
 
 ![bg right:30% contain](./screenshots/debug-panel.png)
 
