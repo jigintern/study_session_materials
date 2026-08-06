@@ -345,13 +345,26 @@ Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + O
 
 <!-- _class: tight -->
 
-## JS から HTML を動的に作る (DOM)
+## JS で HTML を作る
 
-HTML に書いていない要素も、JS から作って足せます。`document.createElement()` で要素を作り、`appendChild()` で `div#board` の中に入れると、その時点でカードが画面に出ます。
+HTML に書いていない要素も、JS から作って足せます。この 3 行で、カードが 1 枚画面に出ます。
 
-![w:600](./diagrams/board-tree.svg)
+```javascript
+const card = document.createElement("div");
+card.textContent = "🍎";
+document.getElementById("board").appendChild(card);
+```
 
-図は配布した `index.html` の構造です。ブラウザはこの形で HTML を持っていて、これを DOM (Document Object Model) と呼びます。点線が、これから JS で作って差し込む部分です。
+<div class="syntax">
+
+- `document.createElement("div")` — `<div></div>` を作る。この時点ではまだ画面に出ない
+- `parent.appendChild(子)` — 既にある要素の中に入れる。ここで初めて画面に出る
+
+</div>
+
+右は配布した `index.html` の構造 (DOM) です。点線が、これから JS で作って差し込む 16 枚です。
+
+![bg right:34% contain](./diagrams/board-tree.svg)
 
 ---
 
