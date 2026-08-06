@@ -440,8 +440,6 @@ function createCard(symbol, index) {
 }
 ```
 
-`card` の中に `inner`、その中に `front` と `back` を入れた入れ子構造を組み立てて `return` します。できあがる形は次のスライドで見ます。
-
 ---
 
 <!-- _class: tight -->
