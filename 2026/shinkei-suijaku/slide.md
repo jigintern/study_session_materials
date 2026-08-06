@@ -434,8 +434,12 @@ function createCard(symbol, index) {
 
 `deck` の各要素をカードにして `#board` に並べる `renderBoard` 関数を書きます。今回初めて使うもの:
 
+<div class="syntax">
+
 - `parent.replaceChildren()` — 親の中身を全部削除
 - `array.forEach((要素, index) => { ... })` — 配列の全要素に処理を実行
+
+</div>
 
 <span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【B】を書き換えましょう。
 
@@ -567,8 +571,12 @@ let secondCard = null;   // 2 枚目にめくったカード
 let lockBoard = false;   // 2 枚めくったあとに他のカードを押させないためのロック
 ```
 
-- `null` は「まだ何もない」を意図的に置く印。`undefined` (代入し忘れの状態) と使い分けます
-- 中身を書き換えるので `let`。`const` にすると再代入エラーになります
+<div class="syntax">
+
+- `null` — 「まだ何もない」を意図的に置く印。`undefined` (代入し忘れの状態) と使い分ける
+- `let` — 中身を書き換えるのでこちら。`const` にすると再代入エラーになる
+
+</div>
 
 ---
 
@@ -755,6 +763,8 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 
 - A: `symbol` — `createCard` で `card.dataset.symbol = symbol` と書いたのを回収
 
+<div class="syntax">
+
 `===` は値と型を両方チェックする厳密な比較演算子です。
 
 - `"🍎" === "🍎"` → `true`、`"🍎" === "🍇"` → `false` (いま書いた一致判定)
@@ -762,6 +772,8 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 - `"1" == 1` → `true` (`==` は型を揃えてから比べるので通ってしまう)
 
 特別な理由がない限り `===` を使うのが定石です。
+
+</div>
 
 ---
 
@@ -837,9 +849,12 @@ function handleMismatch() {
 }
 ```
 
-`remove` は 2-2 で付けた `flipped` を外すメソッドです。外すと CSS が伏せ表示に戻します。
+<div class="syntax">
 
-`setTimeout(関数, ミリ秒)` は、指定時間後にその関数を 1 回だけ実行します。繰り返し実行したい場合は `setInterval` を使います。
+- `remove` — 2-2 で付けた `flipped` を外すメソッド。外すと CSS が伏せ表示に戻る
+- `setTimeout(関数, ミリ秒)` — 指定時間後にその関数を 1 回だけ実行する。繰り返したいときは `setInterval`
+
+</div>
 
 <div class="aside">
 
