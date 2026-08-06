@@ -440,6 +440,8 @@ function createCard(symbol, index) {
 }
 ```
 
+貼っても画面は変わりませんが、それで OK です。
+
 ---
 
 <!-- _class: tight -->
