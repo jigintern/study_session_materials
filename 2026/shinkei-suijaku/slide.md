@@ -409,6 +409,8 @@ function createCard(symbol, index) {
 
 ---
 
+<!-- _class: tight -->
+
 ## 1-3 補足: できあがる HTML
 
 `createCard("🍎", 0)` を呼ぶと、この HTML が組み立てられて返ってきます。
@@ -424,33 +426,11 @@ function createCard(symbol, index) {
 
 `className` で付けたクラスは `class` 属性、`dataset` で付けた値は `data-` 属性、`textContent` で入れた文字はタグの中身になります。
 
+`dataset` は自分で決めた名前でデータを要素に持たせる仕組みです。絵柄をここにも入れておくと、あとから `card.dataset.symbol` で絵柄だけを取り出せます。Chapter 3 の一致判定で使います。
+
 この入れ子を DOM のツリーで見ると、右の図の形になります。盤面のツリーで 1 つの箱だった `div.card` の中身です。
 
 ![bg right:34% h:300](./diagrams/dom-tree.svg)
-
----
-
-## 1-3 補足: 使っている DOM API
-
-- `document.createElement("div")` — 新しい `<div>` 要素を作る
-- `element.className = "..."` — class 属性を設定
-- `element.textContent = "..."` — 中身の文字列を置き換える
-- `parent.appendChild(child)` — 親要素の中に子要素を入れる
-- `element.dataset.symbol = "..."` — 要素に自前のデータを紐付ける (詳しくは次のスライド)
-
----
-
-<!-- _class: tight -->
-
-## 1-3 補足: dataset
-
-`dataset` は、DOM 要素に自分で決めた名前でデータを持たせる仕組みです。`card.dataset.symbol = "🍎"` と書くと `data-symbol="🍎"` として要素に残り、あとから `card.dataset.symbol` で読み出せます。`class` や `id` は意味が決まっていますが、`data-` に続く名前は自分で決められます。
-
-![w:700](./diagrams/dataset-flow.svg)
-
-絵柄は裏面にも文字として入っていますが、`card.textContent` で取得すると表の `?` まで付いて `?🍎` になります。1-3 で `dataset` にも絵文字を入れたのは、`card.dataset.symbol` で絵文字部分だけを取り出しやすくするためです。
-
-`dataset.index` のほうは今日書くコードでは使いません。診断パネルがカードを識別するために読んでいます。
 
 ---
 
@@ -558,22 +538,18 @@ renderBoard();
 
 ---
 
-## 配布 CSS の約束
+<!-- _class: tight -->
 
-CSS 側は次のように書かれています。
+## 配布 CSS の約束とクラスの付け外し
+
+CSS 側は次のように書かれています。JS 側はクラスを付けるだけで見た目が動きます。
 
 - `flipped` クラスが付いたら表向きに反転するアニメーションが再生される
 - `matched` クラスが付いたら緑色でハイライトされる
 
-JS 側はクラスを付けるだけで見た目が動きます。
+カードは `card` を持ったまま `flipped` が足されて `class="card flipped"` になり、両方が付いた要素にだけ効く `.card.flipped` の CSS が反応します。
 
----
-
-## クラスの付け外し
-
-1 つの要素には複数のクラスを付けられます。カードは `card` を持ったまま `flipped` が足されて `class="card flipped"` になり、両方が付いた要素にだけ効く `.card.flipped` の CSS が反応します。
-
-足し引きに使うのは `classList` です。要素に付いているクラスの一覧を扱うプロパティで、追加・削除・有無の確認ができます。`className` のほうは class 属性を丸ごと置き換える書き方なので、めくるときに使うと `card` が消えてしまいます。
+足し引きに使うのが `classList` です。追加・削除・有無の確認ができます。`className` のほうは class 属性を丸ごと置き換える書き方なので、めくるときに使うと `card` が消えてしまいます。
 
 ```javascript
 card.className = "flipped";      // class="flipped" になり、card が消える
@@ -722,20 +698,6 @@ card.addEventListener("click", () => handleCardClick(card));
 
 ---
 
-<!-- _class: tight -->
-
-## ブラウザが関数を呼ぶ仕組み (イベント駆動)
-
-`script.js` が実行するのは、変数の宣言と `renderBoard()` の呼び出しだけです。それでもクリックするとカードがめくれます。`handleCardClick` を呼んでいるのは誰でしょうか。
-
-![h:300](./diagrams/event-driven.svg)
-
-ブラウザです。`addEventListener` で関数を預けると、待つのも呼ぶのもブラウザがやります。この作りをイベント駆動と呼びます。
-
-Chapter 3 の `setTimeout` も同じ形です。きっかけがクリックから時間に変わるだけです。
-
----
-
 <!-- _class: lead -->
 
 # Chapter 3
@@ -799,7 +761,7 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 
 - A: `symbol` — `createCard` で `card.dataset.symbol = symbol` と書いたのを回収
 
-`===` は値と型を両方チェックする厳密な比較演算子です。型とは、その値が文字列なのか数値なのかという区別のことです。
+`===` は値と型を両方チェックする厳密な比較演算子です。
 
 - `"🍎" === "🍎"` → `true`、`"🍎" === "🍇"` → `false` (いま書いた一致判定)
 - `"1" === 1` → `false` (`"1"` は文字列、`1` は数値で型が違う)
@@ -877,7 +839,7 @@ secondCard.classList.remove("flipped");
 
 ## なぜ `lockBoard = true` するのか
 
-`setTimeout(関数, 800)` は、ブラウザに「800 ms 後にこれを呼んで」と関数を預けて、すぐ次の行に進みます。Chapter 2 の最後で見たイベント駆動と同じ形で、きっかけがクリックから時間に変わっただけです。預けた関数が後から呼ばれるこの動きを非同期と呼びます。
+`setTimeout(関数, 800)` は、ブラウザに「800 ms 後にこれを呼んで」と関数を預けて、すぐ次の行に進みます。2-3 の `addEventListener` で関数を預けたのと同じ形で、呼ぶきっかけがクリックから時間に変わっただけです。預けた関数が後から呼ばれるこの動きを非同期と呼びます。
 
 `setTimeout` で待っている 800 ms のあいだも、カードのクリックは受け付けられます。そのため、伏せに戻るまでにユーザーは 3 枚目、4 枚目をめくれてしまいます。
 
@@ -1005,8 +967,7 @@ function shuffle(array) {
 ## 4-1 補足: 使っている書き方
 
 - `array.slice()` — 配列をコピー (元を壊さない)
-- `Math.random()` — 0 以上 1 未満のランダムな小数
-- `Math.floor(x)` — 小数点以下を切り捨て
+- `Math.floor(Math.random() * n)` — 0 以上 n 未満の整数をランダムに得る定番の書き方
 - `[a, b] = [b, a]` — 分割代入による値の交換
 
 冒頭で `array.slice()` を呼んで新しい配列を作り、元の `array` を変更しないようにしています。
@@ -1156,8 +1117,6 @@ function stopTimer() {
 
 ---
 
-<!-- _class: tight -->
-
 ## 5-3 補足: 何をしているか
 
 貼ったコードに出てくるものを押さえておきます。
@@ -1165,13 +1124,6 @@ function stopTimer() {
 - `startTime`: `Date.now()` で取った開始時刻 (ミリ秒)。経過秒は `(Date.now() - startTime) / 1000` で出る
 - `timerId`: 動いている `setInterval` の識別子。あとで止めるために保持する。5-4 で `!timerId` として再登場
 - `` `${mm}:${ss}` ``: テンプレートリテラル。変数を埋め込める
-
-### Chapter 3 の setTimeout との使い分け
-
-| 関数 | いつ使う | 止め方 |
-|---|---|---|
-| `setTimeout(fn, ms)` | 一度だけ、少し待ってから実行 (3-3 のミスマッチ) | `clearTimeout(id)` |
-| `setInterval(fn, ms)` | 一定間隔で繰り返し実行 (5-3 のタイマー) | `clearInterval(id)` |
 
 `setInterval` は `clearInterval` を呼ぶまで止まりません。不要になったら必ず止めます (`stopTimer` の役割)。
 
@@ -1436,12 +1388,6 @@ resetGame();
 - 描画: `renderBoard()`, `timerEl.textContent`, `pairsEl.textContent`, `clearMessageEl.textContent`
 - そのほか: 関数 10 個、DOM 参照 6 個、コードを見ずに自分で書いた場面 2 箇所
 
-<div class="aside">
-
-「めくれているか」だけは状態変数ではなく、カードの `flipped` クラスが持っています。CSS のアニメーションをそのまま使えるのが利点で、代わりに状態の置き場所が 2 つに分かれています。1 つに寄せた書き方は応用課題の `state.js` にあります。
-
-</div>
-
 これは小さな Webアプリ 1 個ぶんの規模です。状態を持つ画面、ユーザー操作に反応する画面、時間で動く画面 — Webアプリの中身が全部入っています。
 
 ---
@@ -1524,6 +1470,8 @@ setTimeout(() => allCards.forEach((c) => c.classList.remove("flipped")), 3000);
 - カウントダウンモード: 60 秒でクリアできなければゲームオーバー
 - 状態を `state = { ... }` にまとめて、`setState` 経由でしか変えない構造にする
 
+最後の 1 つは、今日の作りの弱点への対処です。「めくれているか」だけは状態変数ではなく、カードの `flipped` クラスが持っています。CSS のアニメーションをそのまま使えるのが利点で、代わりに状態の置き場所が 2 つに分かれています。1 つに寄せた書き方が `state.js` です。
+
 ルールを変えたら、Share ボタンで人に遊んでもらえます。絵柄を変えたときより反応があります。
 
 ---
@@ -1533,12 +1481,26 @@ setTimeout(() => allCards.forEach((c) => c.classList.remove("flipped")), 3000);
 - 動的 DOM 生成 — `createElement()`, `appendChild()`, `replaceChildren()`
 - DOM とデータの紐付け — `dataset`
 - 中身の文字列の置き換え — `textContent`
-- クラス操作 — `classList.add()`, `remove()`, `contains()`
+- クラス操作 — `className`, `classList.add()`, `remove()`, `contains()`
 - イベント — `addEventListener("click", ...)`
 - 非同期 — `setTimeout()`, `setInterval()`, `clearInterval()`
 - アルゴリズム — Fisher-Yates シャッフル
 - 文字列整形 — テンプレートリテラル、`padStart()`
 - 設計 — 状態→描画の分離
+
+---
+
+<!-- _class: tight -->
+
+## 付録: dataset
+
+`dataset` は、DOM 要素に自分で決めた名前でデータを持たせる仕組みです。`card.dataset.symbol = "🍎"` と書くと `data-symbol="🍎"` として要素に残り、あとから `card.dataset.symbol` で読み出せます。`class` や `id` は意味が決まっていますが、`data-` に続く名前は自分で決められます。
+
+![w:700](./diagrams/dataset-flow.svg)
+
+絵柄は裏面にも文字として入っていますが、`card.textContent` で取得すると表の `?` まで付いて `?🍎` になります。1-3 で `dataset` にも絵文字を入れたのは、`card.dataset.symbol` で絵文字部分だけを取り出しやすくするためです。
+
+`dataset.index` のほうは今日書くコードでは使いません。診断パネルがカードを識別するために読んでいます。
 
 ---
 
@@ -1641,6 +1603,33 @@ deck.sort(() => Math.random() - 0.5);
 比較の回数は処理系によって変わるため、上の数値も実装依存です。ただし n^n が n! の倍数にならない限り、要素数を増やしても偏り自体は残ります。
 
 詳しくは → [シャッフルした結果が偏ると相談を受けたときに確認すること (Zenn)](https://zenn.dev/yoheimuta/articles/89e9b85e01fc4f)
+
+---
+
+<!-- _class: tight -->
+
+## 付録: ブラウザが関数を呼ぶ仕組み (イベント駆動)
+
+`script.js` が実行するのは、変数の宣言と `renderBoard()` の呼び出しだけです。それでもクリックするとカードがめくれます。`handleCardClick` を呼んでいるのは誰でしょうか。
+
+![h:300](./diagrams/event-driven.svg)
+
+ブラウザです。`addEventListener` で関数を預けると、待つのも呼ぶのもブラウザがやります。この作りをイベント駆動と呼びます。
+
+Chapter 3 の `setTimeout` も同じ形です。きっかけがクリックから時間に変わるだけです。
+
+---
+
+## 付録: setTimeout と setInterval の使い分け
+
+| 関数 | いつ使う | 止め方 |
+|---|---|---|
+| `setTimeout(fn, ms)` | 一度だけ、少し待ってから実行 (3-3 のミスマッチ) | `clearTimeout(id)` |
+| `setInterval(fn, ms)` | 一定間隔で繰り返し実行 (5-3 のタイマー) | `clearInterval(id)` |
+
+どちらも「関数をブラウザに預けて、あとから呼んでもらう」形は同じです。違うのは 1 回きりか、繰り返しかという点だけです。
+
+`setInterval` は `clearInterval` を呼ぶまで止まりません。不要になったら必ず止めます。
 
 ---
 
