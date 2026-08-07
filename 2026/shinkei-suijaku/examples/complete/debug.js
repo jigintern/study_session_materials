@@ -620,6 +620,7 @@
     "Chapter 3": [
       { desc: "handleMatch 関数が定義されている", fn: () => typeof window.handleMatch === "function" },
       { desc: "handleMismatch 関数が定義されている", fn: () => typeof window.handleMismatch === "function" },
+      { desc: "unflipCards 関数が定義されている", fn: () => typeof window.unflipCards === "function" },
       { desc: "resetTurn 関数が定義されている", fn: () => typeof window.resetTurn === "function" },
     ],
     "Chapter 4": [
@@ -656,6 +657,7 @@
       { desc: "pairsEl が #pairs 要素", fn: () => typeof pairsEl !== "undefined" && pairsEl instanceof Element && pairsEl.id === "pairs" },
       { desc: "clearMessageEl が #clear-message 要素", fn: () => typeof clearMessageEl !== "undefined" && clearMessageEl instanceof Element && clearMessageEl.id === "clear-message" },
       { desc: "startTimer 関数が定義されている", fn: () => typeof window.startTimer === "function" },
+      { desc: "renderTimer 関数が定義されている", fn: () => typeof window.renderTimer === "function" },
       { desc: "stopTimer 関数が定義されている", fn: () => typeof window.stopTimer === "function" },
     ],
     "Chapter 6": [
