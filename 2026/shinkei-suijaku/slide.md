@@ -603,7 +603,8 @@ DOM 上では次のように追加されるイメージです。
 
 <div class="syntax">
 
-- `parent.replaceChildren()` — 親の中身を全部削除
+- `element.replaceChildren()` — その要素の中身を全部削除
+  例: `boardEl.replaceChildren()` → `#board` に並んだカードが消える
 
 </div>
 
