@@ -660,6 +660,7 @@ renderBoard();
 
 - プレビューに 16 枚のカードが 4×4 に並んでいる
 - カードは全部「?」の面 (青) を向いている
+- 診断パネルの Chapter 1 が `11/11 ✓` になっている
 
 <div class="note">
 動かないときは:
@@ -860,6 +861,7 @@ card.addEventListener("click", () => handleCardClick(card));
 - カードをクリックすると絵柄が表向きに反転する
 - 一度めくったカードは、二度目のクリックでは反応しない
 - 3 枚目以降もめくれてしまう (これは一致判定を入れるときに止めます)
+- 診断パネルの Chapter 2 が `4/4 ✓` になっている
 
 <div class="rescue">
 追いつき用: <code>ch2.js</code>
@@ -1100,6 +1102,7 @@ function resetTurn() {
 - 同じ絵柄を 2 枚選ぶと、両方とも緑色に光ったまま残る
 - 違う絵柄を選ぶと、少し待って両方伏せに戻る
 - 判定待ちの間は他のカードが反応しない
+- 診断パネルの Chapter 3 が `4/4 ✓` になっている
 
 <div class="note">
 動かないときは、Console のエラー行番号と関数名スペルを見てください。<code>dataset.symbol</code> の綴り、<code>handleMatch</code> と <code>handleMismatch</code> の呼び分けが typo で入れ替わっていないかチェック。
@@ -1193,6 +1196,7 @@ let deck = shuffle(symbols.concat(symbols));
 
 - ブラウザをリロードするたびにカードの並びが変わる
 - ペア (同じ絵柄) はちゃんと 2 枚ずつ含まれている
+- 診断パネルの Chapter 4 が `4/4 ✓` になっている
 
 <div class="rescue">
 追いつき用: <code>ch4.js</code>
@@ -1411,6 +1415,7 @@ B は `8` と直接書くと絵柄の種類を減らしたときにクリアで�
 - 2 枚目をめくるたびに手数が +1 される
 - ペアを取るたびにペア数が更新される
 - 全ペア取ったらクリアメッセージが出て、タイマーが止まる
+- 診断パネルの Chapter 5 が `10/10 ✓` になっている
 
 <div class="rescue">
 追いつき用: <code>ch5.js</code>
@@ -1568,6 +1573,7 @@ resetGame();
 - 「もう一度」ボタンを押すと盤面がシャッフルし直されて再スタートする
 - ゲーム途中で押してもリセットされる
 - タイマー、手数、ペア数、クリアメッセージがすべて初期化される
+- 診断パネルの Chapter 6 が `2/2 ✓` になっている
 
 ![bg right:36% h:520](./screenshots/chapter6-reset.gif)
 
