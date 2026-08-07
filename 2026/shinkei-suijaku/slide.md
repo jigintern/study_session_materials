@@ -334,12 +334,14 @@ Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + O
   <div class="card">?</div>
   <!-- ...あと 14 個 -->
 </div>
-
-<!-- 配布した index.html。中身は空にしてある -->
-<div id="board"></div>
 ```
 
 そこで HTML には空の入れ物だけ置いて、中身は JS が作ります。
+
+```html
+<!-- 配布した index.html。中身は空にしてある -->
+<div id="board"></div>
+```
 
 ---
 
