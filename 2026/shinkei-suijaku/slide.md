@@ -496,6 +496,26 @@ function createCard(symbol) {
 }
 ```
 
+書けたら診断パネルの Chapter 1 を開いてください。入れ子になっていれば ✓ が 1 つ増えます。
+
+---
+
+<!-- _class: tight -->
+
+## 1-3 の確認: 1 枚だけ出してみる
+
+<span class="tag-unlock">コピペ</span> 作った関数を 1 回だけ呼びます。
+
+```javascript
+boardEl.appendChild(createCard("🍎"));
+```
+
+青い「?」のカードが 1 枚出れば OK です。確認できたらこの 1 行は消します。
+
+何も出ないときは、【A】【B】がまだ入れ子になっていません。次のスライドで答え合わせをします。
+
+![w:480](./screenshots/one-real-card.png)
+
 ---
 
 <!-- _class: tight -->
@@ -520,24 +540,6 @@ function createCard(symbol) {
 </div>
 
 作りたいカードの HTML と見比べると、内側の要素から順に入れていることが分かります。
-
-貼っても画面は変わりませんが、それで OK です。
-
----
-
-<!-- _class: tight -->
-
-## 1-3 の確認: 1 枚だけ出してみる
-
-<span class="tag-unlock">コピペ</span> 作った関数を 1 回だけ呼びます。
-
-```javascript
-boardEl.appendChild(createCard("🍎"));
-```
-
-青い「?」のカードが 1 枚出れば OK です。確認できたらこの 1 行は消します。
-
-![w:480](./screenshots/one-real-card.png)
 
 ---
 
