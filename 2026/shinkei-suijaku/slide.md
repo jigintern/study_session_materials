@@ -113,6 +113,14 @@ style: |
     margin: 16px 0;
     font-size: 0.92em;
   }
+  .choices {
+    background: #f6f0fa;
+    border-left: 4px solid #7b4fa8;
+    padding: 5px 16px;
+    margin: 8px 0;
+  }
+  .choices > *:first-child { margin-top: 0; }
+  .choices > *:last-child { margin-bottom: 0; }
   .task ul, .hint-box ul { padding-left: 1.4em; margin: 4px 0; }
   .task li, .hint-box li { margin: 3px 0; }
   .syntax {
@@ -229,6 +237,8 @@ style: |
 | <span class="tag-challenge">自力</span> | 要件とヒントだけ提示 | コードなしで書き、次スライドで答え合わせ |
 | <span class="tag-write">記述</span> | 【A】等の穴 | 構造は見えている中で埋める箇所を考える |
 | <span class="tag-unlock">コピペ</span> | 完成コードが載っている | そのまま手元に貼る (数行の写経も含む) |
+
+記述のうち、単語や 1 行で埋まる穴には候補を出します。候補には使わないものも混ざっているので、どれがどこに入るかを考えてください。複数行を書く穴には候補を出さず、代わりに何行になるかを書いています。
 
 間に合わなくても大丈夫です。各章のチェックポイントに「追いつき用」のコードを出すので、`script.js` を丸ごと置き換えれば次の章から始められます。
 
@@ -616,10 +626,14 @@ DOM 上では次のように追加されるイメージです。
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
+<div class="choices">
+
+候補: `createCard` / `renderBoard` / `appendChild` / `replaceChildren`
+
+</div>
+
 ```javascript
-// STUDENT [1-4]:
-// A: カード 1 枚を作る関数の名前
-// B: 親要素に子要素を追加するメソッド
+// STUDENT [1-4]: A はカード 1 枚を作る関数の名前、B は親要素に子要素を追加するメソッド
 function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
@@ -776,6 +790,12 @@ let lockBoard = false;   // 2 枚めくったあとに他のカードを押さ�
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
+<div class="choices">
+
+候補: `lockBoard` / `firstCard` / `secondCard` / `"flipped"` / `"matched"` / `add` / `remove`
+
+</div>
+
 ```javascript
 // STUDENT [2-2]: フロー図に沿って書く
 // A: すでに用意した状態変数のどれか (ロック用)
@@ -907,6 +927,12 @@ card.addEventListener("click", () => handleCardClick(card));
   <button class="timer-btn" data-delta="-60">−</button>
   <div class="timer"></div>
   <button class="timer-btn" data-delta="60">＋</button>
+</div>
+
+<div class="choices">
+
+候補: `symbol` / `color` / `index`
+
 </div>
 
 ```javascript
@@ -1372,6 +1398,12 @@ if (!firstCard) {
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
+<div class="choices">
+
+【B】【C】の候補: `symbols.length` / `deck.length` / `8` / `stopTimer()` / `startTimer()`
+
+</div>
+
 ```javascript
 // STUDENT [5-5]: handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア
 // A: ペア数を 1 増やして、その場で表示も更新する 2 行。表示は「3 / 8」の形
@@ -1389,13 +1421,6 @@ function handleMatch() {
   }
 }
 ```
-
-<details class="hint">
-<summary>ヒント</summary>
-
-B は `8` と直接書くと絵柄の種類を減らしたときにクリアできなくなります
-
-</details>
 
 ---
 
@@ -1458,6 +1483,12 @@ B は `8` と直接書くと絵柄の種類を減らしたときにクリアで�
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
+<div class="choices">
+
+候補: `shuffle(symbols.concat(symbols))` / `resetTurn()` / `renderBoard()` / `resetGame()` / `createCard()`
+
+</div>
+
 ```javascript
 // STUDENT [6-1]: ゲームを初期状態に戻す
 // A: 押すたびに並びが変わる、新しい 16 枚の deck
@@ -1476,13 +1507,6 @@ function resetGame() {
   【C】;
 }
 ```
-
-<details class="hint">
-<summary>ヒント</summary>
-
-3 つとも、新しく書くのではなく、すでにある式や関数をそのまま使います
-
-</details>
 
 ---
 
@@ -1523,9 +1547,14 @@ function resetGame() {
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
+<div class="choices">
+
+候補: `resetGame` / `resetGame()`
+
+</div>
+
 ```javascript
 // STUDENT [6-2]: もう一度ボタンで resetGame を呼ぶ
-// A: resetGame  または  resetGame()
 const resetBtn = document.getElementById("reset-btn");
 resetBtn.addEventListener("click", 【A】);
 ```
