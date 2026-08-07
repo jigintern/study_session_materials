@@ -426,15 +426,24 @@ const boardEl = document.getElementById("board");
 </div>
 ```
 
+---
+
+<!-- _class: tight -->
+
+## 1-3. JS と HTML の対応
+
 JS で書いた 1 行が、HTML のどこになるかの対応です。
 
-<div class="syntax">
+```javascript
+el.className = "card";     // <div class="card">
+el.dataset.symbol = "🍎";  // <div data-symbol="🍎">
+el.textContent = "?";      // <div>?</div>
+parent.appendChild(child); // <parent><child></child></parent>
+```
 
-- `card.className = "card"` → `class="card"`
-- `card.dataset.symbol = symbol` → `data-symbol="🍎"`
-- `front.textContent = "?"` → `card-front` タグに挟まれた `?`
+`document.createElement` で作っただけの要素は、まだどこにも属していません。`appendChild` でつなげて初めて入れ子になります。
 
-</div>
+次のスライドは、この対応を見ながら書きます。
 
 ---
 
@@ -442,7 +451,7 @@ JS で書いた 1 行が、HTML のどこになるかの対応です。
 
 ## 1-3. カード 1 枚を作る関数
 
-<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】【B】を書きましょう。
+<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】【B】を書きましょう。前のスライドの対応が使えます。
 
 <div class="timer-box" data-seconds="150">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -497,7 +506,7 @@ function createCard(symbol) {
 
 </div>
 
-作りたいカードの HTML と見比べると、内側の要素から順に入れていることが分かります。`document.createElement` で作っただけの要素はどこにも属していないので、`appendChild` でつなげて初めて入れ子になります。
+作りたいカードの HTML と見比べると、内側の要素から順に入れていることが分かります。
 
 貼っても画面は変わりませんが、それで OK です。
 
