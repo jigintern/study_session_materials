@@ -153,7 +153,8 @@ style: |
 1. ブラウザで StackBlitz のテンプレートを開く
    https://stackblitz.com/edit/web-quiz-2026?file=index.html
 2. 左に HTML / CSS / JS のファイル、右にプレビュー
-3. 今日さわるのは `script.js`
+3. さわるのは `script.js` が中心。`index.html` も3回だけ書き足します
+4. `debug.js` `styles.css` は用意ずみ。開かなくて大丈夫です
 
 テンプレートは「1問目が表示された状態」から始まります。
 
@@ -195,11 +196,12 @@ function checkAnswer(selected) {
 
 ![bg right:42% fit](imgs/debug-panel.png)
 
-プレビュー右上の「デバッグ情報」をクリックすると開きます。
+プレビュー右上の「デバッグ情報」をクリックすると開きます。自力で原因が分からないときの手がかり用です。
 
 - **章ごとのテスト** — 章の項目が ✓ になっていれば順調
 - **診断** — エラーや書きまちがいの心当たりを表示
 - **コピー** — 詰まったら押して、チャットに貼って質問
+- エラー画面に変わるとパネルは消えます。同じ内容が **Console** にも出ています
 
 ---
 
@@ -217,7 +219,7 @@ function checkAnswer(selected) {
 - 文字や色を書き換える
 - 計算する・判定する
 
-クイズ作りで使う6つの基本を、順番に見ていきます。
+JavaScript の基本を6つ、順番に見ていきます。
 
 ---
 
@@ -270,6 +272,26 @@ total = total + 1;  // まちがい！ 得点と書きまちがえて問題数�
 const a = 'score';   // 文字列の 'score'
 const b = score;     // 変数 score の中身
 ```
+
+---
+
+## `console.log()` で中身を見る
+
+![bg right:40% fit](imgs/stackblitz-console.png)
+
+### 画面に出ない値を確かめたい
+
+`console.log(値)` = その値をコンソールに出す命令
+
+**見かた** — プレビューの下の **「Console」**（閉じていたらクリックで開く）
+
+```javascript
+let score = 0;
+score = score + 1;
+console.log(score);   // → Console に 1 と出る
+```
+
+分からなくなったら、まず中身を見る。今日も何度か使います。
 
 ---
 
@@ -599,6 +621,8 @@ function checkAnswer(selected) {
 
 id で要素を取得して書き換える = **DOM操作**
 
+いまは問題が1問だけなので「0番が正解」と決めうちしています。Chapter 2 でデータを見て判定するように直します。
+
 ---
 
 <!-- _class: lead -->
@@ -654,7 +678,23 @@ let score = 0;
 - `quizData` → データを入れ替えない → `const`
 - `currentQuestion`（今何問目か）・`score`（得点）→ 進むたびに変わる → `let`
 
-書いただけでは画面は変わりません。次で表示につなげます。
+---
+
+## 2-1. 動作チェック
+
+### 画面は変わりません。`console.log()` で中身を見ます
+
+**書く場所** — `script.js` のいちばん下（確認できたら消してOK）
+
+```javascript
+console.log(quizData.length);        // → 3
+console.log(quizData[0].question);   // → 日本で一番高い山は？
+```
+
+**成功** — プレビュー下の **Console** に、上のコメント通りの2行が出る
+
+- 何も出ない → 保存し忘れ、または `script.js` 以外に書いている
+- 赤いエラーが出る → カンマや `{ }` `[ ]` の閉じ忘れ（エラーの行番号を見る）
 
 ---
 
@@ -665,12 +705,16 @@ let score = 0;
 やることは3つ。ぜんぶ 1-4 で使った DOM操作です。
 
 1. `quizData[currentQuestion]` で今の問題を取り出す
-2. 問題番号・問題文・選択肢の文字を書き換える
-3. 前の問題の結果表示を消す
+2. 問題番号・問題文・選択肢の文字を書き換える（`choice-0` の id と `choices[0]` の番号をそろえる）
+3. 前の問題の結果表示を消し、次へボタンを隠す
+
+`.style.display = 'none'` = その要素を画面から消す（`'inline-block'` で戻る）
+
+関数は呼ばれてはじめて動くので、最後に `showQuestion();` と書いて呼び出すところまでやります。
 
 ---
 
-<!-- _class: record compact -->
+<!-- _class: record -->
 
 ## 2-2. `showQuestion()` を書く
 
@@ -680,29 +724,42 @@ let score = 0;
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
-**書く場所** — `script.js` に追加
+**書く場所** — `script.js` に追加。最後の1行が呼び出し
 
 ```javascript
 function showQuestion() {
-  const quiz = quizData[currentQuestion];   // 今の問題を取り出す
+  const quiz = quizData[currentQuestion];   // 今の問題
+  const number = currentQuestion + 1;       // 問題番号
 
-  // 問題番号（計算してから結合する）
-  const number = currentQuestion + 1;
   document.getElementById('question-number').textContent =
     '第' + number + '問 / 全' + quizData.length + '問';
-
-  // 問題文
   document.getElementById('question').textContent = quiz.question;
 
-  // 選択肢（id の番号と choices の番号をそろえる）
   document.getElementById('choice-0').textContent = quiz.choices[0];
   document.getElementById('choice-1').textContent = quiz.choices[1];
   document.getElementById('choice-2').textContent = quiz.choices[2];
 
-  document.getElementById('result').textContent = '';        // 前の結果を消す
-  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('result').textContent = '';          // 前の結果を消す
+  document.getElementById('next-btn').style.display = 'none';  // 次へを隠す
 }
+
+showQuestion();   // ページを開いたら最初の問題を表示
 ```
+
+---
+
+## 2-2. 動作チェック
+
+### 画面が `quizData` から作られるようになりました
+
+**成功** — 次の2つがそろっている
+
+1. 1問目の問題文・選択肢が表示される（見た目は同じでも、出どころが HTML から `quizData` に変わった）
+2. 「次の問題へ」ボタンが消えている（`showQuestion` が隠したため）
+
+**自分で確かめる** — `quizData` の1問目の `question` を好きな文に書き換えて保存。画面の文字も変われば、データから作られている証拠
+
+**変わらないとき** — プレビュー下の **Console** の赤いエラーを見る。`Unexpected token` は `( )` `{ }` `'` の閉じ忘れ
 
 ---
 
@@ -739,33 +796,21 @@ function checkAnswer(selected) {
 
 ---
 
-<!-- _class: record -->
+## 2-3. 動作チェック
 
-## 2-4. 最初の問題を表示しよう
+**成功** — 次の2つがそろっている
 
-<div class="timer-box" data-seconds="180">
-  <button class="timer-btn" data-delta="-60">−</button>
-  <div class="timer"></div>
-  <button class="timer-btn" data-delta="60">＋</button>
-</div>
+1. 正解の選択肢を押すと「正解！」、ほかを押すと正解の名前入りで「不正解...」が出る
+2. 答えると「次の問題へ」ボタンが現れる（押してもまだ動きません。次の章で作ります）
 
-### 関数は、呼ばれてはじめて動く
-
-**書く場所** — `script.js` のいちばん下に、1行だけ追加
+**自分で確かめる** — `score` は画面に出ないので `console.log()` で見る
 
 ```javascript
-showQuestion();   // ページを開いたら最初の問題を表示
+document.getElementById('next-btn').style.display = 'inline-block';
+console.log(score);   // ← checkAnswer の最後に一時的に追加
 ```
 
----
-
-## 2-4. 動作チェック
-
-**成功** — 次の3つがそろっている
-
-1. 1問目が `quizData` から表示される（HTML の決めうちを卒業！）
-2. 選択肢を選ぶと、その問題の `answer` で正解 / 不正解が出る
-3. 答えると「次の問題へ」ボタンが現れる（押してもまだ動きません。次の章で作ります）
+正解を押したときだけ増えれば OK。連打すると増え続けますが、いまは正常です（応用課題で止められます）。
 
 ---
 
@@ -810,11 +855,11 @@ function nextQuestion() {
 <button id="next-btn" @@onclick="nextQuestion()"@@>次の問題へ</button>
 ```
 
-**成功** — 2問目・3問目に進める（最後の問題ではエラーが出ますが正常。`showResult` は次で作ります）
+**成功** — 2問目・3問目に進める（最後の「次へ」で `showResult is not defined` のエラーが出ますが正常。次で作ります）
 
 ---
 
-<!-- _class: record -->
+<!-- _class: record compact -->
 
 ## 3-2. 結果画面をつくろう
 
@@ -841,7 +886,7 @@ function showResult() {
 }
 ```
 
-**成功** — 最後の「次の問題へ」で結果画面が出たら完成！
+**成功** — 全問正解で「3問中 3問正解！」、全問まちがえて「3問中 0問正解！」（2回目はプレビューを再読み込み）
 
 ---
 
@@ -886,6 +931,8 @@ function showResult() {
 
 問題はいくつ増やしてもOK。
 
+**成功** — 書き換えた問題が1問目から表示され、最後まで解けて「◯問中◯問正解！」が出る
+
 **アイデア** — 推しクイズ ／ 地元クイズ ／ 学校クイズ ／ IT雑学 ／ グルメクイズ
 
 ---
@@ -917,11 +964,12 @@ document.getElementById('choices').innerHTML = buttonsHTML;
 ```
 
 `innerHTML` = 要素の中身を HTML ごと書き換える（`textContent` は文字だけ）
-`quizData` の `choices` を4つにすれば、自動で4択に。
+
+**成功** — これまで通り3択で遊べる。`choices` を4つにすると、ボタンも4つに増える
 
 ---
 
-<!-- _class: record -->
+<!-- _class: record compact -->
 
 ## 応用②：結果メッセージを変える
 
@@ -944,6 +992,8 @@ if (score === quizData.length) {
 
 `else if` で「3つ以上の場合分け」ができます。
 
+**成功** — 全問正解と全問不正解でわざと解いて、結果のメッセージが変わる
+
 ---
 
 <!-- _class: compact -->
@@ -963,7 +1013,7 @@ if (score === quizData.length) {
 
 ## 困ったときは
 
-エラーが出たら `F12` → **Console** タブで赤いメッセージを確認しましょう。
+エラーが出たら、プレビュー下の **Console** で赤いメッセージを確認しましょう。
 
 | よくあるミス | 正しい書き方 |
 |------|------------|

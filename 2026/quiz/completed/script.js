@@ -11,23 +11,19 @@ let currentQuestion = 0;
 let score = 0;
 
 function showQuestion() {
-  const quiz = quizData[currentQuestion];   // 今の問題を取り出す
+  const quiz = quizData[currentQuestion];   // 今の問題
+  const number = currentQuestion + 1;       // 問題番号
 
-  // 問題番号（計算してから結合する）
-  const number = currentQuestion + 1;
   document.getElementById('question-number').textContent =
     '第' + number + '問 / 全' + quizData.length + '問';
-
-  // 問題文
   document.getElementById('question').textContent = quiz.question;
 
-  // 選択肢（id の番号と choices の番号をそろえる）
   document.getElementById('choice-0').textContent = quiz.choices[0];
   document.getElementById('choice-1').textContent = quiz.choices[1];
   document.getElementById('choice-2').textContent = quiz.choices[2];
 
-  document.getElementById('result').textContent = '';        // 前の結果を消す
-  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('result').textContent = '';          // 前の結果を消す
+  document.getElementById('next-btn').style.display = 'none';  // 次へを隠す
 }
 
 function checkAnswer(selected) {
