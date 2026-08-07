@@ -566,7 +566,7 @@ DOM 上では次のように追加されるイメージです。
 <div data-symbol="🍎"></div>
 ```
 
-`dataset` を使うと、HTML の要素に自分で決めた名前でデータを紐付けられます。`class` や `id` と違い、`data-` に続く名前は自由に決められます。
+`dataset` を使うと、HTML の要素に自分で決めた名前でデータを紐付けられます。今回の場合なら `symbol` の部分がその名前で、`dataset.symbol` なら `data-symbol`、`dataset.color` なら `data-color` になります。
 
 ---
 
