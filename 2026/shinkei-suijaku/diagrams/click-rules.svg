@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans CJK JP','Apple Color Emoji',sans-serif" font-size="18">
+<rect width="1200" height="380" fill="white"/>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+</marker>
+</defs>
+
+<text x="24" y="34" font-size="17" fill="#64748b">クリックしたカード = オレンジ</text>
+
+<!-- 行 1: 伏せているカードをクリック -->
+<rect x="16" y="62" width="1168" height="96" rx="10" fill="#eff6ff"/>
+<text x="40" y="116" fill="#334155">伏せているカードをクリック</text>
+<rect x="330" y="76" width="54" height="68" rx="8" fill="#60a5fa" stroke="#f59e0b" stroke-width="3.5"/>
+<text x="357" y="120" text-anchor="middle" font-size="28" fill="#ffffff">?</text>
+<line x1="560" y1="110" x2="616" y2="110" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="640" y="76" width="54" height="68" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+<text x="667" y="120" text-anchor="middle" font-size="28">🍎</text>
+<text x="850" y="116" fill="#1d4ed8">表向きになる</text>
+
+<!-- 行 2: めくったカードを再クリック -->
+<rect x="16" y="166" width="1168" height="96" rx="10" fill="#f8fafc"/>
+<text x="40" y="220" fill="#334155">めくったカードを再クリック</text>
+<rect x="330" y="180" width="54" height="68" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="3.5"/>
+<text x="357" y="224" text-anchor="middle" font-size="28">🍎</text>
+<line x1="560" y1="214" x2="616" y2="214" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="640" y="180" width="54" height="68" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+<text x="667" y="224" text-anchor="middle" font-size="28">🍎</text>
+<text x="850" y="220" fill="#64748b">何も起きない</text>
+
+<!-- 行 3: 判定中に 3 枚目をクリック -->
+<rect x="16" y="270" width="1168" height="96" rx="10" fill="#f8fafc"/>
+<text x="40" y="312" fill="#334155">2 枚めくった判定中に</text>
+<text x="40" y="338" fill="#334155">3 枚目をクリック</text>
+<rect x="330" y="284" width="54" height="68" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+<text x="357" y="328" text-anchor="middle" font-size="28">🍎</text>
+<rect x="392" y="284" width="54" height="68" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+<text x="419" y="328" text-anchor="middle" font-size="28">🍇</text>
+<rect x="454" y="284" width="54" height="68" rx="8" fill="#60a5fa" stroke="#f59e0b" stroke-width="3.5"/>
+<text x="481" y="328" text-anchor="middle" font-size="28" fill="#ffffff">?</text>
+<line x1="560" y1="318" x2="616" y2="318" stroke="#64748b" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="640" y="284" width="54" height="68" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+<text x="667" y="328" text-anchor="middle" font-size="28">🍎</text>
+<rect x="702" y="284" width="54" height="68" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+<text x="729" y="328" text-anchor="middle" font-size="28">🍇</text>
+<rect x="764" y="284" width="54" height="68" rx="8" fill="#60a5fa" stroke="#cbd5e1" stroke-width="2"/>
+<text x="791" y="328" text-anchor="middle" font-size="28" fill="#ffffff">?</text>
+<text x="850" y="320" fill="#64748b">何も起きない</text>
+</svg>
