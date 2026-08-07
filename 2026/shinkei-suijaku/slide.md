@@ -418,10 +418,9 @@ const boardEl = document.getElementById("board");
 <span class="tag-unlock">コピペ</span> 要素の組み立てが長いのでそのまま貼って OK。中身はこのあと説明します。
 
 ```javascript
-function createCard(symbol, index) {
+function createCard(symbol) {
   const card = document.createElement("div");
   card.className = "card";
-  card.dataset.index = index;
   card.dataset.symbol = symbol;
 
   const inner = document.createElement("div");
@@ -451,7 +450,7 @@ function createCard(symbol, index) {
 <span class="tag-unlock">コピペ</span> 作った関数を 1 回だけ呼びます。
 
 ```javascript
-boardEl.appendChild(createCard("🍎", 0));
+boardEl.appendChild(createCard("🍎"));
 ```
 
 青い「?」のカードが 1 枚出れば OK です。確認できたらこの 1 行は消します。
@@ -464,10 +463,10 @@ boardEl.appendChild(createCard("🍎", 0));
 
 ## 1-3 補足: できあがる HTML
 
-`createCard("🍎", 0)` を呼ぶと、この HTML が組み立てられて返ってきます。
+`createCard("🍎")` を呼ぶと、この HTML が組み立てられて返ってきます。
 
 ```html
-<div class="card" data-index="0" data-symbol="🍎">
+<div class="card" data-symbol="🍎">
   <div class="card-inner">
     <div class="card-front">?</div>
     <div class="card-back">🍎</div>
@@ -505,8 +504,6 @@ card.dataset.symbol   // "🍎"  — 絵柄だけ取れる
 
 絵柄だけを見比べたいので、`dataset` にも同じ値を入れておきます。めくった 2 枚が同じ絵柄かを判定するときに使います。
 
-`dataset.index` のほうは今日書くコードでは使いません。診断パネルがカードを識別するために読んでいます。
-
 ---
 
 <!-- _class: tight -->
@@ -518,7 +515,7 @@ card.dataset.symbol   // "🍎"  — 絵柄だけ取れる
 <div class="syntax">
 
 - `parent.replaceChildren()` — 親の中身を全部削除
-- `array.forEach((要素, index) => { ... })` — 配列の全要素に処理を実行
+- `array.forEach((要素) => { ... })` — 配列の全要素に処理を実行
 
 </div>
 
@@ -538,8 +535,8 @@ function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
   // deck の要素を 1 つずつ取り出して繰り返す
-  deck.forEach((symbol, index) => {
-    const card = 【A】(symbol, index);
+  deck.forEach((symbol) => {
+    const card = 【A】(symbol);
     boardEl.【B】(card);
   });
 }
@@ -556,8 +553,8 @@ function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
   // deck の要素を 1 つずつ取り出して繰り返す
-  deck.forEach((symbol, index) => {
-    const card = createCard(symbol, index);
+  deck.forEach((symbol) => {
+    const card = createCard(symbol);
     boardEl.appendChild(card);
   });
 }
@@ -738,7 +735,7 @@ function handleCardClick(card) {
 <span class="tag-unlock">コピペ</span>
 
 ```javascript
-function createCard(symbol, index) {
+function createCard(symbol) {
   // ... (1-3 で書いたコードは省略) ...
   card.appendChild(inner);
 
@@ -763,7 +760,7 @@ card.addEventListener("click", handleCardClick(card));
 card.addEventListener("click", () => handleCardClick(card));
 ```
 
-`=>` の左が引数です。今回は空ですが、1-4 の `deck.forEach((symbol, index) => { ... })` では、forEach が配列の要素と番号をここに渡していました。
+`=>` の左が引数です。今回は空ですが、盤面全体を描く関数の `deck.forEach((symbol) => { ... })` では、forEach が配列の要素をここに渡していました。
 
 ---
 

@@ -56,10 +56,9 @@ function render() {
   }
 }
 
-function createCard(symbol, index) {
+function createCard(symbol) {
   const card = document.createElement("div");
   card.className = "card";
-  card.dataset.index = index;
   card.dataset.symbol = symbol;
 
   const inner = document.createElement("div");
@@ -83,8 +82,8 @@ function createCard(symbol, index) {
 function renderBoard() {
   boardEl.replaceChildren();
 
-  state.deck.forEach((symbol, index) => {
-    const card = createCard(symbol, index);
+  state.deck.forEach((symbol) => {
+    const card = createCard(symbol);
     boardEl.appendChild(card);
   });
 }

@@ -40,10 +40,9 @@ const pairsEl = document.getElementById("pairs");
 const clearMessageEl = document.getElementById("clear-message");
 const boardEl = document.getElementById("board");
 
-function createCard(symbol, index) {
+function createCard(symbol) {
   const card = document.createElement("div");
   card.className = "card";
-  card.dataset.index = index;
   card.dataset.symbol = symbol;
 
   const inner = document.createElement("div");
@@ -67,8 +66,8 @@ function createCard(symbol, index) {
 function renderBoard() {
   boardEl.replaceChildren();
 
-  deck.forEach((symbol, index) => {
-    const card = createCard(symbol, index);
+  deck.forEach((symbol) => {
+    const card = createCard(symbol);
     boardEl.appendChild(card);
   });
 }

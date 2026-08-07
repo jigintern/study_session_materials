@@ -48,10 +48,9 @@ const clearMessageEl = document.getElementById("clear-message");
 const boardEl = document.getElementById("board");
 
 // CHANGED: 受け取るのが絵柄 1 文字ではなく { label, pairId }
-function createCard(cardData, index) {
+function createCard(cardData) {
   const card = document.createElement("div");
   card.className = "card";
-  card.dataset.index = index;
   // CHANGED: 判定に使うのは表示文字ではなく pairId
   card.dataset.pairId = cardData.pairId;
 
@@ -78,8 +77,8 @@ function createCard(cardData, index) {
 function renderBoard() {
   boardEl.replaceChildren();
 
-  deck.forEach((cardData, index) => {
-    const card = createCard(cardData, index);
+  deck.forEach((cardData) => {
+    const card = createCard(cardData);
     boardEl.appendChild(card);
   });
 }
