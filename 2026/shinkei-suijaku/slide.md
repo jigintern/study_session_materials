@@ -554,7 +554,7 @@ Chapter 3 では、めくった 2 枚が同じ絵柄かを判定します。そ�
 ただし、カードの中には表の `?` と裏の絵柄が両方入っています。
 
 ```html
-<!-- 1-3 で作ったカードの再掲。書き足すものではない -->
+<!-- createCard で作ったカードの再掲。書き足すものではない -->
 <div class="card">                    <!-- ここの textContent を読むと -->
   <div class="card-inner">
     <div class="card-front">?</div>   <!-- この ? と -->
@@ -615,8 +615,8 @@ DOM 上では次のように追加されるイメージです。
 
 ```javascript
 // STUDENT [1-4]:
-// A: 1-3 で書いた「カード 1 枚を作る関数」の名前
-// B: 親要素に子要素を追加するメソッド (1-3 でも使った)
+// A: カード 1 枚を作る関数の名前
+// B: 親要素に子要素を追加するメソッド (createCard の中でも使った)
 function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
@@ -648,7 +648,7 @@ function renderBoard() {
 renderBoard();
 ```
 
-- A: `createCard` — 1-3 で書いた関数
+- A: `createCard` — カード 1 枚を作る関数
 - B: `appendChild` — 親要素に子要素を追加
 
 ---
@@ -822,7 +822,7 @@ function handleCardClick(card) {
 
 ```javascript
 function createCard(symbol) {
-  // ... (1-3 で書いたコードは省略) ...
+  // ... (ここまでに書いた中身は省略) ...
   card.appendChild(inner);
 
   // STUDENT [2-3]: この 1 行を追加
@@ -913,7 +913,7 @@ if (isMatch) {
 <details class="hint">
 <summary>ヒント</summary>
 
-1-3 の `createCard` で `dataset` に何を入れたか見返してみましょう
+`createCard` で `dataset` に何を入れたか見返してみましょう
 
 </details>
 
@@ -972,7 +972,7 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 ヒント
 
 - クラス名は「配布 CSS の約束」で出てきた 2 つのうちの片方
-- クラスを付けるメソッドは 2-2 で使ったもの
+- クラスを付けるメソッドは `handleCardClick` で使ったもの
 - 片付けは `resetTurn()` という名前で呼び出しておく。中身は 3-4 で書きます
 
 </div>
@@ -1018,7 +1018,7 @@ function unflipCards() {
 
 <div class="syntax">
 
-- `remove` — 2-2 で付けた `flipped` を外すメソッド。外すと CSS が伏せ表示に戻る
+- `remove` — めくるときに付けた `flipped` を外すメソッド。外すと CSS が伏せ表示に戻る
 - `setTimeout(関数, ミリ秒)` — 指定時間後にその関数を 1 回だけ実行する。繰り返したいときは `setInterval`
 
 </div>
@@ -1060,7 +1060,7 @@ function unflipCards() {
 やること
 
 - `resetTurn` という関数を作る (3 行)
-- 2-1 で用意した 3 つの状態変数を、それぞれ最初の値に戻す
+- めくりの状態を持つ 3 つの変数を、それぞれ最初の値に戻す
 
 </div>
 
@@ -1069,7 +1069,7 @@ function unflipCards() {
 ヒント
 
 - 対象の状態変数: `firstCard`, `secondCard`, `lockBoard`
-- 「最初の値」は 2-1 で見た値を思い出す (2 つは `null`、1 つは `false`)
+- 「最初の値」は宣言したときの値 (2 つは `null`、1 つは `false`)
 - `handleMatch` と `unflipCards` で `resetTurn()` を呼び出しているので、この関数を作ればチェックポイントに繋がる
 
 </div>
@@ -1280,7 +1280,7 @@ secondCard = card;
 moves++;                       // ここから 2 行が今回書いた分
 movesEl.textContent = moves;
 
-const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol; // 3-1 で書いた行
+const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol; // ここは前に書いた行
 ```
 
 `moves++` は `moves = moves + 1` の短縮形。状態を +1 したら、その直後に描画を更新する。この 2 行 1 セットが、今日の講座で一番繰り返される型です。
@@ -1376,7 +1376,7 @@ function handleMatch() {
 <details class="hint">
 <summary>ヒント</summary>
 
-A は 5-2 で書いた `moves` の 2 行と同じ形。B は `8` と直接書くと絵柄の種類を減らしたときにクリアできなくなります
+A は `moves` を増やしたときの 2 行と同じ形。B は `8` と直接書くと絵柄の種類を減らしたときにクリアできなくなります
 
 </details>
 
@@ -1392,7 +1392,7 @@ A は 5-2 で書いた `moves` の 2 行と同じ形。B は `8` と直接書く
     stopTimer();
 ```
 
-- A: 5-2 の `moves` と同じ 2 行 1 セット。状態を変えたら、その場で描画も更新する
+- A: `moves` のときと同じ 2 行 1 セット。状態を変えたら、その場で描画も更新する
 - B: `symbols.length` — シンボルの種類数 = 揃えるべきペア数。`8` と直接書いても動きますが、絵柄の種類を変えると判定が追従しません
 - C: `stopTimer()` — `setInterval` は `clearInterval` を呼ぶまで止まりません
 
@@ -1462,7 +1462,7 @@ function resetGame() {
 <details class="hint">
 <summary>ヒント</summary>
 
-A は 4-2、B は 3-4、C は 1-4 で書いたものです
+A は `deck` の宣言と同じ式。B と C はすでに書いた関数を呼ぶだけです
 
 </details>
 
@@ -1487,8 +1487,8 @@ function resetGame() {
 }
 ```
 
-- A: `shuffle(symbols.concat(symbols))` — 4-2 と同じ式。押すたびに並びが変わる
-- B: `resetTurn()` — 3-4 で書いた関数をそのまま再利用。同じ 3 行を書き直す必要はない
+- A: `shuffle(symbols.concat(symbols))` — `deck` の宣言と同じ式。押すたびに並びが変わる
+- B: `resetTurn()` — すでに書いた関数をそのまま再利用。同じ 3 行を書き直す必要はない
 - C: `renderBoard()` — 新しい `deck` でカードを作り直す
 
 5-1 で状態変数を 1 箇所に集めておいたので、「何を戻せばよいか」を上から順に確認できます。戻し忘れが 1 つでもあると、リセットしたのに前の値が残ります。
@@ -1515,7 +1515,7 @@ resetBtn.addEventListener("click", 【A】);
 <details class="hint">
 <summary>ヒント</summary>
 
-2-3 補足で、`handleCardClick(card)` をそのまま渡すと何が起きたかを思い出してみましょう
+`handleCardClick(card)` をそのまま渡すと何が起きたかを思い出してみましょう
 
 </details>
 
