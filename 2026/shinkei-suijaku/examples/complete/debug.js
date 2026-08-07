@@ -545,6 +545,13 @@
     if (hasFn("createCard") && hasFn("renderBoard") && cardCount === 0) {
       hints.push("createCard と renderBoard は定義済みですが盤面が空です。ファイル末尾で renderBoard() (または resetGame()) を呼びましたか?");
     }
+    if (hasFn("createCard")) {
+      let made = null;
+      try { made = window.createCard("🍎"); } catch (_) { /* テスト側で fail 表示する */ }
+      if (made instanceof Element && !made.querySelector(".card-inner")) {
+        hints.push("createCard の返り値に card-inner が入っていません。inner.appendChild(front) / inner.appendChild(back) / card.appendChild(inner) は書きましたか?");
+      }
+    }
     if (deck !== UNDEF && Array.isArray(deck) && deck.length > 0 && deck.length !== 16) {
       if (deck.length === 8) {
         hints.push("deck の長さが 8 です。symbols を 2 回連結し忘れていませんか? symbols.concat(symbols)");
@@ -608,8 +615,15 @@
       { desc: "createCard('🍎') が Element を返す", fn: () => window.createCard("🍎") instanceof Element },
       { desc: "createCard の返り値に data-symbol が入る", fn: () => window.createCard("🍎").dataset.symbol === "🍎" },
       { desc: "createCard の返り値に card クラスが付く", fn: () => window.createCard("🍎").classList.contains("card") },
+      { desc: "createCard の返り値が card > card-inner > front / back の入れ子", fn: () => {
+        const inner = window.createCard("🍎").querySelector(":scope > .card-inner");
+        return !!inner && !!inner.querySelector(":scope > .card-front") && !!inner.querySelector(":scope > .card-back");
+      } },
       { desc: "renderBoard 関数が定義されている", fn: () => typeof window.renderBoard === "function" },
-      { desc: "盤面に 16 枚のカードが並んでいる", fn: () => document.querySelectorAll("#board .card").length === 16 },
+      { desc: "盤面に 16 枚のカードが中身つきで並んでいる", fn: () => {
+        const cards = document.querySelectorAll("#board .card");
+        return cards.length === 16 && [...cards].every((c) => c.querySelector(":scope > .card-inner > .card-back"));
+      } },
     ],
     "Chapter 2": [
       { desc: "firstCard 変数が定義されている", fn: () => typeof firstCard !== "undefined" },
