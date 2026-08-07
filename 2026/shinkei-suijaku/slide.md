@@ -354,9 +354,9 @@ HTML に書いていない要素も、JS から作って足せます。
 <span class="tag-unlock">コピペ</span> `script.js` のいちばん最後に貼ります。
 
 ```javascript
-const card = document.createElement("div");   // <div></div> ができる
-card.textContent = "🍎";                      // <div>🍎</div> になる
-document.getElementById("board").appendChild(card);
+const apple = document.createElement("div");   // <div></div> ができる
+apple.textContent = "🍎";                      // <div>🍎</div> になる
+document.getElementById("board").appendChild(apple);
 ```
 
 貼ると、盤面のところに 🍎 が 1 つ出ます。
@@ -369,9 +369,9 @@ document.getElementById("board").appendChild(card);
 
 ```javascript
 // さっき貼った 3 行
-const card = document.createElement("div");
-card.textContent = "🍎";
-document.getElementById("board").appendChild(card);
+const apple = document.createElement("div");
+apple.textContent = "🍎";
+document.getElementById("board").appendChild(apple);
 ```
 
 <div class="fig-row">
