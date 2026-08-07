@@ -417,7 +417,9 @@ const boardEl = document.getElementById("board");
 
 ## 1-3. 作りたいカードの HTML
 
-これから `createCard` という関数を書きます。`createCard("🍎")` を呼ぶと、この HTML が組み立てられて返ってくる形にします。
+これから `createCard` という関数を書きます。`createCard("🍎")` を呼ぶと、次の HTML が組み立てられて返ってくる形にします。
+
+この HTML はどこにも書きません。出来上がりを確認するためだけのものです。
 
 ```html
 <div class="card" data-symbol="🍎">
@@ -427,6 +429,16 @@ const boardEl = document.getElementById("board");
   </div>
 </div>
 ```
+
+---
+
+<!-- _class: tight -->
+
+## 1-3. カードの構造
+
+![h:430](./diagrams/card-structure.svg)
+
+カードの向きは、JavaScript で `card` に `flipped` クラスを追加・削除して切り替えます。
 
 ---
 
@@ -463,7 +475,7 @@ parent.appendChild(child); // <parent><child></child></parent>
 
 ```javascript
 // STUDENT [1-3]:
-// A: front と back を inner の中に入れる (2 行)
+// A: front (? の面) と back (絵柄の面) を inner の中に入れる (2 行)
 // B: inner を card の中に入れる (1 行)
 function createCard(symbol) {
   const card = document.createElement("div");
