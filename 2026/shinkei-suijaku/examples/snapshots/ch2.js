@@ -46,10 +46,10 @@ function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
   // deck の要素を 1 つずつ取り出して繰り返す
-  deck.forEach((symbol) => {
-    const card = createCard(symbol);
+  for (let i = 0; i < deck.length; i++) {
+    const card = createCard(deck[i]);
     boardEl.appendChild(card);
-  });
+  }
 }
 
 renderBoard();

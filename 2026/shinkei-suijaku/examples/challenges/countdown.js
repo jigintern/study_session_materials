@@ -53,10 +53,10 @@ function createCard(symbol) {
 function renderBoard() {
   boardEl.replaceChildren();
 
-  deck.forEach((symbol) => {
-    const card = createCard(symbol);
+  for (let i = 0; i < deck.length; i++) {
+    const card = createCard(deck[i]);
     boardEl.appendChild(card);
-  });
+  }
 }
 
 function handleCardClick(card) {
@@ -103,12 +103,13 @@ function handleMatch() {
 
 function handleMismatch() {
   lockBoard = true;
+  setTimeout(unflipCards, 800);
+}
 
-  setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    secondCard.classList.remove("flipped");
-    resetTurn();
-  }, 800);
+function unflipCards() {
+  firstCard.classList.remove("flipped");
+  secondCard.classList.remove("flipped");
+  resetTurn();
 }
 
 function resetTurn() {
@@ -129,15 +130,17 @@ function shuffle(array) {
 // CHANGED: 経過時間ではなく「残り時間」を出す。0 になったらゲームオーバー。
 function startTimer() {
   startTime = Date.now();
-  timerId = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const remaining = Math.max(0, TIME_LIMIT - elapsed);
-    const mm = String(Math.floor(remaining / 60)).padStart(2, "0");
-    const ss = String(remaining % 60).padStart(2, "0");
-    timerEl.textContent = `${mm}:${ss}`;
+  timerId = setInterval(renderTimer, 250);
+}
 
-    if (remaining === 0) gameOver();
-  }, 250);
+function renderTimer() {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const remaining = Math.max(0, TIME_LIMIT - elapsed);
+  const mm = String(Math.floor(remaining / 60)).padStart(2, "0");
+  const ss = String(remaining % 60).padStart(2, "0");
+  timerEl.textContent = `${mm}:${ss}`;
+
+  if (remaining === 0) gameOver();
 }
 
 function stopTimer() {

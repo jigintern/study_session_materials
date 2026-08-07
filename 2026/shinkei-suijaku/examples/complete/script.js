@@ -56,10 +56,10 @@ function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
   // deck の要素を 1 つずつ取り出して繰り返す
-  deck.forEach((symbol) => {
-    const card = createCard(symbol);
+  for (let i = 0; i < deck.length; i++) {
+    const card = createCard(deck[i]);
     boardEl.appendChild(card);
-  });
+  }
 }
 
 // STUDENT [2-2]: フロー図に沿って書く
@@ -109,12 +109,13 @@ function handleMatch() {
 // STUDENT [3-3]: 不一致は 800ms 待って伏せに戻す
 function handleMismatch() {
   lockBoard = true;
+  setTimeout(unflipCards, 800);
+}
 
-  setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    secondCard.classList.remove("flipped");
-    resetTurn();
-  }, 800);
+function unflipCards() {
+  firstCard.classList.remove("flipped");
+  secondCard.classList.remove("flipped");
+  resetTurn();
 }
 
 // STUDENT [3-4]: 次のターンに備えて状態を戻す
@@ -138,12 +139,14 @@ function shuffle(array) {
 function startTimer() {
   startTime = Date.now();
   // 1000 ms 間隔だと秒表示のズレが目立つので少し細かめに回す
-  timerId = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
-    const ss = String(elapsed % 60).padStart(2, "0");
-    timerEl.textContent = `${mm}:${ss}`;
-  }, 250);
+  timerId = setInterval(renderTimer, 250);
+}
+
+function renderTimer() {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
+  const ss = String(elapsed % 60).padStart(2, "0");
+  timerEl.textContent = `${mm}:${ss}`;
 }
 
 function stopTimer() {

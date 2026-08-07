@@ -82,10 +82,10 @@ function createCard(symbol) {
 function renderBoard() {
   boardEl.replaceChildren();
 
-  state.deck.forEach((symbol) => {
-    const card = createCard(symbol);
+  for (let i = 0; i < state.deck.length; i++) {
+    const card = createCard(state.deck[i]);
     boardEl.appendChild(card);
-  });
+  }
 }
 
 function handleCardClick(card) {
@@ -128,14 +128,13 @@ function handleMatch() {
 
 function handleMismatch() {
   setState({ lockBoard: true });
+  setTimeout(unflipCards, 800);
+}
 
-  const { firstCard, secondCard } = state;
-
-  setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    secondCard.classList.remove("flipped");
-    resetTurn();
-  }, 800);
+function unflipCards() {
+  state.firstCard.classList.remove("flipped");
+  state.secondCard.classList.remove("flipped");
+  resetTurn();
 }
 
 function resetTurn() {
@@ -153,12 +152,12 @@ function shuffle(array) {
 
 function startTimer() {
   setState({ startTime: Date.now() });
+  setState({ timerId: setInterval(tickTimer, 250) });
+}
 
-  const id = setInterval(() => {
-    setState({ elapsed: Math.floor((Date.now() - state.startTime) / 1000) });
-  }, 250);
-
-  setState({ timerId: id });
+// CHANGED: 表示の組み立ては render がやるので、ここは経過秒を更新するだけ
+function tickTimer() {
+  setState({ elapsed: Math.floor((Date.now() - state.startTime) / 1000) });
 }
 
 function stopTimer() {

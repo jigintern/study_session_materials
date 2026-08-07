@@ -554,7 +554,6 @@ card.dataset.symbol   // "🍎"  — 絵柄だけ取れる
 <div class="syntax">
 
 - `parent.replaceChildren()` — 親の中身を全部削除
-- `array.forEach((要素) => { ... })` — 配列の全要素に処理を実行
 
 </div>
 
@@ -574,10 +573,10 @@ function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
   // deck の要素を 1 つずつ取り出して繰り返す
-  deck.forEach((symbol) => {
-    const card = 【A】(symbol);
+  for (let i = 0; i < deck.length; i++) {
+    const card = 【A】(deck[i]);
     boardEl.【B】(card);
-  });
+  }
 }
 
 renderBoard();
@@ -592,10 +591,10 @@ function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
   // deck の要素を 1 つずつ取り出して繰り返す
-  deck.forEach((symbol) => {
-    const card = createCard(symbol);
+  for (let i = 0; i < deck.length; i++) {
+    const card = createCard(deck[i]);
     boardEl.appendChild(card);
-  });
+  }
 }
 
 renderBoard();
@@ -799,7 +798,9 @@ card.addEventListener("click", handleCardClick(card));
 card.addEventListener("click", () => handleCardClick(card));
 ```
 
-`=>` の左が引数です。今回は空ですが、盤面全体を描く関数の `deck.forEach((symbol) => { ... })` では、forEach が配列の要素をここに渡していました。
+`=>` の左が引数、右が実行する処理です。今回は渡す引数がないので左は空になります。
+
+この書き方が出てくるのは今日は 2-3 だけです。あとで実行してほしい処理を渡す場面は 3-3、5-3、6-2 にも出てきますが、そちらは `card` のように渡したいものがないので、名前を付けた関数をそのまま書きます。
 
 ---
 
@@ -957,12 +958,13 @@ function handleMatch() {
 // STUDENT [3-3]: 不一致は 800ms 待って伏せに戻す
 function handleMismatch() {
   lockBoard = true;
+  setTimeout(unflipCards, 800);
+}
 
-  setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    secondCard.classList.remove("flipped");
-    resetTurn();
-  }, 800);
+function unflipCards() {
+  firstCard.classList.remove("flipped");
+  secondCard.classList.remove("flipped");
+  resetTurn();
 }
 ```
 
@@ -1020,7 +1022,7 @@ function handleMismatch() {
 
 - 対象の状態変数: `firstCard`, `secondCard`, `lockBoard`
 - 「最初の値」は 2-1 で見た値を思い出す (2 つは `null`、1 つは `false`)
-- `handleMatch` と `handleMismatch` で `resetTurn()` を呼び出しているので、この関数を作ればチェックポイントに繋がる
+- `handleMatch` と `unflipCards` で `resetTurn()` を呼び出しているので、この関数を作ればチェックポイントに繋がる
 
 </div>
 
@@ -1245,12 +1247,14 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol; // 3-1 �
 function startTimer() {
   startTime = Date.now();
   // 1000 ms 間隔だと秒表示のズレが目立つので少し細かめに回す
-  timerId = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
-    const ss = String(elapsed % 60).padStart(2, "0");
-    timerEl.textContent = `${mm}:${ss}`;
-  }, 250);
+  timerId = setInterval(renderTimer, 250);
+}
+
+function renderTimer() {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
+  const ss = String(elapsed % 60).padStart(2, "0");
+  timerEl.textContent = `${mm}:${ss}`;
 }
 
 function stopTimer() {
@@ -1266,6 +1270,7 @@ function stopTimer() {
 貼ったコードに出てくるものを押さえておきます。
 
 - `startTime`: `Date.now()` で取った開始時刻 (ミリ秒)。経過秒は `(Date.now() - startTime) / 1000` で出る
+- `renderTimer`: 250 ms ごとに呼ばれて、経過秒を計算し直して表示を書き換える関数
 - `timerId`: 動いている `setInterval` の識別子。あとで止めるために保持する。5-4 で `!timerId` として再登場
 - `` `${mm}:${ss}` ``: テンプレートリテラル。変数を埋め込める
 
@@ -1480,7 +1485,7 @@ resetBtn.addEventListener("click", resetGame);
 
 「クリック時に実行したい」ならカッコなし、「今すぐ実行したい」ならカッコあり、というイメージです。
 
-2-3 では `() => handleCardClick(card)` とアロー関数で包みました。あちらは `card` を渡す必要があったためで、渡す引数がなければ、ここのように関数名をそのまま書けます。
+2-3 では `() => handleCardClick(card)` とアロー関数で包みました。あちらは `card` を渡す必要があったためです。渡す引数がなければ、3-3 の `setTimeout(unflipCards, 800)` や 5-3 の `setInterval(renderTimer, 250)` と同じく、関数名をそのまま書けます。
 
 ---
 
@@ -1561,14 +1566,27 @@ https://github.com/jigintern/study_session_materials/tree/main/2026/shinkei-suij
 
 ---
 
-## 応用課題: 3 行で記憶ゲームにする
+<!-- _class: tight -->
 
-`resetGame` の `renderBoard();` の下に 3 行足すと、始まる前に全部のカードを 3 秒だけ見せられます。
+## 応用課題: 記憶ゲームにする
+
+`resetGame` の `renderBoard();` の下に数行足して、伏せに戻す処理を関数にすると、始まる前に全部のカードを 3 秒だけ見せられます。
 
 ```javascript
+// resetGame の renderBoard(); の下
 const allCards = document.querySelectorAll(".card");
-allCards.forEach((c) => c.classList.add("flipped"));
-setTimeout(() => allCards.forEach((c) => c.classList.remove("flipped")), 3000);
+for (let i = 0; i < allCards.length; i++) {
+  allCards[i].classList.add("flipped");
+}
+setTimeout(hidePreview, 3000);
+
+// 他の関数と並べて置く
+function hidePreview() {
+  const cards = document.querySelectorAll(".card");
+  for (let i = 0; i < cards.length; i++) {
+    cards[i].classList.remove("flipped");
+  }
+}
 ```
 
 使っているのは、めくる処理で書いた `classList` と、不一致のときに書いた `setTimeout` だけです。それでも、運任せだったゲームが記憶を試すゲームに変わります。

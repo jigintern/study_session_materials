@@ -23,10 +23,11 @@ const PAIRS = [
 // CHANGED: deck の中身が文字列ではなく { label, pairId } のオブジェクトになる
 function buildDeck() {
   const cards = [];
-  PAIRS.forEach((pair, pairId) => {
+  for (let pairId = 0; pairId < PAIRS.length; pairId++) {
+    const pair = PAIRS[pairId];
     cards.push({ label: pair[0], pairId: pairId });
     cards.push({ label: pair[1], pairId: pairId });
-  });
+  }
   return shuffle(cards);
 }
 
@@ -77,10 +78,10 @@ function createCard(cardData) {
 function renderBoard() {
   boardEl.replaceChildren();
 
-  deck.forEach((cardData) => {
-    const card = createCard(cardData);
+  for (let i = 0; i < deck.length; i++) {
+    const card = createCard(deck[i]);
     boardEl.appendChild(card);
-  });
+  }
 }
 
 function handleCardClick(card) {
@@ -126,12 +127,13 @@ function handleMatch() {
 
 function handleMismatch() {
   lockBoard = true;
+  setTimeout(unflipCards, 800);
+}
 
-  setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    secondCard.classList.remove("flipped");
-    resetTurn();
-  }, 800);
+function unflipCards() {
+  firstCard.classList.remove("flipped");
+  secondCard.classList.remove("flipped");
+  resetTurn();
 }
 
 function resetTurn() {
@@ -151,12 +153,14 @@ function shuffle(array) {
 
 function startTimer() {
   startTime = Date.now();
-  timerId = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
-    const ss = String(elapsed % 60).padStart(2, "0");
-    timerEl.textContent = `${mm}:${ss}`;
-  }, 250);
+  timerId = setInterval(renderTimer, 250);
+}
+
+function renderTimer() {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
+  const ss = String(elapsed % 60).padStart(2, "0");
+  timerEl.textContent = `${mm}:${ss}`;
 }
 
 function stopTimer() {

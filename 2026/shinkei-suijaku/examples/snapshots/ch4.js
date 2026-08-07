@@ -46,10 +46,10 @@ function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
   // deck の要素を 1 つずつ取り出して繰り返す
-  deck.forEach((symbol) => {
-    const card = createCard(symbol);
+  for (let i = 0; i < deck.length; i++) {
+    const card = createCard(deck[i]);
     boardEl.appendChild(card);
-  });
+  }
 }
 
 renderBoard();
@@ -88,12 +88,13 @@ function handleMatch() {
 // STUDENT [3-3]: 不一致は 800ms 待って伏せに戻す
 function handleMismatch() {
   lockBoard = true;
+  setTimeout(unflipCards, 800);
+}
 
-  setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    secondCard.classList.remove("flipped");
-    resetTurn();
-  }, 800);
+function unflipCards() {
+  firstCard.classList.remove("flipped");
+  secondCard.classList.remove("flipped");
+  resetTurn();
 }
 
 // STUDENT [3-4]: 次のターンに備えて状態を戻す

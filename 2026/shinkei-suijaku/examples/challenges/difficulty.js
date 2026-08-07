@@ -66,10 +66,10 @@ function createCard(symbol) {
 function renderBoard() {
   boardEl.replaceChildren();
 
-  deck.forEach((symbol) => {
-    const card = createCard(symbol);
+  for (let i = 0; i < deck.length; i++) {
+    const card = createCard(deck[i]);
     boardEl.appendChild(card);
-  });
+  }
 }
 
 function handleCardClick(card) {
@@ -113,12 +113,13 @@ function handleMatch() {
 
 function handleMismatch() {
   lockBoard = true;
+  setTimeout(unflipCards, 800);
+}
 
-  setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    secondCard.classList.remove("flipped");
-    resetTurn();
-  }, 800);
+function unflipCards() {
+  firstCard.classList.remove("flipped");
+  secondCard.classList.remove("flipped");
+  resetTurn();
 }
 
 function resetTurn() {
@@ -138,12 +139,14 @@ function shuffle(array) {
 
 function startTimer() {
   startTime = Date.now();
-  timerId = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
-    const ss = String(elapsed % 60).padStart(2, "0");
-    timerEl.textContent = `${mm}:${ss}`;
-  }, 250);
+  timerId = setInterval(renderTimer, 250);
+}
+
+function renderTimer() {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
+  const ss = String(elapsed % 60).padStart(2, "0");
+  timerEl.textContent = `${mm}:${ss}`;
 }
 
 function stopTimer() {
@@ -158,19 +161,25 @@ function createLevelButtons() {
   const controls = document.getElementById("controls");
   controls.style.gap = "8px";
 
-  Object.keys(LEVELS).forEach((key) => {
+  const keys = Object.keys(LEVELS);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
     const btn = document.createElement("button");
     btn.textContent = LEVELS[key].label;
     btn.style.cssText =
       "background:rgba(255,255,255,0.25);color:#fff;border:none;" +
       "padding:12px 18px;border-radius:999px;font-size:15px;" +
       "font-weight:bold;cursor:pointer;";
-    btn.addEventListener("click", () => {
-      currentLevel = key;
-      resetGame();
-    });
+    btn.addEventListener("click", () => selectLevel(key));
     controls.appendChild(btn);
-  });
+  }
+}
+
+// CHANGED: 押された難易度に切り替えて作り直す。
+// 2-3 のカードと同じで、渡したいもの (key) があるのでアロー関数で包んでいる。
+function selectLevel(key) {
+  currentLevel = key;
+  resetGame();
 }
 
 // CHANGED: 難易度に合わせて symbols と列数を組み直してからリセットする
