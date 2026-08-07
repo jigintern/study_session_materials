@@ -413,11 +413,49 @@ const boardEl = document.getElementById("board");
 
 <!-- _class: tight -->
 
+## 1-3. 作りたいカードの HTML
+
+これから `createCard` という関数を書きます。`createCard("🍎")` を呼ぶと、この HTML が組み立てられて返ってくる形にします。
+
+```html
+<div class="card" data-symbol="🍎">
+  <div class="card-inner">
+    <div class="card-front">?</div>
+    <div class="card-back">🍎</div>
+  </div>
+</div>
+```
+
+JS で書いた 1 行が、HTML のどこになるかの対応です。
+
+<div class="syntax">
+
+- `card.className = "card"` → `class="card"`
+- `card.dataset.symbol = symbol` → `data-symbol="🍎"`
+- `front.textContent = "?"` → `card-front` タグに挟まれた `?`
+
+</div>
+
+表と裏を `card-inner` にまとめてあるのは、配布 CSS がこの入れ子を前提にめくるアニメーションを作っているからです。
+
+---
+
+<!-- _class: tight -->
+
 ## 1-3. カード 1 枚を作る関数
 
-<span class="tag-unlock">コピペ</span> 要素の組み立てが長いのでそのまま貼って OK。中身はこのあと説明します。
+<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】【B】を書きましょう。
+
+<div class="timer-box" data-seconds="150">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ```javascript
+// STUDENT [1-3]:
+// A: front と back を inner の中に入れる (2 行)
+// B: inner を card の中に入れる (1 行)
 function createCard(symbol) {
   const card = document.createElement("div");
   card.className = "card";
@@ -432,12 +470,36 @@ function createCard(symbol) {
   back.className = "card-back";
   back.textContent = symbol;
 
+  【A】
+  【B】
+  return card;
+}
+```
+
+---
+
+<!-- _class: tight -->
+
+## 1-3 答え合わせ
+
+```javascript
+  // ... 要素を作るところは省略 ...
+
   inner.appendChild(front);
   inner.appendChild(back);
   card.appendChild(inner);
   return card;
 }
 ```
+
+<div class="syntax">
+
+- A: `inner.appendChild(front)` → `card-front` が `card-inner` の内側に入る
+- B: `card.appendChild(inner)` → `card-inner` が `card` の内側に入る
+
+</div>
+
+作りたいカードの HTML と見比べると、内側の要素から順に入れていることが分かります。`document.createElement` で作っただけの要素はどこにも属していないので、`appendChild` でつなげて初めて入れ子になります。
 
 貼っても画面は変わりませんが、それで OK です。
 
@@ -456,36 +518,6 @@ boardEl.appendChild(createCard("🍎"));
 青い「?」のカードが 1 枚出れば OK です。確認できたらこの 1 行は消します。
 
 ![w:480](./screenshots/one-real-card.png)
-
----
-
-<!-- _class: tight -->
-
-## 1-3 補足: できあがる HTML
-
-`createCard("🍎")` を呼ぶと、この HTML が組み立てられて返ってきます。
-
-```html
-<div class="card" data-symbol="🍎">
-  <div class="card-inner">
-    <div class="card-front">?</div>
-    <div class="card-back">🍎</div>
-  </div>
-</div>
-```
-
-JS で書いた 1 行が、HTML のどこになるかの対応です。
-
-<div class="syntax">
-
-- `card.className = "card"` → `class="card"`
-- `card.dataset.symbol = symbol` → `data-symbol="🍎"`
-- `front.textContent = "?"` → `card-front` タグに挟まれた `?`
-- `inner.appendChild(front)` → `card-front` が `card-inner` の内側に入る
-
-</div>
-
-表と裏を `card-inner` にまとめてあるのは、配布 CSS がこの入れ子を前提にめくるアニメーションを作っているからです。
 
 ---
 
