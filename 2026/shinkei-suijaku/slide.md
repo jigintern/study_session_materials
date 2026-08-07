@@ -457,8 +457,6 @@ parent.appendChild(child); // <parent><child></child></parent>
 
 `document.createElement` で作っただけの要素は、まだどこにも属していません。`appendChild` でつなげて初めて入れ子になります。
 
-次のスライドは、この対応を見ながら書きます。
-
 ---
 
 <!-- _class: tight -->
