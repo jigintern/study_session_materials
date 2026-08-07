@@ -616,7 +616,7 @@ DOM 上では次のように追加されるイメージです。
 ```javascript
 // STUDENT [1-4]:
 // A: カード 1 枚を作る関数の名前
-// B: 親要素に子要素を追加するメソッド (createCard の中でも使った)
+// B: 親要素に子要素を追加するメソッド
 function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
@@ -972,8 +972,8 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 ヒント
 
 - クラス名は「配布 CSS の約束」で出てきた 2 つのうちの片方
-- クラスを付けるメソッドは `handleCardClick` で使ったもの
-- 片付けは `resetTurn()` という名前で呼び出しておく。中身は 3-4 で書きます
+- クラスを付けるメソッドは `classList` のもの
+- 片付けは `resetTurn()` という名前で呼び出しておく。中身は後で書きます
 
 </div>
 
@@ -1256,8 +1256,8 @@ const clearMessageEl = document.getElementById("clear-message");
 
 やること (2 行)
 
-- 5-1 で用意した「手数」の状態を 1 増やす
-- 手数を表示している要素 (5-1 で取得した DOM 参照) のテキストを、更新後の値に書き換える
+- 手数を数えている状態変数を 1 増やす
+- 手数を表示している要素のテキストを、更新後の値に書き換える
 
 </div>
 
@@ -1282,7 +1282,7 @@ secondCard = card;
 moves++;                       // ここから 2 行が今回書いた分
 movesEl.textContent = moves;
 
-const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol; // ここは前に書いた行
+const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol; // 判定はすでにある行
 ```
 
 `moves++` は `moves = moves + 1` の短縮形。状態を +1 したら、その直後に描画を更新する。この 2 行 1 セットが、今日の講座で一番繰り返される型です。
@@ -1349,7 +1349,7 @@ if (!firstCard) {
 
 ## 5-5. handleMatch にペア数とクリア判定を追加
 
-<span class="tag-write">記述</span> 3-2 で書いた `handleMatch` を書き換えます。【A】〜【C】を埋めましょう。
+<span class="tag-write">記述</span> `handleMatch` を書き換えます。【A】〜【C】を埋めましょう。
 
 <div class="timer-box" data-seconds="240">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -1358,7 +1358,7 @@ if (!firstCard) {
 </div>
 
 ```javascript
-// STUDENT [5-5]: 3-2 の handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア
+// STUDENT [5-5]: handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア
 // A: ペア数を 1 増やして、その場で表示も更新する 2 行。表示は「3 / 8」の形
 // B: 「ペアが全部揃った」を表す値。絵柄種類を変えても正しく判定できる書き方
 // C: クリアしたあとも動き続けてしまうものを止める処理
@@ -1378,7 +1378,7 @@ function handleMatch() {
 <details class="hint">
 <summary>ヒント</summary>
 
-A は `moves` を増やしたときの 2 行と同じ形。B は `8` と直接書くと絵柄の種類を減らしたときにクリアできなくなります
+B は `8` と直接書くと絵柄の種類を減らしたときにクリアできなくなります
 
 </details>
 
@@ -1394,7 +1394,7 @@ A は `moves` を増やしたときの 2 行と同じ形。B は `8` と直接�
     stopTimer();
 ```
 
-- A: `moves` のときと同じ 2 行 1 セット。状態を変えたら、その場で描画も更新する
+- A: 状態を変えたら、その場で描画も更新する 2 行 1 セット
 - B: `symbols.length` — シンボルの種類数 = 揃えるべきペア数。`8` と直接書いても動きますが、絵柄の種類を変えると判定が追従しません
 - C: `stopTimer()` — `setInterval` は `clearInterval` を呼ぶまで止まりません
 
@@ -1464,7 +1464,7 @@ function resetGame() {
 <details class="hint">
 <summary>ヒント</summary>
 
-A は `deck` の宣言と同じ式。B と C はすでに書いた関数を呼ぶだけです
+3 つとも、新しく書くのではなく、すでにある式や関数をそのまま使います
 
 </details>
 
@@ -1489,8 +1489,8 @@ function resetGame() {
 }
 ```
 
-- A: `shuffle(symbols.concat(symbols))` — `deck` の宣言と同じ式。押すたびに並びが変わる
-- B: `resetTurn()` — すでに書いた関数をそのまま再利用。同じ 3 行を書き直す必要はない
+- A: `shuffle(symbols.concat(symbols))` — 16 枚を作ってシャッフルする式。押すたびに並びが変わる
+- B: `resetTurn()` — めくりの状態を戻す関数をそのまま再利用。同じ 3 行を書き直す必要はない
 - C: `renderBoard()` — 新しい `deck` でカードを作り直す
 
 5-1 で状態変数を 1 箇所に集めておいたので、「何を戻せばよいか」を上から順に確認できます。戻し忘れが 1 つでもあると、リセットしたのに前の値が残ります。
