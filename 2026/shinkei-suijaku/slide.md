@@ -448,12 +448,13 @@ const boardEl = document.getElementById("board");
 
 JS で書いた 1 行が、HTML のどこになるかの対応です。
 
-```javascript
-el.className = "card";     // <div class="card">
-el.dataset.symbol = "🍎";  // <div data-symbol="🍎">
-el.textContent = "?";      // <div>?</div>
-parent.appendChild(child); // <parent><child></child></parent>
-```
+| やること | JS | できる HTML |
+| --- | --- | --- |
+| 要素を作る | `document.createElement("div")` | `<div></div>` |
+| クラスを追加する | `el.className = "card"` | `<div class="card">` |
+| データを持たせる (あとで説明) | `el.dataset.symbol = "🍎"` | `<div data-symbol="🍎">` |
+| 文字を入れる | `el.textContent = "?"` | `<div>?</div>` |
+| 要素を中に入れる | `parent.appendChild(child)` | `<parent><child></child></parent>` |
 
 `document.createElement` で作っただけの要素は、まだどこにも属していません。`appendChild` でつなげて初めて入れ子になります。
 
