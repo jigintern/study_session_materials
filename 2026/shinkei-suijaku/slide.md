@@ -1217,9 +1217,11 @@ let deck = shuffle(symbols.concat(symbols));
 
 ## 5-1. 状態変数と DOM 参照を追加
 
-<span class="tag-unlock">コピペ</span> いちばん最後ではなく、2-1 で書いた `let lockBoard = false;` の下にまとめて追加します。
+<span class="tag-unlock">コピペ</span> いちばん最後ではなく、`let lockBoard = false;` の下にまとめて追加します。
 
 ```javascript
+let lockBoard = false;   // すでにある行
+
 // STUDENT [5-1]: 手数、ペア数、タイマー用の状態を用意
 let moves = 0;
 let matchedPairs = 0;
@@ -1248,7 +1250,7 @@ const clearMessageEl = document.getElementById("clear-message");
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
-書く場所は `handleCardClick` の中、`secondCard = card;` と 3-1 で書いた `const isMatch = ...` の間です。この 2 行が「状態を変えたら描画を更新する」という型になります。
+書く場所は `handleCardClick` の中、`secondCard = card;` と `const isMatch = ...` の間です。この 2 行が「状態を変えたら描画を更新する」という型になります。
 
 <div class="task">
 
@@ -1539,7 +1541,7 @@ resetBtn.addEventListener("click", resetGame);
 
 ## 6-3. 初回描画を resetGame に統一
 
-<span class="tag-unlock">コピペ</span> 1-4 で書いた `renderBoard();` の呼び出しを消して、代わりに `resetGame();` をファイルのいちばん最後に置きます。
+<span class="tag-unlock">コピペ</span> `renderBoard();` の呼び出しを消して、代わりに `resetGame();` をファイルのいちばん最後に置きます。
 
 ```javascript
 // 削除 (renderBoard 関数の下にある呼び出し)
@@ -1552,7 +1554,7 @@ resetGame();
 初回起動もリセットも同じ処理で扱え、状態変数の初期化が一箇所に集約されます。
 
 <div class="note">
-<code>resetGame();</code> は必ず 5-1 で書いた変数より後ろに置きます。<code>let</code> と <code>const</code> は宣言より前で読むとエラー (<code>Cannot access ... before initialization</code>) になるためです。
+いちばん最後に置くのは、<code>let</code> と <code>const</code> が宣言より前で読むとエラー (<code>Cannot access ... before initialization</code>) になるためです。
 4-2 で <code>shuffle</code> をいちばん最後に書いても上の行から呼べたのは、<code>function</code> の宣言だけの性質です。
 </div>
 
