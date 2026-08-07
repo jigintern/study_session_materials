@@ -545,15 +545,37 @@ boardEl.appendChild(createCard("🍎"));
 
 <!-- _class: tight -->
 
-## 1-3 補足: dataset で絵柄を持たせる
+## 1-3 補足: カードから絵柄を取り出す
 
-一致判定では、カードから絵柄だけを取り出して比べます。ところが `card.textContent` では、表の `?` と裏の絵柄がつながってしまいます。
+Chapter 3 では、めくった 2 枚が同じ絵柄かを判定します。そのためには、カード要素から絵柄だけを取り出せる必要があります。
 
-```javascript
-card.textContent      // "?🍎" — 表と裏の文字がつながる
+書かれている文字を取得するには `textContent` を使います。
+
+ただし、カードの中には表の `?` と裏の絵柄が両方入っています。
+
+```html
+<!-- 1-3 で作ったカードの再掲。書き足すものではない -->
+<div class="card">                    <!-- ここの textContent を読むと -->
+  <div class="card-inner">
+    <div class="card-front">?</div>   <!-- この ? と -->
+    <div class="card-back">🍎</div>   <!-- この 🍎 がつながって返る -->
+  </div>
+</div>
 ```
 
-そこで、カード要素自身に絵柄を持たせます。ここで `dataset` という仕組みを使います。
+`textContent` は中にある文字を全部つなげて返すので、表の `?` が混ざります。
+
+```javascript
+card.textContent      // "?🍎"
+```
+
+---
+
+<!-- _class: tight -->
+
+## 1-3 補足: dataset で絵柄を持たせる
+
+そこで、絵柄をカードの中の文字としてではなく、カード要素自身に持たせます。ここで `dataset` という仕組みを使います。
 
 ```javascript
 card.dataset.symbol = "🍎";   // 要素に data-symbol="🍎" が付く
@@ -563,7 +585,8 @@ card.dataset.symbol           // "🍎" — 絵柄だけ取れる
 DOM 上では次のように追加されるイメージです。
 
 ```html
-<div data-symbol="🍎"></div>
+<!-- 書き足すものではない -->
+<div class="card" data-symbol="🍎">
 ```
 
 `dataset` を使うと、HTML の要素に自分で決めた名前でデータを紐付けられます。今回の場合なら `symbol` の部分がその名前で、`dataset.symbol` なら `data-symbol`、`dataset.color` なら `data-color` になります。
