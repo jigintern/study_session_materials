@@ -547,16 +547,26 @@ boardEl.appendChild(createCard("🍎"));
 
 ## 1-3 補足: dataset で絵柄を持たせる
 
-`dataset` は、DOM 要素に自分で決めた名前でデータを持たせる仕組みです。`card.dataset.symbol = "🍎"` と書くと `data-symbol="🍎"` として要素に残り、あとから `card.dataset.symbol` で読み出せます。`class` や `id` は意味が決まっていますが、`data-` に続く名前は自分で決められます。
-
-絵柄は `card-back` の中身としても入っています。ただ `card.textContent` で取り出すと、表の `?` まで付いてきます。
+一致判定では、カードから絵柄だけを取り出して比べます。ところが `card.textContent` では、表の `?` と裏の絵柄がつながってしまいます。
 
 ```javascript
 card.textContent      // "?🍎" — 表と裏の文字がつながる
-card.dataset.symbol   // "🍎"  — 絵柄だけ取れる
 ```
 
-絵柄だけを見比べたいので、`dataset` にも同じ値を入れておきます。めくった 2 枚が同じ絵柄かを判定するときに使います。
+そこで、カード要素自身に絵柄を持たせます。ここで `dataset` という仕組みを使います。
+
+```javascript
+card.dataset.symbol = "🍎";   // 要素に data-symbol="🍎" が付く
+card.dataset.symbol           // "🍎" — 絵柄だけ取れる
+```
+
+DOM 上では次のように追加されるイメージです。
+
+```html
+<div data-symbol="🍎"></div>
+```
+
+`dataset` を使うと、HTML の要素に自分で決めた名前でデータを紐付けられます。`class` や `id` と違い、`data-` に続く名前は自由に決められます。
 
 ---
 
