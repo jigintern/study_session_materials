@@ -302,6 +302,10 @@
   let userFunctionDecls = new Set();
   let userSource = null; // fetch できない環境 (file:// など) では null のまま
 
+  // 「一度でもデータから問題を表示できた」ことの記録。結果画面では問題文が消えていて
+  // 当然なので、そのときだけこの記録で判定する。script.js が書き換わったら捨てる。
+  let shownFromData = false;
+
   // 初心者が typo しやすいブラウザ組み込みの名前も候補に含める
   const BUILTIN_NAMES = ["alert", "prompt", "confirm", "console", "document"];
 
@@ -348,6 +352,8 @@
       const res = await fetch("script.js", { cache: "no-store" });
       if (!res.ok) return;
       const raw = await res.text();
+      // script.js が書き換わったら「一度は動いていた」記録を捨てる
+      if (userSource !== null && raw !== userSource) shownFromData = false;
       userSource = raw;
       const { declared, unused, fnDecls } = collectDeclarations(raw);
       userDeclarations = declared;
@@ -496,6 +502,99 @@
     return el;
   };
 
+  const KNOWN_EVENTS = new Set([
+    "click", "dblclick", "auxclick", "contextmenu",
+    "mousedown", "mouseup", "mousemove", "mouseenter", "mouseleave", "mouseover", "mouseout",
+    "keydown", "keyup", "keypress",
+    "input", "change", "submit", "reset", "focus", "blur", "focusin", "focusout", "select",
+    "load", "unload", "beforeunload", "DOMContentLoaded", "readystatechange", "pageshow", "pagehide",
+    "resize", "scroll", "wheel",
+    "touchstart", "touchend", "touchmove", "touchcancel",
+    "pointerdown", "pointerup", "pointermove", "transitionend", "animationend",
+  ]);
+
+  // addEventListener("clik", ...) は例外にならず、ただ何も起きない。
+  const _addEventListener = EventTarget.prototype.addEventListener;
+  EventTarget.prototype.addEventListener = function (type, listener, options) {
+    if (typeof type === "string" && !KNOWN_EVENTS.has(type)) {
+      const callerLine = findCallerInScript();
+      if (callerLine > 0) {
+        const near = findClosest(type, [...KNOWN_EVENTS]);
+        if (near) {
+          const msg = `addEventListener("${type}") は未知のイベント。もしかして "${near}"?`;
+          pushError(msg, "script.js", callerLine);
+          console.warn(`[debug] ${msg} (script.js:${callerLine})`);
+        }
+      }
+    }
+    return _addEventListener.call(this, type, listener, options);
+  };
+
+  // el.textConten = "..." や el.style.dispaly = "..." のようなプロパティ名の typo は、
+  // 代入が成功してしまうのでエラーにならない。存在しない名前への代入だけがオブジェクトに
+  // 新しいプロパティを増やすので、まっさらな要素のプロパティ一覧と見比べれば typo を特定できる。
+  // (ブラウザによって「素の状態でどこまで own property として見えるか」が違うため、
+  //  固定リストではなく実物の要素から基準を作る。CSS の設定済み宣言は "0" "1" の添字で
+  //  見えるので数字は除外する。)
+  const ownKeys = (obj) => {
+    try {
+      return Object.keys(obj);
+    } catch (e) {
+      return [];
+    }
+  };
+  const notIndex = (k) => !/^\d+$/.test(k);
+
+  // 要素側のプロパティは prototype にあって baseline に現れないブラウザが多いので、
+  // 「もしかして」の候補としてよく使う名前を別に持っておく。
+  const DOM_PROPS = [
+    "textContent", "innerHTML", "innerText", "className", "classList", "id", "value",
+    "checked", "disabled", "hidden", "src", "href", "alt", "title", "style", "onclick",
+    "dataset",
+  ];
+
+  const baselineCache = new Map();
+  const baselineFor = (tagName) => {
+    let base = baselineCache.get(tagName);
+    if (!base) {
+      const fresh = document.createElement(tagName);
+      base = {
+        el: new Set(ownKeys(fresh).filter(notIndex)),
+        style: new Set(ownKeys(fresh.style).filter(notIndex)),
+      };
+      baselineCache.set(tagName, base);
+    }
+    return base;
+  };
+
+  const expandoHints = () => {
+    const out = [];
+    for (const el of document.querySelectorAll("body *")) {
+      if (el.closest("#debug-panel")) continue;
+      const where = el.id ? `#${el.id}` : el.tagName.toLowerCase();
+      const base = baselineFor(el.tagName);
+
+      const add = (key, holder, candidates) => {
+        const near = findClosest(key, candidates);
+        out.push(
+          near
+            ? `${holder} の "${key}" に書き込んでいます。もしかして "${near}"? (エラーが出ないまちがいです)`
+            : `${holder} に見慣れないプロパティ "${key}" を書き込んでいます (エラーが出ないので気づきにくいまちがいかも)`
+        );
+      };
+
+      for (const key of ownKeys(el)) {
+        if (!notIndex(key) || base.el.has(key)) continue;
+        add(key, where, [...base.el, ...DOM_PROPS]);
+      }
+      for (const key of ownKeys(el.style)) {
+        if (!notIndex(key) || base.style.has(key)) continue;
+        add(key, `${where}.style`, [...base.style]);
+      }
+    }
+    return out;
+  };
+
   // ---- ヒント (状況起点) -----------------------------------------------------
   const readEl = (id) => _getElementById(id);
 
@@ -538,10 +637,52 @@
     // quizData の形のチェック
     for (const p of quizDataProblems()) hints.add(p);
 
+    // プロパティ名の typo (エラーにならないので画面が変わらないだけになる)
+    for (const h of expandoHints()) hints.add(h);
+
+    // 画面に undefined / NaN が出ている (プロパティ名の打ちまちがい、計算に文字列混入)
+    const shown = [readEl("question-number"), readEl("question"), readEl("result"), ...choiceButtons()];
+    for (const el of shown) {
+      if (!el) continue;
+      const text = el.textContent || "";
+      if (text.includes("undefined")) {
+        hints.add('画面に "undefined" が出ています。quiz.question / quiz.choices / quiz.answer のプロパティ名を打ちまちがえていませんか?');
+      }
+      if (text.includes("NaN")) {
+        hints.add('画面に "NaN" が出ています。数値の計算に文字列が混ざっていませんか?');
+      }
+    }
+
+    // 関数はあるのにボタンと繋がっていない (押しても何も起きず、エラーも出ない)
+    const btns = choiceButtons();
+    if (hasFn("checkAnswer") && btns.length > 0 && btns.every((b) => !b.hasAttribute("onclick"))) {
+      hints.add('checkAnswer は定義済みですが、選択肢ボタンに onclick がありません (index.html に onclick="checkAnswer(0)" を書きます)');
+    }
+    const nextBtnEl = readEl("next-btn");
+    if (hasFn("nextQuestion") && nextBtnEl && !nextBtnEl.hasAttribute("onclick")) {
+      hints.add('nextQuestion は定義済みですが、次へボタンに onclick がありません (onclick="nextQuestion()")');
+    }
+
+    // onclick の番号がずれている (コピペで全部 0 のまま、など)
+    const nums = btns.map((b) => {
+      const m = /checkAnswer\(\s*(\d+)\s*\)/.exec(b.getAttribute("onclick") || "");
+      return m ? Number(m[1]) : null;
+    });
+    if (nums.length >= 2 && nums.every((n) => n !== null) && !nums.every((n, i) => n === i)) {
+      hints.add(`選択肢ボタンの checkAnswer(番号) が ${nums.join(", ")} になっています。上から 0, 1, 2 の順にします`);
+    }
+
+    // if の中が代入 (if (a = b) は必ず成り立ってしまい、エラーも出ない)
+    if (userSource !== null && /\bif\s*\([^)=]*[^=!<>]=[^=]/.test(userSource)) {
+      hints.add("if ( ) の中に = があります。比較は === です (= は代入なので、条件がいつも成り立ってしまいます)");
+    }
+
     // showQuestion の呼び忘れ (定義済み・データありなのに初期表示のまま)
     const nextBtn = readEl("next-btn");
     const resultEl = readEl("result");
+    // エラーで途中停止しているときは「呼び忘れ」ではないので出さない
     if (
+      errors.length === 0 &&
       hasFn("showQuestion") &&
       safeRead("quizData") !== UNDEF &&
       nextBtn && nextBtn.style.display === "" &&
@@ -626,9 +767,14 @@
         const d = safeRead("quizData");
         if (!Array.isArray(d) || d.length === 0) return false;
         const cq = safeRead("currentQuestion");
-        const idx = typeof cq === "number" && cq >= 0 && cq < d.length ? cq : 0;
+        // 結果画面 (最後まで解き終わった状態) では問題文が出ていなくて当然なので、
+        // 一度でも表示できていたなら合格のままにする。
+        if (typeof cq === "number" && cq >= d.length) return shownFromData;
+        const idx = typeof cq === "number" && cq >= 0 ? cq : 0;
         const q = readEl("question");
-        return !!q && !!d[idx] && q.textContent === d[idx].question && readEl("next-btn").style.display !== "";
+        const ok = !!q && !!d[idx] && q.textContent === d[idx].question && readEl("next-btn").style.display !== "";
+        if (ok) shownFromData = true;
+        return ok;
       } },
     ],
     "Chapter 3": [
