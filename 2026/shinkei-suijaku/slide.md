@@ -526,7 +526,7 @@ JS で書いた 1 行が、HTML のどこになるかの対応です。
 
 ## 1-3. カード 1 枚を作る関数
 
-<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】【B】を書きましょう。
+<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【C】を書きましょう。
 
 <div class="timer-box" data-seconds="150">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -539,8 +539,9 @@ JS で書いた 1 行が、HTML のどこになるかの対応です。
 
 ```javascript
 // STUDENT [1-3]:
-// A: front (? の面) と back (絵柄の面) を inner の中に入れる (2 行)
-// B: inner を card の中に入れる (1 行)
+// A: front (? の面) を inner の中に入れる (1 行)
+// B: back (絵柄の面) を inner の中に入れる (1 行)
+// C: inner を card の中に入れる (1 行)
 function createCard(symbol) {
   const card = document.createElement("div");
   card.className = "card";
@@ -557,6 +558,7 @@ function createCard(symbol) {
 
   【A】
   【B】
+  【C】
   return card;
 }
 ```
@@ -585,7 +587,7 @@ boardEl.appendChild(createCard("🍎"));
 
 青い「?」のカードが 1 枚出れば OK です。確認できたらこの 1 行は消します。
 
-何も出ないときは、【A】【B】がまだ入れ子になっていません。次のスライドで答え合わせをします。
+何も出ないときは、【A】〜【C】がまだ入れ子になっていません。次のスライドで答え合わせをします。
 
 ![w:480](./screenshots/one-real-card.png)
 
@@ -598,11 +600,13 @@ boardEl.appendChild(createCard("🍎"));
 ```javascript
   // ... 要素を作るところは省略 ...
 
-  // A (2 行): card-front と card-back が card-inner の内側に入る
+  // A: card-front が card-inner の内側に入る
   inner.appendChild(front);
+
+  // B: card-back が card-inner の内側に入る
   inner.appendChild(back);
 
-  // B (1 行): card-inner が card の内側に入る
+  // C: card-inner が card の内側に入る
   card.appendChild(inner);
 
   return card;
