@@ -535,19 +535,16 @@ boardEl.appendChild(createCard("🍎"));
 ```javascript
   // ... 要素を作るところは省略 ...
 
+  // A (2 行): card-front と card-back が card-inner の内側に入る
   inner.appendChild(front);
   inner.appendChild(back);
+
+  // B (1 行): card-inner が card の内側に入る
   card.appendChild(inner);
+
   return card;
 }
 ```
-
-<div class="syntax">
-
-- A: `inner.appendChild(front)` → `card-front` が `card-inner` の内側に入る
-- B: `card.appendChild(inner)` → `card-inner` が `card` の内側に入る
-
-</div>
 
 作りたいカードの HTML と見比べると、内側の要素から順に入れていることが分かります。
 
