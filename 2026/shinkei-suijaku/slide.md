@@ -1502,6 +1502,8 @@ function handleMatch() {
 
 「もう一度」ボタンを機能させて最初から遊べるようにし、同時に「初回起動」と「リセット」を同じ処理で扱うよう整理します。
 
+![bg right:36% h:520](./screenshots/chapter6-reset.gif)
+
 ---
 
 <!-- _class: tight -->
