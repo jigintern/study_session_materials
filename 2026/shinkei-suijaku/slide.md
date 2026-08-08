@@ -326,6 +326,12 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 
 </div>
 
+---
+
+<!-- _class: tight -->
+
+## 1-1. deck を作る
+
 <span class="tag-unlock">コピペ</span> `script.js` のいちばん最後に書き足します。
 
 ```javascript
@@ -334,8 +340,10 @@ const deck = symbols.concat(symbols);
 ```
 
 データを用意しただけで、まだ表示するコードがないので、貼っても画面は変わりません。
+
 <span class="tag-verify">確認</span> 診断パネルの「変数など」で `deck` が「(未定義)」から `[Array length=16]` に変わります。
 
+![bg right:36% contain](./screenshots/deck-check.png)
 
 ---
 
