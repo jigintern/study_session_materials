@@ -167,6 +167,7 @@ style: |
   .split-main { flex: 1 1 64%; }
   .split-side { flex: 1 1 36%; }
   .split pre { font-size: 0.7em; }
+  .split.code-lg pre { font-size: 0.78em; }
   .split > * > *:first-child { margin-top: 0; }
   .timer-box {
     position: absolute; top: 24px; right: 32px;
@@ -1598,6 +1599,9 @@ function handleMatch() {
 
 </div>
 
+<div class="split code-lg">
+<div class="split-main">
+
 ```javascript
 // STUDENT [6-1]: ゲームを初期状態に戻す
 function resetGame() {
@@ -1614,7 +1618,8 @@ function resetGame() {
 }
 ```
 
-<span class="tag-verify">確認</span> `resetGame` を呼ぶ場所をまだ作っていないので、ここでは確かめられません。6-2 でボタンに繋いでから確認します。
+</div>
+<div class="split-side">
 
 <details class="hint">
 <summary>ヒント</summary>
@@ -1623,6 +1628,11 @@ function resetGame() {
 - C: 新しい `deck` でカードを作り直す処理
 
 </details>
+
+<span class="tag-verify">確認</span> `resetGame` を呼ぶ場所をまだ作っていないので、ここでは確かめられません。6-2 でボタンに繋いでから確認します。
+
+</div>
+</div>
 
 ---
 
