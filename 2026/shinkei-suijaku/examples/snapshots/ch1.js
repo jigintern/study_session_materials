@@ -7,10 +7,10 @@
 // カードの絵柄 (8 種類 x 2 枚 = 16 枚)
 const symbols = ["🍎", "🍌", "🍇", "🍓", "🍊", "🥝", "🍑", "🍍"];
 
-// STUDENT [1-1]: symbols を 2 回連結して 16 枚の deck を作る
+// symbols を 2 回連結して 16 枚の deck を作る
 const deck = symbols.concat(symbols);
 
-// STUDENT [1-2]: 盤面を取得して boardEl に入れる
+// 盤面を取得して boardEl に入れる
 const boardEl = document.getElementById("board");
 
 function createCard(symbol) {

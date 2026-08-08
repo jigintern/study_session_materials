@@ -335,7 +335,7 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 <span class="tag-unlock">コピペ</span> `script.js` のいちばん最後に書き足します。
 
 ```javascript
-// STUDENT [1-1]: symbols を 2 回連結して 16 枚の deck を作る
+// symbols を 2 回連結して 16 枚の deck を作る
 const deck = symbols.concat(symbols);
 ```
 
@@ -396,7 +396,7 @@ JS のコードから `<div id="board">` を触るために、HTML に付けて�
 <span class="tag-unlock">コピペ</span> `script.js` のいちばん最後に書き足します。
 
 ```javascript
-// STUDENT [1-2]: 盤面を取得して boardEl に入れる
+// 盤面を取得して boardEl に入れる
 const boardEl = document.getElementById("board");
 ```
 
@@ -538,10 +538,9 @@ JS で書いた 1 行が、HTML のどこになるかの対応です。
 <div class="split-main">
 
 ```javascript
-// STUDENT [1-3]:
-// A: front (? の面) を inner の中に入れる (1 行)
-// B: back (絵柄の面) を inner の中に入れる (1 行)
-// C: inner を card の中に入れる (1 行)
+// A: front (? の面) を inner の中に入れる
+// B: back (絵柄の面) を inner の中に入れる
+// C: inner を card の中に入れる
 function createCard(symbol) {
   const card = document.createElement("div");
   card.className = "card";
@@ -695,7 +694,7 @@ card.dataset.symbol           // "🍎" — 絵柄だけ取れる
 </div>
 
 ```javascript
-// STUDENT [1-4]: deck の各要素をカードにして盤面に並べる
+// deck の各要素をカードにして盤面に並べる
 function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
@@ -817,7 +816,7 @@ card.classList.add("flipped");   // class="card flipped" になる
 <span class="tag-unlock">コピペ</span> `deck` の宣言の下あたりに追加します。
 
 ```javascript
-// STUDENT [2-1]: めくりの状態を持つ変数を用意する
+// めくりの状態を持つ変数を用意する
 let firstCard = null;    // 1 枚目にめくったカード
 let secondCard = null;   // 2 枚目にめくったカード
 let lockBoard = false;   // 2 枚めくったあとに他のカードを押させないためのロック
@@ -861,7 +860,7 @@ let lockBoard = false;   // 2 枚めくったあとに他のカードを押さ�
 </div>
 
 ```javascript
-// STUDENT [2-2]: フロー図に沿って書く
+// フロー図に沿って書く
 function handleCardClick(card) {
   if (【A】) return;
   if (card.classList.contains(【B】)) return;
@@ -928,7 +927,7 @@ function createCard(symbol) {
   // ... (ここまでに書いた中身は省略) ...
   card.appendChild(inner);
 
-  // STUDENT [2-3]: この 1 行を追加
+  // この 1 行を追加
   card.addEventListener("click", () => handleCardClick(card));
 
   return card;
@@ -1009,7 +1008,7 @@ card.addEventListener("click", () => handleCardClick(card));
 </div>
 
 ```javascript
-// STUDENT [3-1]: 2 枚目がめくれたら判定する
+// 2 枚目がめくれたら判定する
 secondCard = card;
 
 const isMatch = firstCard.dataset.【A】 === secondCard.dataset.【A】;
@@ -1118,7 +1117,7 @@ function handleMatch() {
 <span class="tag-unlock">コピペ</span>
 
 ```javascript
-// STUDENT [3-3]: 不一致は 800ms 待って伏せに戻す
+// 不一致は 800ms 待って伏せに戻す
 function handleMismatch() {
   lockBoard = true;
   setTimeout(unflipCards, 800);
@@ -1347,7 +1346,7 @@ let deck = shuffle(symbols.concat(symbols));
 ```javascript
 let lockBoard = false;   // すでにある行
 
-// STUDENT [5-1]: 手数、ペア数、タイマー用の状態を用意
+// 手数、ペア数、タイマー用の状態を用意
 let moves = 0;
 let matchedPairs = 0;
 let timerId = null;
@@ -1464,7 +1463,7 @@ function stopTimer() {
 <span class="tag-unlock">コピペ</span> `handleCardClick` の `if (!firstCard)` の分岐に 1 行追加します。
 
 ```javascript
-// STUDENT [5-4]: 1 枚目をめくった瞬間にタイマー開始 (まだ動いていなければ)
+// 1 枚目をめくった瞬間にタイマー開始 (まだ動いていなければ)
 if (!firstCard) {
   firstCard = card;
   if (!timerId) startTimer();
@@ -1497,7 +1496,7 @@ if (!firstCard) {
 </div>
 
 ```javascript
-// STUDENT [5-5]: handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア
+// handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア
 function handleMatch() {
   firstCard.classList.add("matched");
   secondCard.classList.add("matched");
@@ -1601,7 +1600,7 @@ function handleMatch() {
 <div class="split-main">
 
 ```javascript
-// STUDENT [6-1]: ゲームを初期状態に戻す
+// ゲームを初期状態に戻す
 function resetGame() {
   stopTimer();
   deck = 【A】;
@@ -1701,7 +1700,7 @@ function resetGame() {
 </div>
 
 ```javascript
-// STUDENT [6-2]: もう一度ボタンで resetGame を呼ぶ
+// もう一度ボタンで resetGame を呼ぶ
 const resetBtn = document.getElementById("reset-btn");
 resetBtn.addEventListener("click", 【A】);
 ```

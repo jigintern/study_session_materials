@@ -6,15 +6,15 @@
 // カードの絵柄 (8 種類 x 2 枚 = 16 枚)
 const symbols = ["🍎", "🍌", "🍇", "🍓", "🍊", "🥝", "🍑", "🍍"];
 
-// STUDENT [4-2]: deck をシャッフルする。再代入するので const ではなく let
+// deck をシャッフルする。再代入するので const ではなく let
 let deck = shuffle(symbols.concat(symbols));
 
-// STUDENT [2-1]: めくりの状態を持つ変数を用意する
+// めくりの状態を持つ変数を用意する
 let firstCard = null;    // 1 枚目にめくったカード
 let secondCard = null;   // 2 枚目にめくったカード
 let lockBoard = false;   // 2 枚めくったあとに他のカードを押させないためのロック
 
-// STUDENT [5-1]: 手数、ペア数、タイマー用の状態を用意
+// 手数、ペア数、タイマー用の状態を用意
 let moves = 0;
 let matchedPairs = 0;
 let timerId = null;
@@ -25,7 +25,7 @@ const movesEl = document.getElementById("moves");
 const pairsEl = document.getElementById("pairs");
 const clearMessageEl = document.getElementById("clear-message");
 
-// STUDENT [1-2]: 盤面を取得して boardEl に入れる
+// 盤面を取得して boardEl に入れる
 const boardEl = document.getElementById("board");
 
 function createCard(symbol) {
@@ -46,7 +46,7 @@ function createCard(symbol) {
   inner.appendChild(back);
   card.appendChild(inner);
 
-  // STUDENT [2-3]: この 1 行を追加
+  // この 1 行を追加
   card.addEventListener("click", () => handleCardClick(card));
 
   return card;
@@ -62,7 +62,7 @@ function renderBoard() {
   }
 }
 
-// STUDENT [2-2]: フロー図に沿って書く
+// フロー図に沿って書く
 function handleCardClick(card) {
   if (lockBoard) return;
   if (card.classList.contains("flipped")) return;
@@ -71,15 +71,15 @@ function handleCardClick(card) {
 
   if (!firstCard) {
     firstCard = card;
-    // STUDENT [5-4]: 1 枚目をめくった瞬間にタイマー開始 (まだ動いていなければ)
+    // 1 枚目をめくった瞬間にタイマー開始 (まだ動いていなければ)
     if (!timerId) startTimer();
     return;
   }
 
-  // STUDENT [3-1]: 2 枚目がめくれたら判定する
+  // 2 枚目がめくれたら判定する
   secondCard = card;
 
-  // STUDENT [5-2]: 状態を変えたら、その場で描画も更新する
+  // 状態を変えたら、その場で描画も更新する
   moves++;
   movesEl.textContent = moves;
 
@@ -92,7 +92,7 @@ function handleCardClick(card) {
   }
 }
 
-// STUDENT [5-5]: 3-2 の handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア
+// 3-2 の handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア
 function handleMatch() {
   firstCard.classList.add("matched");
   secondCard.classList.add("matched");
@@ -106,7 +106,7 @@ function handleMatch() {
   }
 }
 
-// STUDENT [3-3]: 不一致は 800ms 待って伏せに戻す
+// 不一致は 800ms 待って伏せに戻す
 function handleMismatch() {
   lockBoard = true;
   setTimeout(unflipCards, 800);
@@ -118,14 +118,14 @@ function unflipCards() {
   resetTurn();
 }
 
-// STUDENT [3-4]: 次のターンに備えて状態を戻す
+// 次のターンに備えて状態を戻す
 function resetTurn() {
   firstCard = null;
   secondCard = null;
   lockBoard = false;
 }
 
-// STUDENT [4-1]: Fisher-Yates シャッフル
+// Fisher-Yates シャッフル
 function shuffle(array) {
   const result = array.slice();
   for (let i = result.length - 1; i > 0; i--) {
@@ -135,7 +135,7 @@ function shuffle(array) {
   return result;
 }
 
-// STUDENT [5-3]: タイマーの開始と停止
+// タイマーの開始と停止
 function startTimer() {
   startTime = Date.now();
   // 1000 ms 間隔だと秒表示のズレが目立つので少し細かめに回す
@@ -154,7 +154,7 @@ function stopTimer() {
   timerId = null;
 }
 
-// STUDENT [6-1]: ゲームを初期状態に戻す
+// ゲームを初期状態に戻す
 function resetGame() {
   stopTimer();
   deck = shuffle(symbols.concat(symbols));
@@ -168,9 +168,9 @@ function resetGame() {
   renderBoard();
 }
 
-// STUDENT [6-2]: もう一度ボタンで resetGame を呼ぶ
+// もう一度ボタンで resetGame を呼ぶ
 const resetBtn = document.getElementById("reset-btn");
 resetBtn.addEventListener("click", resetGame);
 
-// STUDENT [6-1]: 初回描画も resetGame に統一 (Chapter 1 で書いた renderBoard(); は削除)
+// 初回描画も resetGame に統一 (Chapter 1 で書いた renderBoard(); は削除)
 resetGame();

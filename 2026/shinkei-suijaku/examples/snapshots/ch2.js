@@ -7,15 +7,15 @@
 // カードの絵柄 (8 種類 x 2 枚 = 16 枚)
 const symbols = ["🍎", "🍌", "🍇", "🍓", "🍊", "🥝", "🍑", "🍍"];
 
-// STUDENT [1-1]: symbols を 2 回連結して 16 枚の deck を作る
+// symbols を 2 回連結して 16 枚の deck を作る
 const deck = symbols.concat(symbols);
 
-// STUDENT [2-1]: めくりの状態を持つ変数を用意する
+// めくりの状態を持つ変数を用意する
 let firstCard = null;    // 1 枚目にめくったカード
 let secondCard = null;   // 2 枚目にめくったカード
 let lockBoard = false;   // 2 枚めくったあとに他のカードを押させないためのロック
 
-// STUDENT [1-2]: 盤面を取得して boardEl に入れる
+// 盤面を取得して boardEl に入れる
 const boardEl = document.getElementById("board");
 
 function createCard(symbol) {
@@ -36,7 +36,7 @@ function createCard(symbol) {
   inner.appendChild(back);
   card.appendChild(inner);
 
-  // STUDENT [2-3]: この 1 行を追加
+  // この 1 行を追加
   card.addEventListener("click", () => handleCardClick(card));
 
   return card;
@@ -54,7 +54,7 @@ function renderBoard() {
 
 renderBoard();
 
-// STUDENT [2-2]: フロー図に沿って書く
+// フロー図に沿って書く
 function handleCardClick(card) {
   if (lockBoard) return;
   if (card.classList.contains("flipped")) return;
