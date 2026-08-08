@@ -1548,7 +1548,7 @@ function resetGame() {
 <details class="hint">
 <summary>ヒント</summary>
 
-- A: 押すたびに並びが変わる、新しい 16 枚の `deck`
+- A: `symbols` を 2 つつないで並びを混ぜた新しい配列
 - B: めくりの 3 つの状態を初期値に戻す処理
 - C: 新しい `deck` でカードを作り直す処理
 
@@ -1575,7 +1575,7 @@ function resetGame() {
 }
 ```
 
-- A: `shuffle(symbols.concat(symbols))` — 16 枚を作ってシャッフルする式。押すたびに並びが変わる
+- A: `shuffle(symbols.concat(symbols))` — 16 枚を作ってシャッフルする式
 - B: `resetTurn()` — めくりの状態を戻す関数をそのまま再利用。同じ 3 行を書き直す必要はない
 - C: `renderBoard()` — 新しい `deck` でカードを作り直す
 
