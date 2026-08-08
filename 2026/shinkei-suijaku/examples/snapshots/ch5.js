@@ -95,7 +95,7 @@ function handleCardClick(card) {
   }
 }
 
-// 3-2 の handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア
+// ペア数の更新と、全ペア揃ったらクリア
 function handleMatch() {
   firstCard.classList.add("matched");
   secondCard.classList.add("matched");

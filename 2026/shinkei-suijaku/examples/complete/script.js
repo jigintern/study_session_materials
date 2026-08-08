@@ -92,7 +92,7 @@ function handleCardClick(card) {
   }
 }
 
-// 3-2 の handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア
+// ペア数の更新と、全ペア揃ったらクリア
 function handleMatch() {
   firstCard.classList.add("matched");
   secondCard.classList.add("matched");
@@ -172,5 +172,5 @@ function resetGame() {
 const resetBtn = document.getElementById("reset-btn");
 resetBtn.addEventListener("click", resetGame);
 
-// 初回描画も resetGame に統一 (Chapter 1 で書いた renderBoard(); は削除)
+// 初回描画も resetGame に統一
 resetGame();
