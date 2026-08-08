@@ -323,7 +323,6 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 - `concat` — `A.concat(B)` で A のうしろに B をつなげた新しい配列を返す。A も B も変わらない
   例 1: `["a", "b"].concat(["c"])` → `["a", "b", "c"]`
   例 2: `["a", "b"].concat(["a", "b"])` → `["a", "b", "a", "b"]`
-- `array.length` — 配列の要素数
 
 </div>
 
