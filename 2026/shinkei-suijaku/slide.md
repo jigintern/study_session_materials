@@ -371,6 +371,45 @@ const deck = symbols.concat(symbols);
 
 <!-- _class: tight -->
 
+## 1-2. HTML の要素を取得する
+
+入れ物は `index.html` にありますが、中身を作るのは `script.js` です。
+ところが JS のコードには、置いてある `<div id="board">` を指す手がかりがまだありません。
+
+そこで、HTML に付けてある `id` を手がかりに要素を取ってきます。
+
+<div class="syntax">
+
+- `document.getElementById(id)` — HTML の中から `id` 属性がその文字列の要素を探して返す
+  例: `<div id="board"></div>` に対して `document.getElementById("board")`
+  同じ `id` は 1 ページに 1 つだけなので、返るのは 1 要素。見つからなければ `null` が返る
+
+</div>
+
+返ってきた要素を変数に入れておけば、そのあとは変数を通して中身を書き換えられます。
+
+---
+
+## 1-2. 盤面を取得する
+
+<span class="tag-unlock">コピペ</span> `script.js` のいちばん最後に書き足します。
+
+```javascript
+// STUDENT [1-2]: 盤面を取得して boardEl に入れる
+const boardEl = document.getElementById("board");
+```
+
+盤面はこのあと何度も触るので、そのたびに `document.getElementById("board")` と書かずに済むよう、最初に取得して変数にしておきます。
+この資料では、HTML 要素を入れる変数の末尾に `El` (Element の略) を付けて統一します。
+
+<span class="tag-verify">確認</span> 画面は変わりません。診断パネルの Chapter 1 を開くと「boardEl が id="board" の要素」に ✓ が付きます。
+
+![bg right:36% contain](./screenshots/boardel-check.png)
+
+---
+
+<!-- _class: tight -->
+
 ## JS で HTML を作る
 
 HTML に書いていない要素も、JS から作って足せます。作るところと、HTML につなぐところの 2 段階です。
@@ -382,7 +421,7 @@ HTML に書いていない要素も、JS から作って足せます。作ると
 </div>
 
 `tagName` は `"div"` や `"p"` のような文字列です。戻り値の `element` は 2 でも使うので変数で受けます。
-`parent` は入れ先の要素です。今回は盤面なので `document.getElementById("board")` を使います。
+`parent` は入れ先の要素です。今回の入れ先は盤面なので、さきほど取得した `boardEl` を渡します。
 
 ---
 
@@ -395,7 +434,7 @@ HTML に書いていない要素も、JS から作って足せます。作ると
 ```javascript
 const apple = document.createElement("div");   // <div></div> ができる
 apple.textContent = "🍎";                      // <div>🍎</div> になる
-document.getElementById("board").appendChild(apple);  // 盤面の中に入る
+boardEl.appendChild(apple);                    // 盤面の中に入る
 ```
 
 貼ると、盤面のところに 🍎 が 1 つ出ます。
@@ -410,7 +449,7 @@ document.getElementById("board").appendChild(apple);  // 盤面の中に入る
 // さっき貼った 3 行
 const apple = document.createElement("div");
 apple.textContent = "🍎";
-document.getElementById("board").appendChild(apple);
+boardEl.appendChild(apple);
 ```
 
 <div class="fig-row">
@@ -432,26 +471,6 @@ document.getElementById("board").appendChild(apple);
 `createElement` で作った要素は、`appendChild` で HTML の中に入れて、はじめて表示されます。
 
 🍎 が 1 つ出るのを確かめたら、この 3 行は消します。
-
----
-
-## 1-2. HTML の要素を取得する
-
-このあと盤面には、カードを 1 枚ずつ入れたり、並んだカードを全部消したりします。
-そのたびに `document.getElementById("board")` と書かずに済むよう、最初に取得して変数にしておきます。
-
-<span class="tag-unlock">コピペ</span>
-
-```javascript
-// STUDENT [1-2]: 盤面を取得して boardEl に入れる
-const boardEl = document.getElementById("board");
-```
-
-この資料では、HTML 要素を入れる変数の末尾に `El` (Element の略) を付けて統一します。
-<span class="tag-verify">確認</span> 画面は変わりません。診断パネルの Chapter 1 を開くと「boardEl が id="board" の要素」に ✓ が付きます。
-
-![bg right:36% contain](./screenshots/boardel-check.png)
-
 
 ---
 
