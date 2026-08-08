@@ -374,19 +374,20 @@ const deck = symbols.concat(symbols);
 ## 1-2. HTML の要素を取得する
 
 入れ物は `index.html` にありますが、中身を作るのは `script.js` です。
-ところが JS のコードには、置いてある `<div id="board">` を指す手がかりがまだありません。
+JS のコードから `<div id="board">` を触るために、HTML に付けてある `id` を手がかりに要素を取ってきます。
 
-そこで、HTML に付けてある `id` を手がかりに要素を取ってきます。
+<div class="fig-row">
+
+![w:820](./diagrams/get-element-by-id.svg)
+
+</div>
 
 <div class="syntax">
 
 - `document.getElementById(id)` — HTML の中から `id` 属性がその文字列の要素を探して返す
-  例: `<div id="board"></div>` に対して `document.getElementById("board")`
-  同じ `id` は 1 ページに 1 つだけなので、返るのは 1 要素。見つからなければ `null` が返る
+  同じ `id` はページに 1 つだけなので、返るのは 1 要素。見つからなければ `null` が返る
 
 </div>
-
-返ってきた要素を変数に入れておけば、そのあとは変数を通して中身を書き換えられます。
 
 ---
 
