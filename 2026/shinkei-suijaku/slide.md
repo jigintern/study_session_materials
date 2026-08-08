@@ -679,16 +679,15 @@ function renderBoard() {
 
   // deck の要素を 1 つずつ取り出して繰り返す
   for (let i = 0; i < deck.length; i++) {
-    const card = createCard(deck[i]);
-    boardEl.appendChild(card);
+    const card = createCard(deck[i]); // A
+    boardEl.appendChild(card);        // B
   }
 }
 
 renderBoard();
 ```
 
-- A: `createCard` — カード 1 枚を作る関数
-- B: `appendChild` — 親要素に子要素を追加
+1 枚作って 1 枚並べる、を `deck` の要素数だけ繰り返します。`createCard` が返してくるのはカード 1 枚の要素なので、そのまま `appendChild` に渡せます。
 
 ---
 
@@ -853,12 +852,12 @@ function handleCardClick(card) {
 
 ```javascript
 function handleCardClick(card) {
-  if (lockBoard) return;
-  if (card.classList.contains("flipped")) return;
+  if (lockBoard) return;                          // A
+  if (card.classList.contains("flipped")) return; // B
 
-  card.classList.add("flipped");
+  card.classList.add("flipped");                  // C
 
-  if (!firstCard) {
+  if (!firstCard) {                               // D
     firstCard = card;
     return;
   }
@@ -867,10 +866,9 @@ function handleCardClick(card) {
 }
 ```
 
-- A: `lockBoard` — ロック中はここで打ち切り、めくる処理まで進ませない
-- B: `"flipped"` — 配布 CSS がこのクラスで表向きアニメを流す
-- C: `add` — 上の `contains` と同じ `classList` のメソッド。クラスを付けるのが `add`
-- D: `firstCard` — `null` (falsy) のとき `!firstCard` が真になる
+`classList` は `contains` で調べて `add` で付けます。付いた `"flipped"` に配布 CSS が反応して、表向きのアニメーションが流れます。
+
+`lockBoard` が真の間は先頭で打ち切るので、判定待ちのクリックはめくる処理まで進みません。`firstCard` の初期値は `null` なので、1 枚目がまだ無いときだけ `!firstCard` が真になります。
 
 ---
 
@@ -993,7 +991,7 @@ if (isMatch) {
 const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 ```
 
-- A: `symbol` — `createCard` で `card.dataset.symbol = symbol` と書いたのを回収
+2 箇所とも `symbol` です。`createCard` の中で `card.dataset.symbol = symbol` と入れておいた値を、ここで回収します。
 
 <div class="syntax">
 
@@ -1460,18 +1458,19 @@ function handleMatch() {
 ## 5-5 答え合わせ
 
 ```javascript
+  // A (2 行)
   matchedPairs++;
   pairsEl.textContent = `${matchedPairs} / ${symbols.length}`;
   // ...
-  if (matchedPairs === symbols.length) {
-    stopTimer();
+  if (matchedPairs === symbols.length) { // B
+    stopTimer();                         // C
 ```
 
-- A: 状態を変えたら、その場で描画も更新する 2 行 1 セット
-- B: `symbols.length` — シンボルの種類数 = 揃えるべきペア数。`8` と直接書いても動きますが、絵柄の種類を変えると判定が追従しません
-- C: `stopTimer()` — `setInterval` は `clearInterval` を呼ぶまで止まりません
+揃えるべきペア数は `symbols.length` から取ります。`8` と直接書いても動きますが、絵柄の種類を変えると判定が追従しません。マジックナンバーを避けて由来のある値を使うのは、可読性を上げる基本的な習慣です。
 
-マジックナンバーを避けて由来のある値を使うのは、可読性を上げる基本的な習慣です。この 2 行 1 セットは今日 2 回目で、リセット機能でも同じ形が出てきます。
+`stopTimer()` を呼ばないと、クリアしたあともタイマーだけ動き続けます。`setInterval` は `clearInterval` を呼ぶまで止まりません。
+
+状態を変えたら、その場で描画も更新する。この 2 行 1 セットは今日 2 回目で、リセット機能でも同じ形が出てきます。
 
 ---
 
@@ -1563,21 +1562,19 @@ function resetGame() {
 ```javascript
 function resetGame() {
   stopTimer();
-  deck = shuffle(symbols.concat(symbols));
-  resetTurn();
+  deck = shuffle(symbols.concat(symbols)); // A
+  resetTurn();                             // B
   moves = 0;
   matchedPairs = 0;
   timerEl.textContent = "00:00";
   movesEl.textContent = "0";
   pairsEl.textContent = `0 / ${symbols.length}`;
   clearMessageEl.textContent = "";
-  renderBoard();
+  renderBoard();                           // C
 }
 ```
 
-- A: `shuffle(symbols.concat(symbols))` — 16 枚を作ってシャッフルする式
-- B: `resetTurn()` — めくりの状態を戻す関数をそのまま再利用。同じ 3 行を書き直す必要はない
-- C: `renderBoard()` — 新しい `deck` でカードを作り直す
+めくりの状態を戻す 3 行は `resetTurn` にまとまっているので、ここでは呼ぶだけで済みます。
 
 並び順が効くのは `deck` への代入と `renderBoard()` の関係だけです。`renderBoard()` は呼ばれた時点の `deck` を読むので、代入より前に置くと古い並びで盤面を作ってしまい、「もう一度」を押しても配置が変わりません。`resetTurn()` と表示を戻す 4 行は、この関数の中ならどこに置いても結果は同じです。
 
@@ -1620,9 +1617,7 @@ resetBtn.addEventListener("click", 【A】);
 resetBtn.addEventListener("click", resetGame);
 ```
 
-- A: `resetGame` — カッコなし
-
-カッコを付けて `resetGame()` と書くと、クリック時ではなく `addEventListener` を呼んだ瞬間に関数が実行されてしまいます。2-3 でカードのクリックを付けたときと同じ話です。
+正解はカッコなしの `resetGame` です。カッコを付けて `resetGame()` と書くと、クリック時ではなく `addEventListener` を呼んだ瞬間に関数が実行されてしまいます。2-3 でカードのクリックを付けたときと同じ話です。
 
 「クリック時に実行したい」ならカッコなし、「今すぐ実行したい」ならカッコあり、というイメージです。
 
