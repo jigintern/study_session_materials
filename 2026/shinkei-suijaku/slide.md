@@ -319,6 +319,8 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 const deck = symbols.concat(symbols);
 ```
 
+データを用意しただけで、まだ表示するコードがないので、貼っても画面は変わりません。
+
 ---
 
 <!-- _class: tight -->
