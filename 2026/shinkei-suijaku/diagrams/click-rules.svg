@@ -28,9 +28,9 @@
 <text x="667" y="224" text-anchor="middle" font-size="28">🍎</text>
 <text x="850" y="220" fill="#64748b">何も起きない</text>
 
-<!-- 行 3: 判定中に 3 枚目をクリック -->
+<!-- 行 3: 絵柄を比べている最中に 3 枚目をクリック -->
 <rect x="16" y="270" width="1168" height="96" rx="10" fill="#f8fafc"/>
-<text x="40" y="312" fill="#334155">2 枚めくった判定中に</text>
+<text x="40" y="312" fill="#334155">2 枚めくって絵柄を比べる間に</text>
 <text x="40" y="338" fill="#334155">3 枚目をクリック</text>
 <rect x="330" y="284" width="54" height="68" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
 <text x="357" y="328" text-anchor="middle" font-size="28">🍎</text>
