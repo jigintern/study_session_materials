@@ -852,6 +852,9 @@ let lockBoard = false;   // 2 枚めくったあとに他のカードを押さ�
 
 </div>
 
+<div class="split code-lg">
+<div class="split-main">
+
 ```javascript
 // フロー図に沿って書く
 function handleCardClick(card) {
@@ -869,7 +872,8 @@ function handleCardClick(card) {
 }
 ```
 
-<span class="tag-verify">確認</span> この関数はまだどこからも呼ばれません。次のスライドでカードに繋いで、クリックして確かめます。
+</div>
+<div class="split-side">
 
 <details class="hint">
 <summary>ヒント</summary>
@@ -880,6 +884,11 @@ function handleCardClick(card) {
 - D: すでに用意した状態変数のどれか (1 枚目)
 
 </details>
+
+<span class="tag-verify">確認</span> この関数はまだどこからも呼ばれません。次のスライドでカードに繋いで、クリックして確かめます。
+
+</div>
+</div>
 
 ---
 
