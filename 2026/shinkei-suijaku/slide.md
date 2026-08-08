@@ -514,7 +514,7 @@ JS で書いた 1 行が、HTML のどこになるかの対応です。
 | --- | --- | --- |
 | 要素を作る | `document.createElement("div")` | `<div></div>` |
 | クラスを追加する | `el.className = "card"` | `<div class="card">` |
-| データを持たせる (あとで説明) | `el.dataset.symbol = "🍎"` | `<div data-symbol="🍎">` |
+| データを持たせる | `el.dataset.symbol = "🍎"` | `<div data-symbol="🍎">` |
 | 文字を入れる | `el.textContent = "?"` | `<div>?</div>` |
 | 要素を中に入れる | `parent.appendChild(child)` | `<parent><child></child></parent>` |
 
@@ -654,14 +654,7 @@ card.dataset.symbol = "🍎";   // 要素に data-symbol="🍎" が付く
 card.dataset.symbol           // "🍎" — 絵柄だけ取れる
 ```
 
-ブラウザが持っている HTML の上では、次のように追加されるイメージです。
-
-```html
-<!-- 書き足すものではない -->
-<div class="card" data-symbol="🍎">
-```
-
-`dataset` を使うと、HTML の要素に自分で決めた名前でデータを紐付けられます。今回の場合なら `symbol` の部分がその名前で、`dataset.symbol` なら `data-symbol`、`dataset.color` なら `data-color` になります。
+`dataset` を使うと、HTML の要素に自分で決めた名前でデータを紐付けられます。今回の場合なら `symbol` の部分がその名前です。
 
 ---
 
@@ -2176,6 +2169,19 @@ deck.sort(() => Math.random() - 0.5);
 比較の回数は処理系によって変わるため、上の数値も実装依存です。ただし n^n が n! の倍数にならない限り、要素数を増やしても偏り自体は残ります。
 
 詳しくは → [シャッフルした結果が偏ると相談を受けたときに確認すること (Zenn)](https://zenn.dev/yoheimuta/articles/89e9b85e01fc4f)
+
+---
+
+## 付録: dataset は HTML でどう見えるか
+
+`card.dataset.symbol = "🍎"` を実行すると、ブラウザが持っている HTML の上では次のように追加されます。
+
+```html
+<!-- 書き足すものではない -->
+<div class="card" data-symbol="🍎">
+```
+
+`dataset` の後ろに置いた名前が、`data-` を付けた属性名になります。`dataset.symbol` なら `data-symbol`、`dataset.color` なら `data-color` です。
 
 ---
 
