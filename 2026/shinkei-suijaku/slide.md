@@ -814,6 +814,8 @@ card.classList.contains("flipped");  // 付いていれば true、なければ f
 
 ---
 
+<!-- _class: tight -->
+
 ## 2-1. 状態変数を用意する
 
 「1 枚目にめくったカード」「2 枚目にめくったカード」「ロック中か」の 3 つを変数で持ちます。
@@ -832,8 +834,10 @@ let lockBoard = false;   // 2 枚めくったあとに他のカードを押さ�
 - `let` — あとで別の値を入れ直すのでこちら。`const` は入れ直すとエラーになる (詳しくは末尾の付録)
 
 </div>
-<span class="tag-verify">確認</span> 「変数など」の `firstCard` と `secondCard` が `null`、`lockBoard` が `false` になります。3 つとも「(未定義)」から変われば貼れています。
 
+<span class="tag-verify">確認</span> 診断パネルの「変数など」で、`firstCard` と `secondCard` が `null`、`lockBoard` が `false` になります。3 つとも「(未定義)」から変われば貼れています。
+
+![bg right:36% contain](./screenshots/state-vars-check.png)
 
 ---
 
