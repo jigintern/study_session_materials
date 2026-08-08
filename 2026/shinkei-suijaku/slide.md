@@ -141,7 +141,7 @@ style: |
   .aside > *:first-child { margin-top: 0; }
   .aside > *:last-child { margin-bottom: 0; }
   .task > *:first-child, .hint-box > *:first-child { margin-top: 0; }
-  .task > *:last-child, .hint-box > *:last-child { margin-bottom: 0; }
+  .task > *:last-child, .hint-box > *:last-child, details.hint > *:last-child { margin-bottom: 0; }
   .task > p:first-child, .hint-box > p:first-child { font-weight: bold; }
   .task > p:first-child { color: #283593; }
   .hint-box > p:first-child { color: #37474f; }
