@@ -525,7 +525,7 @@ JS で書いた 1 行が、HTML のどこになるかの対応です。
 
 ## 1-3. カード 1 枚を作る関数
 
-<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】【B】を書きましょう。前のスライドの対応が使えます。
+<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】【B】を書きましょう。
 
 <div class="timer-box" data-seconds="150">
   <button class="timer-btn" data-delta="-60">−</button>
