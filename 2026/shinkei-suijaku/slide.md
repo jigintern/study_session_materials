@@ -630,7 +630,7 @@ DOM 上では次のように追加されるイメージです。
 </div>
 
 ```javascript
-// STUDENT [1-4]: A はカード 1 枚を作る関数の名前、B は親要素に子要素を追加するメソッド
+// STUDENT [1-4]: deck の各要素をカードにして #board に並べる
 function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
@@ -795,10 +795,6 @@ let lockBoard = false;   // 2 枚めくったあとに他のカードを押さ�
 
 ```javascript
 // STUDENT [2-2]: フロー図に沿って書く
-// A: すでに用意した状態変数のどれか (ロック用)
-// B: CSS 側が反応するクラス名 (文字列)
-// C: クラスを追加する classList のメソッド名
-// D: すでに用意した状態変数のどれか (1 枚目)
 function handleCardClick(card) {
   if (【A】) return;
   if (card.classList.contains(【B】)) return;
@@ -813,6 +809,16 @@ function handleCardClick(card) {
   secondCard = card;
 }
 ```
+
+<details class="hint">
+<summary>ヒント</summary>
+
+- A: すでに用意した状態変数のどれか (ロック用)
+- B: CSS 側が反応するクラス名 (文字列)
+- C: クラスを追加する `classList` のメソッド名
+- D: すでに用意した状態変数のどれか (1 枚目)
+
+</details>
 
 ---
 
@@ -934,7 +940,6 @@ card.addEventListener("click", () => handleCardClick(card));
 
 ```javascript
 // STUDENT [3-1]: 2 枚目がめくれたら判定する
-// A: 2 枚が一致しているかを決めている値
 secondCard = card;
 
 const isMatch = firstCard.dataset.【A】 === secondCard.dataset.【A】;
@@ -949,7 +954,7 @@ if (isMatch) {
 <details class="hint">
 <summary>ヒント</summary>
 
-`createCard` で `dataset` に何を入れたか見返してみましょう
+- A: 2 枚が一致しているかを決めている値。`createCard` で `dataset` に何を入れたか見返してみましょう
 
 </details>
 
@@ -1403,9 +1408,6 @@ if (!firstCard) {
 
 ```javascript
 // STUDENT [5-5]: handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア
-// A: ペア数を 1 増やして、その場で表示も更新する 2 行。表示は「3 / 8」の形
-// B: 「ペアが全部揃った」を表す値。絵柄種類を変えても正しく判定できる書き方
-// C: クリアしたあとも動き続けてしまうものを止める処理
 function handleMatch() {
   firstCard.classList.add("matched");
   secondCard.classList.add("matched");
@@ -1418,6 +1420,15 @@ function handleMatch() {
   }
 }
 ```
+
+<details class="hint">
+<summary>ヒント</summary>
+
+- A: ペア数を 1 増やして、その場で表示も更新する 2 行。表示は「3 / 8」の形
+- B: 「ペアが全部揃った」を表す値。絵柄種類を変えても正しく判定できる書き方
+- C: クリアしたあとも動き続けてしまうものを止める処理
+
+</details>
 
 ---
 
@@ -1488,9 +1499,6 @@ function handleMatch() {
 
 ```javascript
 // STUDENT [6-1]: ゲームを初期状態に戻す
-// A: 押すたびに並びが変わる、新しい 16 枚の deck
-// B: めくりの 3 つの状態を初期値に戻す処理
-// C: 新しい deck でカードを作り直す処理
 function resetGame() {
   stopTimer();
   deck = 【A】;
@@ -1504,6 +1512,15 @@ function resetGame() {
   【C】;
 }
 ```
+
+<details class="hint">
+<summary>ヒント</summary>
+
+- A: 押すたびに並びが変わる、新しい 16 枚の `deck`
+- B: めくりの 3 つの状態を初期値に戻す処理
+- C: 新しい `deck` でカードを作り直す処理
+
+</details>
 
 ---
 
