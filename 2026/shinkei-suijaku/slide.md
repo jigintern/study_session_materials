@@ -279,17 +279,11 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 
 ---
 
-## 準備: 診断パネルの見方
+## 準備: 詰まったときは
 
-プレビュー右上の黒い小窓が診断パネルです。`debug.js` が作っているので、このファイルは触らなくて大丈夫です。
+詰まったら、お気軽に Zoom のチャットなどでメンターにご質問ください。
 
-- 「変数など」に `deck` や `firstCard` の今の値が出ます。まだ書いていない変数は「(未定義)」です
-- 「盤面 (DOM)」はカードの枚数と、めくれている枚数・揃った枚数です
-- 章ごとの `N/M ✓` が進み具合です。行をクリックすると 1 件ずつの合否が開きます
-- `getElementById` の id ミスや `clik` のようなイベント名のミスなど、エラーが出ずに静かに壊れるミスも捕まえます
-- 詰まったら、お気軽にチャットなどでメンターにご連絡ください
-
-各演習の最後に <span class="tag-verify">確認</span> を置いています。書けたかどうかは、そこに書いた見かたで確かめてください。
+プレビュー右上の黒い小窓は診断パネルです。各演習の <span class="tag-verify">確認</span> で使います。
 
 ![bg right:30% contain](./screenshots/debug-panel.png)
 
@@ -354,27 +348,6 @@ const deck = symbols.concat(symbols);
 
 ---
 
-<!-- _class: tight -->
-
-## 1-1 の確認: Console でも見てみる
-
-値をその場で出して確かめる方法もあります。`console.log(...)` は、開発者ツールの Console に値を出す命令です。
-
-<span class="tag-unlock">コピペ</span> `deck` の下に続けて書き足します。
-
-```javascript
-console.log(deck);
-console.log("枚数:", deck.length);
-```
-
-Console はプレビュー右下のタブから開けます。配列が 1 行、続いて「枚数: 16」が出ていれば OK です。
-
-![w:760](./screenshots/console-check.png)
-
-配列全体の中身は先頭の三角をクリックすると開きます。確認できたら `console.log` の 2 行は消します。
-
----
-
 ## HTML には空の入れ物だけ置く
 
 16 枚のカードは、`index.html` に `<div class="card">` を 16 個書いても並べられます。ただ手で 16 個書くのは大変で、絵柄を変えるときもカードの枚数を変えるときも、そのぶん書き直しになります。
@@ -410,6 +383,7 @@ HTML に書いていない要素も、JS から作って足せます。作ると
 </div>
 
 `tagName` は `"div"` や `"p"` のような文字列です。戻り値の `element` は 2 でも使うので変数で受けます。
+`parent` は入れ先の要素です。今回は盤面なので `document.getElementById("board")` を使います。
 
 ---
 
@@ -462,11 +436,10 @@ document.getElementById("board").appendChild(apple);
 
 ---
 
-## 1-2. DOM 要素を取得する
+## 1-2. HTML の要素を取得する
 
-ブラウザが読み込んだ HTML の構造を DOM と呼びます。
-
-盤面は何度も使うので、最初に取得して変数にしておきます。
+このあと盤面には、カードを 1 枚ずつ入れたり、並んだカードを全部消したりします。
+そのたびに `document.getElementById("board")` と書かずに済むよう、最初に取得して変数にしておきます。
 
 <span class="tag-unlock">コピペ</span>
 
@@ -475,8 +448,10 @@ document.getElementById("board").appendChild(apple);
 const boardEl = document.getElementById("board");
 ```
 
-この資料では、DOM 要素を入れる変数の末尾に `El` (Element の略) を付けて統一します。
+この資料では、HTML 要素を入れる変数の末尾に `El` (Element の略) を付けて統一します。
 <span class="tag-verify">確認</span> 画面は変わりません。診断パネルの Chapter 1 を開くと「boardEl が id="board" の要素」に ✓ が付きます。
+
+![bg right:36% contain](./screenshots/boardel-check.png)
 
 
 ---
@@ -658,7 +633,7 @@ card.dataset.symbol = "🍎";   // 要素に data-symbol="🍎" が付く
 card.dataset.symbol           // "🍎" — 絵柄だけ取れる
 ```
 
-DOM 上では次のように追加されるイメージです。
+ブラウザが持っている HTML の上では、次のように追加されるイメージです。
 
 ```html
 <!-- 書き足すものではない -->
@@ -1342,7 +1317,7 @@ let deck = shuffle(symbols.concat(symbols));
 
 ---
 
-## 5-1. 状態変数と DOM 参照を追加
+## 5-1. 状態変数と要素の参照を追加
 
 <span class="tag-unlock">コピペ</span> いちばん最後ではなく、`let lockBoard = false;` の下にまとめて追加します。
 
@@ -2053,6 +2028,9 @@ setState({ secondCard: card, moves: state.moves + 1 }); // 2 行が 1 行にな�
 ---
 
 ## 付録: 今日出てきた道具
+
+ブラウザが読み込んだ HTML の構造を DOM と呼びます。
+今日 JavaScript から要素を作ったり書き換えたりしていたのは、DOM 操作と呼ばれる作業です。
 
 - 動的 DOM 生成 — `createElement()`, `appendChild()`, `replaceChildren()`
 - DOM とデータの紐付け — `dataset`
