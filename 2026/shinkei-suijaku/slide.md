@@ -870,7 +870,7 @@ function handleCardClick(card) {
 }
 ```
 
-<span class="tag-verify">確認</span> この関数はまだどこからも呼ばれないので、動かして確かめる方法はありません。2-3 でカードに繋いでから確認します。
+<span class="tag-verify">確認</span> この関数はまだどこからも呼ばれません。次のスライドでカードに繋いで、クリックして確かめます。
 
 <details class="hint">
 <summary>ヒント</summary>
@@ -881,6 +881,32 @@ function handleCardClick(card) {
 - D: すでに用意した状態変数のどれか (1 枚目)
 
 </details>
+
+---
+
+<!-- _class: tight -->
+
+## 2-2 の確認: カードに繋いでみる
+
+`element.addEventListener("click", 関数)` で、その要素がクリックされたときに実行する関数を紐づけられます。`createCard` 関数の中の `return card;` の直前に 1 行追加します。
+
+<span class="tag-unlock">コピペ</span>
+
+```javascript
+function createCard(symbol) {
+  // ... (ここまでに書いた中身は省略) ...
+  card.appendChild(inner);
+
+  // この 1 行を追加
+  card.addEventListener("click", () => handleCardClick(card));
+
+  return card;
+}
+```
+
+<span class="tag-verify">確認</span> カードをクリックすると表向きになり、もう一度押しても反応しません。1 枚めくると「変数など」の `firstCard` が `Card(🍎 @3)` に変わります。ここまで動けば【B】〜【D】は合っています。
+
+【A】の `lockBoard` が効くのは Chapter 3 からです。次のスライドで答え合わせをします。
 
 ---
 
@@ -910,31 +936,9 @@ function handleCardClick(card) {
 
 ---
 
-## 2-3. カードにクリックイベントを付ける
+## 2-2 補足: アロー関数
 
-`element.addEventListener("click", 関数)` で、その要素がクリックされたときに実行する関数を紐づけられます。`createCard` 関数の中の `return card;` の直前に 1 行追加します。
-
-<span class="tag-unlock">コピペ</span>
-
-```javascript
-function createCard(symbol) {
-  // ... (ここまでに書いた中身は省略) ...
-  card.appendChild(inner);
-
-  // この 1 行を追加
-  card.addEventListener("click", () => handleCardClick(card));
-
-  return card;
-}
-```
-<span class="tag-verify">確認</span> カードをクリックすると表向きになります。1 枚めくると「変数など」の `firstCard` が `Card(🍎 @3)` のような表示に変わります。2-2 が合っているかもここで分かります。
-
-
----
-
-## 2-3 補足: アロー関数
-
-2-3 で貼った `() => ...` は、`=>` を使った短い関数の書き方で、アロー関数と呼びます。`addEventListener` に渡したいのは実行した結果ではなく、あとで実行してほしい処理そのものなので、処理を関数で包んで渡します。
+カードに繋ぐときに貼った `() => ...` は、`=>` を使った短い関数の書き方で、アロー関数と呼びます。`addEventListener` に渡したいのは実行した結果ではなく、あとで実行してほしい処理そのものなので、処理を関数で包んで渡します。
 
 ```javascript
 // カードを作った瞬間に実行される → 16 枚とも最初からめくれてしまう
@@ -946,7 +950,7 @@ card.addEventListener("click", () => handleCardClick(card));
 
 `=>` の左が引数、右が実行する処理です。今回は渡す引数がないので左は空になります。
 
-この書き方が出てくるのは今日は 2-3 だけです。あとで実行してほしい処理を渡す場面は 3-3、5-3、6-2 にも出てきますが、そちらは `card` のように渡したいものがないので、名前を付けた関数をそのまま書きます。
+この書き方が出てくるのは今日はここだけです。あとで実行してほしい処理を渡す場面は 3-3、5-3、6-2 にも出てきますが、そちらは `card` のように渡したいものがないので、名前を付けた関数をそのまま書きます。
 
 ---
 
@@ -1143,7 +1147,7 @@ function unflipCards() {
 
 ## なぜ `lockBoard = true` するのか
 
-`setTimeout(関数, 800)` は、ブラウザに「800 ms 後にこれを呼んで」と関数を預けて、すぐ次の行に進みます。2-3 の `addEventListener` で関数を預けたのと同じ形で、呼ぶきっかけがクリックから時間に変わっただけです。預けた関数が後から呼ばれるこの動きを非同期と呼びます。
+`setTimeout(関数, 800)` は、ブラウザに「800 ms 後にこれを呼んで」と関数を預けて、すぐ次の行に進みます。2-2 の `addEventListener` で関数を預けたのと同じ形で、呼ぶきっかけがクリックから時間に変わっただけです。預けた関数が後から呼ばれるこの動きを非同期と呼びます。
 
 `setTimeout` で待っている 800 ms のあいだも、カードのクリックは受け付けられます。そのため、伏せに戻るまでにユーザーは 3 枚目、4 枚目をめくれてしまいます。
 
@@ -1716,11 +1720,11 @@ resetBtn.addEventListener("click", 【A】);
 resetBtn.addEventListener("click", resetGame);
 ```
 
-正解はカッコなしの `resetGame` です。カッコを付けて `resetGame()` と書くと、クリック時ではなく `addEventListener` を呼んだ瞬間に関数が実行されてしまいます。2-3 でカードのクリックを付けたときと同じ話です。
+正解はカッコなしの `resetGame` です。カッコを付けて `resetGame()` と書くと、クリック時ではなく `addEventListener` を呼んだ瞬間に関数が実行されてしまいます。2-2 でカードのクリックを付けたときと同じ話です。
 
 「クリック時に実行したい」ならカッコなし、「今すぐ実行したい」ならカッコあり、というイメージです。
 
-2-3 では `() => handleCardClick(card)` とアロー関数で包みました。あちらは `card` を渡す必要があったためです。渡す引数がなければ、3-3 の `setTimeout(unflipCards, 800)` や 5-3 の `setInterval(renderTimer, 250)` と同じく、関数名をそのまま書けます。
+2-2 では `() => handleCardClick(card)` とアロー関数で包みました。あちらは `card` を渡す必要があったためです。渡す引数がなければ、3-3 の `setTimeout(unflipCards, 800)` や 5-3 の `setInterval(renderTimer, 250)` と同じく、関数名をそのまま書けます。
 
 ---
 

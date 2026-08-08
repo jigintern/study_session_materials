@@ -179,7 +179,7 @@ function createLevelButtons() {
 }
 
 // CHANGED: 押された難易度に切り替えて作り直す。
-// 2-3 のカードと同じで、渡したいもの (key) があるのでアロー関数で包んでいる。
+// カードのクリックと同じで、渡したいもの (key) があるのでアロー関数で包んでいる。
 function selectLevel(key) {
   currentLevel = key;
   resetGame();
