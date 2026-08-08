@@ -1603,9 +1603,34 @@ function resetGame() {
 
 </details>
 
-<span class="tag-verify">確認</span> `resetGame` を呼ぶ場所をまだ作っていないので、ここでは確かめられません。6-2 でボタンに繋いでから確認します。
+<span class="tag-verify">確認</span> `resetGame` を呼ぶ場所がまだないので、次のスライドで呼び出しを差し替えてから確かめます。
 
 </div>
+</div>
+
+---
+
+<!-- _class: tight -->
+
+## 6-1 の確認: 初回描画を resetGame に差し替える
+
+<span class="tag-unlock">コピペ</span> `renderBoard();` の呼び出しを消して、代わりに `resetGame();` をファイルのいちばん最後に置きます。
+
+```javascript
+// 削除 (renderBoard 関数の下にある呼び出し)
+// renderBoard();
+
+// 追加 (ファイルのいちばん最後)
+resetGame();
+```
+
+<span class="tag-verify">確認</span> リロードすると今までどおり 16 枚が並び、リロードのたびに並びが変わります。ここまで動けば【A】と【C】は合っています。カードが 1 枚も出ないときは、次のスライドで答え合わせをします。
+
+初回起動もリセットも同じ処理で扱え、状態変数の初期化が一箇所に集約されます。
+
+<div class="note">
+いちばん最後に置くのは、<code>let</code> と <code>const</code> が宣言より前で読むとエラー (<code>Cannot access ... before initialization</code>) になるためです。
+4-2 で <code>shuffle</code> をいちばん最後に書いても上の行から呼べたのは、<code>function</code> の宣言だけの性質です。
 </div>
 
 ---
@@ -1637,7 +1662,7 @@ function resetGame() {
 
 ## 6-2. リセットボタンにイベントを付ける
 
-<span class="tag-write">記述</span> 【A】はどちらでしょうか。理由も考えてみてください。
+<span class="tag-write">記述</span> さっき置いた `resetGame();` の前に書き足します。【A】はどちらでしょうか。理由も考えてみてください。
 
 <div class="timer-box" data-seconds="60">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -1657,7 +1682,7 @@ const resetBtn = document.getElementById("reset-btn");
 resetBtn.addEventListener("click", 【A】);
 ```
 
-<span class="tag-verify">確認</span> 「もう一度」ボタンを押すと並びが変わって最初から始まります。「変数など」の `moves` と `matchedPairs` が 0 に戻れば、6-1 も合っています。
+<span class="tag-verify">確認</span> 「もう一度」ボタンを押すと並びが変わって最初から始まります。1 枚めくった状態で押しても、めくりかけが残らずに遊び直せれば、6-1 の【B】も合っています。
 
 <details class="hint">
 <summary>ヒント</summary>
@@ -1679,29 +1704,6 @@ resetBtn.addEventListener("click", resetGame);
 「クリック時に実行したい」ならカッコなし、「今すぐ実行したい」ならカッコあり、というイメージです。
 
 2-3 では `() => handleCardClick(card)` とアロー関数で包みました。あちらは `card` を渡す必要があったためです。渡す引数がなければ、3-3 の `setTimeout(unflipCards, 800)` や 5-3 の `setInterval(renderTimer, 250)` と同じく、関数名をそのまま書けます。
-
----
-
-## 6-3. 初回描画を resetGame に統一
-
-<span class="tag-unlock">コピペ</span> `renderBoard();` の呼び出しを消して、代わりに `resetGame();` をファイルのいちばん最後に置きます。
-
-```javascript
-// 削除 (renderBoard 関数の下にある呼び出し)
-// renderBoard();
-
-// 追加 (ファイルのいちばん最後)
-resetGame();
-```
-
-初回起動もリセットも同じ処理で扱え、状態変数の初期化が一箇所に集約されます。
-<span class="tag-verify">確認</span> リロードしても今までどおり 16 枚が並びます。カード枚数が 0 になっていたら、`resetGame();` の置き場所を見直してください。
-
-
-<div class="note">
-いちばん最後に置くのは、<code>let</code> と <code>const</code> が宣言より前で読むとエラー (<code>Cannot access ... before initialization</code>) になるためです。
-4-2 で <code>shuffle</code> をいちばん最後に書いても上の行から呼べたのは、<code>function</code> の宣言だけの性質です。
-</div>
 
 ---
 

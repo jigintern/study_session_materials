@@ -172,5 +172,5 @@ function resetGame() {
 const resetBtn = document.getElementById("reset-btn");
 resetBtn.addEventListener("click", resetGame);
 
-// STUDENT [6-3]: 初回描画も resetGame に統一 (Chapter 1 で書いた renderBoard(); は削除)
+// STUDENT [6-1]: 初回描画も resetGame に統一 (Chapter 1 で書いた renderBoard(); は削除)
 resetGame();
