@@ -295,6 +295,8 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 
 ---
 
+<!-- _class: tight -->
+
 ## 1-1. カードのデータを作る
 
 `symbols` には 🍎 🍌 🍇 … と 8 種類の絵柄が入っています。神経衰弱は同じ絵柄のカードが 2 枚ずつあるので、全部で 8 × 2 = 16 枚です。
@@ -303,8 +305,9 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 
 <div class="syntax">
 
-- `concat` — 2 つの配列をつなげた新しい配列を返す。元の配列は変わらない
-  例: `["🍎", "🍌"].concat(["🍎", "🍌"])` → `["🍎", "🍌", "🍎", "🍌"]`
+- `concat` — `A.concat(B)` で A のうしろに B をつなげた新しい配列を返す。A も B も変わらない
+  例 1: `["a", "b"].concat(["c"])` → `["a", "b", "c"]`
+  例 2: `["a", "b"].concat(["a", "b"])` → `["a", "b", "a", "b"]`
 - `array.length` — 配列の要素数
 
 </div>
