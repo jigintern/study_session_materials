@@ -779,18 +779,20 @@ renderBoard();
 
 ---
 
-<!-- _class: tight -->
-
-## 配布 CSS の約束とクラスの付け外し
+## 配布 CSS の約束
 
 CSS 側は次のように書かれています。JS 側はクラスを付けるだけで見た目が動きます。
 
-- `flipped` クラスが付いたら表向きに反転するアニメーションが再生される
-- `matched` クラスが付いたら緑色でハイライトされる
+- `flipped` — クリックしてカードをめくったときに付ける。表向きに反転するアニメーションが再生される
+- `matched` — 2 枚の絵柄が揃ったときに付ける。緑色でハイライトされる
 
-カードは `card` を持ったまま `flipped` が足されて `class="card flipped"` になり、両方が付いた要素にだけ効く `.card.flipped` の CSS が反応します。
+`flipped` はこの章で、`matched` は Chapter 3 で付けます。
 
-足し引きに使うのが `classList` です。追加・削除・有無の確認ができます。`className` のほうは class 属性を丸ごと置き換える書き方なので、めくるときに使うと `card` が消えてしまいます。
+---
+
+## クラスの付け外し
+
+クラスの足し引きに使うのが `classList` です。追加・削除・有無の確認ができます。`className` のほうは class 属性を丸ごと置き換える書き方なので、めくるときに使うと `card` が消えてしまいます。
 
 ```javascript
 card.className = "flipped";      // class="flipped" になり、card が消える
