@@ -336,7 +336,7 @@ console.log(deck);
 console.log("枚数:", deck.length);
 ```
 
-Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + Option + I) で開けます。配列が 1 行、続いて「枚数: 16」が出ていれば OK です。
+Console はプレビュー右下のタブから開けます。配列が 1 行、続いて「枚数: 16」が出ていれば OK です。
 
 ![w:760](./screenshots/console-check.png)
 
@@ -700,7 +700,7 @@ renderBoard();
 <div class="note">
 動かないときは:
 <ul>
-<li>F12 → Console にエラーが出ていないか</li>
+<li>Console にエラーが出ていないか</li>
 <li><code>renderBoard()</code> を呼び忘れていないか</li>
 <li><code>symbols.concat(symbols)</code> のドットを忘れていないか</li>
 </ul>
@@ -1855,7 +1855,7 @@ function resetGame() {
 
 ## 付録: 困ったときは
 
-エラーの調べ方: F12 (Mac は Cmd + Option + I) → Console タブ。
+エラーの調べ方: プレビュー右下の Console タブを開きます。
 赤字のエラーメッセージには、どの関数の何行目で起きたかが書かれています。
 
 ### よくある落とし穴
