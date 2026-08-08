@@ -829,7 +829,7 @@ let lockBoard = false;   // 2 枚めくったあとに他のカードを押さ�
 
 <div class="syntax">
 
-- `let` — 中身を書き換えるのでこちら。`const` にすると再代入エラーになる
+- `let` — あとで別の値を入れ直すのでこちら。`const` は入れ直すとエラーになる (詳しくは末尾の付録)
 
 </div>
 <span class="tag-verify">確認</span> 「変数など」の `firstCard` と `secondCard` が `null`、`lockBoard` が `false` になります。3 つとも「(未定義)」から変われば貼れています。
