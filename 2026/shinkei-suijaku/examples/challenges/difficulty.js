@@ -34,6 +34,9 @@ let matchedPairs = 0;
 let timerId = null;
 let startTime = 0;
 
+// CHANGED: 応用課題「リセットの取りこぼし」の修正。難易度切り替えとは独立した直し
+let unflipTimerId = null;
+
 const timerEl = document.getElementById("timer");
 const movesEl = document.getElementById("moves");
 const pairsEl = document.getElementById("pairs");
@@ -113,7 +116,7 @@ function handleMatch() {
 
 function handleMismatch() {
   lockBoard = true;
-  setTimeout(unflipCards, 800);
+  unflipTimerId = setTimeout(unflipCards, 800);
 }
 
 function unflipCards() {
@@ -185,6 +188,7 @@ function selectLevel(key) {
 // CHANGED: 難易度に合わせて symbols と列数を組み直してからリセットする
 function resetGame() {
   stopTimer();
+  clearTimeout(unflipTimerId);
 
   const level = LEVELS[currentLevel];
   symbols = ALL_SYMBOLS.slice(0, level.pairs);

@@ -26,6 +26,8 @@ const state = {
   startTime: 0,
   elapsed: 0,
   cleared: false,
+  // CHANGED: 応用課題「リセットの取りこぼし」の修正。状態のまとめ方とは独立した直し
+  unflipTimerId: null,
 };
 
 const timerEl = document.getElementById("timer");
@@ -127,8 +129,7 @@ function handleMatch() {
 }
 
 function handleMismatch() {
-  setState({ lockBoard: true });
-  setTimeout(unflipCards, 800);
+  setState({ lockBoard: true, unflipTimerId: setTimeout(unflipCards, 800) });
 }
 
 function unflipCards() {
@@ -168,6 +169,7 @@ function stopTimer() {
 // CHANGED: 初期化が 1 回の setState で済む。戻し忘れが起きにくい。
 function resetGame() {
   stopTimer();
+  clearTimeout(state.unflipTimerId);
 
   setState({
     deck: shuffle(symbols.concat(symbols)),
@@ -179,6 +181,7 @@ function resetGame() {
     startTime: 0,
     elapsed: 0,
     cleared: false,
+    unflipTimerId: null,
   });
 
   renderBoard();

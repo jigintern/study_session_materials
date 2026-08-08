@@ -17,6 +17,9 @@ let matchedPairs = 0;
 let timerId = null;
 let startTime = 0;
 
+// CHANGED: 応用課題「リセットの取りこぼし」の修正。カウントダウンとは独立した直し
+let unflipTimerId = null;
+
 // CHANGED: 制限時間と、時間切れになったかどうかの状態を足す
 const TIME_LIMIT = 60;
 let isGameOver = false;
@@ -103,7 +106,7 @@ function handleMatch() {
 
 function handleMismatch() {
   lockBoard = true;
-  setTimeout(unflipCards, 800);
+  unflipTimerId = setTimeout(unflipCards, 800);
 }
 
 function unflipCards() {
@@ -157,6 +160,7 @@ function gameOver() {
 
 function resetGame() {
   stopTimer();
+  clearTimeout(unflipTimerId);
   deck = shuffle(symbols.concat(symbols));
   resetTurn();
   moves = 0;

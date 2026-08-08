@@ -42,6 +42,9 @@ let matchedPairs = 0;
 let timerId = null;
 let startTime = 0;
 
+// CHANGED: 応用課題「リセットの取りこぼし」の修正。ペアの条件とは独立した直し
+let unflipTimerId = null;
+
 const timerEl = document.getElementById("timer");
 const movesEl = document.getElementById("moves");
 const pairsEl = document.getElementById("pairs");
@@ -127,7 +130,7 @@ function handleMatch() {
 
 function handleMismatch() {
   lockBoard = true;
-  setTimeout(unflipCards, 800);
+  unflipTimerId = setTimeout(unflipCards, 800);
 }
 
 function unflipCards() {
@@ -170,6 +173,7 @@ function stopTimer() {
 
 function resetGame() {
   stopTimer();
+  clearTimeout(unflipTimerId);
   deck = buildDeck();
   resetTurn();
   moves = 0;
