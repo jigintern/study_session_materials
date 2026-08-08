@@ -1578,7 +1578,7 @@ function handleMatch() {
 function resetGame() {
   stopTimer();
   deck = 【A】;
-  【B】;
+  【B】;  // めくりの状態を戻す
   moves = 0;
   matchedPairs = 0;
   timerEl.textContent = "00:00";
@@ -1595,7 +1595,6 @@ function resetGame() {
 <summary>ヒント</summary>
 
 - A: `symbols` を 2 つつないで並びを混ぜた新しい配列
-- B: めくりの 3 つの状態を初期値に戻す処理
 - C: 新しい `deck` でカードを作り直す処理
 
 </details>
