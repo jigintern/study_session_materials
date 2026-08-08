@@ -818,7 +818,6 @@ let lockBoard = false;   // 2 枚めくったあとに他のカードを押さ�
 
 <div class="syntax">
 
-- `null` — 「まだ何もない」を意図的に置く印。`undefined` (代入し忘れの状態) と使い分ける
 - `let` — 中身を書き換えるのでこちら。`const` にすると再代入エラーになる
 
 </div>
