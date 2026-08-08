@@ -783,16 +783,19 @@ renderBoard();
 
 CSS 側は次のように書かれています。JS 側はクラスを付けるだけで見た目が動きます。
 
-- `flipped` — クリックしてカードをめくったときに付ける。表向きに反転するアニメーションが再生される
-- `matched` — 2 枚の絵柄が揃ったときに付ける。緑色でハイライトされる
+- `flipped` — 表向きに反転するアニメーションが再生される。クリックしてカードをめくったときに付ける
+- `matched` — 緑色でハイライトされる。2 枚の絵柄が揃ったときに付ける
 
 `flipped` はこの章で、`matched` は Chapter 3 で付けます。
+
+![bg vertical right:36% w:88%](./screenshots/class-flipped.gif)
+![bg right:36% w:88%](./screenshots/class-matched.gif)
 
 ---
 
 ## クラスの付け外し
 
-クラスの足し引きに使うのが `classList` です。追加・削除・有無の確認ができます。`className` のほうは class 属性を丸ごと置き換える書き方なので、めくるときに使うと `card` が消えてしまいます。
+クラスの足し引きに使うのが `classList` です。`className` のほうは class 属性を丸ごと置き換える書き方なので、めくるときに使うと `card` が消えてしまいます。
 
 ```javascript
 card.className = "flipped";      // class="flipped" になり、card が消える
@@ -801,13 +804,21 @@ card.classList.add("flipped");   // class="card flipped" になる
 
 要素を 0 から組み立てるときは `className`、すでにあるクラスに足し引きするときは `classList` を使います。
 
+`classList` でできるのは次の 3 つです。
+
+```javascript
+card.classList.add("flipped");       // 付ける
+card.classList.remove("flipped");    // 外す
+card.classList.contains("flipped");  // 付いていれば true、なければ false
+```
+
 ---
 
 ## 2-1. 状態変数を用意する
 
 「1 枚目にめくったカード」「2 枚目にめくったカード」「ロック中か」の 3 つを変数で持ちます。
 
-<span class="tag-unlock">コピペ</span> `deck` の宣言の下あたりに追加します。
+<span class="tag-unlock">コピペ</span> いちばん最後ではなく、`const deck` の行のすぐ下に追加します。
 
 ```javascript
 // めくりの状態を持つ変数を用意する
