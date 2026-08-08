@@ -526,7 +526,7 @@ JS で書いた 1 行が、HTML のどこになるかの対応です。
 
 ## 1-3. カード 1 枚を作る関数
 
-<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【C】を書きましょう。
+<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【C】を書き換えましょう。
 
 <div class="timer-box" data-seconds="150">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -534,13 +534,17 @@ JS で書いた 1 行が、HTML のどこになるかの対応です。
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
+<div class="choices">
+
+候補: `card` / `inner` / `front` / `back`
+
+</div>
+
 <div class="split code-lg">
 <div class="split-main">
 
 ```javascript
-// A: front (? の面) を inner の中に入れる (1 行)
-// B: back (絵柄の面) を inner の中に入れる (1 行)
-// C: inner を card の中に入れる (1 行)
+// 内側の要素から順に、どこに入れるかを考える
 function createCard(symbol) {
   const card = document.createElement("div");
   card.className = "card";
@@ -555,9 +559,9 @@ function createCard(symbol) {
   back.className = "card-back";
   back.textContent = symbol;
 
-  【A】
-  【B】
-  【C】
+  【A】.appendChild(front);
+  【B】.appendChild(back);
+  【C】.appendChild(inner);
   return card;
 }
 ```
@@ -581,14 +585,9 @@ function createCard(symbol) {
 ```javascript
   // ... 要素を作るところは省略 ...
 
-  // A: card-front が card-inner の内側に入る
-  inner.appendChild(front);
-
-  // B: card-back が card-inner の内側に入る
-  inner.appendChild(back);
-
-  // C: card-inner が card の内側に入る
-  card.appendChild(inner);
+  inner.appendChild(front);   // A: card-front が card-inner の内側に入る
+  inner.appendChild(back);    // B: card-back も card-inner の内側に入る
+  card.appendChild(inner);    // C: card-inner が card の内側に入る
 
   return card;
 }
