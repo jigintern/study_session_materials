@@ -317,22 +317,28 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 ```javascript
 // STUDENT [1-1]: symbols を 2 回連結して 16 枚の deck を作る
 const deck = symbols.concat(symbols);
-
-console.log(deck);
-console.log("枚数:", deck.length);
 ```
 
 ---
+
+<!-- _class: tight -->
 
 ## 1-1 の確認: Console で見る
 
 `console.log(...)` は、開発者ツールの Console に値を出す命令です。書いたコードが思ったとおりに動いているか確かめるのに使います。
 
-Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + Option + I) で開けます。下のように配列が 1 行、続いて「枚数: 16」が出ていれば OK です。
+<span class="tag-unlock">コピペ</span> `deck` の下に続けて書き足します。
 
-![w:900](./screenshots/console-check.png)
+```javascript
+console.log(deck);
+console.log("枚数:", deck.length);
+```
 
-確認できたら `console.log` の 2 行は消します。この先は使いません。
+Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + Option + I) で開けます。配列が 1 行、続いて「枚数: 16」が出ていれば OK です。
+
+![w:760](./screenshots/console-check.png)
+
+配列全体の中身は先頭の三角をクリックすると開きます。確認できたら `console.log` の 2 行は消します。
 
 ---
 
