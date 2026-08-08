@@ -370,14 +370,28 @@ Console はプレビュー右下の Console タブ、または F12 (Mac: Cmd + O
 
 ## JS で HTML を作る
 
-HTML に書いていない要素も、JS から作って足せます。
+HTML に書いていない要素も、JS から作って足せます。作るところと、HTML につなぐところの 2 段階です。
+
+<div class="fig-row">
+
+![w:1120](./diagrams/create-append.svg)
+
+</div>
+
+`tagName` は `"div"` や `"p"` のような文字列です。戻り値の `element` は 2 でも使うので変数で受けます。
+
+---
+
+<!-- _class: tight -->
+
+## 試しに 1 つ作ってみる
 
 <span class="tag-unlock">コピペ</span> `script.js` のいちばん最後に貼ります。
 
 ```javascript
 const apple = document.createElement("div");   // <div></div> ができる
 apple.textContent = "🍎";                      // <div>🍎</div> になる
-document.getElementById("board").appendChild(apple);
+document.getElementById("board").appendChild(apple);  // #board の中に入る
 ```
 
 貼ると、盤面のところに 🍎 が 1 つ出ます。
