@@ -538,9 +538,9 @@ JS で書いた 1 行が、HTML のどこになるかの対応です。
 <div class="split-main">
 
 ```javascript
-// A: front (? の面) を inner の中に入れる
-// B: back (絵柄の面) を inner の中に入れる
-// C: inner を card の中に入れる
+// A: front (? の面) を inner の中に入れる (1 行)
+// B: back (絵柄の面) を inner の中に入れる (1 行)
+// C: inner を card の中に入れる (1 行)
 function createCard(symbol) {
   const card = document.createElement("div");
   card.className = "card";
@@ -565,30 +565,12 @@ function createCard(symbol) {
 </div>
 <div class="split-side">
 
-<span class="tag-verify">確認</span> 診断パネルの Chapter 1 を開くと、入れ子を見ているテストに ✓ が付きます。次のスライドで 1 枚出して目でも確かめます。
+<span class="tag-verify">確認</span> 診断パネルの Chapter 1 を開くと、入れ子を見ているテストに ✓ が付きます。次のスライドで答え合わせをします。
 
 ![w:400](./screenshots/createcard-check.png)
 
 </div>
 </div>
-
----
-
-<!-- _class: tight -->
-
-## 1-3 の確認: 1 枚だけ出してみる
-
-<span class="tag-unlock">コピペ</span> 作った関数を 1 回だけ呼びます。
-
-```javascript
-boardEl.appendChild(createCard("🍎"));
-```
-
-青い「?」のカードが 1 枚出れば OK です。確認できたらこの 1 行は消します。
-
-何も出ないときは、【A】〜【C】がまだ入れ子になっていません。次のスライドで答え合わせをします。
-
-![w:480](./screenshots/one-real-card.png)
 
 ---
 
@@ -613,6 +595,24 @@ boardEl.appendChild(createCard("🍎"));
 ```
 
 作りたいカードの HTML と見比べると、内側の要素から順に入れていることが分かります。
+
+---
+
+<!-- _class: tight -->
+
+## 1-3 の確認: 1 枚だけ出してみる
+
+<span class="tag-unlock">コピペ</span> 作った関数を 1 回だけ呼びます。
+
+```javascript
+boardEl.appendChild(createCard("🍎"));
+```
+
+青い「?」のカードが 1 枚出れば OK です。確認できたらこの 1 行は消します。
+
+何も出ないときは、【A】〜【C】がまだ入れ子になっていません。前のスライドの答えと見比べて直しましょう。
+
+![w:480](./screenshots/one-real-card.png)
 
 ---
 
