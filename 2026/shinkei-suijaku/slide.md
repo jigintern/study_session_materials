@@ -1741,23 +1741,86 @@ https://github.com/jigintern/study_session_materials/tree/main/2026/shinkei-suij
 
 ---
 
+<!-- _class: tight -->
+
 ## 応用課題の目次
 
-ここからは、もっとやりたい人向けの応用課題です。今日この場でやらなくても、あとから自分のペースで試せます。
+もっとやりたい人向けの応用課題です。着手しやすい順に 10 個、1 個につき 1 スライドで説明します。1 から 3 は数行の書き換え、4 から 6 は少し書き足し、7 から 10 は作りそのものが変わります。
 
-全部で 10 個あります。着手しやすい順に並べていて、区分ごとに答えの置き場所が違います。
+| # | 応用課題 | 答えの置き場所 |
+|---|---|---|
+| 1 | 伏せるまでの長さを変える | 課題文のなか |
+| 2 | 絵柄を変える | 課題文のなか |
+| 3 | ペア数を変える | 課題文のなか |
+| 4 | 記憶タイム | 課題文のなか |
+| 5 | ベストスコアを保存する | 付録 |
+| 6 | リセットに残るバグを直す | 付録 |
+| 7 | ペアの条件を変える | `examples/challenges/pair-rule.js` |
+| 8 | 難易度切り替え | `examples/challenges/difficulty.js` |
+| 9 | カウントダウンモード | `examples/challenges/countdown.js` |
+| 10 | 状態を state にまとめる | `examples/challenges/state.js` |
 
-- すぐできる (3 個) — 答えは課題文のなかにあります
-- 少し調べる (3 個) — 答えはスライドに載せています。次のスライドの記憶タイムがおすすめ
-- 作りが変わる (4 個) — 動く実装例が `examples/challenges/` にあります
+---
 
-詰まったら一緒に見ます。
+## 応用課題 1: 伏せるまでの長さを変える
+
+3-3 で書いた `handleMismatch` の `800` が、不一致の 2 枚が見えている時間です。単位はミリ秒なので、`800` は 0.8 秒です。
+
+```javascript
+function handleMismatch() {
+  lockBoard = true;
+  setTimeout(unflipCards, 800); // ここの数字だけを変える
+}
+```
+
+短くすると絵柄を覚える時間が減って難しくなり、長くすると次の手まで待たされてテンポが落ちます。`300` と `1500` を実際に試すと、遊びやすさがこの数字ひとつで決まることが分かります。
+
+このあいだは `lockBoard` が `true` なので、クリックを一切受け付けません。長くするほど「押しても反応しない時間」も伸びる、という副作用込みで選びます。
+
+---
+
+## 応用課題 2: 絵柄を変える
+
+`symbols` の中身を書き換えるだけです。絵文字でも文字でも構いません。
+
+```javascript
+const symbols = ["🍎", "🍌", "🍇", "🍓", "🍊", "🥝", "🍑", "🍍"];
+
+// 書き換えた例
+const symbols = ["犬", "猫", "鳥", "魚", "馬", "羊", "鼠", "兎"];
+```
+
+8 個のまま増減しなければ、他はどこも直さずに済みます。`deck` は `symbols` から作られ、一致判定は `dataset.symbol` の比較なので、中身が何であっても同じように動きます。
+
+気をつけるのは 2 点です。同じものを 2 回書くと 4 枚が同じ絵柄になり、ペアの数え方が合わなくなります。長い文字を入れるとカードからはみ出すので、そのときは文字サイズを下げます (`examples/challenges/pair-rule.js` が `back.style.fontSize` でそうしています)。
+
+---
+
+## 応用課題 3: ペア数を変える
+
+`symbols` の数を変えると、枚数はその 2 倍で変わります。列数は `styles.css` が持っているので、2 か所を合わせます。
+
+```javascript
+// script.js — 10 ペア = 20 枚にする
+const symbols = ["🍎", "🍌", "🍇", "🍓", "🍊", "🥝", "🍑", "🍍", "🍒", "🍐"];
+```
+
+```css
+/* styles.css — 20 枚を 5 列 4 行に並べる */
+#board {
+  grid-template-columns: repeat(5, 1fr);
+}
+```
+
+列数が枚数を割り切らないと、最後の行だけ欠けた並びになります。20 枚なら 4 列か 5 列、12 枚 (6 ペア) なら 4 列のままで 3 行に収まります。
+
+ペア数の表示とクリア判定はどちらも `symbols.length` から作っているので、こちらは直さなくても追従します。
 
 ---
 
 <!-- _class: tight -->
 
-## 応用課題: 記憶ゲームにする
+## 応用課題 4: 記憶タイム
 
 `resetGame` の `renderBoard();` の下に数行足して、伏せに戻す処理を関数にすると、始まる前に全部のカードを 3 秒だけ見せられます。
 
@@ -1784,34 +1847,175 @@ function hidePreview() {
 
 ---
 
-## 応用課題: すぐできる・少し調べる
+<!-- _class: tight -->
 
-すぐできる
+## 応用課題 5: ベストスコアを保存する
 
-- 不一致で伏せるまでの `800` ms を変えて、遊びやすい長さを探す
-- 絵柄を好きな絵文字や文字に変える — `symbols` を書き換えるだけ
-- ペア数を 6 や 10 に変える — `symbols` の数と `styles.css` の `grid-template-columns` を合わせる
+クリアしたときの手数を残して、次にページを開いたときも「これまでの最小手数」を出せるようにします。ページを閉じても消えない置き場所が要ります。
 
-少し調べる (答えはスライドに載せています)
+<div class="task">
 
-- 記憶タイム: 始まる前に全部のカードを見せる — 前のスライドに全文
-- ベストスコアを保存して、次に開いたときも残す — 答えは付録
-- リセットに残るバグを直す: 不一致の 2 枚が伏せる前に「もう一度」を押す — 答えは付録
+やること
+
+- クリア判定のところで、今回の手数がこれまでの最小より少ないか調べる
+- 少なければ保存して、クリアメッセージを「自己ベスト更新！」に変える
+- 更新できなかったときは、これまでのベストを併記する
+
+</div>
+
+<div class="hint-box">
+
+ヒント
+
+- 使うのは `localStorage` です。`setItem(キー, 値)` で書き、`getItem(キー)` で読みます
+- 保存できるのは文字列だけなので、大小を比べる前に数値へ戻す必要があります
+- いちばん最初はまだ何も入っていません。読んだ結果が空のときの分岐を先に考えます
+
+</div>
+
+答えは付録にあります。
 
 ---
 
-## 応用課題: 作りが変わる
+<!-- _class: tight -->
 
-動く実装例が `examples/challenges/` にあります。`script.js` を丸ごと置き換えると動きます。
+## 応用課題 6: リセットに残るバグを直す
 
-- ペアの条件を変える — 英単語と和訳、元素記号と元素名で神経衰弱にする
-- 難易度切り替え (4×4 / 6×6 / 8×8) をボタンで
-- カウントダウンモード: 60 秒でクリアできなければゲームオーバー
-- 状態を `state = { ... }` にまとめて、`setState` 経由でしか変えない構造にする
+完成したコードには 1 つバグが残っています。まず再現させてみてください。
 
-最後の 1 つは、今日の作りの弱点への対処です。「めくれているか」だけは状態変数ではなく、カードの `flipped` クラスが持っています。CSS のアニメーションをそのまま使えるのが利点で、代わりに状態の置き場所が 2 つに分かれています。1 つに寄せた書き方が `state.js` です。
+<div class="task">
 
-ルールを変えたら、Share ボタンで人に遊んでもらえます。絵柄を変えたときより反応があります。
+再現手順
+
+1. 違う絵柄の 2 枚をめくる
+2. 伏せに戻る前に「もう一度」を押す
+3. 新しい盤面で 1 枚めくり、そのカードをもう一度押す
+
+</div>
+
+同じカード 1 枚がペア成立と判定され、ペア数が 1 つ進みます。Console には `Cannot read properties of null` が出ています。
+
+<div class="hint-box">
+
+ヒント
+
+- 手順 2 と 3 のあいだに、誰も押していないのに動いた処理があります
+- 5-3 でタイマーを止めるときに使った仕組みが、ここにも要ります
+
+</div>
+
+原因と直し方は付録にあります。
+
+---
+
+<!-- _class: tight -->
+
+## 応用課題 7: ペアの条件を変える
+
+「同じ絵柄どうし」ではなく「英単語とその和訳」でペアにします。元素記号と元素名、都道府県と県庁所在地でも同じ作りです。
+
+表に出す文字 (`label`) と、判定に使う印 (`pairId`) をカードに別々に持たせるのがコツです。
+
+```javascript
+const PAIRS = [["dog", "犬"], ["cat", "猫"], ["bird", "鳥"], /* ... */];
+
+// 組ごとに 2 枚作る。同じ組の 2 枚には同じ pairId を付ける
+function buildDeck() {
+  const cards = [];
+  for (let pairId = 0; pairId < PAIRS.length; pairId++) {
+    cards.push({ label: PAIRS[pairId][0], pairId: pairId });
+    cards.push({ label: PAIRS[pairId][1], pairId: pairId });
+  }
+  return shuffle(cards);
+}
+
+const isMatch = firstCard.dataset.pairId === secondCard.dataset.pairId;
+```
+
+`deck` の中身が文字列からオブジェクトに変わるので、`createCard` が受け取るものも変わります。全文は `examples/challenges/pair-rule.js` です。ルールを変えたら、Share ボタンで人に遊んでもらえます。絵柄を変えたときより反応があります。
+
+---
+
+<!-- _class: tight -->
+
+## 応用課題 8: 難易度切り替え (4×4 / 6×6 / 8×8)
+
+難易度で変わるのは列数とペア数の 2 つです。バラバラに持たずに 1 つの表にまとめると、切り替えが数行で済みます。
+
+```javascript
+const LEVELS = {
+  easy: { label: "4×4", cols: 4, pairs: 8 },
+  normal: { label: "6×6", cols: 6, pairs: 18 },
+  hard: { label: "8×8", cols: 8, pairs: 32 },
+};
+
+function resetGame() {
+  const level = LEVELS[currentLevel];
+  symbols = ALL_SYMBOLS.slice(0, level.pairs);
+  boardEl.style.gridTemplateColumns = `repeat(${level.cols}, 1fr)`;
+  // 以下はそのまま
+}
+```
+
+応用課題 3 では `styles.css` を手で書き換えましたが、遊びながら切り替えるなら JS 側から `style` を触ります。`symbols` は難易度で中身が変わるので `const` ではなく `let` にします。
+
+難易度ボタン自体も `createElement` で作れます。全文は `examples/challenges/difficulty.js` です。
+
+---
+
+<!-- _class: tight -->
+
+## 応用課題 9: カウントダウンモード
+
+60 秒でクリアできなければゲームオーバーにします。5-3 で作ったタイマーはそのまま使えて、表示する数を経過から残りに変えるだけです。
+
+```javascript
+const TIME_LIMIT = 60;
+let isGameOver = false;
+
+function renderTimer() {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const remaining = Math.max(0, TIME_LIMIT - elapsed);
+  // remaining を mm:ss に整形して timerEl に入れる
+  if (remaining === 0) gameOver();
+}
+
+function gameOver() {
+  stopTimer();
+  isGameOver = true;
+  clearMessageEl.textContent = `時間切れ！ ${matchedPairs} / ${symbols.length} ペア`;
+}
+```
+
+盤面を止めるのに `lockBoard` は使えません。あれは 1 ターンごとに `resetTurn` が `false` に戻すためです。時間切れは別の状態として `isGameOver` で持ち、`handleCardClick` の先頭で見ます。全文は `examples/challenges/countdown.js` です。
+
+---
+
+<!-- _class: tight -->
+
+## 応用課題 10: 状態を state にまとめる
+
+今日は「状態を +1」と「画面に反映」の 2 行 1 セットを何度も書きました。片方を書き忘れると画面だけ古いままになります。状態を変える入口を 1 つに絞ると、この 2 行が 1 行になります。
+
+```javascript
+const state = { moves: 0, matchedPairs: 0, /* ... */ };
+
+// 状態を変える唯一の入口。変えたら必ず描画も走る
+function setState(patch) {
+  Object.assign(state, patch);
+  render();
+}
+
+// state を読むだけで、state は変えない
+function render() {
+  movesEl.textContent = state.moves;
+  pairsEl.textContent = `${state.matchedPairs} / ${symbols.length}`;
+}
+
+setState({ secondCard: card, moves: state.moves + 1 }); // 2 行が 1 行になる
+```
+
+めくれているかどうかだけは `state` に入れず、カードの `flipped` クラスのままにしています。ここも `state` に寄せると、めくるたびに盤面を作り直すことになり、CSS のアニメーションが再生されないためです。全文は `examples/challenges/state.js` です。
 
 ---
 
@@ -1831,7 +2035,7 @@ function hidePreview() {
 
 <!-- _class: tight -->
 
-## 付録: 応用課題の答え — ベストスコア
+## 付録: 応用課題 5 の答え — ベストスコア
 
 `localStorage` はブラウザにデータを残す仕組みです。ページを閉じても消えません。
 
@@ -1866,23 +2070,9 @@ if (matchedPairs === symbols.length) {
 
 <!-- _class: tight -->
 
-## 付録: 応用課題の答え — リセットに残るバグ
-
-再現手順です。
-
-1. 違う絵柄の 2 枚をめくる
-2. 伏せに戻る前に「もう一度」を押す
-3. 新しい盤面で 1 枚めくり、そのカードをもう一度押す
-
-同じカード 1 枚がペア成立と判定され、ペア数が 1 つ進みます。Console には `Cannot read properties of null` が出ています。
+## 付録: 応用課題 6 の答え — リセットに残るバグ
 
 原因は 3-3 の `setTimeout(unflipCards, 800)` です。リセットで盤面は作り直されますが、ブラウザに預けた予約はそのまま残り、800ms 後に発火します。発火した `unflipCards` は、リセットで `null` に戻った `firstCard` を読もうとして落ちます。
-
----
-
-<!-- _class: tight -->
-
-## 付録: リセットに残るバグ — 直し方
 
 `setTimeout` の返り値を控えておいて、リセットのときに取り消します。
 
