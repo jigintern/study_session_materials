@@ -722,7 +722,6 @@ renderBoard();
 <li><code>renderBoard()</code> を呼び忘れていないか</li>
 <li><code>symbols.concat(symbols)</code> のドットを忘れていないか</li>
 </ul>
-エラーメッセージ別のよくある落とし穴は、末尾の付録にまとめてあります。
 </div>
 
 <div class="rescue">
@@ -2092,23 +2091,6 @@ function resetGame() {
 ```
 
 5-3 で `setInterval` に `clearInterval` を用意したのと同じ形です。ブラウザに預けたものは、要らなくなったら取り消します。
-
----
-
-## 付録: 困ったときは
-
-エラーの調べ方: プレビュー右下の Console タブを開きます。
-赤字のエラーメッセージには、どの関数の何行目で起きたかが書かれています。
-
-### よくある落とし穴
-
-| ミス | 症状 | 対策 |
-|---|---|---|
-| `=` と `===` の混同 | if が常に true | 比較は必ず `===` |
-| 再代入する変数を `const` | Uncaught TypeError | `let` にする |
-| スペルミス | `undefined` になる | `getElementById` の綴り、`textContent` の綴り |
-| DOM が取れない | `Cannot read properties of null` | `<script>` は `<body>` の最後にあるか |
-| カッコ・カンマ抜け | Unexpected token | エディタの色分けを頼る |
 
 ---
 
