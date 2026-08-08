@@ -1515,7 +1515,7 @@ function handleMatch() {
 
 ## 6-1. resetGame 関数
 
-<span class="tag-write">記述</span> 状態変数を初期値に戻し、`deck` を新しくシャッフルして盤面を作り直します。【A】〜【C】を埋めましょう。
+<span class="tag-write">記述</span> 状態変数を初期値に戻し、盤面を作り直します。【A】〜【C】を埋めましょう。
 
 <div class="timer-box" data-seconds="240">
   <button class="timer-btn" data-delta="-60">−</button>
