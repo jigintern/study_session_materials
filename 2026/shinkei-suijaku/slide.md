@@ -76,6 +76,16 @@ style: |
     font-weight: bold;
     margin-right: 6px;
   }
+  .tag-verify {
+    display: inline-block;
+    border: 1.5px solid #2e7d32;
+    color: #2e7d32;
+    padding: 1px 9px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-right: 6px;
+  }
   .match {
     color: #4caf50;
     font-weight: bold;
@@ -266,9 +276,13 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 
 プレビュー右上の黒い小窓が診断パネルです。`debug.js` が作っているので、このファイルは触らなくて大丈夫です。
 
-- 章ごとの `N/M ✓` が進み具合です。書いた分が動いていれば数が増えます
+- 「変数など」に `deck` や `firstCard` の今の値が出ます。まだ書いていない変数は「(未定義)」です
+- 「盤面 (DOM)」はカードの枚数と、めくれている枚数・揃った枚数です
+- 章ごとの `N/M ✓` が進み具合です。行をクリックすると 1 件ずつの合否が開きます
 - `getElementById` の id ミスや `clik` のようなイベント名のミスなど、エラーが出ずに静かに壊れるミスも捕まえます
 - 詰まったら、お気軽にチャットなどでメンターにご連絡ください
+
+各演習の最後に <span class="tag-verify">確認</span> を置いています。書けたかどうかは、そこに書いた見かたで確かめてください。
 
 ![bg right:30% contain](./screenshots/debug-panel.png)
 
@@ -320,14 +334,16 @@ const deck = symbols.concat(symbols);
 ```
 
 データを用意しただけで、まだ表示するコードがないので、貼っても画面は変わりません。
+<span class="tag-verify">確認</span> 診断パネルの「変数など」で `deck` が「(未定義)」から `[Array length=16]` に変わります。
+
 
 ---
 
 <!-- _class: tight -->
 
-## 1-1 の確認: Console で見る
+## 1-1 の確認: Console でも見てみる
 
-`console.log(...)` は、開発者ツールの Console に値を出す命令です。書いたコードが思ったとおりに動いているか確かめるのに使います。
+値をその場で出して確かめる方法もあります。`console.log(...)` は、開発者ツールの Console に値を出す命令です。
 
 <span class="tag-unlock">コピペ</span> `deck` の下に続けて書き足します。
 
@@ -445,6 +461,8 @@ const boardEl = document.getElementById("board");
 ```
 
 この資料では、DOM 要素を入れる変数の末尾に `El` (Element の略) を付けて統一します。
+<span class="tag-verify">確認</span> 画面は変わりません。診断パネルの Chapter 1 を開くと「boardEl が #board 要素」に ✓ が付きます。
+
 
 ---
 
@@ -531,7 +549,7 @@ function createCard(symbol) {
 }
 ```
 
-書けたら診断パネルの Chapter 1 を開いてください。入れ子になっていれば ✓ が 1 つ増えます。
+<span class="tag-verify">確認</span> 診断パネルの Chapter 1 を開くと、入れ子を見ているテストに ✓ が付きます。次のスライドで 1 枚出して目でも確かめます。
 
 ---
 
@@ -666,6 +684,8 @@ function renderBoard() {
 
 renderBoard();
 ```
+<span class="tag-verify">確認</span> 16 枚のカードが 4×4 に並びます。「盤面 (DOM)」のカード枚数も 16 になります。
+
 
 ---
 
@@ -786,6 +806,8 @@ let lockBoard = false;   // 2 枚めくったあとに他のカードを押さ�
 - `let` — 中身を書き換えるのでこちら。`const` にすると再代入エラーになる
 
 </div>
+<span class="tag-verify">確認</span> 「変数など」の `firstCard` と `secondCard` が `null`、`lockBoard` が `false` になります。3 つとも「(未定義)」から変われば貼れています。
+
 
 ---
 
@@ -831,6 +853,8 @@ function handleCardClick(card) {
   secondCard = card;
 }
 ```
+
+<span class="tag-verify">確認</span> この関数はまだどこからも呼ばれないので、動かして確かめる方法はありません。2-3 でカードに繋いでから確認します。
 
 <details class="hint">
 <summary>ヒント</summary>
@@ -887,6 +911,8 @@ function createCard(symbol) {
   return card;
 }
 ```
+<span class="tag-verify">確認</span> カードをクリックすると表向きになります。1 枚めくると「変数など」の `firstCard` が `Card(🍎 @3)` のような表示に変わります。2-2 が合っているかもここで分かります。
+
 
 ---
 
@@ -972,6 +998,8 @@ if (isMatch) {
 }
 ```
 
+<span class="tag-verify">確認</span> 2 枚めくると診断に `handleMatch is not defined` が出ます。呼び出しがここまで届いた印なので、この時点ではこれで正解です。3-2 で作れば消えます。
+
 <details class="hint">
 <summary>ヒント</summary>
 
@@ -1038,6 +1066,8 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 - 片付けは `resetTurn()` という名前で呼び出しておく。中身は後で書きます
 
 </div>
+<span class="tag-verify">確認</span> 同じ絵柄を 2 枚めくると両方が緑に光ります。「盤面 (DOM)」の matched も 2 になります。`resetTurn` がまだないので、その先は 3-4 まで動きません。
+
 
 ---
 
@@ -1090,6 +1120,8 @@ function unflipCards() {
 800 ms は「見えている時間は短すぎず、待たされ感は少ない」を狙った値です。
 
 </div>
+<span class="tag-verify">確認</span> 違う絵柄を 2 枚めくると 800 ms 後に伏せに戻ります。ただし `lockBoard` が `true` のまま残るので、以降はクリックが効きません。3-4 まで進めば直ります。
+
 
 ---
 
@@ -1135,6 +1167,8 @@ function unflipCards() {
 - `handleMatch` と `unflipCards` で `resetTurn()` を呼び出しているので、この関数を作ればチェックポイントに繋がる
 
 </div>
+<span class="tag-verify">確認</span> 判定のあと「変数など」の `firstCard` と `secondCard` が `null`、`lockBoard` が `false` に戻ります。何ターンでも続けて遊べるようになります。
+
 
 ---
 
@@ -1218,6 +1252,8 @@ function shuffle(array) {
   return result;
 }
 ```
+<span class="tag-verify">確認</span> まだ呼んでいないので画面は変わりません。診断パネルが `shuffle` を実際に呼んで調べるので、Chapter 4 が `4/4 ✓` になれば合っています。
+
 
 ---
 
@@ -1246,6 +1282,8 @@ let deck = shuffle(symbols.concat(symbols));
 ```
 
 あとで作るリセット機能でも `deck` に新しい配列を入れ直します。`const` のままだと再代入で `TypeError` になるので `let` に変えます。
+<span class="tag-verify">確認</span> リロードするたびにカードの並びが変わります。
+
 
 ---
 
@@ -1299,6 +1337,8 @@ const clearMessageEl = document.getElementById("clear-message");
 ```
 
 状態変数は 1 箇所に集めておくと、リセット機能を作るときに「何を戻せばよいか」が一目で分かります。
+<span class="tag-verify">確認</span> 「変数など」に `moves = 0`、`matchedPairs = 0`、`timerId = null` が出ます。診断パネルの Chapter 5 は `7/10` まで進みます。
+
 
 ---
 
@@ -1333,6 +1373,8 @@ const clearMessageEl = document.getElementById("clear-message");
 - テキストの書き換えは `element.textContent = ...`
 
 </div>
+<span class="tag-verify">確認</span> 2 枚めくるたびに画面上部の「手数」が 1 ずつ増えます。「変数など」の `moves` も同じ数になります。
+
 
 ---
 
@@ -1376,6 +1418,8 @@ function stopTimer() {
   timerId = null;
 }
 ```
+<span class="tag-verify">確認</span> 呼び出しをまだ書いていないので、動かして確かめる方法はありません。5-4 を入れてから確認します。
+
 
 ---
 
@@ -1406,6 +1450,8 @@ if (!firstCard) {
 ```
 
 `!timerId` は「まだタイマーが動いていない (ID が `null` のまま)」を意味します。2 枚目、3 枚目のクリックでは既に ID が入っているので、`startTimer` は呼ばれず、最初の 1 回だけ動きます。
+<span class="tag-verify">確認</span> 1 枚目をめくった瞬間から時間が動き出します。「変数など」の `timerId` が `null` から数値に変わり、2 枚目以降でその数値が変わらなければ二重に動いていません。
+
 
 ---
 
@@ -1441,6 +1487,8 @@ function handleMatch() {
   }
 }
 ```
+
+<span class="tag-verify">確認</span> ペアを取るたびに「ペア」の表示が `1 / 8` のように増えます。クリアメッセージとタイマー停止は、8 ペア全部そろえないと確かめられません。
 
 <details class="hint">
 <summary>ヒント</summary>
@@ -1542,6 +1590,8 @@ function resetGame() {
 }
 ```
 
+<span class="tag-verify">確認</span> `resetGame` を呼ぶ場所をまだ作っていないので、ここでは確かめられません。6-2 でボタンに繋いでから確認します。
+
 <details class="hint">
 <summary>ヒント</summary>
 
@@ -1600,6 +1650,8 @@ const resetBtn = document.getElementById("reset-btn");
 resetBtn.addEventListener("click", 【A】);
 ```
 
+<span class="tag-verify">確認</span> 「もう一度」ボタンを押すと並びが変わって最初から始まります。「変数など」の `moves` と `matchedPairs` が 0 に戻れば、6-1 も合っています。
+
 <details class="hint">
 <summary>ヒント</summary>
 
@@ -1636,6 +1688,8 @@ resetGame();
 ```
 
 初回起動もリセットも同じ処理で扱え、状態変数の初期化が一箇所に集約されます。
+<span class="tag-verify">確認</span> リロードしても今までどおり 16 枚が並びます。カード枚数が 0 になっていたら、`resetGame();` の置き場所を見直してください。
+
 
 <div class="note">
 いちばん最後に置くのは、<code>let</code> と <code>const</code> が宣言より前で読むとエラー (<code>Cannot access ... before initialization</code>) になるためです。
