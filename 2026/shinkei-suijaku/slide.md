@@ -162,6 +162,12 @@ style: |
   }
   .fig-row { display: flex; gap: 16px; justify-content: center; align-items: flex-start; }
   .fig-row > p { margin: 0; }
+  .split { display: flex; gap: 24px; align-items: flex-start; }
+  .split > * { min-width: 0; }
+  .split-main { flex: 1 1 64%; }
+  .split-side { flex: 1 1 36%; }
+  .split pre { font-size: 0.7em; }
+  .split > * > *:first-child { margin-top: 0; }
   .timer-box {
     position: absolute; top: 24px; right: 32px;
     display: flex; align-items: center; gap: 8px;
@@ -533,6 +539,9 @@ JS で書いた 1 行が、HTML のどこになるかの対応です。
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
+<div class="split code-lg">
+<div class="split-main">
+
 ```javascript
 // STUDENT [1-3]:
 // A: front (? の面) と back (絵柄の面) を inner の中に入れる (2 行)
@@ -557,7 +566,15 @@ function createCard(symbol) {
 }
 ```
 
+</div>
+<div class="split-side">
+
 <span class="tag-verify">確認</span> 診断パネルの Chapter 1 を開くと、入れ子を見ているテストに ✓ が付きます。次のスライドで 1 枚出して目でも確かめます。
+
+![w:400](./screenshots/createcard-check.png)
+
+</div>
+</div>
 
 ---
 
