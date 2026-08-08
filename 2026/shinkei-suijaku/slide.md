@@ -1109,6 +1109,7 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 - 片付けは `resetTurn()` という名前で呼び出しておく。中身は後で書きます
 
 </div>
+
 <span class="tag-verify">確認</span> 同じ絵柄を 2 枚めくると両方が緑に光ります。「盤面 (DOM)」の matched も 2 になります。`resetTurn` がまだないので、その先は 3-4 まで動きません。
 
 
@@ -1163,6 +1164,7 @@ function unflipCards() {
 800 ms は「見えている時間は短すぎず、待たされ感は少ない」を狙った値です。
 
 </div>
+
 <span class="tag-verify">確認</span> 違う絵柄を 2 枚めくると 800 ms 後に伏せに戻ります。ただし `lockBoard` が `true` のまま残るので、以降はクリックが効きません。3-4 まで進めば直ります。
 
 
@@ -1210,6 +1212,7 @@ function unflipCards() {
 - `handleMatch` と `unflipCards` で `resetTurn()` を呼び出しているので、この関数を作ればチェックポイントに繋がる
 
 </div>
+
 <span class="tag-verify">確認</span> 判定のあと「変数など」の `firstCard` と `secondCard` が `null`、`lockBoard` が `false` に戻ります。何ターンでも続けて遊べるようになります。
 
 
@@ -1416,6 +1419,7 @@ const clearMessageEl = document.getElementById("clear-message");
 - テキストの書き換えは `element.textContent = ...`
 
 </div>
+
 <span class="tag-verify">確認</span> 2 枚めくるたびに画面上部の「手数」が 1 ずつ増えます。「変数など」の `moves` も同じ数になります。
 
 
