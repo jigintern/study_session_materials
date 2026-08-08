@@ -890,9 +890,9 @@ function handleCardClick(card) {
 <summary>ヒント</summary>
 
 - A: すでに用意した状態変数のどれか (ロック用)
-- B: CSS 側が反応するクラス名 (文字列)
+- B: CSS 側が反応するクラス名
 - C: クラスを追加する `classList` のメソッド名
-- D: すでに用意した状態変数のどれか (1 枚目)
+- D: すでに用意した状態変数のどれか
 
 </details>
 
