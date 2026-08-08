@@ -415,7 +415,7 @@ HTML に書いていない要素も、JS から作って足せます。作ると
 ```javascript
 const apple = document.createElement("div");   // <div></div> ができる
 apple.textContent = "🍎";                      // <div>🍎</div> になる
-document.getElementById("board").appendChild(apple);  // #board の中に入る
+document.getElementById("board").appendChild(apple);  // 盤面の中に入る
 ```
 
 貼ると、盤面のところに 🍎 が 1 つ出ます。
@@ -424,7 +424,7 @@ document.getElementById("board").appendChild(apple);  // #board の中に入る
 
 ---
 
-## `#board` の中身が変わった
+## 盤面の中身が変わった
 
 ```javascript
 // さっき貼った 3 行
@@ -459,17 +459,17 @@ document.getElementById("board").appendChild(apple);
 
 ブラウザが読み込んだ HTML の構造を DOM と呼びます。
 
-`#board` は何度も使うので、最初に取得して変数にしておきます。
+盤面は何度も使うので、最初に取得して変数にしておきます。
 
 <span class="tag-unlock">コピペ</span>
 
 ```javascript
-// STUDENT [1-2]: #board を取得して boardEl に入れる
+// STUDENT [1-2]: 盤面を取得して boardEl に入れる
 const boardEl = document.getElementById("board");
 ```
 
 この資料では、DOM 要素を入れる変数の末尾に `El` (Element の略) を付けて統一します。
-<span class="tag-verify">確認</span> 画面は変わりません。診断パネルの Chapter 1 を開くと「boardEl が #board 要素」に ✓ が付きます。
+<span class="tag-verify">確認</span> 画面は変わりません。診断パネルの Chapter 1 を開くと「boardEl が id="board" の要素」に ✓ が付きます。
 
 
 ---
@@ -655,12 +655,12 @@ DOM 上では次のように追加されるイメージです。
 
 ## 1-4. 盤面全体を描く関数
 
-`deck` の各要素をカードにして `#board` に並べる `renderBoard` 関数を書きます。
+`deck` の各要素をカードにして盤面に並べる `renderBoard` 関数を書きます。
 
 <div class="syntax">
 
 - `element.replaceChildren()` — その要素の中身を全部削除
-  例: `boardEl.replaceChildren()` → `#board` に並んだカードが消える
+  例: `boardEl.replaceChildren()` → 盤面に並んだカードが消える
 
 </div>
 
@@ -679,7 +679,7 @@ DOM 上では次のように追加されるイメージです。
 </div>
 
 ```javascript
-// STUDENT [1-4]: deck の各要素をカードにして #board に並べる
+// STUDENT [1-4]: deck の各要素をカードにして盤面に並べる
 function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 

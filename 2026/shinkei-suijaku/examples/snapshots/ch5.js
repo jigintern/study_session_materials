@@ -26,7 +26,7 @@ const movesEl = document.getElementById("moves");
 const pairsEl = document.getElementById("pairs");
 const clearMessageEl = document.getElementById("clear-message");
 
-// STUDENT [1-2]: #board を取得して boardEl に入れる
+// STUDENT [1-2]: 盤面を取得して boardEl に入れる
 const boardEl = document.getElementById("board");
 
 function createCard(symbol) {

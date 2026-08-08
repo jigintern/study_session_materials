@@ -610,7 +610,7 @@
         for (const s of deck) counts.set(s, (counts.get(s) || 0) + 1);
         return counts.size === 8 && [...counts.values()].every((n) => n === 2);
       } },
-      { desc: "boardEl が #board 要素", fn: () => typeof boardEl !== "undefined" && boardEl instanceof Element && boardEl.id === "board" },
+      { desc: 'boardEl が id="board" の要素', fn: () => typeof boardEl !== "undefined" && boardEl instanceof Element && boardEl.id === "board" },
       { desc: "createCard 関数が定義されている", fn: () => typeof window.createCard === "function" },
       { desc: "createCard('🍎') が Element を返す", fn: () => window.createCard("🍎") instanceof Element },
       { desc: "createCard の返り値に data-symbol が入る", fn: () => window.createCard("🍎").dataset.symbol === "🍎" },
@@ -772,7 +772,7 @@
     const board = document.getElementById("board");
     const boardLine = board
       ? `cards=${board.querySelectorAll(".card").length}, flipped=${board.querySelectorAll(".card.flipped").length}, matched=${board.querySelectorAll(".card.matched").length}`
-      : "#board が見つかりません";
+      : 'id="board" の要素が見つかりません';
 
     const diagFull = [];
     const diagShort = [];
@@ -874,7 +874,7 @@
     if (!board) {
       const s = document.createElement("span");
       s.className = "undefined";
-      s.textContent = "#board が見つかりません";
+      s.textContent = 'id="board" の要素が見つかりません';
       domPre.appendChild(s);
     } else {
       const cards = board.querySelectorAll(".card");

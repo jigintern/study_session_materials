@@ -15,7 +15,7 @@ let firstCard = null;    // 1 枚目にめくったカード
 let secondCard = null;   // 2 枚目にめくったカード
 let lockBoard = false;   // 2 枚めくったあとに他のカードを押させないためのロック
 
-// STUDENT [1-2]: #board を取得して boardEl に入れる
+// STUDENT [1-2]: 盤面を取得して boardEl に入れる
 const boardEl = document.getElementById("board");
 
 function createCard(symbol) {
