@@ -1309,7 +1309,7 @@ const deck = symbols.concat(symbols);
 let deck = shuffle(symbols.concat(symbols));
 ```
 
-あとで作るリセット機能でも `deck` に新しい配列を入れ直します。`const` のままだと再代入で `TypeError` になるので `let` に変えます。
+あとで作るリセット機能でも `deck` に新しい配列を入れ直します。`const` のままだと再代入で `TypeError` になるので `let` に変えます。4-1 の `result` のように中身を書き換えるだけなら `const` のままで通ります。違いは末尾の付録に回します。
 <span class="tag-verify">確認</span> リロードするたびにカードの並びが変わります。
 
 
@@ -2183,6 +2183,39 @@ deck.sort(() => Math.random() - 0.5);
 比較の回数は処理系によって変わるため、上の数値も実装依存です。ただし n^n が n! の倍数にならない限り、要素数を増やしても偏り自体は残ります。
 
 詳しくは → [シャッフルした結果が偏ると相談を受けたときに確認すること (Zenn)](https://zenn.dev/yoheimuta/articles/89e9b85e01fc4f)
+
+---
+
+## 付録: const と let — 使い分け
+
+`const` は再代入できない宣言、`let` は再代入できる宣言です。
+
+```javascript
+const a = 1;
+a = 2;      // TypeError: Assignment to constant variable.
+
+let b = 1;
+b = 2;      // これは通る
+```
+
+書き換えないとわかっているものを `const` にしておくと、うっかり別の値を入れてしまったときにその場でエラーになります。先に `const` で書いて、書き換えが必要になった時点で `let` に直すのが楽です。
+
+今日のコードでは `boardEl` のような要素の参照や `createCard` の中の一時変数が `const`、`firstCard` や `moves` のように遊んでいる間に変わるものが `let` です。
+
+---
+
+## 付録: const と let — 中身の書き換え
+
+`const` が禁じているのは変数への再代入だけです。配列やオブジェクトの中身を書き換えるのは `const` でも通ります。
+
+```javascript
+const arr = [1, 2, 3];
+arr[0] = 9;    // 通る。arr が指している配列は同じまま
+arr.push(4);   // 通る
+arr = [9, 9];  // TypeError。別の配列に差し替えるのはダメ
+```
+
+4-1 の `shuffle` が `const result` の中身を入れ替えられたのはこのためです。一方 4-2 で `deck` を `let` に変えたのは、`shuffle` が返す別の配列を入れ直すからで、こちらは再代入にあたります。
 
 ---
 
