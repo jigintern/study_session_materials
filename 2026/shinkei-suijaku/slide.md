@@ -631,8 +631,6 @@ DOM 上では次のように追加されるイメージです。
 
 `deck` の各要素をカードにして `#board` に並べる `renderBoard` 関数を書きます。
 
-今回初めて使うもの:
-
 <div class="syntax">
 
 - `element.replaceChildren()` — その要素の中身を全部削除
