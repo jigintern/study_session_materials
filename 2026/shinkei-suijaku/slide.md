@@ -921,9 +921,9 @@ function handleCardClick(card) {
 
 </details>
 
-<span class="tag-verify">確認</span> 1 つ埋めるたびにクリックして試せます。全部埋めるとカードがめくれるようになり、もう一度押しても反応せず、「変数など」の `firstCard` が `Card(🍎 @3)` に変わります。
+<span class="tag-verify">確認</span> 全部埋めるとカードがめくれるようになり、もう一度押しても反応しません。「変数など」の `firstCard` が `Card(🍎 @3)` に変わります。
 
-【A】はクリックでは確かめられません。診断パネルが `lockBoard` を真にして実際に呼ぶので、Chapter 2 が `8/8 ✓` になれば 4 つとも合っています。
+【A】はクリックでは確かめられないので、診断パネルの Chapter 2 が `8/8 ✓` になるかで見ます。
 
 </div>
 </div>
