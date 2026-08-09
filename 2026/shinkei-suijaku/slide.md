@@ -1550,7 +1550,7 @@ function handleMatch() {
 
 ## 6-1. resetGame 関数
 
-<span class="tag-write">記述</span> 状態変数を初期値に戻し、盤面を作り直します。【A】〜【C】を埋めましょう。
+<span class="tag-write">記述</span> 状態変数を初期値に戻し、盤面を作り直します。【A】〜【C】を埋めて、ファイルのいちばん最後に書きます。
 
 <div class="timer-box" data-seconds="240">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -1581,6 +1581,10 @@ function resetGame() {
   clearMessageEl.textContent = "";
   【C】;
 }
+
+// 初回の描画も resetGame に任せる
+// (renderBoard 関数の下の renderBoard(); は消す)
+resetGame();
 ```
 
 </div>
@@ -1594,34 +1598,13 @@ function resetGame() {
 
 </details>
 
-<span class="tag-verify">確認</span> `resetGame` を呼ぶ場所がまだないので、次のスライドで呼び出しを差し替えてから確かめます。
+<span class="tag-verify">確認</span> リロードするたびに並びが変わります。ここまで動けば【A】と【C】は合っています。
 
 </div>
 </div>
-
----
-
-<!-- _class: tight -->
-
-## 6-1 の確認: 初回描画を resetGame に差し替える
-
-<span class="tag-unlock">コピペ</span> `renderBoard();` の呼び出しを消して、代わりに `resetGame();` をファイルのいちばん最後に置きます。
-
-```javascript
-// 削除 (renderBoard 関数の下にある呼び出し)
-// renderBoard();
-
-// 追加 (ファイルのいちばん最後)
-resetGame();
-```
-
-<span class="tag-verify">確認</span> リロードすると今までどおり 16 枚が並び、リロードのたびに並びが変わります。ここまで動けば【A】と【C】は合っています。カードが 1 枚も出ないときは、次のスライドで答え合わせをします。
-
-初回起動もリセットも同じ処理で扱え、状態変数の初期化が一箇所に集約されます。
 
 <div class="note">
-いちばん最後に置くのは、<code>let</code> と <code>const</code> が宣言より前で読むとエラー (<code>Cannot access ... before initialization</code>) になるためです。
-4-2 で <code>shuffle</code> をいちばん最後に書いても上の行から呼べたのは、<code>function</code> の宣言だけの性質です。
+いちばん最後に置くのは、<code>let</code> と <code>const</code> を宣言より前で読むと <code>Cannot access ... before initialization</code> になるためです。4-2 の <code>shuffle</code> が上の行から呼べたのは <code>function</code> の宣言だけの性質です。
 </div>
 
 ---
@@ -1645,7 +1628,7 @@ function resetGame() {
 }
 ```
 
-めくりの状態を戻す 3 行は `resetTurn` にまとまっているので、ここでは呼ぶだけで済みます。
+めくりの状態を戻す 3 行は `resetTurn` にまとまっているので、ここでは呼ぶだけで済みます。初回起動もリセットも同じ処理で扱えるようになり、状態変数の初期化が一箇所に集約されます。
 
 並び順が効くのは `deck` への代入と `renderBoard()` の関係だけです。`renderBoard()` は呼ばれた時点の `deck` を読むので、代入より前に置くと古い並びで盤面を作ってしまい、「もう一度」を押しても配置が変わりません。`resetTurn()` と表示を戻す 4 行は、この関数の中ならどこに置いても結果は同じです。
 
