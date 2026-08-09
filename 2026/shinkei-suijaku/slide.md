@@ -950,7 +950,7 @@ function handleCardClick(card) {
 
 `classList` は `contains` で調べて `add` で付けます。付いた `"flipped"` に配布 CSS が反応して、めくれるアニメーションが流れます。
 
-`lockBoard` が真の間は先頭で打ち切るので、絵柄を比べている最中のクリックはめくる処理まで進みません。`firstCard` の初期値は `null` なので、1 枚目がまだ無いときだけ `!firstCard` が真になります。
+`lockBoard` が `true` の間は先頭で打ち切るので、絵柄を比べている最中のクリックはめくる処理まで進みません。`firstCard` の初期値は `null` なので、1 枚目がまだ無いときだけ `!firstCard` が `true` になります。
 
 ---
 
