@@ -899,7 +899,7 @@ function handleCardClick(card) {
 
   card.classList.【C】(【B】);
 
-  if (!【D】) {
+  if (【D】 === null) {
     firstCard = card;
     return;
   }
@@ -939,7 +939,7 @@ function handleCardClick(card) {
 
   card.classList.add("flipped");                  // C
 
-  if (!firstCard) {                               // D
+  if (firstCard === null) {                       // D
     firstCard = card;
     return;
   }
@@ -950,7 +950,7 @@ function handleCardClick(card) {
 
 `classList` は `contains` で調べて `add` で付けます。付いた `"flipped"` に配布 CSS が反応して、めくれるアニメーションが流れます。
 
-`lockBoard` が `true` の間は先頭で打ち切るので、絵柄を比べている最中のクリックはめくる処理まで進みません。`firstCard` の初期値は `null` なので、1 枚目がまだ無いときだけ `!firstCard` が `true` になります。
+`lockBoard` が `true` の間は先頭で打ち切るので、絵柄を比べている最中のクリックはめくる処理まで進みません。`lockBoard` は真偽値なのでそのまま `if` に置けます。`firstCard` に入るのはカードか `null` なので、`null` と比べて「1 枚目がまだ無い」を真偽値にしてから置きます。
 
 ---
 
@@ -1415,7 +1415,7 @@ function stopTimer() {
 
 - `startTime`: `Date.now()` で取った開始時刻 (ミリ秒)。経過秒は `(Date.now() - startTime) / 1000` で出る
 - `renderTimer`: 250 ms ごとに呼ばれて、経過秒を計算し直して表示を書き換える関数
-- `timerId`: 動いている `setInterval` の識別子。あとで止めるために保持する。5-4 で `!timerId` として再登場
+- `timerId`: 動いている `setInterval` の識別子。あとで止めるために保持する。5-4 で `timerId === null` として再登場
 - `` `${mm}:${ss}` ``: テンプレートリテラル。変数を埋め込める
 
 `setInterval` は `clearInterval` を呼ぶまで止まりません。不要になったら必ず止めます (`stopTimer` の役割)。
@@ -1424,18 +1424,18 @@ function stopTimer() {
 
 ## 5-4. タイマー開始を組み込む
 
-<span class="tag-unlock">コピペ</span> `handleCardClick` の `if (!firstCard)` の分岐に 1 行追加します。
+<span class="tag-unlock">コピペ</span> `handleCardClick` の `if (firstCard === null)` の分岐に 1 行追加します。
 
 ```javascript
 // 1 枚目をめくった瞬間にタイマー開始 (まだ動いていなければ)
-if (!firstCard) {
+if (firstCard === null) {
   firstCard = card;
-  if (!timerId) startTimer();
+  if (timerId === null) startTimer();
   return;
 }
 ```
 
-`!timerId` は「まだタイマーが動いていない (ID が `null` のまま)」を意味します。2 枚目、3 枚目のクリックでは既に ID が入っているので、`startTimer` は呼ばれず、最初の 1 回だけ動きます。
+`timerId === null` は「まだタイマーが動いていない」ということです。2 枚目、3 枚目のクリックでは既に ID が入っているので、`startTimer` は呼ばれず、最初の 1 回だけ動きます。
 <span class="tag-verify">確認</span> 1 枚目をめくった瞬間から時間が動き出します。「変数など」の `timerId` が `null` から数値に変わり、2 枚目以降でその数値が変わらなければ二重に動いていません。
 
 

@@ -61,7 +61,7 @@ function handleCardClick(card) {
 
   card.classList.add("flipped");
 
-  if (!firstCard) {
+  if (firstCard === null) {
     firstCard = card;
     return;
   }
