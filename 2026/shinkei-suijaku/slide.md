@@ -1038,7 +1038,7 @@ if (isMatch) {
 
 3-1 で `handleMatch()` を呼ぶところまでは書けています。呼ばれる側を作ります。
 
-<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【C】を書き換えましょう。
+<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【B】を書き換えましょう。
 
 <div class="timer-box" data-seconds="120">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -1048,7 +1048,7 @@ if (isMatch) {
 
 <div class="choices">
 
-候補: `add` / `remove` / `flipped` / `matched` / `resetTurn` / `handleMismatch`
+候補: `add` / `remove` / `flipped` / `matched`
 
 </div>
 
@@ -1057,11 +1057,11 @@ if (isMatch) {
 function handleMatch() {
   firstCard.classList.【A】("【B】");
   secondCard.classList.【A】("【B】");
-  【C】();
+  resetTurn();
 }
 ```
 
-【C】は一致でも不一致でも共通の後片付けです。中身はこの後で書くので、ここでは呼び出しだけ置きます。
+`resetTurn()` は一致でも不一致でも共通の後片付けです。中身は 3-4 で書くので、ここでは呼び出しだけ置きます。
 
 <span class="tag-verify">確認</span> 同じ絵柄を 2 枚めくると両方が緑に光ります。「盤面 (DOM)」の matched も 2 になります。呼び出した片付けの関数がまだないので、その先は 3-4 まで動きません。
 
@@ -1074,7 +1074,7 @@ function handleMatch() {
 function handleMatch() {
   firstCard.classList.add("matched");   // A は add、B は matched
   secondCard.classList.add("matched");
-  resetTurn();                          // C
+  resetTurn();
 }
 ```
 
