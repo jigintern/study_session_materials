@@ -309,33 +309,12 @@
       margin-top: 10px;
     }
 
-    /* ===== スキルバッジ ===== */
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .badge {
-      padding: 8px 18px;
-      border-radius: 100px;
-      font-size: 13px;
-      font-weight: 500;
-      border: 1px solid rgba(139, 92, 246, 0.25);
-      color: #a78bfa;
-      background: rgba(139, 92, 246, 0.06);
-      transition: all 0.2s;
-    }
-    .badge:hover {
-      background: rgba(139, 92, 246, 0.15);
-      transform: translateY(-2px);
-    }
-
-    /* ===== SNSリンク ===== */
-    .sns-links {
+    /* ===== リンク ===== */
+    .links {
       display: flex;
       gap: 12px;
     }
-    .sns-link {
+    .link {
       padding: 12px 24px;
       background: rgba(255, 255, 255, 0.06);
       color: #c0c0d0;
@@ -346,7 +325,7 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       transition: all 0.25s;
     }
-    .sns-link:hover {
+    .link:hover {
       background: #8b5cf6;
       border-color: #8b5cf6;
       color: #fff;
@@ -560,17 +539,12 @@
       background: #8b5cf6;
       color: #fff;
     }
-    body.light .badge {
-      background: rgba(139, 92, 246, 0.08);
-      color: #7c3aed;
-      border-color: rgba(139, 92, 246, 0.2);
-    }
-    body.light .sns-link {
+    body.light .link {
       background: rgba(0, 0, 0, 0.04);
       color: #4b5563;
       border-color: rgba(0, 0, 0, 0.08);
     }
-    body.light .sns-link:hover {
+    body.light .link:hover {
       background: #8b5cf6;
       border-color: #8b5cf6;
       color: #fff;
@@ -712,29 +686,12 @@
 
   <hr class="divider">
 
-  <!-- ===== スキル ===== -->
-  <div class="section">
-    <div class="reveal-right section-label">Skills</div>
-    <div class="reveal-right section-title">できること</div>
-    <div class="badges reveal">
-      <span class="badge">HTML</span>
-      <span class="badge">CSS</span>
-      <span class="badge">JavaScript</span>
-      <span class="badge">写真</span>
-      <span class="badge">デザイン</span>
-    </div>
-  </div>
-
-  <hr class="divider">
-
-  <!-- ===== SNSリンク ===== -->
+  <!-- ===== リンク ===== -->
   <div class="section">
     <div class="reveal-left section-label">Links</div>
-    <div class="reveal-left section-title">SNS</div>
-    <div class="sns-links reveal">
-      <a href="#" class="sns-link">X</a>
-      <a href="#" class="sns-link">Instagram</a>
-      <a href="#" class="sns-link">GitHub</a>
+    <div class="reveal-left section-title">リンク</div>
+    <div class="links reveal">
+      <a target="_blank" href="https://jig.jp" class="link">jig.jp</a>
     </div>
   </div>
 

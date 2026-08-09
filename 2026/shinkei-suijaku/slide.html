@@ -32338,10 +32338,10 @@ section.break .timer-btn { width: 44px; height: 44px; font-size: 24px; }
 <div class="choices">
 <p>【B】【C】の候補: <code>symbols.length</code> / <code>deck.length</code> / <code>8</code> / <code>stopTimer()</code> / <code>startTimer()</code></p>
 </div>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-javascript"><span class="hljs-comment">// handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア</span>
-<span class="hljs-keyword">function</span> <span class="hljs-title function_">handleMatch</span>(<span class="hljs-params"></span>) {
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">handleMatch</span>(<span class="hljs-params"></span>) {
   firstCard.<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(<span class="hljs-string">&quot;matched&quot;</span>);
   secondCard.<span class="hljs-property">classList</span>.<span class="hljs-title function_">add</span>(<span class="hljs-string">&quot;matched&quot;</span>);
+  <span class="hljs-comment">// ペア数を 1 増やして、その場で表示も更新する 2 行。表示は「3 / 8」の形</span>
   【A】
   <span class="hljs-title function_">resetTurn</span>();
   <span class="hljs-keyword">if</span> (matchedPairs === 【B】) {
@@ -32354,7 +32354,6 @@ section.break .timer-btn { width: 44px; height: 44px; font-size: 24px; }
 <details class="hint">
 <summary>ヒント</summary>
 <ul>
-<li>A: ペア数を 1 増やして、その場で表示も更新する 2 行。表示は「3 / 8」の形</li>
 <li>B: 「ペアが全部揃った」を表す値。絵柄種類を変えても正しく判定できる書き方</li>
 <li>C: クリアしたあとも動き続けてしまうものを止める処理</li>
 </ul>
