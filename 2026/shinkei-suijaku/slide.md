@@ -43,6 +43,12 @@ style: |
   pre {
     font-size: 0.78em;
   }
+  mark {
+    background: #fff176;
+    color: inherit;
+    border-radius: 3px;
+    box-shadow: 0 0 0 2px #fff176;
+  }
   table {
     font-size: 0.86em;
   }
@@ -266,7 +272,7 @@ https://stackblitz.com/edit/web-platform-qnett8m2?file=script.js
 
 今日さわるのはほぼ `script.js` だけです。最初には `symbols` 配列だけが用意されているので、ここから 1 行ずつ書き足していきます。
 
-新しい関数・変数の追加は、指示がなければ `script.js` のいちばん最後に足します。既存コードへの追記や書き換えのときは、周囲の行をアンカーとしてスライドに載せます。
+新しい関数・変数の追加は、指示がなければ `script.js` のいちばん最後に足します。既存コードへの追記や書き換えのときは、周囲の行をアンカーとしてスライドに載せます。このとき、書き足す行だけを ==黄色== で塗ります。塗っていない行は手元にすでにあるので、書き写す必要はありません。
 
 ![bg right:32% contain](./screenshots/stackblitz-initial.png)
 
@@ -871,8 +877,7 @@ function createCard(symbol) {
   // ... (ここまでに書いた中身は省略) ...
   card.appendChild(inner);
 
-  // この 1 行を追加
-  card.addEventListener("click", () => handleCardClick(card));
+@@  card.addEventListener("click", () => handleCardClick(card));@@
 
   return card;
 }
@@ -1020,16 +1025,16 @@ function handleCardClick(card) {
 <span class="tag-unlock">コピペ</span> `handleCardClick` の中、`secondCard = card;` の下に貼ります。
 
 ```javascript
-// 2 枚目がめくれたら判定する
 secondCard = card;
 
-const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
+@@// 2 枚目がめくれたら判定する@@
+@@const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;@@
 
-if (isMatch) {
-  handleMatch();
-} else {
-  handleMismatch();
-}
+@@if (isMatch) {@@
+@@  handleMatch();@@
+@@} else {@@
+@@  handleMismatch();@@
+@@}@@
 ```
 
 比べているのは、1-3 で `card.dataset.symbol = symbol` と入れておいた絵柄です。2 枚のカードから同じ名前で取り出し、`===` で突き合わせます。`===` と `==` の違いは末尾の付録に回します。
@@ -1311,18 +1316,18 @@ let deck = shuffle(symbols.concat(symbols));
 <span class="tag-unlock">コピペ</span> いちばん最後ではなく、`let lockBoard = false;` の下にまとめて追加します。
 
 ```javascript
-let lockBoard = false;   // すでにある行
+let lockBoard = false;
 
-// 手数、ペア数、タイマー用の状態を用意
-let moves = 0;           // 2 枚めくるごとに 1 増える手数
-let matchedPairs = 0;    // 揃ったペアの数
-let timerId = null;      // 動いているタイマーの番号。止めるときに使う
-let startTime = 0;       // 計測を始めた時刻
+@@// 手数、ペア数、タイマー用の状態を用意@@
+@@let moves = 0;           // 2 枚めくるごとに 1 増える手数@@
+@@let matchedPairs = 0;    // 揃ったペアの数@@
+@@let timerId = null;      // 動いているタイマーの番号。止めるときに使う@@
+@@let startTime = 0;       // 計測を始めた時刻@@
 
-const timerEl = document.getElementById("timer");
-const movesEl = document.getElementById("moves");
-const pairsEl = document.getElementById("pairs");
-const clearMessageEl = document.getElementById("clear-message");
+@@const timerEl = document.getElementById("timer");@@
+@@const movesEl = document.getElementById("moves");@@
+@@const pairsEl = document.getElementById("pairs");@@
+@@const clearMessageEl = document.getElementById("clear-message");@@
 ```
 
 状態変数は 1 箇所に集めておくと、リセット機能を作るときに「何を戻せばよいか」が一目で分かります。
@@ -1354,10 +1359,10 @@ const clearMessageEl = document.getElementById("clear-message");
 ```javascript
   secondCard = card;
 
-  【A】++;                    // ここから 2 行が書き足す分
-  【B】.textContent = 【A】;
+@@  【A】++;@@
+@@  【B】.textContent = 【A】;@@
 
-  const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol; // すでにある行
+  const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 ```
 
 <div class="syntax">
@@ -1447,7 +1452,7 @@ function stopTimer() {
 // 1 枚目をめくった瞬間にタイマー開始 (まだ動いていなければ)
 if (firstCard === null) {
   firstCard = card;
-  if (timerId === null) startTimer();
+@@  if (timerId === null) startTimer();@@
   return;
 }
 ```
@@ -1480,13 +1485,13 @@ if (firstCard === null) {
 function handleMatch() {
   firstCard.classList.add("matched");
   secondCard.classList.add("matched");
-  // ペア数を 1 増やして、その場で表示も更新する 2 行。表示は「3 / 8」の形
-  【A】
+@@  // ペア数を 1 増やして、その場で表示も更新する 2 行。表示は「3 / 8」の形@@
+@@  【A】@@
   resetTurn();
-  if (matchedPairs === 【B】) {
-    【C】;
-    clearMessageEl.textContent = `クリア！ ${moves}手 / ${timerEl.textContent}`;
-  }
+@@  if (matchedPairs === 【B】) {@@
+@@    【C】;@@
+@@    clearMessageEl.textContent = `クリア！ ${moves}手 / ${timerEl.textContent}`;@@
+@@  }@@
 }
 ```
 
