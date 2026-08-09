@@ -1601,10 +1601,6 @@ resetGame();
 </div>
 </div>
 
-<div class="note">
-いちばん最後に置くのは、<code>let</code> と <code>const</code> を宣言より前で読むと <code>Cannot access ... before initialization</code> になるためです。4-2 の <code>shuffle</code> が上の行から呼べたのは <code>function</code> の宣言だけの性質です。
-</div>
-
 ---
 
 <!-- _class: tight -->
@@ -1634,12 +1630,24 @@ function resetGame() {
 
 ## 6-2. リセットボタンにイベントを付ける
 
-<span class="tag-unlock">コピペ</span> さっき置いた `resetGame();` の前に書き足します。
+<span class="tag-write">記述</span> さっき置いた `resetGame();` の前に書き足します。【A】と【B】を埋めましょう。
+
+<div class="timer-box" data-seconds="60">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
+
+<div class="choices">
+
+候補: `getElementById` / `addEventListener`
+
+</div>
 
 ```javascript
 // もう一度ボタンで resetGame を呼ぶ
-const resetBtn = document.getElementById("reset-btn");
-resetBtn.addEventListener("click", resetGame);
+const resetBtn = document.【A】("reset-btn");
+resetBtn.【B】("click", resetGame);
 ```
 
 <div class="note">
@@ -1648,13 +1656,7 @@ resetBtn.addEventListener("click", resetGame);
 
 </div>
 
-<div class="aside">
-
-渡したい引数がないので、2-2 の `() => handleCardClick(card)` のように包む必要はありません。3-3 の `setTimeout(unflipCards, 800)`、5-3 の `setInterval(renderTimer, 250)` と同じ形です。
-
-</div>
-
-<span class="tag-verify">確認</span> 「もう一度」ボタンを押すと並びが変わって最初から始まります。1 枚めくった状態で押しても、めくりかけが残らずに遊び直せれば、6-1 の【B】も合っています。
+<span class="tag-verify">確認</span> 「もう一度」ボタンを押すと並びが変わって最初から始まります。1 枚めくった状態で押しても、めくりかけが残らずに遊び直せれば、6-1 の【B】も合っています。【A】と【B】を取り違えると Console に赤いエラーが出ます。
 
 ---
 
