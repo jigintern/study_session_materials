@@ -921,12 +921,10 @@ function handleCardClick(card) {
 
 </details>
 
-<span class="tag-verify">確認</span> 全部埋めるとカードがめくれるようになり、もう一度押しても反応しません。「変数など」の `firstCard` が `Card(🍎 @3)` に変わります。
-
-【A】はクリックでは確かめられないので、診断パネルの Chapter 2 が `8/8 ✓` になるかで見ます。
-
 </div>
 </div>
+
+<span class="tag-verify">確認</span> カードがめくれるようになり、もう一度押しても反応しません。診断パネルの「変数など」で `firstCard` が `Card(🍎 @3)` に変わります。【A】はクリックでは確かめられないので、同じパネルの Chapter 2 が `8/8 ✓` になるかで見ます。
 
 ---
 
