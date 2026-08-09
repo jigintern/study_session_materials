@@ -956,19 +956,15 @@ function handleCardClick(card) {
 
 ---
 
+<!-- _class: tight -->
+
 ## 2-2 補足: addEventListener に関数を預ける
 
-`addEventListener` に渡すのは、実行した結果ではなく、あとで実行してほしい処理そのものです。カッコを付けて呼んでしまうと、その場で実行された結果が渡ります。
+`addEventListener` に渡すのは、実行した結果ではなく、あとで実行してほしい処理そのものです。
 
-```javascript
-// カードを作った瞬間に実行される → 16 枚とも最初からめくれてしまう
-card.addEventListener("click", handleCardClick(card));
+![w:1060](./diagrams/pass-function.svg)
 
-// クリックされたときに実行される
-card.addEventListener("click", () => handleCardClick(card));
-```
-
-今回は `handleCardClick` に `card` を渡したいので、処理を `() => ...` で包みました。この `=>` を使った書き方をアロー関数と呼びます (詳しくは末尾の付録)。
+今回は `card` を渡したいので処理を `() => ...` で包みました。この書き方をアロー関数と呼びます (詳しくは末尾の付録)。
 
 あとで実行してほしい処理を渡す場面は 3-3、5-3、6-2 にも出てきます。そちらは `card` のように渡したいものがないので、包まずに、名前を付けた関数をそのまま書きます。
 
