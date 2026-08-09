@@ -1477,10 +1477,10 @@ if (firstCard === null) {
 </div>
 
 ```javascript
-// handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア
 function handleMatch() {
   firstCard.classList.add("matched");
   secondCard.classList.add("matched");
+  // ペア数を 1 増やして、その場で表示も更新する 2 行。表示は「3 / 8」の形
   【A】
   resetTurn();
   if (matchedPairs === 【B】) {
@@ -1495,7 +1495,6 @@ function handleMatch() {
 <details class="hint">
 <summary>ヒント</summary>
 
-- A: ペア数を 1 増やして、その場で表示も更新する 2 行。表示は「3 / 8」の形
 - B: 「ペアが全部揃った」を表す値。絵柄種類を変えても正しく判定できる書き方
 - C: クリアしたあとも動き続けてしまうものを止める処理
 
