@@ -845,7 +845,7 @@ let lockBoard = false;   // 2 枚めくったあとに他のカードを押さ�
 
 ![クリック処理のフロー](./diagrams/click-flow.svg)
 
-図中の日本語ラベルを、2-1 で用意した状態変数や「配布 CSS の約束」のクラス名に置き換えるとコードになります。次のスライドで書きます。
+図中の日本語ラベルを、2-1 で用意した状態変数や「配布 CSS の約束」のクラス名に置き換えるとコードになります。先にカードと繋いでから、この図を見ながら書きます。
 
 最初の「ロック中?」が実際に効くのは Chapter 3 です。この章のあいだは必ず「いいえ」に進みます。
 
@@ -853,9 +853,37 @@ let lockBoard = false;   // 2 枚めくったあとに他のカードを押さ�
 
 <!-- _class: tight -->
 
+## 2-2. 先にカードと繋いでおく
+
+`element.addEventListener("click", 関数)` で、その要素がクリックされたときに実行する関数を紐づけられます。中身を書く前に、空の関数とこの 1 行を先に置きます。こうしておくと、次のスライドで穴を 1 つ埋めるたびに画面で確かめられます。
+
+<span class="tag-unlock">コピペ</span> `addEventListener` の行は `createCard` 関数の中の `return card;` の直前に、空の関数はファイルの末尾に置きます。
+
+```javascript
+function createCard(symbol) {
+  // ... (ここまでに書いた中身は省略) ...
+  card.appendChild(inner);
+
+  // この 1 行を追加
+  card.addEventListener("click", () => handleCardClick(card));
+
+  return card;
+}
+
+// フロー図に沿って書く
+function handleCardClick(card) {
+}
+```
+
+<span class="tag-verify">確認</span> カードをクリックしても何も起きません。中身が空なのでこれで正しい状態です。診断パネルの Chapter 2 は `4/8` になり、中身を見る 4 つが ✗ で残ります。これを次のスライドで埋めます。
+
+---
+
+<!-- _class: tight -->
+
 ## 2-2. クリック処理を関数にする (コード)
 
-<span class="tag-write">記述</span> 前スライドのフロー図を見ながら【A】〜【D】を埋めます。
+<span class="tag-write">記述</span> さきほどのフロー図を見ながら【A】〜【D】を埋めます。
 
 <div class="timer-box" data-seconds="240">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -902,36 +930,12 @@ function handleCardClick(card) {
 
 </details>
 
-<span class="tag-verify">確認</span> この関数はまだどこからも呼ばれません。次のスライドでカードに繋いで、クリックして確かめます。
+<span class="tag-verify">確認</span> 1 つ埋めるたびにクリックして試せます。全部埋めるとカードが表向きになり、もう一度押しても反応せず、「変数など」の `firstCard` が `Card(🍎 @3)` に変わります。
+
+【A】はクリックでは確かめられません。診断パネルが `lockBoard` を真にして実際に呼ぶので、Chapter 2 が `8/8 ✓` になれば 4 つとも合っています。
 
 </div>
 </div>
-
----
-
-<!-- _class: tight -->
-
-## 2-2 の確認: カードに繋いでみる
-
-`element.addEventListener("click", 関数)` で、その要素がクリックされたときに実行する関数を紐づけられます。`createCard` 関数の中の `return card;` の直前に 1 行追加します。
-
-<span class="tag-unlock">コピペ</span>
-
-```javascript
-function createCard(symbol) {
-  // ... (ここまでに書いた中身は省略) ...
-  card.appendChild(inner);
-
-  // この 1 行を追加
-  card.addEventListener("click", () => handleCardClick(card));
-
-  return card;
-}
-```
-
-<span class="tag-verify">確認</span> カードをクリックすると表向きになり、もう一度押しても反応しません。1 枚めくると「変数など」の `firstCard` が `Card(🍎 @3)` に変わります。ここまで動けば【B】〜【D】は合っています。
-
-【A】の `lockBoard` が効くのは Chapter 3 からです。次のスライドで答え合わせをします。
 
 ---
 
@@ -984,7 +988,7 @@ card.addEventListener("click", () => handleCardClick(card));
 - カードをクリックすると絵柄が表向きに反転する
 - 一度めくったカードは、二度目のクリックでは反応しない
 - 3 枚目以降もめくれてしまう (これは一致判定を入れるときに止めます)
-- 診断パネルの Chapter 2 が `4/4 ✓` になっている
+- 診断パネルの Chapter 2 が `8/8 ✓` になっている
 
 <div class="rescue">
 追いつき用: <code>ch2.js</code>
