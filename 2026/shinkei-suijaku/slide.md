@@ -846,9 +846,9 @@ let lockBoard = false;   // 2 枚めくったあとに他のカードを押さ�
 
 ## 2-2. 先にカードと繋いでおく
 
-`element.addEventListener("click", 関数)` で、その要素がクリックされたときに実行する関数を紐づけられます。中身を書く前に、空の関数とこの 1 行を先に置きます。こうしておくと、次のスライドで穴を 1 つ埋めるたびに画面で確かめられます。
+`element.addEventListener("click", 関数)` で、その要素がクリックされたときに実行する関数を紐づけられます。呼ばれる側の `handleCardClick` はまだ作らず、この 1 行だけ先に置きます。こうしておくと、次のスライドで穴を 1 つ埋めるたびに画面で確かめられます。
 
-<span class="tag-unlock">コピペ</span> `addEventListener` の行は `createCard` 関数の中の `return card;` の直前に、空の関数はファイルの末尾に置きます。
+<span class="tag-unlock">コピペ</span> `createCard` 関数の中の `return card;` の直前に置きます。
 
 ```javascript
 function createCard(symbol) {
@@ -860,13 +860,9 @@ function createCard(symbol) {
 
   return card;
 }
-
-// フロー図に沿って書く
-function handleCardClick(card) {
-}
 ```
 
-<span class="tag-verify">確認</span> カードをクリックしても何も起きません。中身が空なのでこれで正しい状態です。診断パネルの Chapter 2 は `4/8` になり、中身を見る 4 つが ✗ で残ります。これを次のスライドで埋めます。
+<span class="tag-verify">確認</span> カードをクリックすると、診断パネルの「診断」に `⚠ Uncaught ReferenceError: handleCardClick is not defined` が出ます。呼ぶ先をまだ作っていないので、これが出れば繋がっています。押すたびに `(×2)` `(×3)` と数が増えます。診断パネルの Chapter 2 は `3/8` です。
 
 ---
 
@@ -874,7 +870,7 @@ function handleCardClick(card) {
 
 ## 2-2. クリック処理を関数にする (コード)
 
-<span class="tag-write">記述</span> さきほどのフロー図を見ながら【A】〜【D】を埋めます。
+<span class="tag-write">記述</span> ファイルの末尾にこの形で書き、さきほどのフロー図を見ながら【A】〜【D】を埋めます。
 
 <div class="timer-box" data-seconds="240">
   <button class="timer-btn" data-delta="-60">−</button>
