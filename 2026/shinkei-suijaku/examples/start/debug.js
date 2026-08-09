@@ -596,10 +596,105 @@
     }
   };
 
+  // ---- handleCardClick の試し呼び出し ---------------------------------------
+  // 2-2 は書いた直後に自分で確かめる手段が乏しいので、ここで実際に呼んで
+  // 「めくれるか」「二度目を弾くか」「firstCard に入るか」「lockBoard を見ているか」を調べる。
+  // 状態変数は呼ぶ前に控えて必ず戻す。渡すカードは盤面に入れないので画面には影響しない。
+  //
+  // 呼ぶ経路は先へ進むほど副作用が増えるので、2 段階で降りる。
+  // Chapter 3 からは 2 枚目の経路が handleMatch や unflipCards に繋がるので、
+  // 二度目のクリックを試すのをやめる (1 枚目の経路は必ず return するので続けられる)。
+  // Chapter 5 からは 1 枚目の経路でもタイマーが始まるので、呼ぶこと自体をやめる。
+  // 【A】の lockBoard が効き始めるのは Chapter 3 なので、そこで 2-2 を直したときに
+  // 結果が更新されるよう、止めるのはできるだけ遅らせる。
+  // 一度も呼べないまま Chapter 5 のスナップショットに乗り換えた場合は判定対象外として通す。
+  const probe = { result: null, skipped: false };
+
+  const makeProbeCard = () => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.dataset.symbol = "🍎";
+    const inner = document.createElement("div");
+    inner.className = "card-inner";
+    card.appendChild(inner);
+    return card;
+  };
+
+  const probeReady = () =>
+    typeof window.handleCardClick === "function" &&
+    safeRead("firstCard") !== UNDEF &&
+    safeRead("secondCard") !== UNDEF &&
+    typeof safeRead("lockBoard") === "boolean";
+
+  const chapter3Started = () =>
+    typeof window.handleMatch === "function" ||
+    typeof window.handleMismatch === "function" ||
+    typeof window.unflipCards === "function";
+
+  const chapter5Started = () => typeof window.startTimer === "function";
+
+  const runProbe = (allowSecondClick, prev) => {
+    const saved = { first: firstCard, second: secondCard, lock: lockBoard };
+    const r = { locked: false, flips: false, stores: false, ignores: false };
+    try {
+      // 1 枚目はめくれて firstCard に入る (【B】【C】【D】)
+      const card = makeProbeCard();
+      firstCard = null;
+      secondCard = null;
+      lockBoard = false;
+      window.handleCardClick(card);
+      r.flips = card.classList.contains("flipped");
+      r.stores = firstCard === card;
+
+      // めくり済みのカードをもう一度渡しても状態が動かない (【B】)
+      if (allowSecondClick) {
+        const before = firstCard;
+        secondCard = null;
+        window.handleCardClick(card);
+        r.ignores = r.flips && firstCard === before && secondCard === null;
+      } else {
+        r.ignores = prev ? prev.ignores : r.flips;
+      }
+
+      // ロック中はめくれない (【A】)。
+      // 中身が空の関数も「何もしない」ので、めくれることを先に確かめてから判定する。
+      const lockedCard = makeProbeCard();
+      firstCard = null;
+      secondCard = null;
+      lockBoard = true;
+      window.handleCardClick(lockedCard);
+      r.locked = r.flips && !lockedCard.classList.contains("flipped") && firstCard === null;
+    } catch (e) {
+      // 途中で落ちた場合はそこまでの結果を使う
+    } finally {
+      firstCard = saved.first;
+      secondCard = saved.second;
+      lockBoard = saved.lock;
+    }
+    return r;
+  };
+
+  const updateProbe = () => {
+    if (!probeReady()) {
+      probe.result = null;
+      probe.skipped = false;
+      return;
+    }
+    if (chapter5Started()) {
+      probe.skipped = probe.result === null;
+      return;
+    }
+    probe.result = runProbe(!chapter3Started(), probe.result);
+    probe.skipped = false;
+  };
+
+  const probeSays = (key) => probe.skipped || (probe.result !== null && probe.result[key]);
+
   // ---- Chapter tests -------------------------------------------------------
   // 各テストは boolean を返す関数。エラーは try/catch で fail 扱いにする。
-  // 副作用の大きい関数 (handleCardClick, resetGame, renderBoard, startTimer など) は
+  // 副作用の大きい関数 (resetGame, renderBoard, startTimer など) は
   // 「呼ぶ」テストにしない。定義有無だけを見る。
+  // handleCardClick だけは上の試し呼び出しの結果を見る。
   const TESTS = {
     "Chapter 1": [
       { desc: "deck が配列である", fn: () => typeof deck !== "undefined" && Array.isArray(deck) },
@@ -630,6 +725,10 @@
       { desc: "secondCard 変数が定義されている", fn: () => typeof secondCard !== "undefined" },
       { desc: "lockBoard 変数が boolean", fn: () => typeof lockBoard === "boolean" },
       { desc: "handleCardClick 関数が定義されている", fn: () => typeof window.handleCardClick === "function" },
+      { desc: "クリックしたカードに flipped が付く", fn: () => probeSays("flips") },
+      { desc: "1 枚目のカードが firstCard に入る", fn: () => probeSays("stores") },
+      { desc: "めくり済みのカードは二度目で反応しない", fn: () => probeSays("ignores") },
+      { desc: "lockBoard が true の間はめくれない", fn: () => probeSays("locked") },
     ],
     "Chapter 3": [
       { desc: "handleMatch 関数が定義されている", fn: () => typeof window.handleMatch === "function" },
@@ -681,6 +780,7 @@
   };
 
   const runTests = () => {
+    updateProbe();
     const results = {};
     for (const [chapter, tests] of Object.entries(TESTS)) {
       results[chapter] = [];
