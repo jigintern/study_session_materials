@@ -34,16 +34,18 @@ let matchedPairs = 0;
 let timerId = null;
 let startTime = 0;
 
+// CHANGED: 応用課題「リセットの取りこぼし」の修正。難易度切り替えとは独立した直し
+let unflipTimerId = null;
+
 const timerEl = document.getElementById("timer");
 const movesEl = document.getElementById("moves");
 const pairsEl = document.getElementById("pairs");
 const clearMessageEl = document.getElementById("clear-message");
 const boardEl = document.getElementById("board");
 
-function createCard(symbol, index) {
+function createCard(symbol) {
   const card = document.createElement("div");
   card.className = "card";
-  card.dataset.index = index;
   card.dataset.symbol = symbol;
 
   const inner = document.createElement("div");
@@ -67,10 +69,10 @@ function createCard(symbol, index) {
 function renderBoard() {
   boardEl.replaceChildren();
 
-  deck.forEach((symbol, index) => {
-    const card = createCard(symbol, index);
+  for (let i = 0; i < deck.length; i++) {
+    const card = createCard(deck[i]);
     boardEl.appendChild(card);
-  });
+  }
 }
 
 function handleCardClick(card) {
@@ -79,9 +81,9 @@ function handleCardClick(card) {
 
   card.classList.add("flipped");
 
-  if (!firstCard) {
+  if (firstCard === null) {
     firstCard = card;
-    if (!timerId) startTimer();
+    if (timerId === null) startTimer();
     return;
   }
 
@@ -114,12 +116,13 @@ function handleMatch() {
 
 function handleMismatch() {
   lockBoard = true;
+  unflipTimerId = setTimeout(unflipCards, 800);
+}
 
-  setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    secondCard.classList.remove("flipped");
-    resetTurn();
-  }, 800);
+function unflipCards() {
+  firstCard.classList.remove("flipped");
+  secondCard.classList.remove("flipped");
+  resetTurn();
 }
 
 function resetTurn() {
@@ -139,12 +142,14 @@ function shuffle(array) {
 
 function startTimer() {
   startTime = Date.now();
-  timerId = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
-    const ss = String(elapsed % 60).padStart(2, "0");
-    timerEl.textContent = `${mm}:${ss}`;
-  }, 250);
+  timerId = setInterval(renderTimer, 250);
+}
+
+function renderTimer() {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
+  const ss = String(elapsed % 60).padStart(2, "0");
+  timerEl.textContent = `${mm}:${ss}`;
 }
 
 function stopTimer() {
@@ -159,24 +164,31 @@ function createLevelButtons() {
   const controls = document.getElementById("controls");
   controls.style.gap = "8px";
 
-  Object.keys(LEVELS).forEach((key) => {
+  const keys = Object.keys(LEVELS);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
     const btn = document.createElement("button");
     btn.textContent = LEVELS[key].label;
     btn.style.cssText =
       "background:rgba(255,255,255,0.25);color:#fff;border:none;" +
       "padding:12px 18px;border-radius:999px;font-size:15px;" +
       "font-weight:bold;cursor:pointer;";
-    btn.addEventListener("click", () => {
-      currentLevel = key;
-      resetGame();
-    });
+    btn.addEventListener("click", () => selectLevel(key));
     controls.appendChild(btn);
-  });
+  }
+}
+
+// CHANGED: 押された難易度に切り替えて作り直す。
+// カードのクリックと同じで、渡したいもの (key) があるのでアロー関数で包んでいる。
+function selectLevel(key) {
+  currentLevel = key;
+  resetGame();
 }
 
 // CHANGED: 難易度に合わせて symbols と列数を組み直してからリセットする
 function resetGame() {
   stopTimer();
+  clearTimeout(unflipTimerId);
 
   const level = LEVELS[currentLevel];
   symbols = ALL_SYMBOLS.slice(0, level.pairs);

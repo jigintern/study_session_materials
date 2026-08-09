@@ -7,32 +7,31 @@
 // カードの絵柄 (8 種類 x 2 枚 = 16 枚)
 const symbols = ["🍎", "🍌", "🍇", "🍓", "🍊", "🥝", "🍑", "🍍"];
 
-// STUDENT [4-2]: deck をシャッフルする。再代入するので const ではなく let
+// deck をシャッフルする。再代入するので const ではなく let
 let deck = shuffle(symbols.concat(symbols));
 
-// STUDENT [2-1]: めくりの状態を持つ変数を用意する
+// めくりの状態を持つ変数を用意する
 let firstCard = null;    // 1 枚目にめくったカード
 let secondCard = null;   // 2 枚目にめくったカード
 let lockBoard = false;   // 2 枚めくったあとに他のカードを押させないためのロック
 
-// STUDENT [5-1]: 手数、ペア数、タイマー用の状態を用意
-let moves = 0;
-let matchedPairs = 0;
-let timerId = null;
-let startTime = 0;
+// 手数、ペア数、タイマー用の状態を用意
+let moves = 0;           // 2 枚めくるごとに 1 増える手数
+let matchedPairs = 0;    // 揃ったペアの数
+let timerId = null;      // 動いているタイマーの番号。止めるときに使う
+let startTime = 0;       // 計測を始めた時刻
 
 const timerEl = document.getElementById("timer");
 const movesEl = document.getElementById("moves");
 const pairsEl = document.getElementById("pairs");
 const clearMessageEl = document.getElementById("clear-message");
 
-// STUDENT [1-2]: #board を取得して boardEl に入れる
+// 盤面を取得して boardEl に入れる
 const boardEl = document.getElementById("board");
 
-function createCard(symbol, index) {
+function createCard(symbol) {
   const card = document.createElement("div");
   card.className = "card";
-  card.dataset.index = index;
   card.dataset.symbol = symbol;
 
   const inner = document.createElement("div");
@@ -48,7 +47,7 @@ function createCard(symbol, index) {
   inner.appendChild(back);
   card.appendChild(inner);
 
-  // STUDENT [2-3]: この 1 行を追加
+  // この 1 行を追加
   card.addEventListener("click", () => handleCardClick(card));
 
   return card;
@@ -58,32 +57,32 @@ function renderBoard() {
   boardEl.replaceChildren(); // 中身を全部削除
 
   // deck の要素を 1 つずつ取り出して繰り返す
-  deck.forEach((symbol, index) => {
-    const card = createCard(symbol, index);
+  for (let i = 0; i < deck.length; i++) {
+    const card = createCard(deck[i]);
     boardEl.appendChild(card);
-  });
+  }
 }
 
 renderBoard();
 
-// STUDENT [2-2]: フロー図に沿って書く
+// フロー図に沿って書く
 function handleCardClick(card) {
   if (lockBoard) return;
   if (card.classList.contains("flipped")) return;
 
   card.classList.add("flipped");
 
-  if (!firstCard) {
+  if (firstCard === null) {
     firstCard = card;
-    // STUDENT [5-4]: 1 枚目をめくった瞬間にタイマー開始 (まだ動いていなければ)
-    if (!timerId) startTimer();
+    // 1 枚目をめくった瞬間にタイマー開始 (まだ動いていなければ)
+    if (timerId === null) startTimer();
     return;
   }
 
-  // STUDENT [3-1]: 2 枚目がめくれたら判定する
+  // 2 枚目がめくれたら判定する
   secondCard = card;
 
-  // STUDENT [5-2]: 状態を変えたら、その場で描画も更新する
+  // 状態を変えたら、その場で描画も更新する
   moves++;
   movesEl.textContent = moves;
 
@@ -96,7 +95,26 @@ function handleCardClick(card) {
   }
 }
 
-// STUDENT [5-5]: 3-2 の handleMatch を書き換え。ペア数の更新と、全ペア揃ったらクリア
+// 次のターンに備えて状態を戻す
+function resetTurn() {
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
+}
+
+// 一致しなかったときは 800ms 待って伏せに戻す
+function handleMismatch() {
+  lockBoard = true;
+  setTimeout(unflipCards, 800);
+}
+
+function unflipCards() {
+  firstCard.classList.remove("flipped");
+  secondCard.classList.remove("flipped");
+  resetTurn();
+}
+
+// ペア数の更新と、全ペア揃ったらクリア
 function handleMatch() {
   firstCard.classList.add("matched");
   secondCard.classList.add("matched");
@@ -110,25 +128,7 @@ function handleMatch() {
   }
 }
 
-// STUDENT [3-3]: 不一致は 800ms 待って伏せに戻す
-function handleMismatch() {
-  lockBoard = true;
-
-  setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    secondCard.classList.remove("flipped");
-    resetTurn();
-  }, 800);
-}
-
-// STUDENT [3-4]: 次のターンに備えて状態を戻す
-function resetTurn() {
-  firstCard = null;
-  secondCard = null;
-  lockBoard = false;
-}
-
-// STUDENT [4-1]: Fisher-Yates シャッフル
+// Fisher-Yates シャッフル
 function shuffle(array) {
   const result = array.slice();
   for (let i = result.length - 1; i > 0; i--) {
@@ -138,16 +138,18 @@ function shuffle(array) {
   return result;
 }
 
-// STUDENT [5-3]: タイマーの開始と停止
+// タイマーの開始と停止
 function startTimer() {
   startTime = Date.now();
   // 1000 ms 間隔だと秒表示のズレが目立つので少し細かめに回す
-  timerId = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
-    const ss = String(elapsed % 60).padStart(2, "0");
-    timerEl.textContent = `${mm}:${ss}`;
-  }, 250);
+  timerId = setInterval(renderTimer, 250);
+}
+
+function renderTimer() {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
+  const ss = String(elapsed % 60).padStart(2, "0");
+  timerEl.textContent = `${mm}:${ss}`;
 }
 
 function stopTimer() {

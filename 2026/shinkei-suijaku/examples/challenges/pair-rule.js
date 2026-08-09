@@ -23,10 +23,11 @@ const PAIRS = [
 // CHANGED: deck の中身が文字列ではなく { label, pairId } のオブジェクトになる
 function buildDeck() {
   const cards = [];
-  PAIRS.forEach((pair, pairId) => {
+  for (let pairId = 0; pairId < PAIRS.length; pairId++) {
+    const pair = PAIRS[pairId];
     cards.push({ label: pair[0], pairId: pairId });
     cards.push({ label: pair[1], pairId: pairId });
-  });
+  }
   return shuffle(cards);
 }
 
@@ -41,6 +42,9 @@ let matchedPairs = 0;
 let timerId = null;
 let startTime = 0;
 
+// CHANGED: 応用課題「リセットの取りこぼし」の修正。ペアの条件とは独立した直し
+let unflipTimerId = null;
+
 const timerEl = document.getElementById("timer");
 const movesEl = document.getElementById("moves");
 const pairsEl = document.getElementById("pairs");
@@ -48,10 +52,9 @@ const clearMessageEl = document.getElementById("clear-message");
 const boardEl = document.getElementById("board");
 
 // CHANGED: 受け取るのが絵柄 1 文字ではなく { label, pairId }
-function createCard(cardData, index) {
+function createCard(cardData) {
   const card = document.createElement("div");
   card.className = "card";
-  card.dataset.index = index;
   // CHANGED: 判定に使うのは表示文字ではなく pairId
   card.dataset.pairId = cardData.pairId;
 
@@ -78,10 +81,10 @@ function createCard(cardData, index) {
 function renderBoard() {
   boardEl.replaceChildren();
 
-  deck.forEach((cardData, index) => {
-    const card = createCard(cardData, index);
+  for (let i = 0; i < deck.length; i++) {
+    const card = createCard(deck[i]);
     boardEl.appendChild(card);
-  });
+  }
 }
 
 function handleCardClick(card) {
@@ -90,9 +93,9 @@ function handleCardClick(card) {
 
   card.classList.add("flipped");
 
-  if (!firstCard) {
+  if (firstCard === null) {
     firstCard = card;
-    if (!timerId) startTimer();
+    if (timerId === null) startTimer();
     return;
   }
 
@@ -127,12 +130,13 @@ function handleMatch() {
 
 function handleMismatch() {
   lockBoard = true;
+  unflipTimerId = setTimeout(unflipCards, 800);
+}
 
-  setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    secondCard.classList.remove("flipped");
-    resetTurn();
-  }, 800);
+function unflipCards() {
+  firstCard.classList.remove("flipped");
+  secondCard.classList.remove("flipped");
+  resetTurn();
 }
 
 function resetTurn() {
@@ -152,12 +156,14 @@ function shuffle(array) {
 
 function startTimer() {
   startTime = Date.now();
-  timerId = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
-    const ss = String(elapsed % 60).padStart(2, "0");
-    timerEl.textContent = `${mm}:${ss}`;
-  }, 250);
+  timerId = setInterval(renderTimer, 250);
+}
+
+function renderTimer() {
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  const mm = String(Math.floor(elapsed / 60)).padStart(2, "0");
+  const ss = String(elapsed % 60).padStart(2, "0");
+  timerEl.textContent = `${mm}:${ss}`;
 }
 
 function stopTimer() {
@@ -167,6 +173,7 @@ function stopTimer() {
 
 function resetGame() {
   stopTimer();
+  clearTimeout(unflipTimerId);
   deck = buildDeck();
   resetTurn();
   moves = 0;

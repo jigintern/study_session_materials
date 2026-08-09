@@ -26,6 +26,8 @@ const state = {
   startTime: 0,
   elapsed: 0,
   cleared: false,
+  // CHANGED: 応用課題「リセットの取りこぼし」の修正。状態のまとめ方とは独立した直し
+  unflipTimerId: null,
 };
 
 const timerEl = document.getElementById("timer");
@@ -56,10 +58,9 @@ function render() {
   }
 }
 
-function createCard(symbol, index) {
+function createCard(symbol) {
   const card = document.createElement("div");
   card.className = "card";
-  card.dataset.index = index;
   card.dataset.symbol = symbol;
 
   const inner = document.createElement("div");
@@ -83,10 +84,10 @@ function createCard(symbol, index) {
 function renderBoard() {
   boardEl.replaceChildren();
 
-  state.deck.forEach((symbol, index) => {
-    const card = createCard(symbol, index);
+  for (let i = 0; i < state.deck.length; i++) {
+    const card = createCard(state.deck[i]);
     boardEl.appendChild(card);
-  });
+  }
 }
 
 function handleCardClick(card) {
@@ -128,15 +129,13 @@ function handleMatch() {
 }
 
 function handleMismatch() {
-  setState({ lockBoard: true });
+  setState({ lockBoard: true, unflipTimerId: setTimeout(unflipCards, 800) });
+}
 
-  const { firstCard, secondCard } = state;
-
-  setTimeout(() => {
-    firstCard.classList.remove("flipped");
-    secondCard.classList.remove("flipped");
-    resetTurn();
-  }, 800);
+function unflipCards() {
+  state.firstCard.classList.remove("flipped");
+  state.secondCard.classList.remove("flipped");
+  resetTurn();
 }
 
 function resetTurn() {
@@ -154,12 +153,12 @@ function shuffle(array) {
 
 function startTimer() {
   setState({ startTime: Date.now() });
+  setState({ timerId: setInterval(tickTimer, 250) });
+}
 
-  const id = setInterval(() => {
-    setState({ elapsed: Math.floor((Date.now() - state.startTime) / 1000) });
-  }, 250);
-
-  setState({ timerId: id });
+// CHANGED: 表示の組み立ては render がやるので、ここは経過秒を更新するだけ
+function tickTimer() {
+  setState({ elapsed: Math.floor((Date.now() - state.startTime) / 1000) });
 }
 
 function stopTimer() {
@@ -170,6 +169,7 @@ function stopTimer() {
 // CHANGED: 初期化が 1 回の setState で済む。戻し忘れが起きにくい。
 function resetGame() {
   stopTimer();
+  clearTimeout(state.unflipTimerId);
 
   setState({
     deck: shuffle(symbols.concat(symbols)),
@@ -181,6 +181,7 @@ function resetGame() {
     startTime: 0,
     elapsed: 0,
     cleared: false,
+    unflipTimerId: null,
   });
 
   renderBoard();

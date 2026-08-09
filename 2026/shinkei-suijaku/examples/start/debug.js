@@ -251,6 +251,13 @@
     }
   };
 
+  // 同じ絵柄のカードが 2 枚あるので、絵柄だけでは firstCard と secondCard が
+  // 別の 2 枚なのか同じカードなのか区別できません。盤面での位置を添えて見分けます。
+  // renderBoard は deck の順に appendChild していくだけで並べ替えないので、
+  // 親の中での位置が deck のインデックスと一致します。
+  const cardPosition = (el) =>
+    el.parentNode ? Array.prototype.indexOf.call(el.parentNode.children, el) : -1;
+
   const appendValue = (parent, v) => {
     if (v === UNDEF) {
       const s = document.createElement("span");
@@ -291,9 +298,8 @@
       return;
     }
     if (v instanceof Element) {
-      const idx = v.dataset ? v.dataset.index : undefined;
       const sym = v.dataset ? v.dataset.symbol : undefined;
-      const text = sym !== undefined ? `Card(${sym} @${idx})` : `<${v.tagName.toLowerCase()}>`;
+      const text = sym !== undefined ? `Card(${sym} @${cardPosition(v)})` : `<${v.tagName.toLowerCase()}>`;
       parent.appendChild(document.createTextNode(text));
       return;
     }
@@ -539,6 +545,13 @@
     if (hasFn("createCard") && hasFn("renderBoard") && cardCount === 0) {
       hints.push("createCard と renderBoard は定義済みですが盤面が空です。ファイル末尾で renderBoard() (または resetGame()) を呼びましたか?");
     }
+    if (hasFn("createCard")) {
+      let made = null;
+      try { made = window.createCard("🍎"); } catch (_) { /* テスト側で fail 表示する */ }
+      if (made instanceof Element && !made.querySelector(".card-inner")) {
+        hints.push("createCard の返り値に card-inner が入っていません。inner.appendChild(front) / inner.appendChild(back) / card.appendChild(inner) は書きましたか?");
+      }
+    }
     if (deck !== UNDEF && Array.isArray(deck) && deck.length > 0 && deck.length !== 16) {
       if (deck.length === 8) {
         hints.push("deck の長さが 8 です。symbols を 2 回連結し忘れていませんか? symbols.concat(symbols)");
@@ -583,10 +596,105 @@
     }
   };
 
+  // ---- handleCardClick の試し呼び出し ---------------------------------------
+  // 2-2 は書いた直後に自分で確かめる手段が乏しいので、ここで実際に呼んで
+  // 「めくれるか」「二度目を弾くか」「firstCard に入るか」「lockBoard を見ているか」を調べる。
+  // 状態変数は呼ぶ前に控えて必ず戻す。渡すカードは盤面に入れないので画面には影響しない。
+  //
+  // 呼ぶ経路は先へ進むほど副作用が増えるので、2 段階で降りる。
+  // Chapter 3 からは 2 枚目の経路が handleMatch や unflipCards に繋がるので、
+  // 二度目のクリックを試すのをやめる (1 枚目の経路は必ず return するので続けられる)。
+  // Chapter 5 からは 1 枚目の経路でもタイマーが始まるので、呼ぶこと自体をやめる。
+  // 【A】の lockBoard が効き始めるのは Chapter 3 なので、そこで 2-2 を直したときに
+  // 結果が更新されるよう、止めるのはできるだけ遅らせる。
+  // 一度も呼べないまま Chapter 5 のスナップショットに乗り換えた場合は判定対象外として通す。
+  const probe = { result: null, skipped: false };
+
+  const makeProbeCard = () => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.dataset.symbol = "🍎";
+    const inner = document.createElement("div");
+    inner.className = "card-inner";
+    card.appendChild(inner);
+    return card;
+  };
+
+  const probeReady = () =>
+    typeof window.handleCardClick === "function" &&
+    safeRead("firstCard") !== UNDEF &&
+    safeRead("secondCard") !== UNDEF &&
+    typeof safeRead("lockBoard") === "boolean";
+
+  const chapter3Started = () =>
+    typeof window.handleMatch === "function" ||
+    typeof window.handleMismatch === "function" ||
+    typeof window.unflipCards === "function";
+
+  const chapter5Started = () => typeof window.startTimer === "function";
+
+  const runProbe = (allowSecondClick, prev) => {
+    const saved = { first: firstCard, second: secondCard, lock: lockBoard };
+    const r = { locked: false, flips: false, stores: false, ignores: false };
+    try {
+      // 1 枚目はめくれて firstCard に入る (【B】【C】【D】)
+      const card = makeProbeCard();
+      firstCard = null;
+      secondCard = null;
+      lockBoard = false;
+      window.handleCardClick(card);
+      r.flips = card.classList.contains("flipped");
+      r.stores = firstCard === card;
+
+      // めくり済みのカードをもう一度渡しても状態が動かない (【B】)
+      if (allowSecondClick) {
+        const before = firstCard;
+        secondCard = null;
+        window.handleCardClick(card);
+        r.ignores = r.flips && firstCard === before && secondCard === null;
+      } else {
+        r.ignores = prev ? prev.ignores : r.flips;
+      }
+
+      // ロック中はめくれない (【A】)。
+      // 中身が空の関数も「何もしない」ので、めくれることを先に確かめてから判定する。
+      const lockedCard = makeProbeCard();
+      firstCard = null;
+      secondCard = null;
+      lockBoard = true;
+      window.handleCardClick(lockedCard);
+      r.locked = r.flips && !lockedCard.classList.contains("flipped") && firstCard === null;
+    } catch (e) {
+      // 途中で落ちた場合はそこまでの結果を使う
+    } finally {
+      firstCard = saved.first;
+      secondCard = saved.second;
+      lockBoard = saved.lock;
+    }
+    return r;
+  };
+
+  const updateProbe = () => {
+    if (!probeReady()) {
+      probe.result = null;
+      probe.skipped = false;
+      return;
+    }
+    if (chapter5Started()) {
+      probe.skipped = probe.result === null;
+      return;
+    }
+    probe.result = runProbe(!chapter3Started(), probe.result);
+    probe.skipped = false;
+  };
+
+  const probeSays = (key) => probe.skipped || (probe.result !== null && probe.result[key]);
+
   // ---- Chapter tests -------------------------------------------------------
   // 各テストは boolean を返す関数。エラーは try/catch で fail 扱いにする。
-  // 副作用の大きい関数 (handleCardClick, resetGame, renderBoard, startTimer など) は
+  // 副作用の大きい関数 (resetGame, renderBoard, startTimer など) は
   // 「呼ぶ」テストにしない。定義有無だけを見る。
+  // handleCardClick だけは上の試し呼び出しの結果を見る。
   const TESTS = {
     "Chapter 1": [
       { desc: "deck が配列である", fn: () => typeof deck !== "undefined" && Array.isArray(deck) },
@@ -597,24 +705,36 @@
         for (const s of deck) counts.set(s, (counts.get(s) || 0) + 1);
         return counts.size === 8 && [...counts.values()].every((n) => n === 2);
       } },
-      { desc: "boardEl が #board 要素", fn: () => typeof boardEl !== "undefined" && boardEl instanceof Element && boardEl.id === "board" },
+      { desc: 'boardEl が id="board" の要素', fn: () => typeof boardEl !== "undefined" && boardEl instanceof Element && boardEl.id === "board" },
       { desc: "createCard 関数が定義されている", fn: () => typeof window.createCard === "function" },
-      { desc: "createCard('🍎', 0) が Element を返す", fn: () => window.createCard("🍎", 0) instanceof Element },
-      { desc: "createCard の返り値に data-symbol が入る", fn: () => window.createCard("🍎", 0).dataset.symbol === "🍎" },
-      { desc: "createCard の返り値に card クラスが付く", fn: () => window.createCard("🍎", 0).classList.contains("card") },
+      { desc: "createCard('🍎') が Element を返す", fn: () => window.createCard("🍎") instanceof Element },
+      { desc: "createCard の返り値に data-symbol が入る", fn: () => window.createCard("🍎").dataset.symbol === "🍎" },
+      { desc: "createCard の返り値に card クラスが付く", fn: () => window.createCard("🍎").classList.contains("card") },
+      { desc: "createCard の返り値が card > card-inner > front / back の入れ子", fn: () => {
+        const inner = window.createCard("🍎").querySelector(":scope > .card-inner");
+        return !!inner && !!inner.querySelector(":scope > .card-front") && !!inner.querySelector(":scope > .card-back");
+      } },
       { desc: "renderBoard 関数が定義されている", fn: () => typeof window.renderBoard === "function" },
-      { desc: "盤面に 16 枚のカードが並んでいる", fn: () => document.querySelectorAll("#board .card").length === 16 },
+      { desc: "盤面に 16 枚のカードが中身つきで並んでいる", fn: () => {
+        const cards = document.querySelectorAll("#board .card");
+        return cards.length === 16 && [...cards].every((c) => c.querySelector(":scope > .card-inner > .card-back"));
+      } },
     ],
     "Chapter 2": [
       { desc: "firstCard 変数が定義されている", fn: () => typeof firstCard !== "undefined" },
       { desc: "secondCard 変数が定義されている", fn: () => typeof secondCard !== "undefined" },
       { desc: "lockBoard 変数が boolean", fn: () => typeof lockBoard === "boolean" },
       { desc: "handleCardClick 関数が定義されている", fn: () => typeof window.handleCardClick === "function" },
+      { desc: "クリックしたカードに flipped が付く", fn: () => probeSays("flips") },
+      { desc: "1 枚目のカードが firstCard に入る", fn: () => probeSays("stores") },
+      { desc: "めくり済みのカードは二度目で反応しない", fn: () => probeSays("ignores") },
+      { desc: "lockBoard が true の間はめくれない", fn: () => probeSays("locked") },
     ],
     "Chapter 3": [
-      { desc: "handleMatch 関数が定義されている", fn: () => typeof window.handleMatch === "function" },
-      { desc: "handleMismatch 関数が定義されている", fn: () => typeof window.handleMismatch === "function" },
       { desc: "resetTurn 関数が定義されている", fn: () => typeof window.resetTurn === "function" },
+      { desc: "handleMismatch 関数が定義されている", fn: () => typeof window.handleMismatch === "function" },
+      { desc: "unflipCards 関数が定義されている", fn: () => typeof window.unflipCards === "function" },
+      { desc: "handleMatch 関数が定義されている", fn: () => typeof window.handleMatch === "function" },
     ],
     "Chapter 4": [
       { desc: "shuffle 関数が定義されている", fn: () => typeof window.shuffle === "function" },
@@ -650,6 +770,7 @@
       { desc: "pairsEl が #pairs 要素", fn: () => typeof pairsEl !== "undefined" && pairsEl instanceof Element && pairsEl.id === "pairs" },
       { desc: "clearMessageEl が #clear-message 要素", fn: () => typeof clearMessageEl !== "undefined" && clearMessageEl instanceof Element && clearMessageEl.id === "clear-message" },
       { desc: "startTimer 関数が定義されている", fn: () => typeof window.startTimer === "function" },
+      { desc: "renderTimer 関数が定義されている", fn: () => typeof window.renderTimer === "function" },
       { desc: "stopTimer 関数が定義されている", fn: () => typeof window.stopTimer === "function" },
     ],
     "Chapter 6": [
@@ -659,6 +780,7 @@
   };
 
   const runTests = () => {
+    updateProbe();
     const results = {};
     for (const [chapter, tests] of Object.entries(TESTS)) {
       results[chapter] = [];
@@ -732,9 +854,8 @@
     if (typeof v === "string") return JSON.stringify(v);
     if (Array.isArray(v)) return `[Array length=${v.length}]`;
     if (v instanceof Element) {
-      const idx = v.dataset ? v.dataset.index : undefined;
       const sym = v.dataset ? v.dataset.symbol : undefined;
-      return sym !== undefined ? `Card(${sym} @${idx})` : `<${v.tagName.toLowerCase()}>`;
+      return sym !== undefined ? `Card(${sym} @${cardPosition(v)})` : `<${v.tagName.toLowerCase()}>`;
     }
     return Object.prototype.toString.call(v);
   };
@@ -751,7 +872,7 @@
     const board = document.getElementById("board");
     const boardLine = board
       ? `cards=${board.querySelectorAll(".card").length}, flipped=${board.querySelectorAll(".card.flipped").length}, matched=${board.querySelectorAll(".card.matched").length}`
-      : "#board が見つかりません";
+      : 'id="board" の要素が見つかりません';
 
     const diagFull = [];
     const diagShort = [];
@@ -853,7 +974,7 @@
     if (!board) {
       const s = document.createElement("span");
       s.className = "undefined";
-      s.textContent = "#board が見つかりません";
+      s.textContent = 'id="board" の要素が見つかりません';
       domPre.appendChild(s);
     } else {
       const cards = board.querySelectorAll(".card");
