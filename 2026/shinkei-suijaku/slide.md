@@ -914,10 +914,10 @@ function handleCardClick(card) {
 <details class="hint">
 <summary>ヒント</summary>
 
-- A: すでに用意した状態変数のどれか (ロック用)
+- A: 他のカードを押させないための変数
 - B: CSS 側が反応するクラス名
 - C: クラスを追加する `classList` のメソッド名
-- D: すでに用意した状態変数のどれか
+- D: 1 枚目に押したカードを覚えておく変数
 
 </details>
 
