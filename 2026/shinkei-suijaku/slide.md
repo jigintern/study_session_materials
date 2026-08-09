@@ -1020,25 +1020,13 @@ card.addEventListener("click", () => handleCardClick(card));
 
 ## 3-1. handleCardClick に判定分岐を追加
 
-<span class="tag-write">記述</span> `handleCardClick` の中、`secondCard = card;` の下に判定処理を書き足します。【A】を埋めましょう。
-
-<div class="timer-box" data-seconds="90">
-  <button class="timer-btn" data-delta="-60">−</button>
-  <div class="timer"></div>
-  <button class="timer-btn" data-delta="60">＋</button>
-</div>
-
-<div class="choices">
-
-候補: `symbol` / `color` / `index`
-
-</div>
+<span class="tag-unlock">コピペ</span> `handleCardClick` の中、`secondCard = card;` の下に貼ります。
 
 ```javascript
 // 2 枚目がめくれたら判定する
 secondCard = card;
 
-const isMatch = firstCard.dataset.【A】 === secondCard.dataset.【A】;
+const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 
 if (isMatch) {
   handleMatch();
@@ -1047,32 +1035,27 @@ if (isMatch) {
 }
 ```
 
+比べているのは、1-3 で `card.dataset.symbol = symbol` と入れておいた絵柄です。2 枚のカードから同じ名前で取り出して突き合わせます。
+
 <span class="tag-verify">確認</span> 2 枚めくると診断に `handleMatch is not defined` が出ます。呼び出しがここまで届いた印なので、この時点ではこれで正解です。3-2 で作れば消えます。
-
-<details class="hint">
-<summary>ヒント</summary>
-
-- A: 2 枚が一致しているかを決めている値。`createCard` で `dataset` に何を入れたか見返してみましょう
-
-</details>
 
 ---
 
 <!-- _class: tight -->
 
-## 3-1 答え合わせと `===` の話
+## 3-1 補足: `===` の話
 
 ```javascript
 const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 ```
 
-2 箇所とも `symbol` です。`createCard` の中で `card.dataset.symbol = symbol` と入れておいた値を、ここで回収します。
+いま貼った行の真ん中にある `===` が、一致判定の本体です。
 
 <div class="syntax">
 
 `===` は値と型を両方チェックする厳密な比較演算子です。
 
-- `"🍎" === "🍎"` → `true`、`"🍎" === "🍇"` → `false` (いま書いた一致判定)
+- `"🍎" === "🍎"` → `true`、`"🍎" === "🍇"` → `false` (いまの一致判定)
 - `"1" === 1` → `false` (`"1"` は文字列、`1` は数値で型が違う)
 - `"1" == 1` → `true` (`==` は型を揃えてから比べるので通ってしまう)
 
