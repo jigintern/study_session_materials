@@ -1165,7 +1165,7 @@ function unflipCards() {
 
 一致でも不一致でも、2 枚判定した後は「次のターンを迎える」ための後片付けが必要です。めくりの状態を持つ 3 つの変数を、それぞれ宣言したときの値に戻します。
 
-<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【C】を書き換えましょう。
+<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【B】を書き換えましょう。
 
 <div class="timer-box" data-seconds="120">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -1175,20 +1175,20 @@ function unflipCards() {
 
 <div class="choices">
 
-候補: `resetTurn` / `unflipCards` / `handleMismatch` / `null` / `false` / `true` / `0`
+候補: `null` / `false` / `true` / `0`
 
 </div>
 
 ```javascript
 // 一致でも不一致でも、次のターンに向けて状態を戻す
-function 【A】() {
-  firstCard = 【B】;
-  secondCard = 【B】;
-  lockBoard = 【C】;
+function resetTurn() {
+  firstCard = 【A】;
+  secondCard = 【A】;
+  lockBoard = 【B】;
 }
 ```
 
-【A】は自分で好きに決められません。`handleMatch` と `unflipCards` から呼んでいる名前と揃わないと繋がらないからです。
+これが `handleMatch` と `unflipCards` から呼んでいた関数です。作れば呼び出しが繋がります。
 
 <span class="tag-verify">確認</span> 判定のあと「変数など」の `firstCard` と `secondCard` が `null`、`lockBoard` が `false` に戻ります。何ターンでも続けて遊べるようになります。
 
@@ -1198,10 +1198,10 @@ function 【A】() {
 ## 3-4 答え合わせ
 
 ```javascript
-function resetTurn() {   // A: 呼び出し側と同じ名前
-  firstCard = null;      // B
+function resetTurn() {
+  firstCard = null;      // A
   secondCard = null;
-  lockBoard = false;     // C
+  lockBoard = false;     // B
 }
 ```
 
