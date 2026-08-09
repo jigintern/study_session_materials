@@ -16,7 +16,7 @@
 <text x="240" y="148" text-anchor="middle" font-size="17" font-family="'SFMono-Regular',Menlo,Consolas,monospace" fill="#64748b">element</text>
 
 <rect x="40" y="180" width="400" height="166" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
-<text x="60" y="210" font-size="20" fill="#64748b">ページ (DOM)</text>
+<text x="60" y="210" font-size="20" fill="#64748b">ページ</text>
 <rect x="62" y="224" width="356" height="110" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
 <text x="240" y="273" text-anchor="middle" font-size="21" fill="#475569">親要素</text>
 <text x="240" y="298" text-anchor="middle" font-size="17" font-family="'SFMono-Regular',Menlo,Consolas,monospace" fill="#64748b">parent</text>
@@ -31,7 +31,7 @@
 <text x="714" y="76" font-size="21" font-family="'SFMono-Regular',Menlo,Consolas,monospace" fill="#334155">parent.appendChild(element);</text>
 
 <rect x="690" y="180" width="400" height="166" rx="12" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
-<text x="710" y="210" font-size="20" fill="#64748b">ページ (DOM)</text>
+<text x="710" y="210" font-size="20" fill="#64748b">ページ</text>
 <rect x="712" y="224" width="356" height="110" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
 <text x="732" y="252" font-size="20" fill="#475569">親要素</text>
 <text x="810" y="252" font-size="17" font-family="'SFMono-Regular',Menlo,Consolas,monospace" fill="#64748b">parent</text>
