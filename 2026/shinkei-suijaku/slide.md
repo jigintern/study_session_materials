@@ -956,11 +956,11 @@ function handleCardClick(card) {
 
 `addEventListener` に預けるのは、クリックされたときに実行してほしい処理です。カッコを付けて `handleCardClick(card)` と書くと、その場での呼び出しになります。
 
-![w:820](./diagrams/pass-function.svg)
+![w:920](./diagrams/pass-function.svg)
 
 ✕ を試すと 16 枚すべてが最初からめくれ、あとはクリックしても何も起きません。✓ の `() => handleCardClick(card)` は「`card` を渡して `handleCardClick` を呼ぶ」という処理です。内側のカッコは、この処理が実行される瞬間まで効きません。アロー関数と呼ぶ書き方です (詳しくは末尾の付録)。
 
-預ける相手には呼ばずに渡し、渡したいものがあるときだけ `() =>` で包む。3-3 の `setTimeout` も 6-2 の「もう一度」ボタンも同じ形です。
+預ける相手には呼ばずに渡し、渡したいものがあるときだけ `() =>` で包む。
 
 ---
 
