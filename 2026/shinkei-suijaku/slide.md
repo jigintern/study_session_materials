@@ -1170,36 +1170,34 @@ function unflipCards() {
 
 <!-- _class: tight -->
 
-## 3-4. ターンの片付け (自力で書く)
+## 3-4. ターンの片付け
 
-<span class="tag-challenge">自力</span> コードは見せません。3 分書いてから次のスライドで答え合わせします。書けたらリアクションで教えてください。
+一致でも不一致でも、2 枚判定した後は「次のターンを迎える」ための後片付けが必要です。めくりの状態を持つ 3 つの変数を、それぞれ宣言したときの値に戻します。
 
-<div class="timer-box" data-seconds="180">
+<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【C】を書き換えましょう。
+
+<div class="timer-box" data-seconds="120">
   <button class="timer-btn" data-delta="-60">−</button>
   <div class="timer"></div>
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
-一致でも不一致でも、2 枚判定した後は「次のターンを迎える」ための後片付けが必要です。
+<div class="choices">
 
-<div class="task">
-
-やること
-
-- `resetTurn` という関数を作る (3 行)
-- めくりの状態を持つ 3 つの変数を、それぞれ最初の値に戻す
+候補: `resetTurn` / `unflipCards` / `handleMismatch` / `null` / `false` / `true` / `0`
 
 </div>
 
-<div class="hint-box">
+```javascript
+// 一致でも不一致でも、次のターンに向けて状態を戻す
+function 【A】() {
+  firstCard = 【B】;
+  secondCard = 【B】;
+  lockBoard = 【C】;
+}
+```
 
-ヒント
-
-- 対象の状態変数: `firstCard`, `secondCard`, `lockBoard`
-- 「最初の値」は宣言したときの値 (2 つは `null`、1 つは `false`)
-- `handleMatch` と `unflipCards` で `resetTurn()` を呼び出しているので、この関数を作ればチェックポイントに繋がる
-
-</div>
+【A】は自分で好きに決められません。`handleMatch` と `unflipCards` から呼んでいる名前と揃わないと繋がらないからです。
 
 <span class="tag-verify">確認</span> 判定のあと「変数など」の `firstCard` と `secondCard` が `null`、`lockBoard` が `false` に戻ります。何ターンでも続けて遊べるようになります。
 
@@ -1209,10 +1207,10 @@ function unflipCards() {
 ## 3-4 答え合わせ
 
 ```javascript
-function resetTurn() {
-  firstCard = null;
+function resetTurn() {   // A: 呼び出し側と同じ名前
+  firstCard = null;      // B
   secondCard = null;
-  lockBoard = false;
+  lockBoard = false;     // C
 }
 ```
 
