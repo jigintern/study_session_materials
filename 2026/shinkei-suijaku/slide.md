@@ -1636,48 +1636,27 @@ function resetGame() {
 
 ## 6-2. リセットボタンにイベントを付ける
 
-<span class="tag-write">記述</span> さっき置いた `resetGame();` の前に書き足します。【A】はどちらでしょうか。理由も考えてみてください。
-
-<div class="timer-box" data-seconds="60">
-  <button class="timer-btn" data-delta="-60">−</button>
-  <div class="timer"></div>
-  <button class="timer-btn" data-delta="60">＋</button>
-</div>
-
-<div class="choices">
-
-候補: `resetGame` / `resetGame()`
-
-</div>
+<span class="tag-unlock">コピペ</span> さっき置いた `resetGame();` の前に書き足します。
 
 ```javascript
 // もう一度ボタンで resetGame を呼ぶ
 const resetBtn = document.getElementById("reset-btn");
-resetBtn.addEventListener("click", 【A】);
-```
-
-<span class="tag-verify">確認</span> 「もう一度」ボタンを押すと並びが変わって最初から始まります。1 枚めくった状態で押しても、めくりかけが残らずに遊び直せれば、6-1 の【B】も合っています。
-
-<details class="hint">
-<summary>ヒント</summary>
-
-`handleCardClick(card)` をそのまま渡すと何が起きたかを思い出してみましょう
-
-</details>
-
----
-
-## 6-2 答え合わせ
-
-```javascript
 resetBtn.addEventListener("click", resetGame);
 ```
 
-正解はカッコなしの `resetGame` です。カッコを付けて `resetGame()` と書くと、クリック時ではなく `addEventListener` を呼んだ瞬間に関数が実行されてしまいます。2-2 でカードのクリックを付けたときと同じ話です。
+<div class="note">
 
-「クリック時に実行したい」ならカッコなし、「今すぐ実行したい」ならカッコあり、というイメージです。
+渡すのはカッコなしの `resetGame` です。カッコを付けて `resetGame()` と書くと、クリック時ではなく `addEventListener` を呼んだ瞬間に実行されてしまいます。「クリック時に実行したい」ならカッコなし、「今すぐ実行したい」ならカッコあり、というイメージです。
 
-2-2 では `() => handleCardClick(card)` とアロー関数で包みました。あちらは `card` を渡す必要があったためです。渡す引数がなければ、3-3 の `setTimeout(unflipCards, 800)` や 5-3 の `setInterval(renderTimer, 250)` と同じく、関数名をそのまま書けます。
+</div>
+
+<div class="aside">
+
+渡したい引数がないので、2-2 の `() => handleCardClick(card)` のように包む必要はありません。3-3 の `setTimeout(unflipCards, 800)`、5-3 の `setInterval(renderTimer, 250)` と同じ形です。
+
+</div>
+
+<span class="tag-verify">確認</span> 「もう一度」ボタンを押すと並びが変わって最初から始まります。1 枚めくった状態で押しても、めくりかけが残らずに遊び直せれば、6-1 の【B】も合っています。
 
 ---
 
