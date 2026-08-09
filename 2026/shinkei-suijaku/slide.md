@@ -66,16 +66,6 @@ style: |
     font-weight: bold;
     margin-right: 6px;
   }
-  .tag-challenge {
-    display: inline-block;
-    background: #ef6c00;
-    color: #fff;
-    padding: 2px 10px;
-    border-radius: 4px;
-    font-size: 0.8em;
-    font-weight: bold;
-    margin-right: 6px;
-  }
   .tag-verify {
     display: inline-block;
     border: 1.5px solid #2e7d32;
@@ -247,15 +237,16 @@ style: |
 
 ## 進め方
 
-各章は説明とコードを書く演習の繰り返しです。演習には 3 つのモードがあります。
+各章は説明とコードを書く演習の繰り返しです。演習には 2 つのモードがあります。
 
 | モード | 見分け方 | やること |
 |---|---|---|
-| <span class="tag-challenge">自力</span> | 要件とヒントだけ提示 | コードなしで書き、次スライドで答え合わせ |
 | <span class="tag-write">記述</span> | 【A】等の穴 | 構造は見えている中で埋める箇所を考える |
 | <span class="tag-unlock">コピペ</span> | 完成コードが載っている | そのまま手元に貼る (数行の写経も含む) |
 
 記述のうち、単語や 1 行で埋まる穴には候補を出します。候補には使わないものも混ざっているので、どれがどこに入るかを考えてください。複数行を書く穴には候補を出さず、代わりに何行になるかを書いています。
+
+同じ記号が 2 回出てくる場合は、どちらにも同じものが入ります。記述のあとは必ず答え合わせのスライドを挟みます。
 
 間に合わなくても大丈夫です。各章のチェックポイントに「追いつき用」のコードを出すので、`script.js` を丸ごと置き換えれば次の章から始められます。
 
@@ -1376,33 +1367,37 @@ const clearMessageEl = document.getElementById("clear-message");
 
 <!-- _class: tight -->
 
-## 5-2. 手数を更新 (自力で書く)
+## 5-2. 手数を更新
 
-<span class="tag-challenge">自力</span> コードは見せません。3 分書いてから次のスライドで答え合わせします。書けたらリアクションで教えてください。
+書く場所は `handleCardClick` の中、`secondCard = card;` と `const isMatch = ...` の間です。この 2 行が「状態を変えたら描画を更新する」という型になります。
 
-<div class="timer-box" data-seconds="180">
+<span class="tag-write">記述</span> 前後の既存行を目印に、【A】〜【B】を埋めた 2 行を書き足しましょう。
+
+<div class="timer-box" data-seconds="120">
   <button class="timer-btn" data-delta="-60">−</button>
   <div class="timer"></div>
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
-書く場所は `handleCardClick` の中、`secondCard = card;` と `const isMatch = ...` の間です。この 2 行が「状態を変えたら描画を更新する」という型になります。
+<div class="choices">
 
-<div class="task">
-
-やること (2 行)
-
-- 手数を数えている状態変数を 1 増やす
-- 手数を表示している要素のテキストを、更新後の値に書き換える
+候補: `moves` / `movesEl` / `matchedPairs` / `pairsEl` / `timerEl`
 
 </div>
 
-<div class="hint-box">
+```javascript
+  secondCard = card;
 
-ヒント
+  【A】++;                    // ここから 2 行が書き足す分
+  【B】.textContent = 【A】;
 
-- `x = x + 1` は `x++` と短く書ける
-- テキストの書き換えは `element.textContent = ...`
+  const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol; // すでにある行
+```
+
+<div class="syntax">
+
+- `x++` — `x = x + 1` の短縮形
+- `element.textContent = 値` — その要素の表示テキストを書き換える
 
 </div>
 
@@ -1418,8 +1413,8 @@ const clearMessageEl = document.getElementById("clear-message");
 ```javascript
 secondCard = card;
 
-moves++;                       // ここから 2 行が今回書いた分
-movesEl.textContent = moves;
+moves++;                       // A は状態変数の moves
+movesEl.textContent = moves;   // B は表示先の要素 movesEl
 
 const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol; // 判定はすでにある行
 ```
