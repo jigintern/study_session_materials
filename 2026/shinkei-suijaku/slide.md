@@ -1067,39 +1067,36 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 
 <!-- _class: tight -->
 
-## 3-2. 一致したときの処理 (自力で書く)
+## 3-2. 一致したときの処理
 
-<span class="tag-challenge">自力</span> コードは見せません。3 分書いてから次のスライドで答え合わせします。書けたらリアクションで教えてください。
+3-1 で `handleMatch()` を呼ぶところまでは書けています。呼ばれる側を作ります。
 
-<div class="timer-box" data-seconds="180">
+<span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【C】を書き換えましょう。
+
+<div class="timer-box" data-seconds="120">
   <button class="timer-btn" data-delta="-60">−</button>
   <div class="timer"></div>
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
-3-1 で `handleMatch()` を呼ぶところまでは書けています。呼ばれる側を作ります。
+<div class="choices">
 
-<div class="task">
-
-やること
-
-- `handleMatch` という関数を作る (3 行)
-- めくった 2 枚に、CSS が緑に光らせるクラスを付ける
-- 次のターンに向けた片付けを呼ぶ
+候補: `add` / `remove` / `flipped` / `matched` / `resetTurn` / `handleMismatch`
 
 </div>
 
-<div class="hint-box">
+```javascript
+// 一致した 2 枚を光らせて、次のターンに向けて片付ける
+function handleMatch() {
+  firstCard.classList.【A】("【B】");
+  secondCard.classList.【A】("【B】");
+  【C】();
+}
+```
 
-ヒント
+【C】は一致でも不一致でも共通の後片付けです。中身はこの後で書くので、ここでは呼び出しだけ置きます。
 
-- クラス名は「配布 CSS の約束」で出てきた 2 つのうちの片方
-- クラスを付けるメソッドは `classList` のもの
-- 片付けは `resetTurn()` という名前で呼び出しておく。中身は後で書きます
-
-</div>
-
-<span class="tag-verify">確認</span> 同じ絵柄を 2 枚めくると両方が緑に光ります。「盤面 (DOM)」の matched も 2 になります。`resetTurn` がまだないので、その先は 3-4 まで動きません。
+<span class="tag-verify">確認</span> 同じ絵柄を 2 枚めくると両方が緑に光ります。「盤面 (DOM)」の matched も 2 になります。呼び出した片付けの関数がまだないので、その先は 3-4 まで動きません。
 
 
 ---
@@ -1108,13 +1105,15 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol;
 
 ```javascript
 function handleMatch() {
-  firstCard.classList.add("matched");
+  firstCard.classList.add("matched");   // A は add、B は matched
   secondCard.classList.add("matched");
-  resetTurn();
+  resetTurn();                          // C
 }
 ```
 
 `matched` クラスが付くと CSS 側が緑に光らせます。
+`flipped` を外す処理はここには要りません。表向きのまま緑で残すのが、取れたペアの見せ方です。
+
 一致・不一致どちらも次ターンへの片付けは共通なので `resetTurn` にまとめます。
 
 この `handleMatch` には、あとでペア数の更新とクリア判定を足して書き換えます。
