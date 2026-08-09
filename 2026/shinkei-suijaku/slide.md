@@ -1458,7 +1458,6 @@ function handleMatch() {
   secondCard.classList.add("matched");
   【A】
   resetTurn();
-
   if (matchedPairs === 【B】) {
     【C】;
     clearMessageEl.textContent = `クリア！ ${moves}手 / ${timerEl.textContent}`;
@@ -1466,7 +1465,7 @@ function handleMatch() {
 }
 ```
 
-<span class="tag-verify">確認</span> ペアを取るたびに「ペア」の表示が `1 / 8` のように増えます。クリアメッセージとタイマー停止は、8 ペア全部そろえないと確かめられません。
+<span class="tag-verify">確認</span> ペアを取るたびに「ペア」の表示が `1 / 8` のように増えます。
 
 <details class="hint">
 <summary>ヒント</summary>
