@@ -1018,15 +1018,17 @@ if (isMatch) {
 
 比べているのは、1-3 で `card.dataset.symbol = symbol` と入れておいた絵柄です。2 枚のカードから同じ名前で取り出し、`===` で突き合わせます。`===` と `==` の違いは末尾の付録に回します。
 
-<span class="tag-verify">確認</span> 2 枚めくると診断に `handleMatch is not defined` が出ます。呼び出しがここまで届いた印なので、この時点ではこれで正解です。3-2 で作れば消えます。
+<span class="tag-verify">確認</span> 2 枚めくると、絵柄が違えば `handleMismatch is not defined`、同じなら `handleMatch is not defined` が出ます。呼び出しがここまで届いた印なので、この時点ではこれで正解です。呼ばれる側は 3-3 と 3-4 で作ります。
 
 ---
 
 <!-- _class: tight -->
 
-## 3-2. 一致したときの処理
+## 3-2. ターンの片付け
 
-3-1 で `handleMatch()` を呼ぶところまでは書けています。呼ばれる側を作ります。
+一致でも不一致でも、2 枚判定した後は「次のターンを迎える」ための後片付けが必要です。3-1 で呼び分けた `handleMatch` と `handleMismatch` は、どちらも最後にこれを通ります。共通で使うものなので先に作ります。
+
+やることは、めくりの状態を持つ 3 つの変数を、それぞれ宣言したときの値に戻すことです。
 
 <span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【B】を書き換えましょう。
 
@@ -1038,22 +1040,20 @@ if (isMatch) {
 
 <div class="choices">
 
-候補: `add` / `remove` / `flipped` / `matched`
+候補: `null` / `false` / `true` / `0`
 
 </div>
 
 ```javascript
-// 一致した 2 枚を光らせて、次のターンに向けて片付ける
-function handleMatch() {
-  firstCard.classList.【A】("【B】");
-  secondCard.classList.【A】("【B】");
-  resetTurn();
+// 一致でも不一致でも、次のターンに向けて状態を戻す
+function resetTurn() {
+  firstCard = 【A】;
+  secondCard = 【A】;
+  lockBoard = 【B】;
 }
 ```
 
-`resetTurn()` は一致でも不一致でも共通の後片付けです。中身は 3-4 で書くので、ここでは呼び出しだけ置きます。
-
-<span class="tag-verify">確認</span> 同じ絵柄を 2 枚めくると両方が緑に光ります。「盤面 (DOM)」の matched も 2 になります。呼び出した片付けの関数がまだないので、その先は 3-4 まで動きません。
+<span class="tag-verify">確認</span> まだどこからも呼んでいないので画面は変わりません。診断パネルの Chapter 3 で「resetTurn 関数が定義されている」に ✓ が付きます。
 
 
 ---
@@ -1061,19 +1061,16 @@ function handleMatch() {
 ## 3-2 答え合わせ
 
 ```javascript
-function handleMatch() {
-  firstCard.classList.add("matched");   // A は add、B は matched
-  secondCard.classList.add("matched");
-  resetTurn();
+function resetTurn() {
+  firstCard = null;      // A
+  secondCard = null;
+  lockBoard = false;     // B
 }
 ```
 
-`matched` クラスが付くと CSS 側が緑に光らせます。
-`flipped` を外す処理はここには要りません。めくったまま緑で残すのが、取れたペアの見せ方です。
+一致でも不一致でも同じ後片付けを行うので関数にまとめておくと、変更が必要になっても 1 箇所で済みます。この関数はリセット機能を作るときにも再利用します。
 
-一致・不一致どちらも次ターンへの片付けは共通なので `resetTurn` にまとめます。
-
-この `handleMatch` には、あとでペア数の更新とクリア判定を足して書き換えます。
+書けた人へ: `lockBoard = false;` の行を消すとどうなるか予想してから、3-3 まで進めた状態で試してみてください。「判定待ちのフラグ」が戻らないと、以降のクリックがすべて弾かれます。
 
 ---
 
@@ -1104,7 +1101,7 @@ function unflipCards() {
 
 </div>
 
-<span class="tag-verify">確認</span> 違う絵柄を 2 枚めくると 800 ms 後に伏せに戻ります。ただし `lockBoard` が `true` のまま残るので、以降はクリックが効きません。3-4 まで進めば直ります。
+<span class="tag-verify">確認</span> 違う絵柄を 2 枚めくると 800 ms 後に伏せに戻り、そのまま次の 2 枚をめくれます。「変数など」の `lockBoard` が `true` になり、伏せに戻ると `false` に戻ります。同じ絵柄を引いたときは `handleMatch is not defined` が出ます。3-4 で作れば消えます。
 
 
 ---
@@ -1121,9 +1118,9 @@ function unflipCards() {
 
 <!-- _class: tight -->
 
-## 3-4. ターンの片付け
+## 3-4. 一致したときの処理
 
-一致でも不一致でも、2 枚判定した後は「次のターンを迎える」ための後片付けが必要です。めくりの状態を持つ 3 つの変数を、それぞれ宣言したときの値に戻します。
+3-1 で `handleMatch()` を呼ぶところまでは書けています。呼ばれる側を作ります。
 
 <span class="tag-write">記述</span> コードブロックをそのまま `script.js` に貼って、【A】〜【B】を書き換えましょう。
 
@@ -1135,22 +1132,22 @@ function unflipCards() {
 
 <div class="choices">
 
-候補: `null` / `false` / `true` / `0`
+候補: `add` / `remove` / `flipped` / `matched`
 
 </div>
 
 ```javascript
-// 一致でも不一致でも、次のターンに向けて状態を戻す
-function resetTurn() {
-  firstCard = 【A】;
-  secondCard = 【A】;
-  lockBoard = 【B】;
+// 一致した 2 枚を光らせて、次のターンに向けて片付ける
+function handleMatch() {
+  firstCard.classList.【A】("【B】");
+  secondCard.classList.【A】("【B】");
+  resetTurn();
 }
 ```
 
-これが `handleMatch` と `unflipCards` から呼んでいた関数です。作れば呼び出しが繋がります。
+`resetTurn()` は 3-2 で書いた後片付けです。ここでは呼ぶだけです。
 
-<span class="tag-verify">確認</span> 判定のあと「変数など」の `firstCard` と `secondCard` が `null`、`lockBoard` が `false` に戻ります。何ターンでも続けて遊べるようになります。
+<span class="tag-verify">確認</span> 同じ絵柄を 2 枚めくると両方が緑に光ったまま残り、続けて次のペアを探せます。「盤面 (DOM)」の matched が 2 になり、「変数など」の `firstCard` と `secondCard` は `null` に戻ります。まだシャッフルしていないので、いちばん左上のカードと、その 2 行下のカードが同じ絵柄です。
 
 
 ---
@@ -1158,16 +1155,19 @@ function resetTurn() {
 ## 3-4 答え合わせ
 
 ```javascript
-function resetTurn() {
-  firstCard = null;      // A
-  secondCard = null;
-  lockBoard = false;     // B
+function handleMatch() {
+  firstCard.classList.add("matched");   // A は add、B は matched
+  secondCard.classList.add("matched");
+  resetTurn();
 }
 ```
 
-一致でも不一致でも同じ後片付けを行うので関数にまとめておくと、変更が必要になっても 1 箇所で済みます。この関数はリセット機能を作るときにも再利用します。
+`matched` クラスが付くと CSS 側が緑に光らせます。
+`flipped` を外す処理はここには要りません。めくったまま緑で残すのが、取れたペアの見せ方です。
 
-書けた人へ: `lockBoard = false;` の行を消すとどうなるか予想してから試してみてください。「判定待ちのフラグ」が戻らないと、以降のクリックがすべて弾かれます。
+片付けは 3-2 の `resetTurn` にまとめてあるので、ここでは呼ぶだけで済みます。
+
+この `handleMatch` には、あとでペア数の更新とクリア判定を足して書き換えます。
 
 ---
 
