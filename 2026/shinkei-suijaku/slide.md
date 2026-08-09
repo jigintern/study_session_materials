@@ -952,13 +952,15 @@ function handleCardClick(card) {
 
 <!-- _class: tight -->
 
-## 2-2 補足: addEventListener に関数を預ける
+## 2-2 補足: カッコがいつ効くか
 
-`addEventListener("click", handleCardClick(card))` とカッコを付けて書くと、カードを作った時点で 1 回動いて終わりです。試すと 16 枚すべてが最初からめくれた状態で並び、クリックしても何も起きません。
+`addEventListener` に預けるのは、クリックされたときに実行してほしい処理です。カッコを付けて `handleCardClick(card)` と書くと、その場での呼び出しになります。
 
-![w:960](./diagrams/pass-function.svg)
+![w:820](./diagrams/pass-function.svg)
 
-カッコを外して `handleCardClick` と書けば、実行せずに関数そのものを渡せます。ただしそれでは、どのカードが押されたのかを渡せません。そこで `() => handleCardClick(card)` と包みます。この書き方をアロー関数と呼びます (詳しくは末尾の付録)。渡したいものがない場面では包まず、名前だけを書きます。
+✕ を試すと 16 枚すべてが最初からめくれ、あとはクリックしても何も起きません。✓ の `() => handleCardClick(card)` は「`card` を渡して `handleCardClick` を呼ぶ」という処理です。内側のカッコは、この処理が実行される瞬間まで効きません。アロー関数と呼ぶ書き方です (詳しくは末尾の付録)。
+
+預ける相手には呼ばずに渡し、渡したいものがあるときだけ `() =>` で包む。3-3 の `setTimeout` も 6-2 の「もう一度」ボタンも同じ形です。
 
 ---
 
@@ -1082,7 +1084,7 @@ function handleMatch() {
 <span class="tag-unlock">コピペ</span>
 
 ```javascript
-// 不一致は 800ms 待って伏せに戻す
+// 一致しなかったときは 800ms 待って伏せに戻す
 function handleMismatch() {
   lockBoard = true;
   setTimeout(unflipCards, 800);
@@ -1098,13 +1100,7 @@ function unflipCards() {
 <div class="syntax">
 
 - `remove` — めくるときに付けた `flipped` を外すメソッド。外すと CSS がカードを伏せた状態に戻す
-- `setTimeout(関数, ミリ秒)` — 指定時間後にその関数を 1 回だけ実行する。繰り返したいときは `setInterval`
-
-</div>
-
-<div class="aside">
-
-800 ms は「見えている時間は短すぎず、待たされ感は少ない」を狙った値です。
+- `setTimeout(関数, ミリ秒)` — 指定時間後にその関数を 1 回だけ実行する
 
 </div>
 
@@ -1646,7 +1642,7 @@ resetBtn.【B】("click", resetGame);
 
 <div class="note">
 
-渡すのはカッコなしの `resetGame` です。カッコを付けて `resetGame()` と書くと、クリック時ではなく `addEventListener` を呼んだ瞬間に実行されてしまいます。「クリック時に実行したい」ならカッコなし、「今すぐ実行したい」ならカッコあり、というイメージです。
+渡すのは `resetGame` です。カッコを付けて `resetGame()` と書くと、クリック時ではなく `addEventListener` を呼んだ瞬間に実行されてしまいます。2-2 と同じで、預ける相手には呼ばずに渡します。ここは渡したいものがないので、`() =>` で包まずに名前だけを書きます。
 
 </div>
 
@@ -2181,7 +2177,7 @@ const add = (a, b) => a + b;
 
 `=>` の左が引数、右が実行する処理です。処理が 1 つの式だけなら、`return` も波カッコも省けます。
 
-2-2 の `() => handleCardClick(card)` は、渡す引数がないので左が空です。クリックされたときにやってほしい処理を包むためだけに使っています。
+2-2 の `() => handleCardClick(card)` は、`=>` の左が空で、右で `card` を渡して `handleCardClick` を呼んでいます。この処理を作って預けておくことで、クリックされたときに初めて中の呼び出しが動きます。
 
 ---
 
