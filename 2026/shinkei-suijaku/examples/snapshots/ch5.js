@@ -95,6 +95,25 @@ function handleCardClick(card) {
   }
 }
 
+// 次のターンに備えて状態を戻す
+function resetTurn() {
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
+}
+
+// 一致しなかったときは 800ms 待って伏せに戻す
+function handleMismatch() {
+  lockBoard = true;
+  setTimeout(unflipCards, 800);
+}
+
+function unflipCards() {
+  firstCard.classList.remove("flipped");
+  secondCard.classList.remove("flipped");
+  resetTurn();
+}
+
 // ペア数の更新と、全ペア揃ったらクリア
 function handleMatch() {
   firstCard.classList.add("matched");
@@ -107,25 +126,6 @@ function handleMatch() {
     stopTimer();
     clearMessageEl.textContent = `クリア！ ${moves}手 / ${timerEl.textContent}`;
   }
-}
-
-// 不一致は 800ms 待って伏せに戻す
-function handleMismatch() {
-  lockBoard = true;
-  setTimeout(unflipCards, 800);
-}
-
-function unflipCards() {
-  firstCard.classList.remove("flipped");
-  secondCard.classList.remove("flipped");
-  resetTurn();
-}
-
-// 次のターンに備えて状態を戻す
-function resetTurn() {
-  firstCard = null;
-  secondCard = null;
-  lockBoard = false;
 }
 
 // Fisher-Yates シャッフル

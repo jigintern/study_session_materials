@@ -78,14 +78,14 @@ function handleCardClick(card) {
   }
 }
 
-// 一致したら matched クラスを付けて、次のターンへ
-function handleMatch() {
-  firstCard.classList.add("matched");
-  secondCard.classList.add("matched");
-  resetTurn();
+// 次のターンに備えて状態を戻す
+function resetTurn() {
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
 }
 
-// 不一致は 800ms 待って伏せに戻す
+// 一致しなかったときは 800ms 待って伏せに戻す
 function handleMismatch() {
   lockBoard = true;
   setTimeout(unflipCards, 800);
@@ -97,11 +97,11 @@ function unflipCards() {
   resetTurn();
 }
 
-// 次のターンに備えて状態を戻す
-function resetTurn() {
-  firstCard = null;
-  secondCard = null;
-  lockBoard = false;
+// 一致したら matched クラスを付けて、次のターンへ
+function handleMatch() {
+  firstCard.classList.add("matched");
+  secondCard.classList.add("matched");
+  resetTurn();
 }
 
 // Fisher-Yates シャッフル

@@ -731,10 +731,10 @@
       { desc: "lockBoard が true の間はめくれない", fn: () => probeSays("locked") },
     ],
     "Chapter 3": [
-      { desc: "handleMatch 関数が定義されている", fn: () => typeof window.handleMatch === "function" },
+      { desc: "resetTurn 関数が定義されている", fn: () => typeof window.resetTurn === "function" },
       { desc: "handleMismatch 関数が定義されている", fn: () => typeof window.handleMismatch === "function" },
       { desc: "unflipCards 関数が定義されている", fn: () => typeof window.unflipCards === "function" },
-      { desc: "resetTurn 関数が定義されている", fn: () => typeof window.resetTurn === "function" },
+      { desc: "handleMatch 関数が定義されている", fn: () => typeof window.handleMatch === "function" },
     ],
     "Chapter 4": [
       { desc: "shuffle 関数が定義されている", fn: () => typeof window.shuffle === "function" },
