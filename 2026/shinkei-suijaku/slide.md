@@ -158,6 +158,8 @@ style: |
   .split-side { flex: 1 1 36%; }
   .split pre { font-size: 0.7em; }
   .split.code-lg pre { font-size: 0.78em; }
+  .split.side-wide .split-main { flex: 1 1 56%; }
+  .split.side-wide .split-side { flex: 1 1 44%; font-size: 0.9em; }
   .split > * > *:first-child { margin-top: 0; }
   .timer-box {
     position: absolute; top: 24px; right: 32px;
@@ -220,7 +222,7 @@ style: |
 
 ## 今日の流れ
 
-全部で 6 章あります。Chapter 3 のあとに 10 分の休憩を入れます。
+全部で 6 章あります。Chapter 1 のあとに 5 分、Chapter 3 のあとに 10 分の休憩を入れます。
 
 | | 章 | 内容 |
 |---|---|---|
@@ -738,6 +740,20 @@ renderBoard();
 
 ---
 
+<!-- _class: lead break -->
+
+# 休憩 (5 分)
+
+<div class="timer-box" data-seconds="300">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
+
+まだ 16 枚並んでいない人は、この間に `ch1.js` で追いつけます。詰まったところはチャットで聞いてください。
+
+---
+
 <!-- _class: lead -->
 
 # Chapter 2
@@ -956,11 +972,11 @@ function handleCardClick(card) {
 
 `addEventListener` に預けるのは、クリックされたときに実行してほしい処理です。カッコを付けて `handleCardClick(card)` と書くと、その場での呼び出しになります。
 
-![w:920](./diagrams/pass-function.svg)
+![w:880](./diagrams/pass-function.svg)
 
-✕ を試すと 16 枚すべてが最初からめくれ、あとはクリックしても何も起きません。✓ の `() => handleCardClick(card)` は「`card` を渡して `handleCardClick` を呼ぶ」という処理です。内側のカッコは、この処理が実行される瞬間まで効きません。アロー関数と呼ぶ書き方です (詳しくは末尾の付録)。
+✕ を試すと 16 枚すべてが最初からめくれ、あとは何も起きません。✓ の `() => handleCardClick(card)` は「`card` を渡して `handleCardClick` を呼ぶ」という処理で、内側のカッコが効くのは実行の瞬間です。
 
-預ける相手には呼ばずに渡し、渡したいものがあるときだけ `() =>` で包む。
+預ける相手には呼ばずに渡し、渡したいものがあるときだけ `() =>` (アロー関数) で包む。
 
 ---
 
@@ -1373,9 +1389,14 @@ const isMatch = firstCard.dataset.symbol === secondCard.dataset.symbol; // 判�
 
 ---
 
+<!-- _class: tight -->
+
 ## 5-3. タイマーの開始と停止
 
 <span class="tag-unlock">コピペ</span> そのまま貼って OK。
+
+<div class="split side-wide">
+<div class="split-main">
 
 ```javascript
 function startTimer() {
@@ -1396,21 +1417,25 @@ function stopTimer() {
   timerId = null;
 }
 ```
-<span class="tag-verify">確認</span> 呼び出しをまだ書いていないので、動かして確かめる方法はありません。5-4 を入れてから確認します。
 
+</div>
+<div class="split-side">
 
----
+<div class="syntax">
 
-## 5-3 補足: 何をしているか
+- `setInterval(関数, ミリ秒)` — 一定間隔でその関数を繰り返し実行する
+- `timerId` — `setInterval` が返す識別子。動いているものを直接は掴めないので、止めるにはこの番号が要る
+- `startTime` — `Date.now()` で取った開始時刻 (ミリ秒)。経過秒は差を 1000 で割って出す
+- `renderTimer` — 250 ms ごとに呼ばれ、経過秒を計算し直して表示を書き換える関数
+- `` `${mm}:${ss}` `` — テンプレートリテラル。変数を埋め込める
 
-貼ったコードに出てくるものを押さえておきます。
+</div>
 
-- `startTime`: `Date.now()` で取った開始時刻 (ミリ秒)。経過秒は `(Date.now() - startTime) / 1000` で出る
-- `renderTimer`: 250 ms ごとに呼ばれて、経過秒を計算し直して表示を書き換える関数
-- `timerId`: 動いている `setInterval` の識別子。あとで止めるために保持する。5-4 で `timerId === null` として再登場
-- `` `${mm}:${ss}` ``: テンプレートリテラル。変数を埋め込める
+</div>
+</div>
 
 `setInterval` は `clearInterval` を呼ぶまで止まりません。不要になったら必ず止めます (`stopTimer` の役割)。
+<span class="tag-verify">確認</span> 呼び出しをまだ書いていないので、動かして確かめる方法はありません。5-4 を入れてから確認します。
 
 ---
 
