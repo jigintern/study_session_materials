@@ -16,10 +16,10 @@ let secondCard = null;   // 2 枚目にめくったカード
 let lockBoard = false;   // 2 枚めくったあとに他のカードを押させないためのロック
 
 // 手数、ペア数、タイマー用の状態を用意
-let moves = 0;
-let matchedPairs = 0;
-let timerId = null;
-let startTime = 0;
+let moves = 0;           // 2 枚めくるごとに 1 増える手数
+let matchedPairs = 0;    // 揃ったペアの数
+let timerId = null;      // 動いているタイマーの番号。止めるときに使う
+let startTime = 0;       // 計測を始めた時刻
 
 const timerEl = document.getElementById("timer");
 const movesEl = document.getElementById("moves");
