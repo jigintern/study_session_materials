@@ -282,6 +282,22 @@ JavaScript から部品を呼ぶために、HTML には `id` が付いていま�
 
 ---
 
+## 1-1. これから使う3つの書き方
+
+**関数** = 処理に名前をつけてまとめたもの
+
+```javascript
+function addPost() { ... }
+```
+
+**`document.getElementById('post-btn')`** = HTML から名札で部品を探す
+
+**`addEventListener('click', addPost)`** = その部品がクリックされたら `addPost` を実行する
+
+「押されたら呼んでね」と登録しておくだけで、押すのは利用者です。
+
+---
+
 <!-- _class: record -->
 
 ## 1-1. ボタンを押したら反応させよう
@@ -308,19 +324,22 @@ document.getElementById('post-btn').addEventListener('click', addPost);
 
 ---
 
-## 1-1. いま書いた3つのこと
+## 1-2. これから使う2つの書き方
 
-**関数** = 処理に名前をつけてまとめたもの
+**`.value`** = 入力欄に書かれている文字
+
+部品そのものではなく「中身」を取り出すときに使います。
+
+**バッククォート `` ` `` の文字列** = `${ }` の中に変数を差しこめる
 
 ```javascript
-function addPost() { ... }
+const name = 'たろう';
+
+`${name} さん`   // → 'たろう さん'
+'name さん'      // → 'name さん'（差しこまれない）
 ```
 
-**`document.getElementById('post-btn')`** = HTML から名札で部品を探す
-
-**`addEventListener('click', addPost)`** = その部品がクリックされたら `addPost` を実行する
-
-「押されたら呼んでね」と登録しておくだけで、押すのは利用者です。
+差しこみが要らないときは、ふつうの `'` で書きます。
 
 ---
 
@@ -348,54 +367,6 @@ function addPost() {
 ```
 
 **成功** — 名前とメッセージを入力して押すと、その中身が出る
-
----
-
-## 1-2. 新しく出てきた書き方
-
-**`.value`** = 入力欄に書かれている文字
-
-部品そのものではなく「中身」を取り出すときに使います。
-
-**バッククォート `` ` `` の文字列** = `${ }` の中に変数を差しこめる
-
-```javascript
-const name = 'たろう';
-
-`${name} さん`   // → 'たろう さん'
-'name さん'      // → 'name さん'（差しこまれない）
-```
-
-差しこみが要らないときは、ふつうの `'` で書きます。
-
----
-
-<!-- _class: record -->
-
-## 1-3. 画面に1件だけ出してみよう
-
-<div class="timer-box" data-seconds="360">
-  <button class="timer-btn" data-delta="-60">−</button>
-  <div class="timer"></div>
-  <button class="timer-btn" data-delta="60">＋</button>
-</div>
-
-### `alert` をやめて、一覧に並べる
-
-**書く場所** — `addPost` の中を丸ごと置き換え
-
-```javascript
-function addPost() {
-  const name = document.getElementById('name-input').value;
-  const text = document.getElementById('text-input').value;
-
-  const item = document.createElement('li');
-  item.textContent = `${name}: ${text}`;
-  document.getElementById('posts').appendChild(item);
-}
-```
-
-**成功** — 投稿するたびに、下の一覧に行が増えていく
 
 ---
 
@@ -430,17 +401,78 @@ function addPost() {
 
 <!-- _class: record -->
 
-## 1-4. 投稿をためて表示しよう
+## 1-3. 画面に1件だけ出してみよう
 
-<div class="timer-box" data-seconds="840">
+<div class="timer-box" data-seconds="360">
   <button class="timer-btn" data-delta="-60">−</button>
   <div class="timer"></div>
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
-### 「ためる」と「表示する」を分ける
+### `alert` をやめて、一覧に並べる
 
-**書く場所** — `script.js` を丸ごと置き換え（前のものは消す）
+**書く場所** — `addPost` の中を丸ごと置き換え
+
+```javascript
+function addPost() {
+  const name = document.getElementById('name-input').value;
+  const text = document.getElementById('text-input').value;
+
+  const item = document.createElement('li');
+  item.textContent = `${name}: ${text}`;
+  document.getElementById('posts').appendChild(item);
+}
+```
+
+**成功** — 投稿するたびに、下の一覧に行が増えていく
+
+---
+
+## 1-4. なぜ2つの関数に分けるのか
+
+### あとで**この2つの中身だけ**を差し替えるからです
+
+| 関数 | やること |
+|---|---|
+| `addPost()` | 投稿を1件**ふやす** |
+| `showPosts()` | 投稿を**ぜんぶ表示する** |
+
+これから作る「ふやす先」は `posts` という配列です。
+
+Chapter 3 以降で、この行き先を**サーバー**に変えます。やることは同じで、置き場所だけが変わります。
+
+---
+
+## 1-4. これから使う書き方
+
+**配列** = データを順番に並べたリスト
+
+```javascript
+const posts = [];              // 空のリスト
+posts.push({ name: 'たろう', text: 'やっほー' });   // 末尾に足す
+```
+
+**オブジェクト** `{ name: ..., text: ... }` = 名前つきのデータのまとまり
+
+**`for...of`** = リストの中身を1つずつ取り出して繰り返す
+
+**`list.textContent = ''`** = 中身を空にする。表示のたびに全部消してから並べ直しています
+
+---
+
+<!-- _class: record -->
+
+## 1-4. `showPosts()` を作ろう
+
+<div class="timer-box" data-seconds="420">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
+
+### 投稿をためる場所と、表示する処理を用意する
+
+**書く場所** — `script.js` のいちばん上（`addPost` より前）
 
 ```javascript
 const posts = [];
@@ -457,15 +489,23 @@ function showPosts() {
 }
 ```
 
-次のスライドに続きます。
+まだ `showPosts()` を呼んでいないので、画面は変わりません。次で呼びます。
 
 ---
 
 <!-- _class: record -->
 
-## 1-4. 続き
+## 1-5. `addPost()` を書き換えよう
 
-**書く場所** — さきほどの続き（`script.js` のいちばん下）
+<div class="timer-box" data-seconds="300">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
+
+### 直接画面に足すのをやめて、配列に入れてから表示する
+
+**書く場所** — `addPost` を丸ごと置き換え（前のものは消す）
 
 ```javascript
 function addPost() {
@@ -477,43 +517,9 @@ function addPost() {
   document.getElementById('text-input').value = '';
   showPosts();
 }
-
-document.getElementById('post-btn').addEventListener('click', addPost);
 ```
 
 **成功** — 投稿すると一覧が増え、メッセージ欄が空になる
-
----
-
-## 1-4. なぜ2つの関数に分けたのか
-
-### あとで**この2つの中身だけ**を差し替えるからです
-
-| 関数 | やること |
-|---|---|
-| `addPost()` | 投稿を1件**ふやす** |
-| `showPosts()` | 投稿を**ぜんぶ表示する** |
-
-いまは「ふやす先」が `posts` という配列です。
-
-Chapter 3 以降で、この行き先を**サーバー**に変えます。やることは同じで、置き場所だけが変わります。
-
----
-
-## 1-4. 出てきた書き方のまとめ
-
-**配列** = データを順番に並べたリスト
-
-```javascript
-const posts = [];              // 空のリスト
-posts.push({ name: 'たろう', text: 'やっほー' });   // 末尾に足す
-```
-
-**オブジェクト** `{ name: ..., text: ... }` = 名前つきのデータのまとまり
-
-**`for...of`** = リストの中身を1つずつ取り出して繰り返す
-
-**`list.textContent = ''`** = 中身を空にする。表示のたびに全部消してから並べ直しています
 
 ---
 
@@ -552,20 +558,53 @@ posts.push({ name: 'たろう', text: 'やっほー' });   // 末尾に足す
 
 ---
 
-## サーバー = **データを置いておける場所**
+## サーバー = **ずっと動きつづけているプログラム**
 
 <div class="flow">
   <div class="box">あなたの<br>ブラウザ</div>
   <div class="arrow">⇄</div>
-  <div class="box">サーバー<span class="note">投稿はここに置く</span></div>
+  <div class="box">サーバー<span class="note">ずっと動いている</span></div>
   <div class="arrow">⇄</div>
   <div class="box">ほかの人の<br>ブラウザ</div>
 </div>
 
-投稿をサーバーに置くと、2つのことが同時に解決します。
+サーバーは、頼まれたら答える係です。
 
-- ブラウザを閉じても**残る**
-- 他の人も同じ場所を見にいけるので、**見える**
+- 「投稿を全部ください」と頼まれたら、返す
+- 「この投稿を保存して」と頼まれたら、保存する
+
+ブラウザは開いている間しか動きません。サーバーは誰も見ていなくても動きつづけているので、他の人がいつ来ても答えられます。
+
+---
+
+## 投稿そのものは **データベース** に入る
+
+### サーバーは受け取った投稿をデータベースに預ける
+
+データベース = データを保存しておくための専用のソフト
+
+<div class="flow">
+  <div class="box">ブラウザ<span class="note">投稿を送る</span></div>
+  <div class="arrow">→</div>
+  <div class="box">サーバー<span class="note">受け取る</span></div>
+  <div class="arrow">→</div>
+  <div class="box">データベース<span class="note">保存する</span></div>
+</div>
+
+投稿が消えないのは、最後にここへ届いているからです。サーバーを入れ替えても、データベースの中身は残ります。
+
+---
+
+## 今日のサーバーは **用意ずみ** です
+
+### 書くのはブラウザ側だけ
+
+サーバーとデータベースはこちらで動かしてあります。今日は、動いているサーバーに話しかけるところまでをやります。
+
+サーバーのコードも公開しています。中身が気になる人は、資料のリポジトリの `2026/board/backend/` を見てください。
+
+- 200 行ほどの JavaScript（TypeScript）です
+- 「投稿を返す」「投稿を保存する」の2つしか書いてありません
 
 ---
 
@@ -924,6 +963,23 @@ const posts = [];   // ← この行を削除する
 
 ---
 
+## 5-1. サーバーが返している時刻の形
+
+```json
+{ "name": "たろう", "text": "やっほー", "createdAt": "2026-09-10T05:23:00.000Z" }
+```
+
+これは世界中どこでも同じ意味になるように決められた書き方で、人が読むには向いていません。
+
+| 書き方 | 結果 |
+|---|---|
+| `new Date('2026-09-10T05:23:00.000Z')` | 日付として扱えるようにする |
+| `.toLocaleTimeString()` | その人の国の形式に直す → `14:23:00` |
+
+日付ごと出したいときは `.toLocaleString()` を使います。
+
+---
+
 <!-- _class: record -->
 
 ## 5-1. 投稿の時刻を表示しよう
@@ -948,23 +1004,6 @@ const posts = [];   // ← この行を削除する
 ```
 
 **成功** — 各投稿のうしろに `14:23:05` のような時刻が付く
-
----
-
-## 5-1. サーバーが返している時刻の形
-
-```json
-{ "name": "たろう", "text": "やっほー", "createdAt": "2026-09-10T05:23:00.000Z" }
-```
-
-これは世界中どこでも同じ意味になるように決められた書き方で、人が読むには向いていません。
-
-| 書き方 | 結果 |
-|---|---|
-| `new Date('2026-09-10T05:23:00.000Z')` | 日付として扱えるようにする |
-| `.toLocaleTimeString()` | その人の国の形式に直す → `14:23:00` |
-
-日付ごと出したいときは `.toLocaleString()` を使います。
 
 ---
 
@@ -1025,8 +1064,6 @@ setInterval(showPosts, 3000);
 
 - **SSE** — サーバーからの一方通行のお知らせ
 - **WebSocket** — つなぎっぱなしにして双方向にやりとりする
-
-今日は書きません。名前だけ覚えておいてください。
 
 ---
 
