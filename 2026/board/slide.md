@@ -67,7 +67,13 @@ style: |
   }
   .mock .row {
     display: flex;
+    flex: 1;
     align-items: center;
+    justify-content: space-between;
+    padding-right: 28px;
+  }
+  .mock .row .btn {
+    margin-right: 0;
   }
   .mock .empty {
     color: #999;
@@ -228,10 +234,10 @@ document.getElementById('post-btn').addEventListener('click', addPost);
 ## 画面は **5つの部品** でできている
 
 <div class="mock">
-  <div class="part"><span>みんなの掲示板</span><span class="label">見出し</span></div>
   <div class="part"><span class="empty">名前</span><span class="label">① 名前の入力欄</span></div>
   <div class="part"><span class="empty">メッセージ</span><span class="label">② メッセージの入力欄</span></div>
-  <div class="part"><span class="row"><span class="btn">投稿する</span><span class="btn">更新する</span></span><span class="label">③ 投稿ボタン　④ 更新ボタン</span></div>
+  <div class="part"><span class="btn">投稿する</span><span class="label">③ 投稿ボタン</span></div>
+  <div class="part"><span class="row"><span>みんなの投稿</span><span class="btn">更新する</span></span><span class="label">④ 更新ボタン</span></div>
   <div class="part"><span class="empty">（まだ何もありません）</span><span class="label">⑤ 投稿の一覧</span></div>
 </div>
 
