@@ -156,7 +156,9 @@ style: |
 
 ---
 
-## 今日のゴール：**書いた文字が、他の人の画面にも出る**
+## 今日のゴール
+
+### 書いた文字が、**他の人の画面にも出る**
 
 ![bg right:40% fit](screenshots/completed.png)
 
@@ -165,7 +167,7 @@ style: |
 - 「更新」を押すと、**他の人が書いた投稿も出てくる**
 - ブラウザを閉じても投稿は消えない
 
-自分のパソコンの中だけで完結しない、はじめての Web アプリです。
+今日の新しいところは、データが自分のブラウザの外に出ていくことです。
 
 ---
 
@@ -188,11 +190,11 @@ HTML と CSS は用意ずみです。今日書くのは **JavaScript** だけ。
 ![bg right:38% fit](screenshots/template-initial.png)
 
 1. ブラウザで StackBlitz のテンプレートを開く
-2. 左に HTML / CSS / JS のファイル、右にプレビュー
-3. さわるのは **`script.js` だけ**
-4. `index.html` `styles.css` は用意ずみ。開かなくて大丈夫です
+2. `script.js` を開く
 
-テンプレートは「入力欄とボタンだけが並んだ、まだ何も動かない状態」から始まります。
+左にファイル、右にプレビューが並びます。今日書くのは `script.js` だけです。
+
+テンプレートは「入力欄とボタンが並んだ、まだ何も動かない状態」から始まります。
 
 ---
 
@@ -241,7 +243,7 @@ document.getElementById('post-btn').addEventListener('click', addPost);
   <div class="part"><span class="empty">（まだ何もありません）</span><span class="label">⑤ 投稿の一覧</span></div>
 </div>
 
-この5つに JavaScript から命令していきます。
+この5つを JavaScript から動かしていきます。
 
 ---
 
@@ -282,19 +284,57 @@ JavaScript から部品を呼ぶために、HTML には `id` が付いていま�
 
 ---
 
-## 1-1. これから使う3つの書き方
+## 1-1. 関数 — 処理に名前をつける
 
-**関数** = 処理に名前をつけてまとめたもの
+### まとめておいて、あとから名前で呼び出す
 
 ```javascript
-function addPost() { ... }
+function sayHello() {
+  alert('こんにちは');
+}
+
+sayHello();   // ← ここではじめて中身が実行される
 ```
 
-**`document.getElementById('post-btn')`** = HTML から名札で部品を探す
+`function 名前() { ... }` で作り、`名前()` で呼び出します。
 
-**`addEventListener('click', addPost)`** = その部品がクリックされたら `addPost` を実行する
+作っただけでは何も起きません。呼ばれたときにはじめて中身が動きます。
 
-「押されたら呼んでね」と登録しておくだけで、押すのは利用者です。
+---
+
+## 1-1. 部品を探して、押されたときに動かす
+
+**`document.getElementById('名札')`** = 名札で HTML の部品を探す
+
+**`部品.addEventListener('きっかけ', 関数)`** = きっかけが起きたら関数を動かす
+
+<div class="columns">
+<div>
+
+```html
+<button id="ok-btn">OK</button>
+```
+
+```javascript
+const button =
+  document.getElementById('ok-btn');
+
+button.addEventListener('click', sayHello);
+```
+
+</div>
+<div>
+
+| きっかけ | いつ起きるか |
+|---|---|
+| `'click'` | クリックされたとき |
+| `'input'` | 入力欄の文字が変わったとき |
+| `'change'` | 選択や入力が確定したとき |
+
+</div>
+</div>
+
+登録した時点では、まだ何も動きません。実際にボタンが押された瞬間に `sayHello` が呼ばれます。
 
 ---
 
