@@ -152,6 +152,8 @@ style: |
 
 ## 今日のゴール：**書いた文字が、他の人の画面にも出る**
 
+![bg right:40% fit](screenshots/completed.png)
+
 - 名前とメッセージを書いて、投稿ボタンを押す
 - 投稿が一覧に並ぶ
 - 「更新」を押すと、**他の人が書いた投稿も出てくる**
@@ -176,6 +178,8 @@ HTML と CSS は用意ずみです。今日書くのは **JavaScript** だけ。
 ---
 
 ## 準備
+
+![bg right:38% fit](screenshots/template-initial.png)
 
 1. ブラウザで StackBlitz のテンプレートを開く
 2. 左に HTML / CSS / JS のファイル、右にプレビュー
@@ -276,6 +280,12 @@ JavaScript から部品を呼ぶために、HTML には `id` が付いていま�
 
 ## 1-1. ボタンを押したら反応させよう
 
+<div class="timer-box" data-seconds="180">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
+
 ### まず「押したら何か起きる」を確かめる
 
 **書く場所** — `script.js` のいちばん下
@@ -310,7 +320,13 @@ function addPost() { ... }
 
 <!-- _class: record -->
 
-## 1-2. 入力欄に書かれた文字を取り出そう
+## 1-2. 入力欄の文字を取り出そう
+
+<div class="timer-box" data-seconds="240">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### 決めうちのメッセージではなく、入力された文字を使う
 
@@ -351,6 +367,12 @@ const name = 'たろう';
 <!-- _class: record -->
 
 ## 1-3. 画面に1件だけ出してみよう
+
+<div class="timer-box" data-seconds="360">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### `alert` をやめて、一覧に並べる
 
@@ -402,7 +424,13 @@ function addPost() {
 
 <!-- _class: record -->
 
-## 1-4. 投稿をためて、まとめて表示しよう
+## 1-4. 投稿をためて表示しよう
+
+<div class="timer-box" data-seconds="840">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### 「ためる」と「表示する」を分ける
 
@@ -484,6 +512,8 @@ posts.push({ name: 'たろう', text: 'やっほー' });   // 末尾に足す
 ---
 
 ## 動作チェック
+
+![bg right:38% fit](screenshots/chapter1-local.png)
 
 ### 3つとも当てはまれば Chapter 1 は完了です
 
@@ -644,7 +674,13 @@ const ROOM = '...';          // 今日の部屋。講師が伝えます
 
 <!-- _class: record -->
 
-## 3-1. `showPosts()` をサーバーから読むように変えよう
+## 3-1. `showPosts()` を書き換えよう
+
+<div class="timer-box" data-seconds="480">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### 配列 `posts` を見にいくのをやめて、サーバーに取りにいく
 
@@ -690,7 +726,13 @@ async function showPosts() {
 
 <!-- _class: record -->
 
-## 3-2. ページを開いたときと、更新ボタンで読みこもう
+## 3-2. 読みこむきっかけを作ろう
+
+<div class="timer-box" data-seconds="180">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### 読みこむきっかけを2つ作る
 
@@ -719,6 +761,8 @@ showPosts();
 ---
 
 ## 動作チェック
+
+![bg right:38% fit](screenshots/chapter3-readonly.png)
 
 ### 2つとも当てはまれば Chapter 3 は完了です
 
@@ -776,7 +820,13 @@ JSON.stringify(data);
 
 <!-- _class: record -->
 
-## 4-1. `addPost()` をサーバーに送るように変えよう
+## 4-1. `addPost()` を書き換えよう
+
+<div class="timer-box" data-seconds="480">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### 配列に足すのをやめて、サーバーに送る
 
@@ -818,6 +868,12 @@ async function addPost() {
 <!-- _class: record -->
 
 ## 4-2. 使わなくなった配列を消そう
+
+<div class="timer-box" data-seconds="120">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### `posts` はもう誰も見ていません
 
@@ -865,6 +921,12 @@ const posts = [];   // ← この行を削除する
 <!-- _class: record -->
 
 ## 5-1. 投稿の時刻を表示しよう
+
+<div class="timer-box" data-seconds="180">
+  <button class="timer-btn" data-delta="-60">−</button>
+  <div class="timer"></div>
+  <button class="timer-btn" data-delta="60">＋</button>
+</div>
 
 ### サーバーは投稿された時刻も返しています
 
@@ -1015,3 +1077,48 @@ SNS のタイムラインはたいてい新しい順です。どちらが読み�
 
 ## 自分の書いたコードが、他の人の画面を動かしました
 
+<script>
+document.querySelectorAll('.timer-box').forEach(box => {
+  const el = box.querySelector('.timer');
+  const initial = Number(box.dataset.seconds);
+  let remain = initial;
+  let id = null;
+
+  const render = () => {
+    const r = Math.max(remain, 0);
+    const m = String(Math.floor(r / 60)).padStart(2, '0');
+    const s = String(r % 60).padStart(2, '0');
+    el.textContent = `${m}:${s}`;
+    el.classList.toggle('warn', remain <= 60 && remain > 0);
+    el.classList.toggle('done', remain <= 0);
+  };
+  const stop = () => { clearInterval(id); id = null; el.classList.remove('running'); };
+  const start = () => {
+    if (remain <= 0) return;
+    el.classList.add('running');
+    id = setInterval(() => {
+      remain--;
+      render();
+      if (remain <= 0) stop();
+    }, 1000);
+  };
+
+  el.addEventListener('click', () => {
+    if (remain <= 0) { el.classList.remove('done'); return; }
+    id ? stop() : start();
+  });
+  el.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    stop();
+    remain = initial;
+    render();
+  });
+  box.querySelectorAll('.timer-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      remain = Math.max(0, remain + Number(btn.dataset.delta));
+      render();
+    });
+  });
+  render();
+});
+</script>

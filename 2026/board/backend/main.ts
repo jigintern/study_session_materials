@@ -175,5 +175,7 @@ export async function route(request: Request): Promise<Response> {
 }
 
 if (import.meta.main) {
-  Deno.serve(route);
+  // PORT はローカルで別ポートに逃がすためのもの（教材のスクリーンショット撮影で使う）
+  const port = Number(Deno.env.get("PORT") ?? 8000);
+  Deno.serve({ port }, route);
 }

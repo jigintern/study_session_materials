@@ -25,6 +25,8 @@ JavaScript で掲示板アプリを作ります。
 
 - [スライド（markdown版）](./slide.md)
 - [スライド（HTML版）](https://jigintern.github.io/study_session_materials/board-2026/slide.html)
+- [完成版アプリ（completed/）](./completed/) — 講師用の完成形
+- [テンプレート（template/）](./template/) — StackBlitz プロジェクト作成の元。`script.js` は定数 2 行だけ
 - [バックエンド API（backend/）](./backend/) — 受講者が `fetch` で叩くサーバー
 
 ## 構成
@@ -56,9 +58,30 @@ Chapter 1 で `addPost()` と `showPosts()` の 2 つの関数に切っておき
 `script.js` の先頭に、API のベース URL と部屋 ID の定数を用意しておきます。受講者はここをさわりません。
 
 ```javascript
-const API = 'https://...';
-const ROOM = '...';
+const API = 'https://example.deno.dev'; // 講座までに実際の URL に差し替える
+const ROOM = '0000'; // 開催回ごとに差し替える
 ```
+
+## スクリーンショット
+
+スライドに貼る画面は `screenshots/capture.ts` で撮り直せます。
+
+```sh
+deno run -A screenshots/capture.ts
+```
+
+バックエンドをメモリ上の KV で起動してサンプル投稿を入れ、章ごとの状態のページを Chrome の headless で撮ります。`template/` の HTML や CSS を変えたら、これを流し直せば 4 枚まとめて更新されます。
+
+| ファイル | 使う場所 |
+| --- | --- |
+| `completed.png` | 今日のゴール |
+| `template-initial.png` | 準備 |
+| `chapter1-local.png` | Chapter 1 の動作チェック |
+| `chapter3-readonly.png` | Chapter 3 の動作チェック |
+
+## 講師用タイマー
+
+記述スライドの右上にタイマーがあります。クリックで開始と停止、右クリックでリセット、± ボタンで 1 分ずつ増減します。持ち時間は写経の行数から見積もった初期値です。
 
 ## バックエンド
 
