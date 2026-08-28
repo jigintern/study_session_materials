@@ -1,0 +1,11 @@
+{
+  "unstable": ["kv"],
+  "tasks": {
+    "dev": "deno run --allow-net --allow-read --allow-write --allow-env --watch main.ts",
+    "test": "KV_PATH=:memory: deno test --allow-read --allow-write --allow-env",
+    "check": "deno fmt --check && deno lint && deno check main.ts main_test.ts"
+  },
+  "fmt": {
+    "lineWidth": 80
+  }
+}
