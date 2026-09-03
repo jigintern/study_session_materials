@@ -8,16 +8,16 @@
 JavaScript で掲示板アプリを作ります。
 自分が書いた文字が画面に出るだけでなく、サーバーに保存されて他の人からも見える。その一連の流れを、変数・イベント・DOM 操作から `fetch` まで手を動かしながら学びます。
 
-## 対象
-
-プログラミングがはじめての方を想定しています。前回のクイズアプリ回に参加していなくても進められる構成です。
-
 ## 準備
 
 - ブラウザのみ（StackBlitz を使用）
 - 開発環境のインストール不要
+- テンプレート: https://stackblitz.com/edit/board-beginner
 
-テンプレートには「入力欄とボタンが並んだ、まだ何も動かない状態」の HTML と CSS が用意されています。受講者がさわるのは `script.js` だけです。
+## 困ったときは
+
+- 質問がある場合、章節項に割り振られた通し番号といっしょに質問してもらえると対応しやすいです。
+- 資料に誤字脱字や理論的な欠陥にお気づきなら、[リポジトリ](https://github.com/jigintern/study_session_materials) に Issue を作成して Contributor に知らせてください。確認して対応します。
 
 ## 本編
 
@@ -26,68 +26,5 @@ JavaScript で掲示板アプリを作ります。
 - [スライド（markdown版）](./slide.md)
 - [スライド（HTML版）](https://jigintern.github.io/study_session_materials/board-2026/slide.html)
 - [完成版アプリ（completed/）](./completed/) — 講師用の完成形
-- [受講者用テンプレート（StackBlitz）](https://stackblitz.com/edit/board-beginner) — 当日受講者に開いてもらうプロジェクト
-- [テンプレート（template/）](./template/) — 上の StackBlitz プロジェクトの元ファイル。`script.js` は定数 2 行だけ
-- [バックエンド API（backend/）](./backend/) — 受講者が `fetch` で叩くサーバー
-
-## 構成
-
-前半で「自分の画面の中だけで動く掲示板」を作り、後半でそれをサーバーにつなぎ替えます。
-
-| 章 | 内容 |
-| --- | --- |
-| Chapter 1 | 書いた文字を画面に出す（変数・イベント・DOM 操作・配列） |
-| Chapter 2 | サーバーとデータベース、GET / POST・JSON・`await` |
-| Chapter 3 | 一覧をサーバーから読み込む（`showPosts` を `fetch` に差し替え） |
-| Chapter 4 | 投稿をサーバーに送る（`addPost` を `fetch` に差し替え） |
-| Chapter 5 | 時刻の表示、発展課題 |
-
-Chapter 1 で `addPost()` と `showPosts()` の 2 つの関数に切っておき、後半ではその中身だけを差し替えます。やることは同じで、投稿の置き場所が配列からサーバーに変わるだけ、という形で見せる構成です。
-
-スライドは「説明 → 記述」の順で並べています。新しい書き方の意味を先に示してから写経に入ります。後半でコードを差し替える場面では、記述スライドのコード自体をハイライトして「変わったのはここだけ」を同じ 1 枚で見せています。記述スライドは 1 枚で完結させ、コードが次のページにまたがらないようにしています。
-
-## テンプレートに必要な id（HTML）
-
-スライドのコードは以下の id を前提にしています。
-
-| id | 要素 |
-|----|------|
-| `name-input` | 名前の入力欄 |
-| `text-input` | メッセージの入力欄 |
-| `post-btn` | 投稿ボタン（入力フォームの中） |
-| `reload-btn` | 更新ボタン（一覧の見出し行） |
-| `posts` | 投稿一覧の親要素（`<ul>`） |
-
-更新ボタンはフォームではなく一覧の見出し行に置いています。更新の対象は一覧なので、投稿ボタンと並べると役割が同じに見えてしまうためです。
-
-`script.js` の先頭に、API のベース URL と部屋 ID の定数を置いています。値はダミーです。当日、実際の値を受講者に伝えて自分で書き換えてもらいます。実際の URL と部屋 ID はリポジトリに置きません。
-
-```javascript
-const API = 'https://example.deno.dev'; // URL を差し替える
-const ROOM = '0000'; // 開催回ごとに差し替える
-```
-
-## スクリーンショット
-
-スライドに貼る画面は `screenshots/capture.ts` で撮り直せます。
-
-```sh
-deno run -A screenshots/capture.ts
-```
-
-バックエンドをメモリ上の KV で起動してサンプル投稿を入れ、章ごとの状態のページを Chrome の headless で撮ります。`template/` の HTML や CSS を変えたら、これを流し直せば 4 枚まとめて更新されます。
-
-| ファイル | 使う場所 |
-| --- | --- |
-| `completed.png` | 今日のゴール |
-| `template-initial.png` | 準備 |
-| `chapter1-local.png` | Chapter 1 の動作チェック |
-| `chapter3-readonly.png` | Chapter 3 の動作チェック |
-
-## 講師用タイマー
-
-記述スライドの右上にタイマーがあります。クリックで開始と停止、右クリックでリセット、± ボタンで 1 分ずつ増減します。持ち時間は写経の行数から見積もった初期値です。
-
-## バックエンド
-
-投稿の保存先は `backend/` にあります。仕様とローカルでの動かし方は [backend/README.md](./backend/README.md) を参照してください。
+- [テンプレート（template/）](./template/) — StackBlitz プロジェクト作成の元
+- [バックエンド API（backend/）](./backend/) — 受講者が `fetch` で叩くサーバー。仕様と動かし方は [backend/README.md](./backend/README.md)
