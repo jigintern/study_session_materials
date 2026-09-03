@@ -26,7 +26,8 @@ JavaScript で掲示板アプリを作ります。
 - [スライド（markdown版）](./slide.md)
 - [スライド（HTML版）](https://jigintern.github.io/study_session_materials/board-2026/slide.html)
 - [完成版アプリ（completed/）](./completed/) — 講師用の完成形
-- [テンプレート（template/）](./template/) — StackBlitz プロジェクト作成の元。`script.js` は定数 2 行だけ
+- [受講者用テンプレート（StackBlitz）](https://stackblitz.com/edit/board-beginner) — 当日受講者に開いてもらうプロジェクト
+- [テンプレート（template/）](./template/) — 上の StackBlitz プロジェクトの元ファイル。`script.js` は定数 2 行だけ
 - [バックエンド API（backend/）](./backend/) — 受講者が `fetch` で叩くサーバー
 
 ## 構成

@@ -194,6 +194,7 @@ HTML と CSS は用意済みです。今日書くのは **JavaScript** だけ。
 ![bg right:38% fit](screenshots/template-initial.png)
 
 1. ブラウザで StackBlitz のテンプレートを開く
+   https://stackblitz.com/edit/board-beginner
 2. `script.js` を開く
 
 左にファイル、右にプレビューが並びます。今日書くのは `script.js` だけです。
