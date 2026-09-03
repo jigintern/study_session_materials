@@ -196,6 +196,7 @@ HTML と CSS は用意済みです。今日書くのは **JavaScript** だけ。
 1. ブラウザで StackBlitz のテンプレートを開く
    https://stackblitz.com/edit/board-beginner
 2. `script.js` を開く
+3. 1〜2行目の `API` と `ROOM` を、伝えられた値に書き換える
 
 左にファイル、右にプレビューが並びます。今日書くのは `script.js` だけです。
 
@@ -772,7 +773,7 @@ Promise { <pending> }
 }
 ```
 
-`API` と `ROOM` は1行目に用意済みです。画面はまだ変わりません。
+`API` と `ROOM` は、準備で書き換えた1〜2行目の値です。画面はまだ変わりません。
 
 ---
 
@@ -1044,12 +1045,12 @@ const posts = [];   // ← この行を削除する
 **書く場所** — `script.js` のいちばん下
 
 ```javascript
-setInterval(showPosts, 3000);
+setInterval(showPosts, 10000);
 ```
 
 `setInterval(関数, ミリ秒)` = 決まった間隔で、関数を何度も実行する
 
-3000 ミリ秒 = 3秒ごとに `showPosts()` が呼ばれます。
+10000 ミリ秒 = 10秒ごとに `showPosts()` が呼ばれます。
 
 **成功** — 何も押さなくても、他の人の投稿が出てくる
 
@@ -1099,7 +1100,7 @@ SNS のタイムラインはたいてい新しい順です。どちらが読み�
 
 ### 一覧が空のまま
 
-- `script.js` の1行目の `API` と `ROOM` を書き換えていないか
+- 1〜2行目の `API` と `ROOM` が、伝えられた値になっているか
 - `showPosts()` を `script.js` のいちばん下に書いたか
 
 ### 何を試してもだめなとき

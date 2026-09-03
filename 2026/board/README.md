@@ -60,10 +60,10 @@ Chapter 1 で `addPost()` と `showPosts()` の 2 つの関数に切っておき
 
 更新ボタンはフォームではなく一覧の見出し行に置いています。更新の対象は一覧なので、投稿ボタンと並べると役割が同じに見えてしまうためです。
 
-`script.js` の先頭に、API のベース URL と部屋 ID の定数を用意しておきます。受講者はここをさわりません。
+`script.js` の先頭に、API のベース URL と部屋 ID の定数を置いています。値はダミーです。当日、実際の値を受講者に伝えて自分で書き換えてもらいます。実際の URL と部屋 ID はリポジトリに置きません。
 
 ```javascript
-const API = 'https://example.deno.dev'; // 講座までに実際の URL に差し替える
+const API = 'https://example.deno.dev'; // URL を差し替える
 const ROOM = '0000'; // 開催回ごとに差し替える
 ```
 
