@@ -22,7 +22,8 @@ style: |
     grid-template-columns: 1fr 1fr;
     gap: 1.5em;
   }
-  section.record::before {
+  section.record::before,
+  section.tips::before {
     content: "記述";
     position: absolute;
     border: 3px solid var(--primary);
@@ -34,6 +35,11 @@ style: |
     font-weight: 700;
     letter-spacing: 0.1em;
     z-index: 10;
+  }
+  section.tips::before {
+    content: "Tips";
+    border-color: #888;
+    color: #888;
   }
   .mock {
     border: 3px solid var(--primary);
@@ -164,10 +170,8 @@ style: |
 
 - 名前とメッセージを書いて、投稿ボタンを押す
 - 投稿が一覧に並ぶ
-- 「更新」を押すと、**他の人が書いた投稿も出てくる**
+- 「更新する」を押すと、**他の人が書いた投稿も出てくる**
 - ブラウザを閉じても投稿は消えない
-
-今日の新しいところは、データが自分のブラウザの外に出ていくことです。
 
 ---
 
@@ -179,7 +183,7 @@ style: |
 | CSS | 見た目 |
 | **JavaScript** | **動き** |
 
-HTML と CSS は用意ずみです。今日書くのは **JavaScript** だけ。
+HTML と CSS は用意済みです。今日書くのは **JavaScript** だけ。
 
 そして今日は、そこに**サーバー**が加わります。
 
@@ -202,7 +206,7 @@ HTML と CSS は用意ずみです。今日書くのは **JavaScript** だけ。
 
 1. 書いた文字を画面に出す
 2. サーバーってなに？
-3. みんなの投稿を読みこむ
+3. みんなの投稿を読み込む
 4. 自分の投稿をサーバーに送る
 5. 仕上げ
 
@@ -216,7 +220,7 @@ HTML と CSS は用意ずみです。今日書くのは **JavaScript** だけ。
 
 ### 右上に「記述」バッジ → 手を動かしてコードを書くスライド
 
-**ハイライトあり** — その部分だけ書き足す
+**ハイライトあり** — ハイライトの部分だけを書く（足す・書き換える）。残りはそのまま
 
 ```javascript
 function addPost() {
@@ -278,7 +282,7 @@ JavaScript から部品を呼ぶために、HTML には `id` が付いていま�
 - 投稿ボタンを押す → 書いた文字が一覧に並ぶ
 - 何件でも増えていく
 
-まだサーバーは使いません。ページを再読みこみすると消えます。
+まだサーバーは使いません。ページを再読み込みすると消えます。
 
 そこを Chapter 2 以降で解決していきます。
 
@@ -300,9 +304,13 @@ sayHello();   // ← ここではじめて中身が実行される
 
 作っただけでは何も起きません。呼ばれたときにはじめて中身が動きます。
 
+では、誰が呼ぶのか。今日は**ボタンが押されたとき**に呼ばせます。
+
 ---
 
 ## 1-1. 部品を探して、押されたときに動かす
+
+### ボタンに「押されたらこの関数を呼んで」と頼んでおく
 
 **`document.getElementById('名札')`** = 名札で HTML の部品を探す
 
@@ -368,22 +376,18 @@ document.getElementById('post-btn').addEventListener('click', addPost);
 
 ### 決めうちのメッセージではなく、書かれた文字を出したい
 
-そのために、2つの書き方を使います。
+**`部品.value`** = 入力欄に書かれている文字。部品そのものではなく「中身」
 
-**`.value`** = 入力欄に書かれている文字
-
-部品そのものではなく「中身」を取り出すときに使います。
-
-**バッククォート `` ` `` の文字列** = `${ }` の中に変数を差しこめる
+**バッククォート `` ` `` の文字列** = `${ }` の中に変数を差し込める
 
 ```javascript
-const name = 'たろう';
+const name = document.getElementById('name-input').value;   // 'たろう'
 
 `${name} さん`   // → 'たろう さん'
-'name さん'      // → 'name さん'（差しこまれない）
+'name さん'      // → 'name さん'（差し込まれない）
 ```
 
-差しこみが要らないときは、ふつうの `'` で書きます。
+差し込みが要らないときは、ふつうの `'` で書きます。
 
 ---
 
@@ -465,18 +469,18 @@ function addPost() {
 
 ---
 
-## 1-4. なぜ2つの関数に分けるのか
+## 1-4. 投稿をためる場所を作る
 
-### あとで**この2つの中身だけ**を差し替えるからです
+### いまは画面に足すだけで、投稿はどこにも残っていない
+
+そこで、投稿を `posts` という**配列にためて**から、たまっている投稿を**ぜんぶ並べ直す**やり方に変えます。並べ直す側には `showPosts()` という名前をつけます。
 
 | 関数 | やること |
 |---|---|
-| `addPost()` | 投稿を1件**ふやす** |
-| `showPosts()` | 投稿を**ぜんぶ表示する** |
+| `addPost()` | 投稿を配列に1件**ふやす** |
+| `showPosts()` | 配列の中身を**ぜんぶ並べ直す** |
 
-これから作る「ふやす先」は `posts` という配列です。
-
-Chapter 3 以降で、この行き先を**サーバー**に変えます。やることは同じで、置き場所だけが変わります。
+分けておくと、Chapter 3 で投稿の置き場所を**サーバー**に変えるとき、それぞれの中身を差し替えるだけで済みます。
 
 ---
 
@@ -570,7 +574,7 @@ function addPost() {
 2. もう一度投稿すると、2行になる（前の行が消えない）
 3. 投稿するとメッセージ欄が空になる
 
-### ページを再読みこみしてみてください
+### ページを再読み込みしてみてください
 
 投稿が**全部消えます**。ここが次の章の出発点です。
 
@@ -584,33 +588,31 @@ function addPost() {
 
 ---
 
-## いまの掲示板の困りごと
+## いまの掲示板
 
-### 投稿が「自分のブラウザの中」にしかない
+### 投稿は「自分のブラウザの中」にしかない
 
-- ページを再読みこみすると消える
-- 自分の画面にしか出ない。隣の人からは見えない
+- ページを再読み込みすると消える
+- 他の人のブラウザには出ない
 
 `posts` という配列は、開いているページの中にだけあります。ページを閉じれば一緒に消えます。
 
 ---
 
-## サーバー = **ずっと動きつづけているプログラム**
+## サーバー = **頼まれたら答えるプログラム**
 
 <div class="flow">
   <div class="box">あなたの<br>ブラウザ</div>
   <div class="arrow">⇄</div>
-  <div class="box">サーバー<span class="note">ずっと動いている</span></div>
+  <div class="box">サーバー<span class="note">動かしっぱなし</span></div>
   <div class="arrow">⇄</div>
   <div class="box">ほかの人の<br>ブラウザ</div>
 </div>
 
-サーバーは、頼まれたら答える係です。
-
 - 「投稿を全部ください」と頼まれたら、返す
 - 「この投稿を保存して」と頼まれたら、保存する
 
-ブラウザは開いている間しか動きません。サーバーは誰も見ていなくても動きつづけているので、他の人がいつ来ても答えられます。
+ブラウザは開いている間しか動きません。サーバーはいつ頼まれても答えられるように、動かしっぱなしにしてあります。あなたがページを閉じている間も、他の人からの依頼に答えています。
 
 ---
 
@@ -632,7 +634,7 @@ function addPost() {
 
 ---
 
-## 今日のサーバーは **用意ずみ** です
+## 今日のサーバーは **用意済み** です
 
 ### 書くのはブラウザ側だけ
 
@@ -645,19 +647,19 @@ function addPost() {
 
 ---
 
-## サーバーとのやりとりは **2種類だけ**
+## サーバーとのやりとりに使う **2つのメソッド**
+
+メソッド = サーバーへの頼み方の種類
 
 | やること | 呼び方 |
 |---|---|
 | 置いてあるデータを**取ってくる** | **GET** |
 | 新しいデータを**送る** | **POST** |
 
-今日の掲示板でいうと、
+今日の掲示板では、この2つを使います。
 
-- 投稿の一覧を読みこむ → **GET**
-- 自分の投稿を書きこむ → **POST**
-
-この2つしか使いません。
+- 投稿の一覧を読み込む → **GET**
+- 自分の投稿を書き込む → **POST**
 
 ---
 
@@ -691,7 +693,7 @@ const posts = await res.json();
 | `res` | 返ってきた**返事そのもの** |
 | `res.json()` | 返事の中身を JSON として取り出す |
 
-`res` はまだ封筒の状態です。`res.json()` で中を開けて、はじめて配列として使えます。
+`res` はまだ封筒です。`res.json()` で中を開けると、配列として使えます。
 
 ---
 
@@ -701,7 +703,7 @@ const posts = await res.json();
 
 サーバーは別の場所にあります。頼んでから返事が届くまでの時間は、ページの中だけで済む処理とは桁が違います。「返事が届くまで待つ」と書かないと、届く前に次の行へ進んでしまいます。
 
-**ルールは2つだけ**
+**ルールは2つ**
 
 1. `fetch` と `res.json()` には `await` を付ける
 2. `await` を使う関数には `async` を付ける
@@ -739,26 +741,11 @@ Promise { <pending> }
 
 ---
 
-## 部屋（room）について
-
-### 掲示板は開催回ごとに分かれています
-
-`script.js` の1行目に、つなぎ先が用意されています。
-
-```javascript
-const API = 'https://...';   // さわらなくて大丈夫です
-const ROOM = '...';          // 今日の部屋。講師が伝えます
-```
-
-`ROOM` を書き換えると別の掲示板につながります。今日は伝えられた値のままにしてください。
-
----
-
-<!-- _class: record -->
+<!-- _class: record compact -->
 
 ## 3-1. `showPosts()` を書き換えよう
 
-<div class="timer-box" data-seconds="480">
+<div class="timer-box" data-seconds="300">
   <button class="timer-btn" data-delta="-60">−</button>
   <div class="timer"></div>
   <button class="timer-btn" data-delta="60">＋</button>
@@ -766,12 +753,12 @@ const ROOM = '...';          // 今日の部屋。講師が伝えます
 
 ### 配列 `posts` を見にいくのをやめて、サーバーに取りにいく
 
-**書く場所** — `showPosts` を丸ごと置き換え（前のものは消す）
+**書く場所** — `showPosts`。**ハイライトの3か所を書き足す**（残りはそのまま）
 
 ```javascript
-async function showPosts() {
-  const res = await fetch(`${API}/posts?room=${ROOM}`);
-  const posts = await res.json();
+@@async@@ function showPosts() {
+  @@const res = await fetch(`${API}/posts?room=${ROOM}`);@@
+  @@const posts = await res.json();@@
 
   const list = document.getElementById('posts');
   list.textContent = '';
@@ -784,31 +771,13 @@ async function showPosts() {
 }
 ```
 
----
-
-## 3-1. 変わったのは最初の3行だけ
-
-```javascript
-async function showPosts() {
-  @@const res = await fetch(`${API}/posts?room=${ROOM}`);@@
-  @@const posts = await res.json();@@
-
-  const list = document.getElementById('posts');
-  ...
-```
-
-- 関数の頭に `async` が付いた
-- `posts` の作り方が「配列を見る」から「サーバーから取ってくる」に変わった
-
-**表示する部分（`for` 以下）は1文字も変えていません。** やることが同じだからです。
-
-この時点では画面はまだ変わりません。次で読みこむきっかけを作ります。
+`API` と `ROOM` は1行目に用意済みです。画面はまだ変わりません。
 
 ---
 
 <!-- _class: record -->
 
-## 3-2. 読みこむきっかけを作ろう
+## 3-2. 読み込むきっかけを作ろう
 
 <div class="timer-box" data-seconds="180">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -816,7 +785,7 @@ async function showPosts() {
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
-### 読みこむきっかけを2つ作る
+### 読み込むきっかけを2つ作る
 
 **書く場所** — `script.js` のいちばん下
 
@@ -832,32 +801,22 @@ showPosts();
 
 ---
 
-## 3-2. まだ投稿はできません
-
-![bg right:38% fit](screenshots/chapter3-readonly.png)
-
-### いま動くのは「読む」だけです
-
-「投稿する」を押しても、サーバーには何も届きません。配列 `posts` に足しているだけで、その配列はもう表示に使われていないからです。
-
-**ここでは投稿が増えなくて正常です。** 次の章で送る側を作ります。
-
----
-
 ## 動作チェック
 
 ![bg right:38% fit](screenshots/chapter3-readonly.png)
 
 ### 2つとも当てはまれば Chapter 3 は完了です
 
-1. ページを再読みこみしても、一覧が消えない
+1. ページを再読み込みしても、一覧が消えない
 2. 「更新する」を押すと、**自分が書いていない投稿**が出てくる
 
-### 2番が出たら
+### 他の人の投稿が出てきたら
 
-それは他の参加者が書いたものです。同じサーバーの、同じ部屋を見ています。
+それは他の参加者が書いたものです。同じサーバーの、同じ掲示板を見ています。
 
 ---
+
+<!-- _class: tips -->
 
 ## 他の人が書いた文字を、そのまま出していいのか
 
@@ -919,11 +878,11 @@ JSON.stringify(data);
 
 ---
 
-<!-- _class: record -->
+<!-- _class: record compact -->
 
 ## 4-1. `addPost()` を書き換えよう
 
-<div class="timer-box" data-seconds="480">
+<div class="timer-box" data-seconds="360">
   <button class="timer-btn" data-delta="-60">−</button>
   <div class="timer"></div>
   <button class="timer-btn" data-delta="60">＋</button>
@@ -931,38 +890,25 @@ JSON.stringify(data);
 
 ### 配列に足すのをやめて、サーバーに送る
 
-**書く場所** — `addPost` を丸ごと置き換え（前のものは消す）
+**書く場所** — `addPost`。**ハイライトの部分を書き**、`posts.push(...)` の行は消す
 
 ```javascript
-async function addPost() {
+@@async@@ function addPost() {
   const name = document.getElementById('name-input').value;
   const text = document.getElementById('text-input').value;
 
-  await fetch(`${API}/posts?room=${ROOM}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: name, text: text }),
-  });
+  @@await fetch(`${API}/posts?room=${ROOM}`, {@@
+    @@method: 'POST',@@
+    @@headers: { 'Content-Type': 'application/json' },@@
+    @@body: JSON.stringify({ name: name, text: text }),@@
+  @@});@@
 
   document.getElementById('text-input').value = '';
-  await showPosts();
+  @@await showPosts();@@
 }
 ```
 
----
-
-## 4-1. ここも、変わったのは真ん中だけ
-
-| 行 | Chapter 1 | いま |
-|---|---|---|
-| 入力欄から取る | 同じ | 同じ |
-| 保存する | `posts.push(...)` | **`await fetch(..., POST)`** |
-| 入力欄を空にする | 同じ | 同じ |
-| 表示し直す | `showPosts()` | `await showPosts()` |
-
-置き場所が配列からサーバーに変わっただけで、流れは Chapter 1 とまったく同じです。
-
-最後の `await showPosts()` で、送ったあとに一覧を読み直しています。
+最後の `await showPosts()` で、送ったあとに一覧を読み直します。
 
 ---
 
@@ -976,7 +922,7 @@ async function addPost() {
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
-### `posts` はもう誰も見ていません
+### `posts` はもう使われていません
 
 **書く場所** — `script.js` のいちばん上
 
@@ -997,7 +943,7 @@ const posts = [];   // ← この行を削除する
 ### 掲示板の完成です
 
 1. 投稿すると、一覧に自分の投稿が出る
-2. ページを再読みこみしても消えない
+2. ページを再読み込みしても消えない
 3. 隣の人に投稿してもらい、「更新する」を押すと**その投稿が出てくる**
 4. 自分の投稿も、他の人の画面に出ている
 
@@ -1076,7 +1022,7 @@ const posts = [];   // ← この行を削除する
 - 長い文章を投稿してみる（一定の長さで切られます）
 - 空のまま投稿してみる（送られません）
 
-サーバー側には「1つの部屋に置ける投稿は200件まで」という制限があります。古いものから順に消えていきます。
+サーバー側には「1つの掲示板に置ける投稿は200件まで」という制限があります。古いものから順に消えていきます。
 
 ---
 
@@ -1152,7 +1098,7 @@ SNS のタイムラインはたいてい新しい順です。どちらが読み�
 
 ### 一覧が空のまま
 
-- `ROOM` の値が伝えられたものと同じか
+- `script.js` の1行目の `API` と `ROOM` を書き換えていないか
 - `showPosts()` を `script.js` のいちばん下に書いたか
 
 ### 何を試してもだめなとき
