@@ -1,4 +1,4 @@
-import { assertEquals, assertMatch } from "jsr:@std/assert@1";
+import { assertEquals, assertMatch } from "@std/assert";
 import { MAX_POSTS_PER_ROOM, type Post, route } from "./main.ts";
 
 const BASE = "http://localhost";
