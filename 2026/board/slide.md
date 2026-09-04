@@ -697,8 +697,6 @@ const posts = await res.json();
 | `res` | 返ってきた**返事そのもの** |
 | `res.json()` | 返事の中身を **JavaScript の配列やオブジェクト**として取り出す |
 
-`res` はまだ封筒です。`res.json()` で中を開けると、配列として使えます。
-
 ---
 
 ## `await` — **待つ印**
