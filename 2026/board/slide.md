@@ -444,7 +444,7 @@ function addPost() {
 
 <!-- _class: record -->
 
-## 1-3. 画面に1件だけ出してみよう
+## 1-3. 投稿を画面に出そう
 
 <div class="timer-box" data-seconds="360">
   <button class="timer-btn" data-delta="-60">−</button>
@@ -471,110 +471,14 @@ function addPost() {
 
 ---
 
-## 1-4. 投稿をためる場所を作る
-
-### いまは画面に足すだけで、投稿はどこにも残っていない
-
-そこで、投稿を `posts` という**配列にためて**から、たまっている投稿を**ぜんぶ並べ直す**やり方に変えます。並べ直す側には `showPosts()` という名前をつけます。
-
-| 関数 | やること |
-|---|---|
-| `addPost()` | 投稿を配列に1件**ふやす** |
-| `showPosts()` | 配列の中身を**ぜんぶ並べ直す** |
-
-分けておくと、Chapter 3 で投稿の置き場所を**サーバー**に変えるとき、それぞれの中身を差し替えるだけで済みます。
-
----
-
-## 1-4. 投稿をためるのに使う書き方
-
-**配列** = データを順番に並べたリスト
-
-```javascript
-const posts = [];              // 空のリスト
-posts.push({ name: 'たろう', text: 'やっほー' });   // 末尾に足す
-```
-
-**オブジェクト** `{ name: ..., text: ... }` = 名前つきのデータのまとまり
-
-**`for...of`** = リストの中身を1つずつ取り出して繰り返す
-
-**`list.textContent = ''`** = 中身を空にする。表示のたびに全部消してから並べ直しています
-
----
-
-<!-- _class: record -->
-
-## 1-4. `showPosts()` を作ろう
-
-<div class="timer-box" data-seconds="420">
-  <button class="timer-btn" data-delta="-60">−</button>
-  <div class="timer"></div>
-  <button class="timer-btn" data-delta="60">＋</button>
-</div>
-
-### 投稿をためる場所と、表示する処理を用意する
-
-**書く場所** — `script.js` のいちばん上（`addPost` より前）
-
-```javascript
-const posts = [];
-
-function showPosts() {
-  const list = document.getElementById('posts');
-  list.textContent = '';
-
-  for (const post of posts) {
-    const item = document.createElement('li');
-    item.textContent = `${post.name}: ${post.text}`;
-    list.appendChild(item);
-  }
-}
-```
-
-まだ `showPosts()` を呼んでいないので、画面は変わりません。次で呼びます。
-
----
-
-<!-- _class: record -->
-
-## 1-5. `addPost()` を書き換えよう
-
-<div class="timer-box" data-seconds="300">
-  <button class="timer-btn" data-delta="-60">−</button>
-  <div class="timer"></div>
-  <button class="timer-btn" data-delta="60">＋</button>
-</div>
-
-### 直接画面に足すのをやめて、配列に入れてから表示する
-
-**書く場所** — `addPost` を丸ごと置き換え（前のものは消す）
-
-```javascript
-function addPost() {
-  const name = document.getElementById('name-input').value;
-  const text = document.getElementById('text-input').value;
-
-  posts.push({ name: name, text: text });
-
-  document.getElementById('text-input').value = '';
-  showPosts();
-}
-```
-
-**成功** — 投稿すると一覧が増え、メッセージ欄が空になる
-
----
-
 ## 動作チェック
 
 ![bg right:38% fit](screenshots/chapter1-local.png)
 
-### 3つとも当てはまれば Chapter 1 は完了です
+### 2つとも当てはまれば Chapter 1 は完了です
 
 1. 名前とメッセージを入れて「投稿する」を押すと、一覧に1行増える
 2. もう一度投稿すると、2行になる（前の行が消えない）
-3. 投稿するとメッセージ欄が空になる
 
 ### ページを再読み込みしてみてください
 
@@ -743,24 +647,45 @@ Promise { <pending> }
 
 ---
 
+## 3-1. 一覧を並べるのに使う書き方
+
+### サーバーからは、投稿が**配列**で返ってきます
+
+```javascript
+[
+  { name: 'たろう', text: 'はじめまして' },
+  { name: 'はなこ', text: 'こんにちは' },
+]
+```
+
+**配列** = データを順番に並べたリスト
+
+**オブジェクト** `{ name: ..., text: ... }` = 名前つきのデータのまとまり
+
+**`for...of`** = リストの中身を1つずつ取り出して繰り返す
+
+**`list.textContent = ''`** = 中身を空にする。表示のたびに全部消してから並べ直す
+
+---
+
 <!-- _class: record compact -->
 
-## 3-1. `showPosts()` を書き換えよう
+## 3-1. `showPosts()` を作ろう
 
-<div class="timer-box" data-seconds="300">
+<div class="timer-box" data-seconds="480">
   <button class="timer-btn" data-delta="-60">−</button>
   <div class="timer"></div>
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
-### 配列 `posts` を見にいくのをやめて、サーバーに取りにいく
+### サーバーから投稿を取ってきて、一覧に並べる
 
-**書く場所** — `showPosts`。**ハイライトの3か所を書き足す**（残りはそのまま）
+**書く場所** — `script.js` の `addPost` より前
 
 ```javascript
-@@async@@ function showPosts() {
-  @@const res = await fetch(`${API}/posts?room=${ROOM}`);@@
-  @@const posts = await res.json();@@
+async function showPosts() {
+  const res = await fetch(`${API}/posts?room=${ROOM}`);
+  const posts = await res.json();
 
   const list = document.getElementById('posts');
   list.textContent = '';
@@ -773,7 +698,7 @@ Promise { <pending> }
 }
 ```
 
-`API` と `ROOM` は、準備で書き換えた1〜2行目の値です。画面はまだ変わりません。
+まだ呼んでいないので、画面は変わりません。
 
 ---
 
@@ -799,7 +724,7 @@ showPosts();
 
 **成功** — ページを開いた時点で、すでに誰かの投稿が並んでいる
 
-いちばん下の `showPosts()` は、ページを開いた瞬間に1回だけ実行するためのものです。
+いちばん下の `showPosts()` は、ページを開いた瞬間に1回だけ実行するためのものです。同じ関数を2か所から呼べるのが、処理に名前をつけておく利点です。
 
 ---
 
@@ -880,57 +805,33 @@ JSON.stringify(data);
 
 ## 4-1. `addPost()` を書き換えよう
 
-<div class="timer-box" data-seconds="360">
+<div class="timer-box" data-seconds="480">
   <button class="timer-btn" data-delta="-60">−</button>
   <div class="timer"></div>
   <button class="timer-btn" data-delta="60">＋</button>
 </div>
 
-### 配列に足すのをやめて、サーバーに送る
+### 画面に直接足すのをやめて、サーバーに送る
 
-**書く場所** — `addPost`。**ハイライトの部分を書き**、`posts.push(...)` の行は消す
+**書く場所** — `addPost` を丸ごと置き換え（前のものは消す）
 
 ```javascript
-@@async@@ function addPost() {
+async function addPost() {
   const name = document.getElementById('name-input').value;
   const text = document.getElementById('text-input').value;
 
-  @@await fetch(`${API}/posts?room=${ROOM}`, {@@
-    @@method: 'POST',@@
-    @@headers: { 'Content-Type': 'application/json' },@@
-    @@body: JSON.stringify({ name: name, text: text }),@@
-  @@});@@
+  await fetch(`${API}/posts?room=${ROOM}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: name, text: text }),
+  });
 
   document.getElementById('text-input').value = '';
-  @@showPosts();@@
+  showPosts();
 }
 ```
 
-最後の `showPosts()` で、送ったあとに一覧を読み直します。
-
----
-
-<!-- _class: record -->
-
-## 4-2. 使わなくなった配列を消そう
-
-<div class="timer-box" data-seconds="120">
-  <button class="timer-btn" data-delta="-60">−</button>
-  <div class="timer"></div>
-  <button class="timer-btn" data-delta="60">＋</button>
-</div>
-
-### `posts` はもう使われていません
-
-**書く場所** — `script.js` のいちばん上
-
-```javascript
-const posts = [];   // ← この行を削除する
-```
-
-サーバーが投稿を持つようになったので、手元の配列は役目を終えました。
-
-残っていても動きますが、あとで読み返したときに「どっちが本物か」で迷います。
+**成功** — 投稿すると一覧に自分の投稿が出て、メッセージ欄が空になる
 
 ---
 
