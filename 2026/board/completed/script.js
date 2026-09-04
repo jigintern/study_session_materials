@@ -27,7 +27,7 @@ async function addPost() {
   });
 
   document.getElementById('text-input').value = '';
-  await showPosts();
+  showPosts();
 }
 
 document.getElementById('post-btn').addEventListener('click', addPost);

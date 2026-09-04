@@ -902,11 +902,11 @@ JSON.stringify(data);
   @@});@@
 
   document.getElementById('text-input').value = '';
-  @@await showPosts();@@
+  @@showPosts();@@
 }
 ```
 
-最後の `await showPosts()` で、送ったあとに一覧を読み直します。
+最後の `showPosts()` で、送ったあとに一覧を読み直します。
 
 ---
 
