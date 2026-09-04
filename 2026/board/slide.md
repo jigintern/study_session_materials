@@ -1055,7 +1055,7 @@ setInterval(showPosts, 10000);
 
 ## 発展①：この書き方の弱点
 
-### 新しい投稿がなくても、3秒ごとに聞きにいっている
+### 新しい投稿がなくても、10秒ごとに聞きにいっている
 
 <div class="flow">
   <div class="box">ブラウザ<span class="note">新着ある？</span></div>
