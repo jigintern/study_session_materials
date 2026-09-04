@@ -995,7 +995,7 @@ const posts = [];   // ← この行を削除する
 
 ### サーバーは投稿された時刻も返しています
 
-**書く場所** — `showPosts` の `for` の中、2行を書き換え
+**書く場所** — `showPosts` の `for` の中。**1行足して、1行書き換える**
 
 ```javascript
   for (const post of posts) {
