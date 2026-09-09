@@ -1,0 +1,118 @@
+:root {
+  --primary: #2a5c8a;
+  --border: #d8dee5;
+  --muted: #6b7683;
+  --bg: #f7f9fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 32px 16px;
+  background: var(--bg);
+  color: #333;
+  font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+  line-height: 1.7;
+}
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+h1 {
+  margin: 0 0 24px;
+  font-size: 1.6rem;
+  color: var(--primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+input {
+  padding: 10px 14px;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -1px;
+}
+
+#post-btn {
+  align-self: flex-start;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 28px;
+}
+
+.list-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+button {
+  padding: 10px 22px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--primary);
+  background: #fff;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #eef3f8;
+}
+
+button.primary {
+  color: #fff;
+  background: var(--primary);
+}
+
+button.primary:hover {
+  background: #24507a;
+}
+
+#posts {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#posts li {
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  word-break: break-word;
+}
+
+#posts:empty::after {
+  content: "まだ投稿はありません";
+  display: block;
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+}

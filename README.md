@@ -8,6 +8,9 @@
 
 ### 2026年作成
 
+* [みんなで書き込める掲示板を作ってみよう！](./2026/board/README.md)
+  * JavaScript の基本を学びながら、サーバーに投稿が保存されて他の人からも見える掲示板アプリを作ります
+  * [スライド](https://jigintern.github.io/study_session_materials/board-2026/slide.html)
 * [神経衰弱ゲームを作ろう — JavaScript 中級講座](./2026/shinkei-suijaku/README.md)
   * JavaScript で神経衰弱ゲームを作りながら、Webアプリを支える 3 つの考え方 (状態・イベント・時間) を体験するハンズオンです
   * [スライド](https://jigintern.github.io/study_session_materials/shinkei-suijaku-2026/slide.html)
