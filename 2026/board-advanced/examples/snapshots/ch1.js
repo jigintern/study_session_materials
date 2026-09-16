@@ -1,5 +1,5 @@
 // Chapter 1 の終わりの public/script.js
-// 更新ボタンをやめて、10 秒ごとに読み込み直している状態。
+// 10 秒ごとに読み込み直している状態。更新ボタンはそのまま残している。
 
 const SHARED_API = 'https://example.deno.net'; // 当日の URL に差し替える
 const MY_API = ''; // Chapter 4 でここに自分のサーバーの URL を入れる
@@ -36,7 +36,7 @@ async function addPost() {
 }
 
 document.getElementById('post-btn').addEventListener('click', addPost);
-document.getElementById('reload-btn').remove();
+document.getElementById('reload-btn').addEventListener('click', showPosts);
 
 showPosts();
 setInterval(showPosts, 10000);

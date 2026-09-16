@@ -36,7 +36,7 @@ async function addPost() {
 }
 
 document.getElementById('post-btn').addEventListener('click', addPost);
-document.getElementById('reload-btn').remove();
+document.getElementById('reload-btn').addEventListener('click', showPosts);
 
 showPosts();
 
