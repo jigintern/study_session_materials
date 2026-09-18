@@ -1,9 +1,7 @@
 // Chapter 3 の終わりの public/script.js
 // 手元に投稿の配列を持ち、届いた 1 件だけを足している状態。
 
-const SHARED_API = 'https://example.deno.net'; // 当日の URL に差し替える
-const MY_API = ''; // Chapter 4 でここに自分のサーバーの URL を入れる
-const API = MY_API || SHARED_API;
+const API = 'https://example.deno.net'; // 当日の URL に差し替える
 const ROOM = '0000'; // 開催回ごとに差し替える
 
 // 手元の投稿。画面に出ているものと同じ並び。

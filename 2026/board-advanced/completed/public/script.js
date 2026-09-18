@@ -1,9 +1,7 @@
 // 講座を通しで書き終えたときの public/script.js
 // 共有サーバーにつなぎ、届いた 1 件だけを手元の配列に足している状態。
 
-const SHARED_API = 'https://example.deno.net'; // 当日の URL に差し替える
-const MY_API = ''; // 自分のサーバーを見るときだけ location.origin を入れる
-const API = MY_API || SHARED_API;
+const API = 'https://example.deno.net'; // 当日の URL に差し替える
 const ROOM = '0000'; // 開催回ごとに差し替える
 
 // 手元の投稿。画面に出ているものと同じ並び。

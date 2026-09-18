@@ -1,6 +1,4 @@
-const SHARED_API = 'https://example.deno.net'; // 当日の URL に差し替える
-const MY_API = ''; // 4章でここに自分のサーバーの URL を入れる
-const API = MY_API || SHARED_API;
+const API = 'https://example.deno.net'; // 当日の URL に差し替える
 const ROOM = '0000'; // 開催回ごとに差し替える
 
 async function showPosts() {
