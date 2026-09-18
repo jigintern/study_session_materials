@@ -1,9 +1,7 @@
 // Chapter 2 の終わりの public/script.js
 // ポーリングをやめて、共有サーバーから届いた合図で読み込み直している状態。
 
-const SHARED_API = 'https://example.deno.net'; // 当日の URL に差し替える
-const MY_API = ''; // Chapter 4 でここに自分のサーバーの URL を入れる
-const API = MY_API || SHARED_API;
+const API = 'https://example.deno.net'; // 当日の URL に差し替える
 const ROOM = '0000'; // 開催回ごとに差し替える
 
 async function showPosts() {

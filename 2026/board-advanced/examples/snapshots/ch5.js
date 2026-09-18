@@ -1,9 +1,7 @@
 // Chapter 5 の終わりの public/script.js
 // Chapter 5 でサーバー側だけを直したので、Chapter 4 の終わりと同じ内容。
 
-const SHARED_API = 'https://example.deno.net'; // 当日の URL に差し替える
-const MY_API = location.origin; // Chapter 4 で自分のサーバーに向けた
-const API = MY_API || SHARED_API;
+const API = location.origin; // Chapter 4 で自分のサーバーに向けた
 const ROOM = '0000'; // 開催回ごとに差し替える
 
 // 手元の投稿。画面に出ているものと同じ並び。
