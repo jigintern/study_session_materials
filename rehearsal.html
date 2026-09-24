@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>リハーサル計測</title>
+<style>
+  :root {
+    --bg: #fff;
+    --fg: #222;
+    --line: #ddd;
+    --accent: #2a5c8a;
+    --over: #b3261e;
+    --muted: #777;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  }
+  .app {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 460px;
+    height: 100vh;
+  }
+  .app.empty { grid-template-columns: 1fr; }
+  .stage { position: relative; background: #000; }
+  .stage iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .open-deck {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--bg);
+  }
+  .open-deck input { width: 360px; }
+  aside {
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--line);
+    min-width: 0;
+    min-height: 0;
+  }
+  aside > section { padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  h2 { font-size: 13px; margin: 0 0 6px; }
+  h2 .count { color: var(--muted); font-weight: normal; margin-left: 4px; }
+  .error { margin: 0; padding: 8px 14px; color: var(--over); border-bottom: 1px solid var(--line); }
+  .error:empty { display: none; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .over { color: var(--over); }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .clock th { text-align: left; font-weight: normal; color: var(--muted); width: 5em; padding: 2px 0; }
+  .clock td { padding: 2px 0; }
+  .clock .big { font-size: 28px; }
+  .clock col.label { width: 5em; }
+  .clock col.time { width: 11em; }
+  .controls { display: flex; gap: 6px; align-items: center; margin-top: 8px; }
+  button, input { font: inherit; }
+  button { white-space: nowrap; flex-shrink: 0; padding: 3px 10px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 3px; cursor: pointer; }
+  button.primary { border-color: var(--accent); color: var(--accent); }
+  button:disabled { color: var(--muted); cursor: default; }
+  kbd { font: 11px ui-monospace, monospace; color: var(--muted); margin-left: 4px; }
+  table.data th, table.data td { padding: 2px 6px; border-bottom: 1px solid var(--line); }
+  table.data th { font-weight: normal; color: var(--muted); text-align: left; position: sticky; top: 0; background: var(--bg); }
+  table.data th.num { text-align: right; }
+  table.data tfoot td { border-bottom: 0; font-weight: 600; }
+  table.data tr.current td { box-shadow: inset 0 0 0 9999px rgba(42, 92, 138, 0.1); }
+  table.data tr.current td:first-child { box-shadow: inset 3px 0 0 var(--accent), inset 0 0 0 9999px rgba(42, 92, 138, 0.1); }
+  table.data tr.boundary td { border-top: 1px solid #aaa; }
+  .title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
+  col.n { width: 4.5em; }
+  col.budget { width: 6em; }
+  col.idx { width: 2.5em; }
+  col.visits { width: 3.5em; }
+  col.toggle { width: 4.5em; }
+  td.unvisited { color: var(--muted); }
+  input.budget { width: 4.5em; text-align: right; font-variant-numeric: tabular-nums; padding: 1px 4px; border: 1px solid var(--line); border-radius: 3px; }
+  .slides { flex: 1; min-height: 0; display: flex; flex-direction: column; border-bottom: 0; padding-bottom: 0; }
+  .slides .scroll { flex: 1; overflow-y: auto; min-height: 0; }
+  footer { border-top: 1px solid var(--line); padding: 6px 14px; display: flex; gap: 6px; align-items: center; color: var(--muted); }
+  footer .deck { margin-right: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="stage">
+    <iframe id="frame" title="スライド"></iframe>
+    <form class="open-deck" id="open-deck" hidden>
+      <input name="deck" placeholder="2026/board-advanced/slide.html" required>
+      <button class="primary">開く</button>
+    </form>
+  </div>
+  <aside id="panel">
+    <p class="error" id="error" role="alert"></p>
+    <section class="clock">
+      <table>
+        <colgroup><col class="label"><col><col class="time"></colgroup>
+        <tr><th>通し</th><td class="title"></td><td class="num big" id="total"></td></tr>
+        <tr><th>区間</th><td class="title" id="seg-title"></td><td class="num" id="seg-time"></td></tr>
+        <tr><th>スライド</th><td class="title" id="slide-title"></td><td class="num" id="slide-time"></td></tr>
+      </table>
+      <div class="controls">
+        <button class="primary" id="toggle"></button>
+        <button id="reset">リセット</button>
+        <button id="undo" hidden>元に戻す</button>
+      </div>
+    </section>
+    <section>
+      <h2>区間<span class="count" id="seg-count"></span></h2>
+      <table class="data">
+        <colgroup><col><col class="budget"><col class="n"><col class="n"><col class="n"></colgroup>
+        <thead><tr><th>区間</th><th class="num">予定 (分)</th><th class="num">実績</th><th class="num">差</th><th class="num">累計差</th></tr></thead>
+        <tbody id="seg-body"></tbody>
+        <tfoot><tr><td>合計</td><td class="num" id="sum-budget"></td><td class="num" id="sum-actual"></td><td class="num" id="sum-diff"></td><td></td></tr></tfoot>
+      </table>
+    </section>
+    <section class="slides">
+      <h2>スライド<span class="count" id="slide-count"></span></h2>
+      <div class="scroll">
+        <table class="data">
+          <colgroup><col class="idx"><col><col class="n"><col class="visits"><col class="toggle"></colgroup>
+          <thead><tr><th class="num">#</th><th>見出し</th><th class="num">実績</th><th class="num">訪問</th><th title="区間の始まり">区切り</th></tr></thead>
+          <tbody id="slide-body"></tbody>
+        </table>
+      </div>
+    </section>
+    <footer>
+      <span class="deck" id="deck-path"></span>
+      <button id="export-segments">区間 CSV</button>
+      <button id="export-slides">スライド CSV</button>
+      <button id="export-json">JSON</button>
+      <button id="import-json">読み込み</button>
+      <input type="file" id="import-file" accept="application/json,.json" hidden>
+    </footer>
+  </aside>
+</div>
+<script>
+const STORAGE_PREFIX = 'rehearsal-timer:';
+const SCHEMA_VERSION = 1;
+const TICK_MS = 250;
+const TOGGLE_LABEL = { idle: '開始', running: '一時停止', paused: '再開' };
+
+const $ = (id) => document.getElementById(id);
+const frame = $('frame');
+
+const state = {
+  deck: new URLSearchParams(location.search).get('deck') || '',
+  slides: [],       // { key, title, isH1 }。iframe から読む
+  current: 0,       // 表示中のスライドの添字
+  page: 1,          // 開き直したときに戻すページ
+  config: { boundaries: null, budgets: {} },  // boundaries が null なら h1 のスライドで区切る
+  run: emptyRun(),
+  lastTick: null,   // 計測中だけ値を持つ。最後に時間を足した時刻
+  undo: null,       // リセット直前の run
+  rows: { segments: [], slides: [] },
+};
+
+function emptyRun() {
+  return { status: 'idle', perSlide: {} };
+}
+
+// ---- 保存 ----
+
+function storageKey() {
+  return STORAGE_PREFIX + state.deck;
+}
+
+function migrate(data) {
+  if (!data || typeof data !== 'object') return null;
+  if (data.version === 1) return data;
+  return null;
+}
+
+function applySaved(data) {
+  state.config = {
+    boundaries: Array.isArray(data.config?.boundaries) ? data.config.boundaries : null,
+    budgets: data.config?.budgets ?? {},
+  };
+  // 開き直した時点では止まっている。閉じていた間を今のスライドに足さない
+  const status = data.run?.status === 'idle' || !data.run?.status ? 'idle' : 'paused';
+  state.run = { status, perSlide: data.run?.perSlide ?? {}, lastKey: data.run?.lastKey };
+  state.page = Number.isInteger(data.page) ? data.page : 1;
+}
+
+function snapshot() {
+  return { version: SCHEMA_VERSION, deck: state.deck, page: state.current + 1, config: state.config, run: state.run };
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(storageKey());
+    if (!raw) return;
+    const data = migrate(JSON.parse(raw));
+    if (data) applySaved(data);
+    else showError('保存データの形式が読めません。書き出してから「リセット」で作り直せます');
+  } catch (e) {
+    showError('保存データを読めません: ' + e.message);
+  }
+}
+
+function save() {
+  try {
+    localStorage.setItem(storageKey(), JSON.stringify(snapshot()));
+  } catch (e) {
+    showError('保存できません: ' + e.message);
+  }
+}
+
+function showError(message) {
+  $('error').textContent = message;
+}
+
+// ---- 派生値 ----
+
+function boundarySet() {
+  return new Set(state.config.boundaries ?? state.slides.filter((s) => s.isH1).map((s) => s.key));
+}
+
+function slideMs(key) {
+  return state.run.perSlide[key]?.ms ?? 0;
+}
+
+function segments() {
+  const boundaries = boundarySet();
+  const list = [];
+  state.slides.forEach((slide, i) => {
+    if (i === 0 || boundaries.has(slide.key)) {
+      const minutes = state.config.budgets[slide.key];
+      list.push({ key: slide.key, title: slide.title, from: i, to: i, ms: 0, budgetMs: minutes == null ? null : minutes * 60000 });
+    }
+    const seg = list[list.length - 1];
+    seg.to = i;
+    seg.ms += slideMs(slide.key);
+  });
+  return list;
+}
+
+function currentSegmentIndex(list) {
+  return list.findIndex((seg) => seg.from <= state.current && state.current <= seg.to);
+}
+
+function fmt(ms) {
+  const sec = Math.floor(Math.abs(ms) / 1000);
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor(sec / 60) % 60;
+  const s = String(sec % 60).padStart(2, '0');
+  return h ? `${h}:${String(m).padStart(2, '0')}:${s}` : `${m}:${s}`;
+}
+
+function fmtDiff(ms) {
+  if (Math.abs(ms) < 1000) return '±0:00';
+  return (ms > 0 ? '+' : '−') + fmt(ms);
+}
+
+// ---- 計測 ----
+
+function entry(key) {
+  return (state.run.perSlide[key] ??= { ms: 0, visits: 0 });
+}
+
+function credit(now) {
+  const slide = state.slides[state.current];
+  if (slide && state.lastTick != null) {
+    entry(slide.key).ms += now - state.lastTick;
+    state.run.lastKey = slide.key;
+  }
+  state.lastTick = now;
+}
+
+function readCurrent() {
+  try {
+    const m = /^#(\d+)/.exec(frame.contentWindow.location.hash);
+    const idx = m ? Number(m[1]) - 1 : 0;
+    return Math.min(Math.max(idx, 0), state.slides.length - 1);
+  } catch {
+    return state.current;
+  }
+}
+
+function tick() {
+  if (!state.slides.length) return;
+  const running = state.run.status === 'running';
+  const now = Date.now();
+  const idx = readCurrent();
+  const moved = idx !== state.current;
+  if (running) credit(now);
+  if (moved) {
+    state.current = idx;
+    if (running) {
+      entry(state.slides[idx].key).visits++;
+      state.run.lastKey = state.slides[idx].key;
+    }
+  }
+  if (running || moved) save();
+  renderNumbers();
+}
+
+function toggleRun() {
+  if (!state.slides.length) return;
+  const run = state.run;
+  if (run.status === 'running') {
+    credit(Date.now());
+    run.status = 'paused';
+    state.lastTick = null;
+  } else {
+    if (run.status === 'idle') state.undo = null;
+    // 止めていた間に別のスライドへ移っていたら、再開した時点でそこを訪れたと数える
+    const key = state.slides[state.current].key;
+    if (key !== run.lastKey) entry(key).visits++;
+    run.lastKey = key;
+    run.status = 'running';
+    state.lastTick = Date.now();
+  }
+  save();
+  renderNumbers();
+}
+
+function reset() {
+  if (state.run.status === 'running') credit(Date.now());
+  state.undo = state.run;
+  state.run = emptyRun();
+  state.lastTick = null;
+  save();
+  renderNumbers();
+}
+
+function undoReset() {
+  if (!state.undo) return;
+  state.run = { ...state.undo, status: state.undo.status === 'idle' ? 'idle' : 'paused' };
+  state.undo = null;
+  save();
+  renderNumbers();
+}
+
+// ---- 設定の変更 ----
+
+function setBoundary(key, on) {
+  const set = boundarySet();
+  if (on) set.add(key);
+  else set.delete(key);
+  state.config.boundaries = [...set];
+  save();
+  renderStructure();
+}
+
+function setBudget(key, value) {
+  const minutes = parseFloat(value);
+  if (Number.isFinite(minutes) && minutes >= 0) state.config.budgets[key] = minutes;
+  else delete state.config.budgets[key];
+  save();
+  renderNumbers();
+}
+
+// ---- 描画 ----
+
+function renderStructure() {
+  const list = segments();
+  const boundaries = boundarySet();
+
+  state.rows.segments = list.map((seg) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td class="title"></td><td class="num"><input class="budget" type="number" min="0" step="1"></td><td class="num"></td><td class="num"></td><td class="num"></td>';
+    tr.cells[0].textContent = seg.title;
+    tr.cells[0].title = seg.title;
+    const input = tr.querySelector('input');
+    input.value = state.config.budgets[seg.key] ?? '';
+    input.setAttribute('aria-label', `${seg.title} の予定 (分)`);
+    input.addEventListener('input', () => setBudget(seg.key, input.value));
+    return { tr, actual: tr.cells[2], diff: tr.cells[3], cum: tr.cells[4] };
+  });
+  $('seg-body').replaceChildren(...state.rows.segments.map((r) => r.tr));
+
+  state.rows.slides = state.slides.map((slide, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td class="num"></td><td class="title"></td><td class="num"></td><td class="num"></td><td><input type="checkbox"></td>';
+    tr.cells[0].textContent = i + 1;
+    tr.cells[1].textContent = slide.title;
+    tr.cells[1].title = slide.title;
+    const isBoundary = i === 0 || boundaries.has(slide.key);
+    tr.classList.toggle('boundary', isBoundary && i > 0);
+    const box = tr.querySelector('input');
+    box.checked = isBoundary;
+    box.disabled = i === 0;
+    box.setAttribute('aria-label', `${slide.title} から区間を始める`);
+    box.addEventListener('change', () => setBoundary(slide.key, box.checked));
+    return { tr, actual: tr.cells[2], visits: tr.cells[3] };
+  });
+  $('slide-body').replaceChildren(...state.rows.slides.map((r) => r.tr));
+
+  $('seg-count').textContent = list.length;
+  $('slide-count').textContent = state.slides.length;
+  renderNumbers();
+}
+
+function renderNumbers() {
+  const status = state.run.status;
+  $('toggle').innerHTML = `${TOGGLE_LABEL[status]}<kbd>Shift+T</kbd>`;
+  $('toggle').disabled = !state.slides.length;
+  $('undo').hidden = !state.undo;
+  for (const id of ['reset', 'export-segments', 'export-slides', 'export-json', 'import-json']) {
+    $(id).disabled = !state.slides.length;
+  }
+  if (!state.slides.length) return;
+
+  const list = segments();
+  const curSeg = currentSegmentIndex(list);
+  const total = list.reduce((sum, seg) => sum + seg.ms, 0);
+  const budgets = list.filter((seg) => seg.budgetMs != null);
+  const budgetTotal = budgets.reduce((sum, seg) => sum + seg.budgetMs, 0);
+
+  $('total').textContent = fmt(total);
+
+  const seg = list[curSeg];
+  $('seg-title').textContent = seg.title;
+  $('seg-title').title = seg.title;
+  $('seg-time').textContent = seg.budgetMs == null ? fmt(seg.ms) : `${fmt(seg.ms)} / ${fmt(seg.budgetMs)}`;
+  $('seg-time').classList.toggle('over', seg.budgetMs != null && seg.ms > seg.budgetMs);
+
+  const slide = state.slides[state.current];
+  $('slide-title').textContent = `${state.current + 1}. ${slide.title}`;
+  $('slide-title').title = slide.title;
+  $('slide-time').textContent = fmt(slideMs(slide.key));
+
+  let cumActual = 0;
+  let cumBudget = 0;
+  list.forEach((s, i) => {
+    const row = state.rows.segments[i];
+    if (!row) return;
+    const reached = i <= curSeg || s.ms > 0;
+    cumActual += s.ms;
+    cumBudget += s.budgetMs ?? 0;
+    row.tr.classList.toggle('current', i === curSeg);
+    row.actual.textContent = reached ? fmt(s.ms) : '';
+    const diff = s.budgetMs == null || !reached ? null : s.ms - s.budgetMs;
+    row.diff.textContent = diff == null ? '' : fmtDiff(diff);
+    row.diff.classList.toggle('over', diff > 0);
+    const cum = !reached || !cumBudget ? null : cumActual - cumBudget;
+    row.cum.textContent = cum == null ? '' : fmtDiff(cum);
+    row.cum.classList.toggle('over', cum > 0);
+  });
+  $('sum-budget').textContent = budgets.length ? fmt(budgetTotal) : '';
+  $('sum-actual').textContent = fmt(total);
+  $('sum-diff').textContent = budgets.length ? fmtDiff(total - budgetTotal) : '';
+  $('sum-diff').classList.toggle('over', budgets.length > 0 && total > budgetTotal);
+
+  state.slides.forEach((s, i) => {
+    const row = state.rows.slides[i];
+    const e = state.run.perSlide[s.key];
+    row.tr.classList.toggle('current', i === state.current);
+    row.actual.textContent = e ? fmt(e.ms) : '';
+    row.visits.textContent = e ? e.visits : '';
+    row.tr.cells[1].classList.toggle('unvisited', !e);
+  });
+}
+
+function scrollCurrentIntoView() {
+  state.rows.slides[state.current]?.tr.scrollIntoView({ block: 'nearest' });
+}
+
+// ---- デッキの読み込み ----
+
+function readSlides(doc) {
+  const seen = new Map();
+  return [...doc.querySelectorAll('svg[data-marpit-svg]')].map((svg, i) => {
+    const section = [...svg.querySelectorAll('section')]
+      .find((s) => !['background', 'pseudo'].includes(s.dataset.marpitAdvancedBackground));
+    const heading = section?.querySelector('h1, h2, h3, h4, h5, h6');
+    const title = (heading?.textContent ?? '').replace(/\s+/g, ' ').trim() || `(${i + 1} 枚目)`;
+    const n = (seen.get(title) ?? 0) + 1;
+    seen.set(title, n);
+    return { key: `${title}#${n}`, title, isH1: heading?.tagName === 'H1' };
+  });
+}
+
+function onFrameLoad() {
+  let doc;
+  try {
+    doc = frame.contentDocument;
+  } catch {
+    doc = null;
+  }
+  if (!doc) {
+    showError('スライドの中身を読めません。rehearsal.html と同じサーバーから配信してください (file:// では読めません)');
+    return;
+  }
+  state.slides = readSlides(doc);
+  if (!state.slides.length) {
+    showError(`スライドが見つかりません: ${state.deck}`);
+    renderNumbers();
+    return;
+  }
+  showError('');
+  state.current = readCurrent();
+  doc.addEventListener('keydown', onKeydown, true);
+  renderStructure();
+  scrollCurrentIntoView();
+  frame.contentWindow.focus();
+}
+
+// ---- 書き出しと読み込み ----
+
+function download(filename, text, type) {
+  const url = URL.createObjectURL(new Blob([text], { type }));
+  const a = Object.assign(document.createElement('a'), { href: url, download: filename });
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function csv(rows) {
+  const cell = (v) => (/[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v));
+  // Excel で開いたときに文字化けしないよう BOM を付ける
+  return '﻿' + rows.map((r) => r.map(cell).join(',')).join('\n') + '\n';
+}
+
+function baseName() {
+  const name = state.deck.replace(/\/[^/]*$/, '').replace(/[^a-zA-Z0-9-]+/g, '-').replace(/^-|-$/g, '') || 'deck';
+  const d = new Date();
+  const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}-${String(d.getHours()).padStart(2, '0')}${String(d.getMinutes()).padStart(2, '0')}`;
+  return `rehearsal-${name}-${stamp}`;
+}
+
+const sec = (ms) => (ms == null ? '' : Math.round(ms / 1000));
+
+function exportSegments() {
+  const rows = [['区間', '開始スライド', '予定 (秒)', '実績 (秒)', '差 (秒)']];
+  for (const seg of segments()) {
+    const diff = seg.budgetMs == null || !seg.ms ? null : seg.ms - seg.budgetMs;
+    rows.push([seg.title, seg.from + 1, sec(seg.budgetMs), sec(seg.ms), sec(diff)]);
+  }
+  download(`${baseName()}-segments.csv`, csv(rows), 'text/csv');
+}
+
+function exportSlides() {
+  const list = segments();
+  const rows = [['番号', '見出し', '区間', '実績 (秒)', '訪問回数']];
+  state.slides.forEach((s, i) => {
+    const seg = list.find((g) => g.from <= i && i <= g.to);
+    const e = state.run.perSlide[s.key];
+    rows.push([i + 1, s.title, seg.title, e ? sec(e.ms) : '', e ? e.visits : '']);
+  });
+  download(`${baseName()}-slides.csv`, csv(rows), 'text/csv');
+}
+
+function exportJson() {
+  download(`${baseName()}.json`, JSON.stringify(snapshot(), null, 2), 'application/json');
+}
+
+async function importJson(file) {
+  try {
+    const data = migrate(JSON.parse(await file.text()));
+    if (!data) {
+      showError(`${file.name} は書き出した JSON の形式ではありません`);
+      return;
+    }
+    state.undo = state.run;
+    state.lastTick = null;
+    applySaved(data);
+    save();
+    showError('');
+    renderStructure();
+  } catch (e) {
+    showError(`${file.name} を読めません: ${e.message}`);
+  }
+}
+
+// ---- 操作 ----
+
+function onKeydown(e) {
+  if (e.key !== 'T' || !e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
+  const t = e.target;
+  if (t instanceof t.ownerDocument.defaultView.HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+  e.preventDefault();
+  e.stopPropagation();
+  toggleRun();
+}
+
+// ボタンを押したあともスライド送りのキーが効くよう、フォーカスをスライドへ戻す
+function refocusDeck() {
+  frame.contentWindow?.focus();
+}
+
+$('toggle').addEventListener('click', () => { toggleRun(); refocusDeck(); });
+$('reset').addEventListener('click', () => { reset(); refocusDeck(); });
+$('undo').addEventListener('click', () => { undoReset(); refocusDeck(); });
+$('export-segments').addEventListener('click', exportSegments);
+$('export-slides').addEventListener('click', exportSlides);
+$('export-json').addEventListener('click', exportJson);
+$('import-json').addEventListener('click', () => $('import-file').click());
+$('import-file').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (file) importJson(file);
+});
+document.addEventListener('keydown', onKeydown);
+
+$('open-deck').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const deck = new FormData(e.target).get('deck').trim();
+  location.search = new URLSearchParams({ deck }).toString();
+});
+
+if (state.deck) {
+  $('deck-path').textContent = state.deck;
+  $('deck-path').title = state.deck;
+  load();
+  frame.addEventListener('load', onFrameLoad);
+  frame.src = `${state.deck}#${state.page}`;
+  let last = -1;
+  setInterval(() => {
+    tick();
+    if (state.current !== last) {
+      last = state.current;
+      scrollCurrentIntoView();
+    }
+  }, TICK_MS);
+} else {
+  frame.hidden = true;
+  $('panel').hidden = true;
+  $('app').classList.add('empty');
+  $('open-deck').hidden = false;
+  $('open-deck').elements.deck.focus();
+}
+renderNumbers();
+</script>
+</body>
+</html>
