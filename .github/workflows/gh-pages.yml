@@ -14,98 +14,14 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
-env:
-  LANG: "ja_JP.UTF-8"
 jobs:
-  build-slides:
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - slide: 2024/flutter-intro
-            output_name: flutter-intro-2024
-          - slide: 2024/flutter-memo
-            output_name: flutter-memo-2024
-          - slide: 2025/regex-handson
-            output_name: regex-handson-2025
-          - slide: 2025/scrum-trial
-            output_name: scrum-trial-2025
-          - slide: 2026/gsap-workshop
-            output_name: gsap-workshop-2026
-          - slide: 2026/open-data
-            output_name: open-data-2026
-          - slide: 2026/web-intro
-            output_name: web-intro-2026
-          - slide: 2026/quiz
-            output_name: quiz-2026
-          - slide: 2026/shinkei-suijaku
-            output_name: shinkei-suijaku-2026
-          - slide: 2026/board
-            output_name: board-2026
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-
-      - name: Setup Packages
-        run: sudo apt update -y && sudo apt install -y jq fonts-noto
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install Dependencies
-        run: pnpm install
-
-      - name: Make Directory
-        run: |
-          mkdir dest
-          for dir in imgs diagrams screenshots; do
-            src="./${{ matrix.slide }}/$dir"
-            if [ -d "$src" ]; then
-              cp -r "$src" "./dest/$dir"
-            fi
-          done
-
-      - name: Copy Web App (open-data-2026 only)
-        if: matrix.output_name == 'open-data-2026'
-        run: |
-          cp ./${{ matrix.slide }}/index.html ./dest/index.html
-          cp ./${{ matrix.slide }}/styles.css ./dest/styles.css
-          cp ./${{ matrix.slide }}/app.js ./dest/app.js
-          cp ./${{ matrix.slide }}/map.html ./dest/map.html
-          cp ./${{ matrix.slide }}/open-meteo.html ./dest/open-meteo.html
-
-      - name: Build Marp PDF
-        run: pnpm exec marp ${{ matrix.slide }}/slide.md
-          --pdf
-          -o ./dest/slide.pdf
-          --allow-local-files
-
-      - name: Build Marp HTML
-        run: pnpm exec marp ${{ matrix.slide }}/slide.md
-          --html
-          -o ./dest/slide.html
-          --allow-local-files
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.output_name }}
-          path: ./dest
+  build:
+    uses: ./.github/workflows/build-slides.yml
 
   upload-slide:
     runs-on: ubuntu-latest
     needs:
-      - build-slides
+      - build
     steps:
       - name: Download git Artifact
         uses: actions/download-artifact@v4
