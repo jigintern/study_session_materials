@@ -1,0 +1,281 @@
+/* 福井恐竜博物館 おでかけプランナー */
+
+:root {
+  --color-bg: #f4f7f5;
+  --color-surface: #ffffff;
+  --color-text: #1a2e24;
+  --color-muted: #5c6f63;
+  --color-accent: #2d6a4f;
+  --color-accent-dark: #1b4332;
+  --color-empty: #52b788;
+  --color-crowded: #e07a5f;
+  --color-unknown: #adb5bd;
+  --shadow: 0 8px 24px rgba(27, 67, 50, 0.08);
+  --radius: 12px;
+  --font-sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: linear-gradient(160deg, #e8f0ec 0%, var(--color-bg) 40%, #dfece4 100%);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.site-header {
+  background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent) 100%);
+  color: #fff;
+  padding: 1.75rem 1.25rem 2rem;
+  box-shadow: var(--shadow);
+}
+
+.site-header__inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.site-title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.35rem, 4vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.site-lead {
+  margin: 0;
+  opacity: 0.95;
+  font-size: 0.95rem;
+  max-width: 42em;
+}
+
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.panel {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.25rem 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.panel__header h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+  color: var(--color-accent-dark);
+}
+
+.panel__note {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.threshold-hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.88rem;
+  color: var(--color-muted);
+}
+
+.chart-wrap {
+  position: relative;
+  height: min(420px, 70vh);
+  margin-top: 1rem;
+}
+
+.status {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  min-height: 1.25em;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+}
+
+.legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend__item::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+.legend__item--empty::before {
+  background: var(--color-empty);
+}
+
+.legend__item--crowded::before {
+  background: var(--color-crowded);
+}
+
+.legend__item--unknown::before {
+  background: var(--color-unknown);
+}
+
+.top-days {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0ebe4;
+}
+
+.top-days__title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: var(--color-accent-dark);
+}
+
+.top-days__list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.top-days__list li {
+  margin-bottom: 0.35rem;
+}
+
+.weather-preview {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 10px;
+  background: #f6faf7;
+  border: 1px solid #dbe8e0;
+}
+
+.weather-preview__title {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--color-accent-dark);
+}
+
+.weather-preview__list {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.88rem;
+}
+
+.weather-preview__list li {
+  margin-bottom: 0.25rem;
+}
+
+.spots-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 0.75rem;
+}
+
+.spots-toolbar__label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.spots-toolbar__select {
+  min-width: 200px;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid #c5d4cb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: #fff;
+  color: var(--color-text);
+}
+
+.spot-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.spot-card {
+  border: 1px solid #e0ebe4;
+  border-radius: 10px;
+  padding: 1rem 1rem 0.9rem;
+  background: #fafcfb;
+}
+
+.spot-card__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.spot-card__title a {
+  color: var(--color-accent-dark);
+  text-decoration: none;
+}
+
+.spot-card__title a:hover {
+  text-decoration: underline;
+}
+
+.spot-card__meta {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.spot-card__desc {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--color-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 1rem 1rem 2rem;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.map-wrap {
+  height: 360px;
+  margin-top: 1rem;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e0ebe4;
+}
+
+@media (min-width: 640px) {
+  .spot-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}

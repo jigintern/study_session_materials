@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>観光スポット地図 — 福井恐竜博物館 おでかけプランナー</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      #map {
+        height: min(520px, 70vh);
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #e0ebe4;
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <h1 class="site-title">観光スポット地図</h1>
+        <p class="site-lead">
+          <a href="index.html" style="color: #a8d5ba;">← おでかけプランナーに戻る</a>
+        </p>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="panel" aria-labelledby="map-heading">
+        <div class="panel__header">
+          <h2 id="map-heading">周辺の観光スポット（地図）</h2>
+          <p class="panel__note">
+            データ出典:
+            <a
+              href="https://github.com/code4fukui/fukui-spot"
+              target="_blank"
+              rel="noopener noreferrer"
+              >code4fukui / fukui-spot</a
+            >
+            （恐竜MAP掲載スポット）
+          </p>
+        </div>
+
+        <div class="spots-toolbar">
+          <label class="spots-toolbar__label" for="genre-select">ジャンルで絞り込み</label>
+          <select id="genre-select" class="spots-toolbar__select"></select>
+        </div>
+
+        <p id="map-status" class="status" role="status">スポットデータを読み込み中…</p>
+
+        <div id="map"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        地図:
+        <a href="https://leafletjs.com/" target="_blank" rel="noopener noreferrer">Leaflet</a>
+        /
+        <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer"
+          >© OpenStreetMap contributors</a
+        >
+      </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      const SPOTS_CSV_URL =
+        "https://raw.githubusercontent.com/code4fukui/fukui-spot/main/fuku-e-spot-dino.csv";
+
+      /** @type {Record<string, string>[] | null} */
+      let allSpots = null;
+
+      /** @type {object | null} */
+      let leafletMap = null;
+
+      /** @type {object[]} */
+      let mapMarkers = [];
+
+      function initMap() {
+        leafletMap = L.map("map").setView([36.06, 136.22], 10);
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(leafletMap);
+      }
+
+      /**
+       * 外部 CSV の文字列を HTML として解釈させない（XSS 対策）
+       * @param {Record<string, string>} spot
+       * @returns {HTMLDivElement}
+       */
+      function createSpotPopupContent(spot) {
+        const wrap = document.createElement("div");
+        const title = document.createElement("b");
+        title.textContent = spot.name ?? "";
+        wrap.appendChild(title);
+        wrap.appendChild(document.createElement("br"));
+        wrap.appendChild(document.createTextNode(spot.category ?? ""));
+        return wrap;
+      }
+
+      /**
+       * @param {Record<string, string>[]} spots
+       */
+      function renderMarkers(spots) {
+        for (const m of mapMarkers) m.remove();
+        mapMarkers = [];
+        for (const spot of spots) {
+          const lat = Number(spot.lat);
+          const lng = Number(spot.lng);
+          if (!lat || !lng) continue;
+          const marker = L.marker([lat, lng])
+            .addTo(leafletMap)
+            .bindPopup(createSpotPopupContent(spot));
+          mapMarkers.push(marker);
+        }
+      }
+
+      function splitGenres(category) {
+        if (!category) return [];
+        return category
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
+      }
+
+      function applyFilter(filterGenre) {
+        if (!allSpots) return;
+        const filtered =
+          !filterGenre || filterGenre === "__all__"
+            ? allSpots
+            : allSpots.filter((row) => splitGenres(row.category || "").includes(filterGenre));
+        renderMarkers(filtered);
+      }
+
+      function populateGenreSelect(genres) {
+        const sel = document.getElementById("genre-select");
+        if (!sel) return;
+
+        const optAll = document.createElement("option");
+        optAll.value = "__all__";
+        optAll.textContent = "すべて表示";
+        sel.appendChild(optAll);
+
+        for (const g of genres) {
+          const opt = document.createElement("option");
+          opt.value = g;
+          opt.textContent = g;
+          sel.appendChild(opt);
+        }
+
+        sel.addEventListener("change", () => applyFilter(sel.value));
+      }
+
+      function collectUniqueGenres(rows) {
+        const set = new Set();
+        for (const row of rows) {
+          for (const g of splitGenres(row.category || "")) set.add(g);
+        }
+        return Array.from(set).sort((a, b) => a.localeCompare(b, "ja"));
+      }
+
+      initMap();
+
+      Papa.parse(SPOTS_CSV_URL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          const data = results.data || [];
+          allSpots = data;
+          const genres = collectUniqueGenres(data);
+          populateGenreSelect(genres);
+          renderMarkers(data);
+          const status = document.getElementById("map-status");
+          if (status) status.textContent = `スポット ${data.length} 件を地図に表示しています。`;
+        },
+        error: (err) => {
+          const status = document.getElementById("map-status");
+          if (status) status.textContent = `エラー: ${err.message}`;
+          console.error(err);
+        },
+      });
+    </script>
+  </body>
+</html>

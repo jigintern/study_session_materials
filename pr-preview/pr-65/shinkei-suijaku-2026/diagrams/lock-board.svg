@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 452" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans CJK JP','Apple Color Emoji',sans-serif" font-size="20">
+<rect width="1120" height="452" fill="white"/>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+</marker>
+<marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#dc2626"/>
+</marker>
+<marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+</marker>
+</defs>
+
+<!-- 上段: ロックしない場合 -->
+<rect x="16" y="12" width="1088" height="204" rx="12" fill="#fef2f2"/>
+<text x="44" y="168" font-size="22" fill="#9f1239">ロックしないと</text>
+
+<text x="520" y="44" text-anchor="middle" font-size="19" fill="#b91c1c">3 枚目をクリック</text>
+<line x1="520" y1="56" x2="520" y2="186" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrow-red)"/>
+<text x="760" y="44" text-anchor="middle" font-size="19" fill="#b91c1c">4 枚目をクリック</text>
+<line x1="760" y1="56" x2="760" y2="186" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrow-red)"/>
+
+<line x1="250" y1="161" x2="1078" y2="161" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="300" y="148" width="580" height="26" rx="13" fill="#fdba74"/>
+<text x="318" y="167" font-size="17" fill="#7c2d12">800 ms 待っている間</text>
+
+<line x1="300" y1="132" x2="300" y2="184" stroke="#64748b" stroke-width="2"/>
+<text x="300" y="124" text-anchor="middle" font-size="17" font-family="'SFMono-Regular',Menlo,Consolas,monospace" fill="#334155">setTimeout(unflipCards, 800)</text>
+<line x1="920" y1="132" x2="920" y2="184" stroke="#64748b" stroke-width="2"/>
+<text x="920" y="124" text-anchor="middle" font-size="18" fill="#334155">unflipCards が動く</text>
+
+<text x="640" y="206" text-anchor="middle" font-size="20" fill="#b91c1c">クリックが通り、3 枚目も 4 枚目もめくれてしまう</text>
+
+<!-- 下段: lockBoard = true にした場合 -->
+<rect x="16" y="232" width="1088" height="204" rx="12" fill="#eff6ff"/>
+<text x="44" y="388" font-size="22" fill="#1d4ed8">ロックすると</text>
+
+<text x="520" y="264" text-anchor="middle" font-size="19" fill="#1d4ed8">3 枚目をクリック</text>
+<line x1="520" y1="276" x2="520" y2="338" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+<text x="520" y="362" text-anchor="middle" font-size="26" fill="#dc2626">✕</text>
+<text x="760" y="264" text-anchor="middle" font-size="19" fill="#1d4ed8">4 枚目をクリック</text>
+<line x1="760" y1="276" x2="760" y2="338" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+<text x="760" y="362" text-anchor="middle" font-size="26" fill="#dc2626">✕</text>
+
+<line x1="250" y1="381" x2="1078" y2="381" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="300" y="368" width="580" height="26" rx="13" fill="#93c5fd"/>
+<text x="318" y="387" font-size="17" fill="#1e3a8a">lockBoard が true の間</text>
+
+<line x1="300" y1="352" x2="300" y2="404" stroke="#64748b" stroke-width="2"/>
+<text x="300" y="344" text-anchor="middle" font-size="17" font-family="'SFMono-Regular',Menlo,Consolas,monospace" fill="#334155">lockBoard = true;</text>
+<line x1="920" y1="352" x2="920" y2="404" stroke="#64748b" stroke-width="2"/>
+<text x="920" y="344" text-anchor="middle" font-size="18" fill="#334155">unflipCards が動く</text>
+
+<text x="600" y="426" text-anchor="middle" font-size="20" fill="#1d4ed8">先頭の if (lockBoard) return; で無視される</text>
+<text x="950" y="426" text-anchor="middle" font-size="18" fill="#64748b">resetTurn で false に戻る</text>
+</svg>

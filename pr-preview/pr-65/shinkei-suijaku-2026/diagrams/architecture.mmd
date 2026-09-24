@@ -1,0 +1,9 @@
+---
+config:
+  flowchart:
+    defaultRenderer: dagre
+---
+flowchart LR
+  C[イベント<br/>クリック / リセット] --> A[状態<br/>deck, firstCard, moves...]
+  E[時間<br/>タイマー / 待ち時間] --> A
+  A --> B[描画<br/>renderBoard, 表示更新]

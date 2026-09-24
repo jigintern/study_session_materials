@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 336" font-family="'Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans CJK JP','Apple Color Emoji',sans-serif" font-size="20">
+<rect width="1120" height="336" fill="white"/>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+</marker>
+</defs>
+
+<!-- 上: カッコを付けて呼んでしまう場合 -->
+<rect x="16" y="8" width="1088" height="124" rx="12" fill="#fef2f2"/>
+<circle cx="54" cy="36" r="15" fill="#dc2626"/>
+<text x="54" y="43" text-anchor="middle" font-size="18" fill="#ffffff">✕</text>
+<text x="84" y="44" font-size="21" font-family="'SFMono-Regular',Menlo,Consolas,monospace" fill="#334155">card.addEventListener("click", <tspan fill="#b91c1c">handleCardClick(card)</tspan>);</text>
+<text x="1084" y="44" text-anchor="end" font-size="18" fill="#b91c1c">渡ったのは実行した結果</text>
+
+<rect x="140" y="64" width="420" height="54" rx="8" fill="#fee2e2" stroke="#fca5a5" stroke-width="2"/>
+<text x="350" y="97" text-anchor="middle" font-size="20" fill="#b91c1c">handleCardClick がその場で動く</text>
+<rect x="660" y="64" width="400" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+<text x="860" y="97" text-anchor="middle" font-size="20" fill="#64748b">何も起きない</text>
+
+<line x1="350" y1="118" x2="350" y2="134" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4 4"/>
+<line x1="860" y1="118" x2="860" y2="134" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4 4"/>
+
+<!-- 中央: 時間軸 -->
+<text x="350" y="153" text-anchor="middle" font-size="18" fill="#475569">カードを作るとき</text>
+<text x="860" y="153" text-anchor="middle" font-size="18" fill="#475569">クリックしたとき</text>
+<text x="1092" y="153" text-anchor="end" font-size="17" fill="#94a3b8">時間</text>
+<line x1="100" y1="172" x2="1092" y2="172" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="350" y1="160" x2="350" y2="184" stroke="#64748b" stroke-width="2"/>
+<line x1="860" y1="160" x2="860" y2="184" stroke="#64748b" stroke-width="2"/>
+
+<line x1="350" y1="190" x2="350" y2="206" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4 4"/>
+<line x1="860" y1="190" x2="860" y2="206" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="4 4"/>
+
+<!-- 下: 関数で包んで渡す場合 -->
+<rect x="16" y="196" width="1088" height="124" rx="12" fill="#eff6ff"/>
+<rect x="140" y="210" width="420" height="54" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+<text x="350" y="243" text-anchor="middle" font-size="20" fill="#64748b">預かったまま。まだ動かない</text>
+<rect x="660" y="210" width="400" height="54" rx="8" fill="#dbeafe" stroke="#60a5fa" stroke-width="2"/>
+<text x="860" y="243" text-anchor="middle" font-size="20" fill="#1e3a8a">handleCardClick が動く</text>
+
+<circle cx="54" cy="292" r="15" fill="#2563eb"/>
+<text x="54" y="299" text-anchor="middle" font-size="18" fill="#ffffff">✓</text>
+<text x="84" y="300" font-size="21" font-family="'SFMono-Regular',Menlo,Consolas,monospace" fill="#334155">card.addEventListener("click", <tspan fill="#1d4ed8">() =&gt; handleCardClick(card)</tspan>);</text>
+<text x="1084" y="300" text-anchor="end" font-size="18" fill="#1d4ed8">渡ったのは処理そのもの</text>
+</svg>

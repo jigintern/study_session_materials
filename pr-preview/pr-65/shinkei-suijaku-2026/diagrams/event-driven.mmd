@@ -1,0 +1,16 @@
+---
+config:
+  sequence:
+    mirrorActors: false
+---
+sequenceDiagram
+  participant S as script.js
+  participant B as ブラウザ
+  participant U as あなた
+  S->>B: カードを並べる (renderBoard)
+  S->>B: 「クリックされたら呼んで」と関数を預ける
+  Note over S: script.js の実行はここで終わり
+  loop クリックされるたび
+    U->>B: カードをクリック
+    B->>B: 預かった handleCardClick を呼ぶ
+  end
