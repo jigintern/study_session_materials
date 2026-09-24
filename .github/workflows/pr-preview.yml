@@ -1,0 +1,29 @@
+name: pr-preview
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+permissions:
+  contents: read
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+# ここではデプロイしない。このワークフローの実行が終わると workflow_run で gh-pages.yml が起動し、本番と Open な PR のプレビューをまとめてデプロイする
+jobs:
+  build:
+    if: github.event.action != 'closed'
+    uses: ./.github/workflows/build-slides.yml
+
+  # close でも実行を 1 回残し、再デプロイさせてプレビューを消す
+  closed:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "PR closed"
