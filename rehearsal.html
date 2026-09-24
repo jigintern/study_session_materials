@@ -22,7 +22,7 @@
   }
   .app {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 460px;
+    grid-template-columns: minmax(0, 1fr) 500px;
     height: 100vh;
   }
   .app.empty { grid-template-columns: 1fr; }
@@ -42,8 +42,6 @@
     min-height: 0;
   }
   aside > section { padding: 10px 14px; border-bottom: 1px solid var(--line); }
-  h2 { font-size: 13px; margin: 0 0 6px; }
-  h2 .count { color: var(--muted); font-weight: normal; margin-left: 4px; }
   .error { margin: 0; padding: 8px 14px; color: var(--over); border-bottom: 1px solid var(--line); }
   .error:empty { display: none; }
   .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -63,20 +61,23 @@
   table.data th, table.data td { padding: 2px 6px; border-bottom: 1px solid var(--line); }
   table.data th { font-weight: normal; color: var(--muted); text-align: left; position: sticky; top: 0; background: var(--bg); }
   table.data th.num { text-align: right; }
-  table.data tfoot td { border-bottom: 0; font-weight: 600; }
+  table.data tfoot td { border-bottom: 0; font-weight: 600; position: sticky; bottom: 0; background: var(--bg); box-shadow: inset 0 1px 0 var(--line); }
   table.data tr.current td { box-shadow: inset 0 0 0 9999px rgba(42, 92, 138, 0.1); }
   table.data tr.current td:first-child { box-shadow: inset 3px 0 0 var(--accent), inset 0 0 0 9999px rgba(42, 92, 138, 0.1); }
-  table.data tr.boundary td { border-top: 1px solid #aaa; }
+  table.data tr.seg td { border-top: 1px solid #aaa; cursor: pointer; }
   .title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
-  col.n { width: 4.5em; }
-  col.budget { width: 6em; }
-  col.idx { width: 2.5em; }
-  col.visits { width: 3.5em; }
-  col.toggle { width: 4.5em; }
-  td.unvisited { color: var(--muted); }
-  input.budget { width: 4.5em; text-align: right; font-variant-numeric: tabular-nums; padding: 1px 4px; border: 1px solid var(--line); border-radius: 3px; }
-  .slides { flex: 1; min-height: 0; display: flex; flex-direction: column; border-bottom: 0; padding-bottom: 0; }
-  .slides .scroll { flex: 1; overflow-y: auto; min-height: 0; }
+  col.n { width: 5em; }
+  col.budget { width: 4.5em; }
+  col.actual { width: 5.5em; }
+  col.toggle { width: 4em; }
+  button.disclosure { border: 0; padding: 0; width: 1.4em; text-align: left; color: var(--muted); background: none; }
+  tr.seg .count { color: var(--muted); margin-left: 6px; }
+  tr.slide td.title { padding-left: 1.6em; }
+  tr.slide .idx { display: inline-block; min-width: 2em; color: var(--muted); font-variant-numeric: tabular-nums; }
+  tr.slide.unvisited td.title { color: var(--muted); }
+  .visits { color: var(--muted); margin-left: 4px; }
+  input.budget { width: 3.5em; text-align: right; font-variant-numeric: tabular-nums; padding: 1px 4px; border: 1px solid var(--line); border-radius: 3px; }
+  aside > section.plan { flex: 1; min-height: 0; overflow-y: auto; padding-top: 0; padding-bottom: 0; border-bottom: 0; }
   footer { border-top: 1px solid var(--line); padding: 6px 14px; display: flex; gap: 6px; align-items: center; color: var(--muted); }
   footer .deck { margin-right: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 </style>
@@ -105,24 +106,13 @@
         <button id="undo" hidden>元に戻す</button>
       </div>
     </section>
-    <section>
-      <h2>区間<span class="count" id="seg-count"></span></h2>
+    <section class="plan">
       <table class="data">
-        <colgroup><col><col class="budget"><col class="n"><col class="n"><col class="n"></colgroup>
-        <thead><tr><th>区間</th><th class="num">予定 (分)</th><th class="num">実績</th><th class="num">差</th><th class="num">累計差</th></tr></thead>
-        <tbody id="seg-body"></tbody>
-        <tfoot><tr><td>合計</td><td class="num" id="sum-budget"></td><td class="num" id="sum-actual"></td><td class="num" id="sum-diff"></td><td></td></tr></tfoot>
+        <colgroup><col><col class="budget"><col class="actual"><col class="n"><col class="n"><col class="toggle"></colgroup>
+        <thead><tr><th>区間 / スライド</th><th class="num">予定 (分)</th><th class="num">実績</th><th class="num">差</th><th class="num">累計差</th><th title="このスライドから区間を始める">区切り</th></tr></thead>
+        <tbody id="plan-body"></tbody>
+        <tfoot><tr><td>合計</td><td class="num" id="sum-budget"></td><td class="num" id="sum-actual"></td><td class="num" id="sum-diff"></td><td></td><td></td></tr></tfoot>
       </table>
-    </section>
-    <section class="slides">
-      <h2>スライド<span class="count" id="slide-count"></span></h2>
-      <div class="scroll">
-        <table class="data">
-          <colgroup><col class="idx"><col><col class="n"><col class="visits"><col class="toggle"></colgroup>
-          <thead><tr><th class="num">#</th><th>見出し</th><th class="num">実績</th><th class="num">訪問</th><th title="区間の始まり">区切り</th></tr></thead>
-          <tbody id="slide-body"></tbody>
-        </table>
-      </div>
     </section>
     <footer>
       <span class="deck" id="deck-path"></span>
@@ -152,6 +142,8 @@ const state = {
   run: emptyRun(),
   lastTick: null,   // 計測中だけ値を持つ。最後に時間を足した時刻
   undo: null,       // リセット直前の run
+  open: {},         // 区間の開閉を手で変えたもの。区間の key → 開いているか
+  openSeg: null,    // open を決めたときの表示中の区間。変わったら open を捨てて既定に戻す
   rows: { segments: [], slides: [] },
 };
 
@@ -339,6 +331,10 @@ function setBoundary(key, on) {
   if (on) set.add(key);
   else set.delete(key);
   state.config.boundaries = [...set];
+  // 操作したスライドが閉じた区間に入って見えなくならないよう、その区間を開いておく
+  const i = state.slides.findIndex((s) => s.key === key);
+  const seg = segments().find((g) => g.from <= i && i <= g.to);
+  if (seg) state.open[seg.key] = true;
   save();
   renderStructure();
 }
@@ -353,43 +349,65 @@ function setBudget(key, value) {
 
 // ---- 描画 ----
 
+function isOpen(seg, i, curSeg) {
+  return state.open[seg.key] ?? i === curSeg;
+}
+
+function toggleOpen(i) {
+  const list = segments();
+  const curSeg = currentSegmentIndex(list);
+  state.open[list[i].key] = !isOpen(list[i], i, curSeg);
+  renderNumbers();
+}
+
 function renderStructure() {
   const list = segments();
   const boundaries = boundarySet();
+  const trs = [];
+  state.rows.slides = [];
 
-  state.rows.segments = list.map((seg) => {
+  state.rows.segments = list.map((seg, i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = '<td class="title"></td><td class="num"><input class="budget" type="number" min="0" step="1"></td><td class="num"></td><td class="num"></td><td class="num"></td>';
-    tr.cells[0].textContent = seg.title;
+    tr.className = 'seg';
+    tr.innerHTML = '<td class="title"><button class="disclosure" type="button"></button><span></span><span class="count"></span></td><td class="num"><input class="budget" type="number" min="0" step="1"></td><td class="num"></td><td class="num"></td><td class="num"></td><td></td>';
+    const button = tr.querySelector('button');
+    button.setAttribute('aria-label', `${seg.title} のスライドを開閉`);
+    tr.cells[0].querySelector('span').textContent = seg.title;
+    tr.cells[0].querySelector('.count').textContent = seg.to - seg.from + 1;
+    tr.cells[0].querySelector('.count').title = `${seg.to - seg.from + 1} 枚`;
     tr.cells[0].title = seg.title;
+    tr.addEventListener('click', (e) => {
+      if (e.target.closest('input')) return;
+      toggleOpen(i);
+    });
     const input = tr.querySelector('input');
     input.value = state.config.budgets[seg.key] ?? '';
     input.setAttribute('aria-label', `${seg.title} の予定 (分)`);
     input.addEventListener('input', () => setBudget(seg.key, input.value));
-    return { tr, actual: tr.cells[2], diff: tr.cells[3], cum: tr.cells[4] };
+    trs.push(tr);
+    for (let j = seg.from; j <= seg.to; j++) trs.push(slideRow(j, i, boundaries).tr);
+    return { tr, button, actual: tr.cells[2], diff: tr.cells[3], cum: tr.cells[4] };
   });
-  $('seg-body').replaceChildren(...state.rows.segments.map((r) => r.tr));
-
-  state.rows.slides = state.slides.map((slide, i) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = '<td class="num"></td><td class="title"></td><td class="num"></td><td class="num"></td><td><input type="checkbox"></td>';
-    tr.cells[0].textContent = i + 1;
-    tr.cells[1].textContent = slide.title;
-    tr.cells[1].title = slide.title;
-    const isBoundary = i === 0 || boundaries.has(slide.key);
-    tr.classList.toggle('boundary', isBoundary && i > 0);
-    const box = tr.querySelector('input');
-    box.checked = isBoundary;
-    box.disabled = i === 0;
-    box.setAttribute('aria-label', `${slide.title} から区間を始める`);
-    box.addEventListener('change', () => setBoundary(slide.key, box.checked));
-    return { tr, actual: tr.cells[2], visits: tr.cells[3] };
-  });
-  $('slide-body').replaceChildren(...state.rows.slides.map((r) => r.tr));
-
-  $('seg-count').textContent = list.length;
-  $('slide-count').textContent = state.slides.length;
+  $('plan-body').replaceChildren(...trs);
   renderNumbers();
+}
+
+function slideRow(i, segIndex, boundaries) {
+  const slide = state.slides[i];
+  const tr = document.createElement('tr');
+  tr.className = 'slide';
+  tr.innerHTML = '<td class="title" colspan="2"><span class="idx"></span><span></span></td><td class="num"></td><td></td><td></td><td><input type="checkbox"></td>';
+  tr.cells[0].querySelector('.idx').textContent = i + 1;
+  tr.cells[0].lastChild.textContent = slide.title;
+  tr.cells[0].title = slide.title;
+  const box = tr.querySelector('input');
+  box.checked = i === 0 || boundaries.has(slide.key);
+  box.disabled = i === 0;
+  box.setAttribute('aria-label', `${slide.title} から区間を始める`);
+  box.addEventListener('change', () => setBoundary(slide.key, box.checked));
+  const row = { tr, segIndex, actual: tr.cells[1] };
+  state.rows.slides[i] = row;
+  return row;
 }
 
 function renderNumbers() {
@@ -408,6 +426,11 @@ function renderNumbers() {
   const budgets = list.filter((seg) => seg.budgetMs != null);
   const budgetTotal = budgets.reduce((sum, seg) => sum + seg.budgetMs, 0);
 
+  if (state.openSeg !== list[curSeg].key) {
+    state.open = {};
+    state.openSeg = list[curSeg].key;
+  }
+
   $('total').textContent = fmt(total);
 
   const seg = list[curSeg];
@@ -423,6 +446,7 @@ function renderNumbers() {
 
   let cumActual = 0;
   let cumBudget = 0;
+  const open = list.map((s, i) => isOpen(s, i, curSeg));
   list.forEach((s, i) => {
     const row = state.rows.segments[i];
     if (!row) return;
@@ -430,6 +454,8 @@ function renderNumbers() {
     cumActual += s.ms;
     cumBudget += s.budgetMs ?? 0;
     row.tr.classList.toggle('current', i === curSeg);
+    row.button.textContent = open[i] ? '▾' : '▸';
+    row.button.setAttribute('aria-expanded', open[i]);
     row.actual.textContent = reached ? fmt(s.ms) : '';
     const diff = s.budgetMs == null || !reached ? null : s.ms - s.budgetMs;
     row.diff.textContent = diff == null ? '' : fmtDiff(diff);
@@ -445,11 +471,19 @@ function renderNumbers() {
 
   state.slides.forEach((s, i) => {
     const row = state.rows.slides[i];
+    if (!row) return;
     const e = state.run.perSlide[s.key];
+    row.tr.hidden = !open[row.segIndex];
     row.tr.classList.toggle('current', i === state.current);
+    row.tr.classList.toggle('unvisited', !e);
     row.actual.textContent = e ? fmt(e.ms) : '';
-    row.visits.textContent = e ? e.visits : '';
-    row.tr.cells[1].classList.toggle('unvisited', !e);
+    if (e?.visits > 1) {
+      const v = document.createElement('span');
+      v.className = 'visits';
+      v.title = `${e.visits} 回訪問`;
+      v.textContent = `×${e.visits}`;
+      row.actual.append(v);
+    }
   });
 }
 
