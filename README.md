@@ -63,3 +63,21 @@
   * Pythonのライブラリである「Flask」を利用して、WebアプリやWeb APIを作成する方法を学びます
 * [Flutter勉強会](./2023/flutter/README.md)
   * 「Flutter」というネイティブアプリケーション開発向けのフレームワークを使って、アプリ開発を学びます
+
+## リハーサルの時間を測る
+
+ルートの `rehearsal.html` で、スライドを送りながら区間ごととスライドごとの所要時間を測れます。
+
+```sh
+pnpm build 2026/board-advanced/slide.md   # slide.md の隣に slide.html ができる
+python3 -m http.server 8000
+# http://localhost:8000/rehearsal.html?deck=2026/board-advanced/slide.html を開く
+```
+
+`file://` で開くとスライドの中身を読めないため、リポジトリのルートを HTTP で配信してから開きます。
+
+* 区間は `#` 見出しのスライドで区切ります。スライド一覧の「区切り」で足したり外したりできます
+* 区間ごとに予定の分数を入れると、予定との差と累計の差が出ます
+* `Shift+T` で開始と一時停止を切り替えます。このページにフォーカスがあるときだけ効きます
+* 発表者ビュー (`p`) で送っても、計測はスライドの移動に追従します
+* 記録はデッキごとにブラウザの localStorage に残ります。CSV と JSON で書き出せます
