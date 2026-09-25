@@ -9,32 +9,26 @@ permissions:
 env:
   LANG: "ja_JP.UTF-8"
 jobs:
+  select:
+    runs-on: ubuntu-latest
+    outputs:
+      slides: ${{ steps.targets.outputs.slides }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Targets
+        id: targets
+        run: echo "slides=$(jq -c . tools/build-slides/slides.json)" >> "$GITHUB_OUTPUT"
+
   build-slides:
+    needs:
+      - select
     timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - slide: 2024/flutter-intro
-            output_name: flutter-intro-2024
-          - slide: 2024/flutter-memo
-            output_name: flutter-memo-2024
-          - slide: 2025/regex-handson
-            output_name: regex-handson-2025
-          - slide: 2025/scrum-trial
-            output_name: scrum-trial-2025
-          - slide: 2026/gsap-workshop
-            output_name: gsap-workshop-2026
-          - slide: 2026/open-data
-            output_name: open-data-2026
-          - slide: 2026/web-intro
-            output_name: web-intro-2026
-          - slide: 2026/quiz
-            output_name: quiz-2026
-          - slide: 2026/shinkei-suijaku
-            output_name: shinkei-suijaku-2026
-          - slide: 2026/board
-            output_name: board-2026
+        include: ${{ fromJSON(needs.select.outputs.slides) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
