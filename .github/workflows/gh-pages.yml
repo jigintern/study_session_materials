@@ -4,111 +4,95 @@ on:
   push:
     branches:
       - main
+  workflow_run:
+    workflows:
+      - pr-preview
+    types:
+      - completed
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
-env:
-  LANG: "ja_JP.UTF-8"
 jobs:
-  build-slides:
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - slide: 2024/flutter-intro
-            output_name: flutter-intro-2024
-          - slide: 2024/flutter-memo
-            output_name: flutter-memo-2024
-          - slide: 2025/regex-handson
-            output_name: regex-handson-2025
-          - slide: 2025/scrum-trial
-            output_name: scrum-trial-2025
-          - slide: 2026/gsap-workshop
-            output_name: gsap-workshop-2026
-          - slide: 2026/open-data
-            output_name: open-data-2026
-          - slide: 2026/web-intro
-            output_name: web-intro-2026
-          - slide: 2026/quiz
-            output_name: quiz-2026
-          - slide: 2026/shinkei-suijaku
-            output_name: shinkei-suijaku-2026
-          - slide: 2026/board
-            output_name: board-2026
+  build:
+    uses: ./.github/workflows/build-slides.yml
+
+  assemble-site:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-
-      - name: Setup Packages
-        run: sudo apt update -y && sudo apt install -y jq fonts-noto
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install Dependencies
-        run: pnpm install
-
-      - name: Make Directory
-        run: |
-          mkdir dest
-          for dir in imgs diagrams screenshots; do
-            src="./${{ matrix.slide }}/$dir"
-            if [ -d "$src" ]; then
-              cp -r "$src" "./dest/$dir"
-            fi
-          done
-
-      - name: Copy Web App (open-data-2026 only)
-        if: matrix.output_name == 'open-data-2026'
-        run: |
-          cp ./${{ matrix.slide }}/index.html ./dest/index.html
-          cp ./${{ matrix.slide }}/styles.css ./dest/styles.css
-          cp ./${{ matrix.slide }}/app.js ./dest/app.js
-          cp ./${{ matrix.slide }}/map.html ./dest/map.html
-          cp ./${{ matrix.slide }}/open-meteo.html ./dest/open-meteo.html
-
-      - name: Build Marp PDF
-        run: pnpm exec marp ${{ matrix.slide }}/slide.md
-          --pdf
-          -o ./dest/slide.pdf
-          --allow-local-files
-
-      - name: Build Marp HTML
-        run: pnpm exec marp ${{ matrix.slide }}/slide.md
-          --html
-          -o ./dest/slide.html
-          --allow-local-files
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.output_name }}
-          path: ./dest
-
-  upload-slide:
-    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      pull-requests: read
     needs:
-      - build-slides
+      - build
+    outputs:
+      pr_numbers: ${{ steps.previews.outputs.pr_numbers }}
     steps:
       - name: Download git Artifact
         uses: actions/download-artifact@v4
+
+      # fork の PR は外部の人が書いた HTML を本番と同じオリジンで配信することになるので含めない
+      - name: Add PR Previews
+        id: previews
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          # 最新のコミットがビルド中や失敗中でもプレビューを消さないよう、pr-preview の実行のうち成果物が残っていて成功した直近のものを使う。
+          # ダウンロードできたら、その実行がビルドしたコミットを出力する
+          download_latest_success() {
+            local number=$1 branch=$2 run_id run_sha
+            while read -r run_id run_sha; do
+              if gh run download "$run_id" -D "pr-preview/pr-$number" >&2; then
+                echo "$run_sha"
+                return 0
+              fi
+              rm -rf "pr-preview/pr-$number"
+            done < <(gh run list --workflow pr-preview --branch "$branch" --event pull_request \
+              --status success --limit 5 --json databaseId,headSha --jq '.[] | "\(.databaseId) \(.headSha)"')
+            return 1
+          }
+
+          write_index() {
+            local preview="pr-preview/pr-$1" built=$2 head=$3 dir name links
+            {
+              echo '<!doctype html><meta charset="utf-8"><title>PR Preview</title>'
+              echo "<p>ビルド元: <a href=\"$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$built\">${built:0:7}</a>"
+              if [ "$built" != "$head" ]; then
+                echo " (最新の ${head:0:7} はビルド中か失敗しています)"
+              fi
+              echo '</p><ul>'
+              for dir in "$preview"/*/; do
+                name=$(basename "$dir")
+                links="<a href=\"$name/slide.html\">HTML</a> / <a href=\"$name/slide.pdf\">PDF</a>"
+                if [ -f "$dir/index.html" ]; then
+                  links="$links / <a href=\"$name/index.html\">Web App</a>"
+                fi
+                echo "<li>$name: $links</li>"
+              done
+              echo '</ul>'
+            } > "$preview/index.html"
+          }
+
+          # 一覧の取得に失敗したまま進むと、プレビューを全部消したサイトで本番を上書きしてしまう。while にパイプで直接渡すと gh の失敗が捨てられるので、一度変数に代入して -e で止める
+          prs=$(gh pr list --state open --limit 100 \
+            --json number,headRefName,headRefOid,isCrossRepository \
+            --jq '.[] | select(.isCrossRepository | not) | "\(.number) \(.headRefName) \(.headRefOid)"')
+
+          pr_numbers=
+          while read -r number branch head_sha; do
+            [ -n "$number" ] || continue
+            if ! built=$(download_latest_success "$number" "$branch"); then
+              echo "PR #$number: $branch に成果物のある成功したビルドがないのでスキップ"
+              continue
+            fi
+            write_index "$number" "$built" "$head_sha"
+            pr_numbers="$pr_numbers $number"
+          done <<< "$prs"
+          echo "pr_numbers=${pr_numbers# }" >> "$GITHUB_OUTPUT"
 
       - name: Upload Slide Artifact
         uses: actions/upload-artifact@v4
@@ -125,9 +109,33 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      pull-requests: write
     needs:
-      - upload-slide
+      - assemble-site
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # 起動元の PR だけに付けると、待機中のこのワークフローの実行が concurrency で後続の実行に置き換えられたとき、置き換えられた側を起動した PR には URL のコメントが付かないままになる。
+      # 今回のデプロイに含めた PR のうち、まだ URL を貼っていないものすべてに付ける
+      - name: Comment Preview URL
+        if: needs.assemble-site.outputs.pr_numbers != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBERS: ${{ needs.assemble-site.outputs.pr_numbers }}
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          for number in $PR_NUMBERS; do
+            url="${PAGE_URL}pr-preview/pr-$number/"
+            commented=$(gh pr view "$number" --json comments \
+              --jq "any(.comments[]; .body | contains(\"$url\"))")
+            if [ "$commented" = true ]; then
+              continue
+            fi
+            gh pr comment "$number" --body "プレビュー: $url"
+          done
