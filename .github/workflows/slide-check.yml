@@ -1,0 +1,65 @@
+name: slide-check
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+env:
+  LANG: "ja_JP.UTF-8"
+
+jobs:
+  check:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Select Targets
+        id: targets
+        run: |
+          targets=$(tools/slide-check/targets.sh "${{ github.event.pull_request.base.sha }}" HEAD)
+          echo "$targets"
+          # パスに空白が入っても割れないよう、1 行 1 件のままファイルで渡す
+          printf '%s\n' "$targets" | sed -n 's/^error //p' > "$RUNNER_TEMP/error.txt"
+          printf '%s\n' "$targets" | sed -n 's/^warn //p' > "$RUNNER_TEMP/warn.txt"
+          {
+            echo "any=$([ -n "$targets" ] && echo true)"
+            echo "error=$([ -s "$RUNNER_TEMP/error.txt" ] && echo true)"
+            echo "warn=$([ -s "$RUNNER_TEMP/warn.txt" ] && echo true)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Setup Packages
+        if: steps.targets.outputs.any == 'true'
+        run: sudo apt update -y && sudo apt install -y fonts-noto
+
+      - name: Setup Node.js
+        if: steps.targets.outputs.any == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Setup pnpm
+        if: steps.targets.outputs.any == 'true'
+        uses: pnpm/action-setup@v4
+
+      - name: Install Dependencies
+        if: steps.targets.outputs.any == 'true'
+        run: |
+          pnpm install
+          pnpm exec playwright install --with-deps chromium
+
+      - name: Check Slides (warn)
+        if: steps.targets.outputs.warn == 'true'
+        # パスは PR 側が決められるので、式展開せずファイルから NUL 区切りで渡す
+        run: tr '\n' '\0' < "$RUNNER_TEMP/warn.txt" | xargs -0 pnpm check:slides --warn
+
+      - name: Check Slides (error)
+        # warn の検査が落ちても、PR 自身の教材は測る
+        if: ${{ !cancelled() && steps.targets.outputs.error == 'true' }}
+        run: tr '\n' '\0' < "$RUNNER_TEMP/error.txt" | xargs -0 pnpm check:slides

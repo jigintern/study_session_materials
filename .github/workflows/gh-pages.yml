@@ -43,9 +43,13 @@ jobs:
         run: |
           # 最新のコミットがビルド中や失敗中でもプレビューを消さないよう、pr-preview の実行のうち成果物が残っていて成功した直近のものを使う。
           # ダウンロードできたら、その実行がビルドしたコミットを出力する
+          # スライドを 1 つも変えていない PR の実行は、成功していても成果物を持たない。古い実行まで遡ると変更をやめたスライドが残るので、そこで打ち切る
           download_latest_success() {
             local number=$1 branch=$2 run_id run_sha
             while read -r run_id run_sha; do
+              if [ "$(gh api "repos/$GH_REPO/actions/runs/$run_id/artifacts" --jq .total_count)" = 0 ]; then
+                return 1
+              fi
               if gh run download "$run_id" -D "pr-preview/pr-$number" >&2; then
                 echo "$run_sha"
                 return 0
@@ -86,7 +90,7 @@ jobs:
           while read -r number branch head_sha; do
             [ -n "$number" ] || continue
             if ! built=$(download_latest_success "$number" "$branch"); then
-              echo "PR #$number: $branch に成果物のある成功したビルドがないのでスキップ"
+              echo "PR #$number: $branch に成果物のある成功したビルドがないか、スライドを変えていないのでスキップ"
               continue
             fi
             write_index "$number" "$built" "$head_sha"
