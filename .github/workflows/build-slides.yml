@@ -2,6 +2,11 @@ name: build-slides
 
 on:
   workflow_call:
+    inputs:
+      base:
+        description: 指定すると、この commit からの差分で変わったスライドだけをビルドする
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -16,14 +21,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ inputs.base == '' && 1 || 0 }}
 
       - name: Select Targets
         id: targets
-        run: echo "slides=$(jq -c . tools/build-slides/slides.json)" >> "$GITHUB_OUTPUT"
+        env:
+          BASE: ${{ inputs.base }}
+        run: |
+          slides=$(tools/build-slides/targets.sh ${BASE:+"$BASE" HEAD})
+          echo "$slides"
+          echo "slides=$slides" >> "$GITHUB_OUTPUT"
 
   build-slides:
     needs:
       - select
+    # 空の matrix はエラーになる
+    if: needs.select.outputs.slides != '[]'
     timeout-minutes: 30
     strategy:
       fail-fast: false
