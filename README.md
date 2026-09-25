@@ -65,3 +65,4 @@
   * Pythonのライブラリである「Flask」を利用して、WebアプリやWeb APIを作成する方法を学びます
 * [Flutter勉強会](./2023/flutter/README.md)
   * 「Flutter」というネイティブアプリケーション開発向けのフレームワークを使って、アプリ開発を学びます
+
