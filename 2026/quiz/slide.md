@@ -1083,3 +1083,4 @@ document.querySelectorAll('.timer-box').forEach(box => {
   render();
 });
 </script>
+<!-- プレビュー検証用 -->
