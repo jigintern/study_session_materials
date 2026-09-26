@@ -769,8 +769,6 @@ source.onmessage = handleMessage;    // 関数を登録する。() は付けな�
 - 関数の引数 `e` には、受信したイベントが入る。データの本文は `e.data`
 - 配布コードの `addEventListener('click', addPost)` と同じ仕組み。関数が実行されるきっかけが、クリックではなくデータの受信になる
 
-`handleMessage()` とカッコを付けると、その場で関数が実行され、その戻り値が代入されます。
-
 ---
 
 <!-- _class: record -->
@@ -1343,6 +1341,20 @@ SSE の接続が切れると、サーバーではそれを知らせるイベン�
 | 通信を1本ずつ見る | Network タブ / EventStream タブ |
 | 終わらないレスポンスを返す | `text/event-stream` / `res.write` |
 | 接続している全員に送る | 接続の配列 / `req.on('close')` |
+
+---
+
+<!-- _class: extra -->
+
+## 付録: 関数に `()` を付けて渡すとどうなるか
+
+```javascript
+source.onmessage = handleMessage;    // 関数そのものを代入する
+source.onmessage = handleMessage();  // この行でいったん実行し、戻り値を代入する
+```
+
+`()` を付けると、その行で関数が実行され、その戻り値が代入されます。
+`handleMessage` は何も返さないので、`onmessage` には `undefined` が入り、データを受信しても何も実行されません。
 
 ---
 
