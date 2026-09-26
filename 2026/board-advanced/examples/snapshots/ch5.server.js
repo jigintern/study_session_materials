@@ -1,5 +1,5 @@
 // Chapter 5 の終わりの server.js
-// つながった接続を全部覚えて、投稿が来たら全員に書き込む状態。
+// 接続をすべて保持し、投稿が来たら全員に書き込む状態。
 
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
@@ -11,7 +11,7 @@ const MAX_POSTS = 500;
 // 投稿の置き場。再起動すると空に戻る。
 const posts = [];
 
-// いまつながっている接続。つながった順に並ぶ。
+// 現在の接続の一覧。接続した順に並ぶ。
 const connections = [];
 
 const server = createServer(async (req, res) => {
@@ -23,7 +23,7 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // つなぎっぱなしにして、投稿が来たら流す
+  // 接続を閉じずに保持し、投稿が来たら送信する
   if (req.method === 'GET' && url.pathname === '/events') {
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',

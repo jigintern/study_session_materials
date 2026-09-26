@@ -29,7 +29,7 @@ const server = createServer(async (req, res) => {
     posts.push(post);
     if (posts.length > MAX_POSTS) posts.shift();
 
-    // ▼ 4章: つながっているブラウザに届ける
+    // ▼ 4章: 接続しているブラウザに投稿を送る
 
     sendJson(res, post);
     return;

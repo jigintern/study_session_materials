@@ -1,13 +1,13 @@
 // Chapter 4 の終わりの public/script.js
-// つなぎ先を自分のサーバーに向け、接続状態を画面に出している状態。
+// 接続先を自分のサーバーに変え、接続状態を画面に出している状態。
 
 const API = location.origin; // Chapter 4 で自分のサーバーに向けた
 const ROOM = '0000'; // 開催回ごとに差し替える
 
-// 手元の投稿。画面に出ているものと同じ並び。
+// ブラウザ側で持つ投稿。画面と同じ並び。
 const posts = [];
 
-// サーバーから全部もらって、手元に入れる。開いたときに 1 回だけ呼ぶ。
+// サーバーから全件取得して posts に入れる。開いたときに 1 回だけ呼ぶ。
 async function loadPosts() {
   const res = await fetch(`${API}/posts?room=${ROOM}`);
   const loaded = await res.json();
@@ -19,7 +19,7 @@ async function loadPosts() {
   showPosts();
 }
 
-// 手元の投稿を並べ直す。サーバーには聞かない。
+// posts を画面に並べ直す。サーバーからは取得しない。
 function showPosts() {
   const list = document.getElementById('posts');
   list.textContent = '';

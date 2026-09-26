@@ -1,13 +1,13 @@
 // Chapter 3 の終わりの public/script.js
-// 手元に投稿の配列を持ち、届いた 1 件だけを足している状態。
+// ブラウザ側に投稿の配列を持ち、受信した 1 件だけを追加している状態。
 
 const API = 'https://example.deno.net'; // 当日の URL に差し替える
 const ROOM = '0000'; // 開催回ごとに差し替える
 
-// 手元の投稿。画面に出ているものと同じ並び。
+// ブラウザ側で持つ投稿。画面と同じ並び。
 const posts = [];
 
-// サーバーから全部もらって、手元に入れる。開いたときに 1 回だけ呼ぶ。
+// サーバーから全件取得して posts に入れる。開いたときに 1 回だけ呼ぶ。
 async function loadPosts() {
   const res = await fetch(`${API}/posts?room=${ROOM}`);
   const loaded = await res.json();
@@ -19,7 +19,7 @@ async function loadPosts() {
   showPosts();
 }
 
-// 手元の投稿を並べ直す。サーバーには聞かない。
+// posts を画面に並べ直す。サーバーからは取得しない。
 function showPosts() {
   const list = document.getElementById('posts');
   list.textContent = '';
