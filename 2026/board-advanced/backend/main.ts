@@ -27,6 +27,15 @@ const CONNECTION_TTL_MS = 30_000;
  */
 const ROOM_PATTERN = /^[A-Za-z0-9\-]{1,32}$/;
 
+/**
+ * room を省いたリクエストが使う部屋。受講者のコードからは room を渡さないので、
+ * 開催回ごとに投稿を分けたいときはデプロイ時に DEFAULT_ROOM を変える。
+ */
+export const DEFAULT_ROOM = Deno.env.get("DEFAULT_ROOM") ?? "default";
+if (!ROOM_PATTERN.test(DEFAULT_ROOM)) {
+  throw new Error(`DEFAULT_ROOM の形式が不正です: ${DEFAULT_ROOM}`);
+}
+
 export type Post = {
   id: string;
   name: string;
@@ -400,19 +409,17 @@ const PAGE_STYLE = `
  * room は正規表現を通した値しか KV に入らず、接続 id は crypto.randomUUID()
  * が振ったものしか入らないので、差し込みでエスケープの要る文字は届かない。
  */
-async function connectionsPage(room: string | null): Promise<Response> {
+async function connectionsPage(room: string): Promise<Response> {
   const head = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>接続者一覧${room === null ? "" : ` ${room}`}</title>
+<title>接続者一覧 ${room}</title>
 <style>${PAGE_STYLE}</style>
 <form method="get" action="/connections">
-  <input name="room" value="${room ?? ""}" placeholder="部屋 ID"
-    pattern="${ROOM_PATTERN.source}" ${room === null ? "autofocus" : ""}>
+  <input name="room" value="${room}" placeholder="部屋 ID"
+    pattern="${ROOM_PATTERN.source}">
   <button>開く</button>
 </form>`;
-
-  if (room === null) return html(head);
 
   const ids = await listConnections(room);
   const table = ids.length === 0 ? "" : `
@@ -469,13 +476,11 @@ async function handle(request: Request): Promise<Response> {
     );
   }
 
-  // 講師用のページだけは room を省くと入力欄を出すので、ここでは形式だけを見る
-  const room = url.searchParams.get("room");
-  if (room !== null && !ROOM_PATTERN.test(room)) {
+  const room = url.searchParams.get("room") ?? DEFAULT_ROOM;
+  if (!ROOM_PATTERN.test(room)) {
     return errorResponse(400, "room の形式が不正です");
   }
   if (path === "connections") return await connectionsPage(room);
-  if (room === null) return errorResponse(400, "room を指定してください");
 
   if (path === "events") return await streamPosts(room);
   if (path === "posts") {
