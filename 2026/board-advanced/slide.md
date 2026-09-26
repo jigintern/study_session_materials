@@ -280,6 +280,16 @@ style: |
   section.compact table {
     font-size: 0.85em;
   }
+  section .jump {
+    position: absolute;
+    left: 78px;
+    top: 30px;
+    margin: 0;
+    font-size: 0.9em;
+  }
+  section .jump a::after {
+    content: " ↗";
+  }
   section mark {
     background: #ffe066;
     color: inherit;
@@ -372,6 +382,8 @@ style: |
 
 書くコードはそのまま載っています。黄色いところだけを書きます。
 赤く取り消されている行は、消します。
+
+記述スライドは自分のペースで進めてかまいません。章が早く終わった人は、章の最後のスライドの左上にあるリンクから応用課題に進みましょう。
 
 ```javascript
 // 例
@@ -846,6 +858,8 @@ showPosts();                         // すでにある行
 
 EventStream タブの中の行が増えます。通信そのものは、1本を使い回しています。
 
+早く終わった人は → <a href="https://github.com/jigintern/study_session_materials/blob/main/2026/board-advanced/advanced.md#2章が早く終わった人へ" target="_blank">2章の応用課題</a> {.jump}
+
 ---
 
 <!-- _class: lead break -->
@@ -1081,6 +1095,8 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 ### 3は増えるのに4が変わらないなら
 
 届いてはいるので、受け取ったあとの処理でつまずいています。Console タブの赤い文字を見てください。
+
+早く終わった人は → <a href="https://github.com/jigintern/study_session_materials/blob/main/2026/board-advanced/advanced.md#3章が早く終わった人へ" target="_blank">3章の応用課題</a> {.jump}
 
 ---
 
@@ -1390,6 +1406,8 @@ SSE の接続が切れると、サーバーではそれを知らせるイベン�
 
 ただし、切れている間の投稿は届きません。埋めるには `Last-Event-ID` を使います。
 
+早く終わった人は → <a href="https://github.com/jigintern/study_session_materials/blob/main/2026/board-advanced/advanced.md#5章が早く終わった人へ" target="_blank">5章の応用課題</a> {.jump}
+
 ---
 
 <!-- _class: record -->
@@ -1457,6 +1475,14 @@ source.onmessage = receivePost;
 
 ---
 
+<!-- _class: lead -->
+
+# おつかれさまでした！
+
+<!-- BLOCK: なにかしらの画像 -->
+
+---
+
 <!-- _class: extra -->
 
 ## 付録: 関数に `()` を付けて渡すとどうなるか
@@ -1484,14 +1510,6 @@ data: {"name":"たろう","text":"やっほー"}
 ```
 
 接続が切れないように、一定間隔で `:` の行だけを送る **ハートビート** に使います。
-
----
-
-<!-- _class: lead -->
-
-# おつかれさまでした！
-
-<!-- BLOCK: なにかしらの画像 -->
 
 <script>
 document.querySelectorAll('.timer[data-seconds]').forEach(el => {

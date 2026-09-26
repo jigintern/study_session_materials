@@ -102,6 +102,7 @@ Chapter 4 でつなぎ先を自分のサーバーに変えると一覧から消�
 - [スライド（markdown版）](./slide.md)
 - [スライド（HTML版）](https://jigintern.github.io/study_session_materials/board-advanced-2026/slide.html)
 - [DevTools の操作手順（devtools.md）](./devtools.md): EventStream タブと、接続が切れたときの見え方
+- [応用課題（advanced.md）](./advanced.md): 章が早く終わった人向けの課題
 - [テンプレート（template/）](./template/): StackBlitz プロジェクト作成の元
 - [完成形（completed/）](./completed/): 講座を通しで書き終えた状態のプロジェクト一式
 - [追いつき用スナップショット（examples/snapshots/）](./examples/snapshots/): 章末時点のコード
