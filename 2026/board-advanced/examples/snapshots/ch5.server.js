@@ -34,10 +34,11 @@ const server = createServer(async (req, res) => {
     connections.push(res);
     console.log(`接続数: ${connections.length}`);
 
-    req.on('close', () => {
+    function removeConnection() {
       connections.splice(connections.indexOf(res), 1);
       console.log(`接続数: ${connections.length}`);
-    });
+    }
+    req.on('close', removeConnection);
     return;
   }
 

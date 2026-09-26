@@ -51,19 +51,22 @@ document.getElementById('reload-btn').remove();
 loadPosts();
 
 const source = new EventSource(`${API}/events?room=${ROOM}`);
-source.onmessage = (e) => {
+function receivePost(e) {
   posts.push(JSON.parse(e.data));
   showPosts();
-};
+}
+source.onmessage = receivePost;
 
 const status = document.getElementById('status');
 
-source.addEventListener('open', () => {
+function showOnline() {
   status.textContent = 'つながっています';
   status.className = 'status online';
-});
-
-source.addEventListener('error', () => {
+}
+function showOffline() {
   status.textContent = '切れています';
   status.className = 'status offline';
-});
+}
+
+source.addEventListener('open', showOnline);
+source.addEventListener('error', showOffline);

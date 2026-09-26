@@ -51,7 +51,8 @@ document.getElementById('reload-btn').remove();
 loadPosts();
 
 const source = new EventSource(`${API}/events?room=${ROOM}`);
-source.onmessage = (e) => {
+function receivePost(e) {
   posts.push(JSON.parse(e.data));
   showPosts();
-};
+}
+source.onmessage = receivePost;

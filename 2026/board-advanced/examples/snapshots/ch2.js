@@ -39,4 +39,4 @@ document.getElementById('reload-btn').addEventListener('click', showPosts);
 showPosts();
 
 const source = new EventSource(`${API}/events?room=${ROOM}`);
-source.onmessage = () => showPosts();
+source.onmessage = showPosts;

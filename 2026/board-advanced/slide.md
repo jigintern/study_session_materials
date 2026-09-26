@@ -625,9 +625,10 @@ SSE でデータを受け取るには、`new EventSource(URL)` でサーバー�
 ```javascript
 const source = new EventSource(`${API}/events?room=${ROOM}`);  // 接続する
 
-source.onmessage = (e) => {          // データが1件届くたびに呼ばれる
+function handleMessage(e) {          // データが1件届くたびに呼ばれる
   console.log(e.data);               // 届いたデータの中身 (文字列)
-};
+}
+source.onmessage = handleMessage;
 ```
 
 ---
@@ -648,7 +649,7 @@ source.onmessage = (e) => {          // データが1件届くたびに呼ばれ
 showPosts();                         // すでにある行
 %%setInterval(showPosts, 10000);%%
 @@const source = new EventSource(`${API}/events?room=${ROOM}`);@@
-@@source.onmessage = () => showPosts();@@
+@@source.onmessage = showPosts;@@
 ```
 
 **成功**: メッセージが投稿された瞬間に表示される
@@ -792,13 +793,15 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 手元の `posts` に足してから `showPosts` を呼べば、その1件が一覧に出ます。
 
-**書く場所**: `source.onmessage` の行を置き換え
+**書く場所**: いちばん下の `source.onmessage` の行。赤い行を消して、黄色い行を書きます
 
 ```javascript
-@@source.onmessage = (e) => {@@
+%%source.onmessage = showPosts;%%
+@@function receivePost(e) {@@
 @@  posts.push(JSON.parse(e.data));   // 届いた文字列をオブジェクトに戻して足す@@
 @@  showPosts();@@
-@@};@@
+@@}@@
+@@source.onmessage = receivePost;@@
 ```
 
 **成功**: 投稿しても `posts` の GET が増えず、一覧にはその投稿が出る
@@ -1000,24 +1003,24 @@ const posts = [];                    // すでにある行
 
 <div class="timer" data-seconds="240"></div>
 
-ブラウザとサーバーがいまつながっているかどうかを、画面で見えるようにします。
-
 **書く場所**: `public/script.js` のいちばん下
 
 ```javascript
-};                                   // すでにある行。source.onmessage の終わり
+source.onmessage = receivePost;      // すでにある行
 
 @@const status = document.getElementById('status');@@
 
-@@source.addEventListener('open', () => {@@
+@@function showOnline() {@@
 @@  status.textContent = 'つながっています';@@
 @@  status.className = 'status online';@@
-@@});@@
-
-@@source.addEventListener('error', () => {@@
+@@}@@
+@@function showOffline() {@@
 @@  status.textContent = '切れています';@@
 @@  status.className = 'status offline';@@
-@@});@@
+@@}@@
+
+@@source.addEventListener('open', showOnline);     // つながったとき@@
+@@source.addEventListener('error', showOffline);   // 切れたとき@@
 ```
 
 **成功**: `server.js` を保存すると一瞬「切れています」になり、「つながっています」に戻る
@@ -1123,10 +1126,11 @@ SSE の接続が切れると、サーバーではそれを知らせるイベン�
 **書く場所**: 接続を配列に足している行の下
 
 ```javascript
-@@    req.on('close', () => {@@
+@@    function removeConnection() {@@
 @@      connections.splice(connections.indexOf(res), 1);@@
 @@      console.log(`接続数: ${connections.length}`);@@
-@@    });@@
+@@    }@@
+@@    req.on('close', removeConnection);@@
 ```
 
 **成功**: タブを閉じると、ターミナルの接続数が1減る
