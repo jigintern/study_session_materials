@@ -346,23 +346,6 @@ style: |
 
 ---
 
-## プロジェクトの中身
-
-```
-public/
-  index.html
-  styles.css
-  script.js    ← 1〜3章で書く
-package.json
-server.js      ← 4〜5章で書く
-```
-
-`public/script.js` はブラウザ側の JavaScript、`server.js` はバックエンドサーバー側の JavaScript ファイルです。
-
-ファイルは保存するだけで反映されるので、プレビューの再読み込みやサーバーの起動し直しは基本的に必要ありません。
-
----
-
 <!-- _class: record -->
 
 ## スライドの見かた
@@ -378,6 +361,34 @@ const posts = [];
 @@let connection = null;@@           // 黄色: 書いてもらう行
 %%setInterval(showPosts, 10000);%%   // 赤: 消してもらう行
 ```
+
+---
+
+<!-- _class: lead -->
+
+# 0章
+
+## ブラウザとサーバーの役割と配布コードを確認する
+
+掲示板でブラウザとサーバーがそれぞれ何をしていて、リクエストとレスポンスでどうやり取りしているかを学びます。
+また、配布コードの `public/script.js` がいまどう動いているかを確認します。
+
+---
+
+## プロジェクトの中身
+
+```
+public/
+  index.html
+  styles.css
+  script.js    ← 1〜3章で書く
+package.json
+server.js      ← 4〜5章で書く
+```
+
+`public/script.js` はブラウザ側の JavaScript、`server.js` はバックエンドサーバー側の JavaScript ファイルです。
+
+ファイルは保存するだけで反映されるので、プレビューの再読み込みやサーバーの起動し直しは基本的に必要ありません。
 
 ---
 
