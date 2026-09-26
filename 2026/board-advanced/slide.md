@@ -758,15 +758,14 @@ const source = new EventSource(`${API}/events`);
 ## 2-1. データを受信したときに実行する関数を登録する
 
 ```javascript
-function handleMessage(e) {
-  console.log(e.data);               // 届いたデータの中身 (文字列)
+function handleMessage() {
+  console.log('受信した');
 }
 
 source.onmessage = handleMessage;    // 関数を登録する。() は付けない
 ```
 
 - `source.onmessage` に関数を代入しておくと、データを1件受信するたびにその関数が実行される
-- 関数の引数 `e` には、受信したイベントが入る。データの本文は `e.data`
 
 ---
 
@@ -789,7 +788,7 @@ showPosts();                         // すでにある行
 @@source.onmessage = showPosts;@@
 ```
 
-データが届くたびに `showPosts` を呼び、一覧を取り直します。`e.data` は3章で使います。
+データが届くたびに `showPosts` を呼び、一覧を取り直します。
 
 **成功**: メッセージが投稿された瞬間に表示される
 
