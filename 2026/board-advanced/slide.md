@@ -547,14 +547,45 @@ Network タブには、開いたあとの通信しか出ません。
 
 ---
 
+## 2-1. ポーリングでは10秒ごとにリクエストを送る
+
+<div class="seq">
+  <div class="seq-title">ポーリング</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /posts</div></div>
+      <div class="seq-row left"><div class="seq-msg">投稿一覧（新着なし）</div></div>
+    </div>
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /posts（10秒後）</div></div>
+      <div class="seq-row left"><div class="seq-msg">投稿一覧（新着なし）</div></div>
+    </div>
+    <div class="seq-repeat">10秒ごとに繰り返す</div>
+  </div>
+</div>
+
+1章で作ったポーリングでは、新着がなくても10秒ごとに通信していました。
+また、投稿されてから届くまで最大10秒遅れていました。
+
+---
+
 ## 2-1. やりたいこと
 
-ポーリングでは、ブラウザが10秒ごとにリクエストを送り、新しい投稿があるかを確認していました。
+<div class="seq">
+  <div class="seq-title">やりたい通信</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row left"><div class="seq-msg">たろうの投稿</div></div>
+      <div class="seq-row left"><div class="seq-msg">はなこの投稿</div></div>
+    </div>
+    <div class="seq-repeat">投稿された時点で送る</div>
+  </div>
+</div>
 
-やりたいのは、**投稿された時点で、サーバーからブラウザへその投稿を送る** ことです。
-
-- ブラウザから定期的にリクエストを送らないので、新着なしの通信がなくなる
-- 投稿された時点で届くので、遅れがなくなる
+新しい投稿があったら、**サーバーからブラウザへすぐに送る** ようにしたいです。
+そうすれば、新着がないときの通信はなくなり、投稿は遅れずに届きます。
 
 ところが、HTTP ではこれをそのままでは実現できません。
 
