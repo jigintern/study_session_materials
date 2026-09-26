@@ -615,7 +615,8 @@ Network タブには、開いたあとの通信しか出ません。
   <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
   <div class="seq-body">
     <div class="seq-group">
-      <div class="seq-row left blocked"><div class="seq-msg">新しい投稿</div></div>
+      <div class="seq-row left blocked"><div class="seq-msg">たろうの投稿</div></div>
+      <div class="seq-row left blocked"><div class="seq-msg">はなこの投稿</div></div>
     </div>
   </div>
 </div>
@@ -638,11 +639,16 @@ HTTP の通信は、いつもブラウザのリクエストから始まります
       <div class="seq-row right"><div class="seq-msg">GET（次の投稿を待つ）</div></div>
       <div class="seq-row left"><div class="seq-msg">たろうの投稿（投稿された時点で返す）</div></div>
     </div>
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET（次の投稿を待つ）</div></div>
+      <div class="seq-row left"><div class="seq-msg">はなこの投稿（投稿された時点で返す）</div></div>
+    </div>
   </div>
 </div>
 
-サーバーから通信を始められないので、ブラウザから先にリクエストを送っておきます。
-サーバーは投稿があるまでレスポンスを返さずに保留し、投稿された時点でレスポンスを返します。
+サーバーから通信を始められないので、先にリクエストを送っておきます。
+サーバーは投稿があるまでレスポンスを保留し、投稿された時点で返します。
+ブラウザはレスポンスを受け取るたびに、次のリクエストを送ります。
 この方法を **ロングポーリング** といいます。
 
 ---
