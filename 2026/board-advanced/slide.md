@@ -878,8 +878,9 @@ data: {"name":"たろう","text":"やっほー"}
 | `data: 中身` | イベント1件の中身 |
 | 空行 | ここまでで1件、という区切り |
 
-データを1件書いたら空行を1つ入れて区切ります。
-つまり、`data:` の行末の改行と空行で、改行が `\n\n` と2つ並びます。
+`Content-Type` は `text/event-stream` にし、`res.flushHeaders()` ですぐ送ります。送らないと、最初のデータが届くまでブラウザは「つながった」と分かりません。
+
+`data:` の行末の改行と空行で、改行が `\n\n` と2つ並びます。
 空行を忘れると、ブラウザはデータがまだ続くと見なして区切りを待ち続け、その投稿は表示されません。
 
 ---
@@ -894,7 +895,6 @@ data: {"name":"たろう","text":"やっほー"}
 
 ```javascript
 const posts = [];                    // すでにある行
-
 @@let connection = null;             // いまつながっている接続。あとから来たほうで上書きされる@@
 ```
 
@@ -907,6 +907,7 @@ const posts = [];                    // すでにある行
 @@      'Cache-Control': 'no-cache',@@
 @@      'Connection': 'keep-alive',@@
 @@    });@@
+@@    res.flushHeaders();              // ヘッダーだけ先に送る@@
 @@    connection = res;@@
 @@    return;@@
 @@  }@@

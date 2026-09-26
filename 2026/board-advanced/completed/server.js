@@ -32,6 +32,7 @@ const server = createServer(async (req, res) => {
       'Cache-Control': 'no-cache',
       'Connection': 'keep-alive',
     });
+    res.flushHeaders();
     connections.push(res);
     console.log(`接続数: ${connections.length}`);
 

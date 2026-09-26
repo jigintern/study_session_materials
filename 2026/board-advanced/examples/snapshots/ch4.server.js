@@ -30,6 +30,7 @@ const server = createServer(async (req, res) => {
       'Cache-Control': 'no-cache',
       'Connection': 'keep-alive',
     });
+    res.flushHeaders();
     connection = res;
     return;
   }
