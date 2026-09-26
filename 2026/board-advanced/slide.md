@@ -767,7 +767,6 @@ source.onmessage = handleMessage;    // 関数を登録する。() は付けな�
 
 - `source.onmessage` に関数を代入しておくと、データを1件受信するたびにその関数が実行される
 - 関数の引数 `e` には、受信したイベントが入る。データの本文は `e.data`
-- 配布コードの `addEventListener('click', addPost)` と同じ仕組み。関数が実行されるきっかけが、クリックではなくデータの受信になる
 
 ---
 
@@ -1341,6 +1340,20 @@ SSE の接続が切れると、サーバーではそれを知らせるイベン�
 | 通信を1本ずつ見る | Network タブ / EventStream タブ |
 | 終わらないレスポンスを返す | `text/event-stream` / `res.write` |
 | 接続している全員に送る | 接続の配列 / `req.on('close')` |
+
+---
+
+## 関数を登録して、きっかけが起きたら実行する
+
+今日のコードでは、関数を登録しておき、決まったきっかけで実行させる書き方を3回使いました。
+
+```javascript
+setInterval(showPosts, 10000);                                          // 10秒たつたび
+document.getElementById('post-btn').addEventListener('click', addPost); // クリックされるたび
+source.onmessage = receivePost;                                         // データを受信するたび
+```
+
+どれも関数名に `()` を付けずに渡します。
 
 ---
 
