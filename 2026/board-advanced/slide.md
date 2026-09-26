@@ -392,6 +392,41 @@ const posts = [];
 
 ---
 
+## サーバーは何をしているのか
+
+掲示板は、**ブラウザ** と **サーバー** の2つのプログラムが分担して動いています。
+
+| | ブラウザ | サーバー |
+|---|---|---|
+| どこで動く | 自分のパソコン | インターネットの向こうのコンピュータ |
+| 掲示板での役目 | 画面を出す。入力やボタンを受け付ける | みんなの投稿を1か所に保存しておき、頼まれたら返す |
+| 今日のプログラム | `public/script.js` | 1〜3章: 講師の共有サーバー<br>4〜5章: 自分の `server.js` |
+
+投稿がサーバーに集まっているので、ほかの人の投稿を自分の画面に出せます。
+
+---
+
+## ブラウザとサーバーのやり取り
+
+<div class="seq">
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">POST /posts（この投稿を保存して）</div></div>
+      <div class="seq-row left"><div class="seq-msg">保存したよ</div></div>
+    </div>
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /posts（投稿を全部ちょうだい）</div></div>
+      <div class="seq-row left"><div class="seq-msg">投稿一覧</div></div>
+    </div>
+  </div>
+</div>
+
+ブラウザからのお願いを **リクエスト**、サーバーからの返事を **レスポンス** と呼びます。
+`GET` は「ちょうだい」、`POST` は「受け取って」の意味です。JavaScript では `fetch` でリクエストを送ります。
+
+---
+
 ## 配布コードの現状の実装
 
 投稿ボタンを押すと `addPost()` が呼び出され、入力欄の内容がサーバーに送られます。
@@ -950,6 +985,7 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 | `POST /posts` | 投稿を1件受け取って、`posts` に足す |
 | それ以外 | `public/` の中のファイルを返す |
 
+1〜3章で使っていた共有サーバーの役目を、ここからは自分の `server.js` が引き受けます。
 右側のプレビューに見えているページも、この3つめから届いています。
 投稿は `posts` という配列に入っているだけなので、サーバーを再起動すると消えます。
 
