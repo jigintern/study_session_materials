@@ -513,7 +513,20 @@ Network タブには、開いたあとの通信しか出ません。
 
 ---
 
-## 2-1. サーバーはリクエストへの応答しかできない
+## 2-1. やりたいこと
+
+ポーリングでは、ブラウザが10秒ごとに「新しい投稿ある?」と聞いていました。
+
+本当にやりたいのは、**投稿された瞬間に、サーバーから「来たよ」と知らせてもらう** ことです。
+
+- こちらから聞きに行かないので、新着なしの通信がなくなる
+- 投稿された瞬間に届くので、遅れがなくなる
+
+ところが、HTTP ではこれをそのままでは実現できません。
+
+---
+
+## 2-1. サーバーからは話しかけられない
 
 <div class="columns">
 <div>
@@ -533,11 +546,11 @@ Network タブには、開いたあとの通信しか出ません。
 <div>
 
 <div class="seq">
-  <div class="seq-title">サーバーからの新規通信</div>
+  <div class="seq-title">サーバーから始める通信</div>
   <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
   <div class="seq-body">
     <div class="seq-group">
-      <div class="seq-row left blocked"><div class="seq-msg">投稿を知らせたい</div></div>
+      <div class="seq-row left blocked"><div class="seq-msg">投稿が来たよ</div></div>
     </div>
   </div>
 </div>
@@ -545,13 +558,49 @@ Network タブには、開いたあとの通信しか出ません。
 </div>
 </div>
 
-サーバーは、受け取ったリクエストにレスポンス (サーバーが返す応答) を返すことしかできません。そのため、サーバーのほうからブラウザに向けて新しく通信を始めることはできません。
-
-また、レスポンスを返し終える (閉じる) とあとからデータを追加で返すことはできません。
+HTTP の通信は、いつもブラウザのリクエストから始まります。
+サーバーはリクエストにレスポンス (返事) を返すだけで、自分から通信を始めることはできません。
 
 ---
 
-## 2-1. サーバーが、閉じないレスポンスに投稿を書き足す
+## 2-1. 先に聞いておけばいい?
+
+<div class="seq">
+  <div class="seq-title">先にリクエストを送っておく</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">新しい投稿が来たら教えて</div></div>
+      <div class="seq-row left"><div class="seq-msg">たろうの投稿（来た時点で返す）</div></div>
+    </div>
+  </div>
+</div>
+
+サーバーから始められないなら、ブラウザから先にリクエストを送っておけばよさそうです。
+サーバーは投稿が来るまで返事を待たせておき、来た時点でレスポンスを返します。
+
+---
+
+## 2-1. レスポンスは1回返すと閉じる
+
+<div class="seq">
+  <div class="seq-title">ふつうのレスポンス</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">新しい投稿が来たら教えて</div></div>
+      <div class="seq-row left"><div class="seq-msg">たろうの投稿（ここで閉じる）</div></div>
+      <div class="seq-row left blocked"><div class="seq-msg">はなこの投稿</div></div>
+    </div>
+  </div>
+</div>
+
+ふつうのレスポンスは、1回返し終えると閉じます。閉じたレスポンスには、あとからデータを足せません。
+はなこの投稿を届けるには、ブラウザがもう一度リクエストし直すことになり、ポーリングとあまり変わりません。
+
+---
+
+## 2-1. レスポンスを閉じずに書き足し続ける
 
 <div class="seq">
   <div class="seq-title">閉じないレスポンス</div>
@@ -566,14 +615,14 @@ Network タブには、開いたあとの通信しか出ません。
   </div>
 </div>
 
-ブラウザからのリクエストは最初の1回だけにします。
-サーバーはそのレスポンスを閉じず、投稿があるたびに続きを書き足します。
+そこで、サーバーはレスポンスを閉じずに、投稿があるたびに続きを書き足します。
+ブラウザからのリクエストは最初の1回だけで済みます。
 
 **SSE** (Server-Sent Events) とは、こうしてサーバーからブラウザへデータを流し続けるしくみのことです。
 
 ---
 
-## 2-1. 閉じるレスポンスと閉じないレスポンスを比べる
+## 2-1. ポーリングと SSE を比べる
 
 <div class="columns">
 <div>
@@ -617,19 +666,38 @@ Network タブには、開いたあとの通信しか出ません。
 
 ---
 
-## 2-1. EventSource でつないでメッセージを受け取る
+## 2-1. EventSource でサーバーにつなぐ
 
-SSE でデータを受け取るには、`new EventSource(URL)` でサーバーに接続します。
-`onmessage` に関数を渡すと、データが1件届くたびにその関数が呼ばれます。
+ブラウザ側は、`EventSource` を使うと1行でつなげます。
 
 ```javascript
-const source = new EventSource(`${API}/events?room=${ROOM}`);  // 接続する
+const source = new EventSource(`${API}/events?room=${ROOM}`);
+```
 
-function handleMessage(e) {          // データが1件届くたびに呼ばれる
+- `new EventSource(URL)` で、サーバーの `/events` につながる
+- つないだあとは、レスポンスが閉じないまま待ち続ける
+- 接続が切れたら、ブラウザが自動でつなぎ直す
+- 作った接続は `source` に入れておき、このあと使う
+
+`/events` は、講師が用意した共有サーバーにあります。
+
+---
+
+## 2-1. データが届いたら関数を呼んでもらう
+
+```javascript
+function handleMessage(e) {
   console.log(e.data);               // 届いたデータの中身 (文字列)
 }
-source.onmessage = handleMessage;
+
+source.onmessage = handleMessage;    // 関数を登録する。() は付けない
 ```
+
+- `source.onmessage` に関数を入れておくと、データが1件届くたびにブラウザがその関数を呼ぶ
+- 呼ぶときに、届いた内容を `e` に入れて渡してくれる。本文は `e.data`
+- 配布コードの `addEventListener('click', addPost)` と同じ考え方。呼ばれるきっかけがボタンではなく、データが届いたこと
+
+`handleMessage()` とカッコを付けると、その場で1回呼んだ結果が入ってしまいます。
 
 ---
 
@@ -651,6 +719,8 @@ showPosts();                         // すでにある行
 @@const source = new EventSource(`${API}/events?room=${ROOM}`);@@
 @@source.onmessage = showPosts;@@
 ```
+
+データが届くたびに `showPosts` を呼び、一覧を取り直します。`e.data` は3章で使います。
 
 **成功**: メッセージが投稿された瞬間に表示される
 
