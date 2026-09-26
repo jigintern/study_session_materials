@@ -2,14 +2,13 @@
 // Chapter 5 でサーバー側だけを直したので、Chapter 4 の終わりと同じ内容。
 
 const API = location.origin; // Chapter 4 で自分のサーバーに向けた
-const ROOM = '0000'; // 開催回ごとに差し替える
 
 // ブラウザ側で持つ投稿。画面と同じ並び。
 const posts = [];
 
 // サーバーから全件取得して posts に入れる。開いたときに 1 回だけ呼ぶ。
 async function loadPosts() {
-  const res = await fetch(`${API}/posts?room=${ROOM}`);
+  const res = await fetch(`${API}/posts`);
   const loaded = await res.json();
 
   for (const post of loaded) {
@@ -36,7 +35,7 @@ async function addPost() {
   const name = document.getElementById('name-input').value;
   const text = document.getElementById('text-input').value;
 
-  await fetch(`${API}/posts?room=${ROOM}`, {
+  await fetch(`${API}/posts`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name: name, text: text }),
@@ -50,7 +49,7 @@ document.getElementById('reload-btn').remove();
 
 loadPosts();
 
-const source = new EventSource(`${API}/events?room=${ROOM}`);
+const source = new EventSource(`${API}/events`);
 function receivePost(e) {
   posts.push(JSON.parse(e.data));
   showPosts();

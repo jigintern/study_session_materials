@@ -353,7 +353,7 @@ style: |
 1. ブラウザで StackBlitz のテンプレートを開く
    https://stackblitz.com/edit/node-cdfr3jqk?file=public%2Fscript.js,server.js
 2. 左上の **Fork** を押す
-3. `public/script.js` を開き、`API` と `ROOM` の値を書き換える
+3. `public/script.js` を開き、`API` の値を当日伝える URL に書き換える
 
 ---
 
@@ -707,7 +707,7 @@ HTTP の通信は、いつもブラウザのリクエストから始まります
 ブラウザ側は、`EventSource` を使うと1行で接続できます。
 
 ```javascript
-const source = new EventSource(`${API}/events?room=${ROOM}`);
+const source = new EventSource(`${API}/events`);
 ```
 
 - `new EventSource(URL)` で、サーバーの `/events` に接続する
@@ -752,7 +752,7 @@ source.onmessage = handleMessage;    // 関数を登録する。() は付けな�
 ```javascript
 showPosts();                         // すでにある行
 %%setInterval(showPosts, 10000);%%
-@@const source = new EventSource(`${API}/events?room=${ROOM}`);@@
+@@const source = new EventSource(`${API}/events`);@@
 @@source.onmessage = showPosts;@@
 ```
 
@@ -835,7 +835,7 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 @@const posts = [];                   // ブラウザ側で持つ投稿。画面と同じ並び@@
 
 @@async function loadPosts() {        // 取ってきて posts に入れる。開いたときに1回だけ呼ぶ@@
-@@  const res = await fetch(`${API}/posts?room=${ROOM}`);@@
+@@  const res = await fetch(`${API}/posts`);@@
 @@  const loaded = await res.json();  // サーバーにある投稿の全件@@
 @@  for (const post of loaded) {      // 1件ずつ posts に入れる@@
 @@    posts.push(post);@@
@@ -867,7 +867,7 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 ```javascript
 %%async %%function showPosts() {
-%%  const res = await fetch(`${API}/posts?room=${ROOM}`);%%
+%%  const res = await fetch(`${API}/posts`);%%
 %%  const posts = await res.json();%%
 
   const list = document.getElementById('posts');   // ここから下はそのまま

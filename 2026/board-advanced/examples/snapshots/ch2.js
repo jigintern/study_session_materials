@@ -2,10 +2,9 @@
 // ポーリングをやめて、共有サーバーから届いた合図で読み込み直している状態。
 
 const API = 'https://example.deno.net'; // 当日の URL に差し替える
-const ROOM = '0000'; // 開催回ごとに差し替える
 
 async function showPosts() {
-  const res = await fetch(`${API}/posts?room=${ROOM}`);
+  const res = await fetch(`${API}/posts`);
   const posts = await res.json();
 
   const list = document.getElementById('posts');
@@ -23,7 +22,7 @@ async function addPost() {
   const name = document.getElementById('name-input').value;
   const text = document.getElementById('text-input').value;
 
-  await fetch(`${API}/posts?room=${ROOM}`, {
+  await fetch(`${API}/posts`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name: name, text: text }),
@@ -38,5 +37,5 @@ document.getElementById('reload-btn').addEventListener('click', showPosts);
 
 showPosts();
 
-const source = new EventSource(`${API}/events?room=${ROOM}`);
+const source = new EventSource(`${API}/events`);
 source.onmessage = showPosts;
