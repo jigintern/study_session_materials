@@ -49,7 +49,8 @@ style: |
     color: #888;
   }
   .seq {
-    margin: 0.4em 0.6em;
+    max-width: 760px;
+    margin: 0.4em auto;
   }
   .seq .seq-title {
     text-align: center;
@@ -110,7 +111,7 @@ style: |
   .seq .seq-msg {
     position: relative;
     flex: 1;
-    border-bottom: 1px solid var(--primary);
+    border-bottom: 4px solid var(--primary);
     font-size: 0.7em;
     text-align: center;
     padding-bottom: 3px;
@@ -119,19 +120,19 @@ style: |
   .seq .seq-row.right .seq-msg::after {
     content: "";
     position: absolute;
-    right: -9px;
-    bottom: -5px;
+    right: -18px;
+    bottom: -12px;
     border-style: solid;
-    border-width: 5px 0 5px 9px;
+    border-width: 10px 0 10px 18px;
     border-color: transparent transparent transparent var(--primary);
   }
   .seq .seq-row.left .seq-msg::before {
     content: "";
     position: absolute;
-    left: -9px;
-    bottom: -5px;
+    left: -18px;
+    bottom: -12px;
     border-style: solid;
-    border-width: 5px 9px 5px 0;
+    border-width: 10px 18px 10px 0;
     border-color: transparent var(--primary) transparent transparent;
   }
   .seq .seq-group + .seq-group {
