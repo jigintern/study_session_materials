@@ -163,7 +163,7 @@ style: |
   }
   .seq .seq-repeat {
     text-align: center;
-    font-size: 0.65em;
+    font-size: 0.7em;
     color: #999;
     margin: 28px 0 0;
   }
@@ -275,10 +275,10 @@ style: |
     font-weight: 700;
   }
   section.compact pre {
-    font-size: 0.65em;
+    font-size: 0.7em;
   }
   section.compact table {
-    font-size: 0.8em;
+    font-size: 0.85em;
   }
   section mark {
     background: #ffe066;
@@ -993,9 +993,7 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
   const list = document.getElementById('posts');   // ここから下はそのまま
 ```
 
-`await` がなくなるので `async` も外します。
-
-`for` の行は書き換えません。関数の中で `posts` を宣言しなくなったので、`for` は関数の外で宣言した `posts` を参照します。
+`await` がなくなるので `async` も外します。`for` の行は書き換えません。関数の中で `posts` を宣言しなくなったので、`for` は関数の外で宣言した `posts` を参照します。
 
 **成功**: ページを再読み込みすると、一覧が出る
 
@@ -1295,9 +1293,7 @@ source.onmessage = receivePost;      // すでにある行
 @@    console.log(`接続数: ${connections.length}`);@@
 ```
 
-`console.log` の出力は、StackBlitz の下側のターミナルに出ます。
-
-**成功**: `server.js` を保存すると、ターミナルに `接続数: ` が出る
+**成功**: `server.js` を保存すると、StackBlitz の下側のターミナルに `接続数: ` が出る
 
 ---
 
@@ -1441,9 +1437,12 @@ SSE の接続が切れると、サーバーではそれを知らせるイベン�
 今日のコードでは、関数を登録しておき、決まったきっかけで実行させる書き方を3回使いました。
 
 ```javascript
-setInterval(showPosts, 10000);                                          // 10秒たつたび
-document.getElementById('post-btn').addEventListener('click', addPost); // クリックされるたび
-source.onmessage = receivePost;                                         // データを受信するたび
+// 10秒たつたび
+setInterval(showPosts, 10000);
+// クリックされるたび
+document.getElementById('post-btn').addEventListener('click', addPost);
+// データを受信するたび
+source.onmessage = receivePost;
 ```
 
 どれも関数名に `()` を付けずに渡します。
