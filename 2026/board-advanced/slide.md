@@ -138,6 +138,24 @@ style: |
   .seq .seq-group + .seq-group {
     margin-top: 50px;
   }
+  .seq .seq-fn {
+    position: relative;
+    margin-top: 22px;
+    padding: 0 24px 12px 6px;
+    border: 2px dashed #999;
+    border-radius: 6px;
+  }
+  .seq .seq-fn::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -0.75em;
+    left: 10px;
+    padding: 0 4px;
+    background: #fff;
+    color: #666;
+    font-family: monospace;
+    font-size: 0.6em;
+  }
   .seq .seq-tail {
     margin-left: 12.5px;
     height: 32px;
@@ -847,11 +865,81 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 ![bg right:40% fit](imgs/network-refetch.png)
 
-`Filter` 欄を空にして、投稿が届くのを待ちます。
-
-**成功**: `events` は1本のままで、その下に `posts` の GET が投稿のたびに1本ずつ増えます。
+`Filter` 欄を `posts` に変えて、投稿が届くのを待ちます。
 
 投稿が増えるほど通信も増えます。10秒ごとより多くなることもあります。
+
+**成功**: `posts` の GET が投稿のたびに1本ずつ増える
+
+---
+
+## 3-1. 届いた投稿を使わずに全件を取り直している
+
+<div class="columns" style="align-items: center">
+<div>
+
+<div class="seq">
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
+      <div class="seq-row left"><div class="seq-msg">data: たろうの投稿</div></div>
+      <div class="seq-fn" data-label="showPosts">
+        <div class="seq-group">
+          <div class="seq-row right"><div class="seq-msg">GET /posts</div></div>
+          <div class="seq-row left"><div class="seq-msg">投稿一覧（全件）</div></div>
+        </div>
+      </div>
+      <div class="seq-row left"><div class="seq-msg">data: はなこの投稿</div></div>
+      <div class="seq-fn" data-label="showPosts">
+        <div class="seq-group">
+          <div class="seq-row right"><div class="seq-msg">GET /posts</div></div>
+          <div class="seq-row left"><div class="seq-msg">投稿一覧（全件）</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="seq-tail"></div>
+  </div>
+</div>
+
+</div>
+<div>
+
+いまの実装では、`/events` を「新着が来た」ことを知るためだけに使っています。
+
+投稿の中身は、そのたびに `GET /posts` で全件を取り直しています。
+
+</div>
+</div>
+
+---
+
+## 3-1. 届いた投稿を画面に足す
+
+<div class="columns">
+<div>
+
+<div class="seq">
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
+      <div class="seq-row left"><div class="seq-msg">data: たろうの投稿</div></div>
+      <div class="seq-row left"><div class="seq-msg">data: はなこの投稿</div></div>
+    </div>
+    <div class="seq-tail"></div>
+  </div>
+</div>
+
+</div>
+<div>
+
+`/events` の `data:` には、新着の投稿1件がそのまま入っています。
+
+これを画面に足せば、`GET /posts` を送るのはページを開いたときの1回だけになります。
+
+</div>
+</div>
 
 ---
 
