@@ -21,7 +21,7 @@ if (slides.length === 0) {
 
 // ブラウザの中で 1 枚ずつ測る。marp は section を transform で縮小するので、
 // 位置と文字の大きさは section の縮尺で割り戻して使う。
-function measure({ minFont, minCodeFont, tolerance }) {
+function measure({ minFont, tolerance }) {
   // marp の header: / footer: はページの飾りなので本文の規則で測らない
   const EXCLUDE = '.timer-btn, section > header, section > footer';
   const excerpt = (el) => el.textContent.replace(/\s+/g, ' ').trim().slice(0, 30);
@@ -89,8 +89,7 @@ function measure({ minFont, minCodeFont, tolerance }) {
       const fit = el.closest('marp-pre')?.shadowRoot?.querySelector('marp-auto-scaling')?.shadowRoot?.querySelector('svg');
       const shrink = fit?.viewBox.baseVal.width ? fit.getBoundingClientRect().width / scale / fit.viewBox.baseVal.width : 1;
       const size = (parseFloat(getComputedStyle(el).fontSize) || 0) * shrink;
-      const min = el.closest('pre, marp-pre, code, table') ? minCodeFont : minFont;
-      if (size < min) {
+      if (size < minFont) {
         violations.push({ page, kind: 'font', value: size, text: excerpt(el) });
       }
     }
@@ -128,7 +127,7 @@ try {
     try {
       await page.goto(pathToFileURL(build(slide, outDir)).href, { waitUntil: 'load', timeout: 120_000 });
       await page.evaluate(() => document.fonts.ready);
-      const violations = await page.evaluate(measure, { minFont: 20, minCodeFont: 18, tolerance: 1 });
+      const violations = await page.evaluate(measure, { minFont: 20, tolerance: 1 });
       for (const v of violations) {
         console.log(`${name}:p${v.page} ${v.kind} ${fmt(v.value)}px ${v.text}`);
         tally[v.kind] += 1;
