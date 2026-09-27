@@ -20,7 +20,7 @@ if (slides.length === 0) {
 }
 
 // ブラウザの中で 1 枚ずつ測る。marp は section を transform で縮小するので、
-// 位置は section の縮尺で割り戻し、大きさは計算後の px を使う。
+// 位置と文字の大きさは section の縮尺で割り戻して使う。
 function measure({ minFont, minCodeFont, tolerance }) {
   // marp の header: / footer: はページの飾りなので本文の規則で測らない
   const EXCLUDE = '.timer-btn, section > header, section > footer';
@@ -70,7 +70,8 @@ function measure({ minFont, minCodeFont, tolerance }) {
       violations.push({ page, kind: 'overflow', value: worst.bottom - limit, text: excerpt(worst.el) });
     }
 
-    for (const pre of section.querySelectorAll('pre')) {
+    // marp のブラウザ用スクリプトは <pre is="marp-pre"> を <marp-pre> に置き換える
+    for (const pre of section.querySelectorAll('pre, marp-pre')) {
       if (pre.closest(EXCLUDE)) continue;
       const over = pre.scrollWidth - pre.clientWidth;
       if (over > tolerance) {
@@ -84,8 +85,11 @@ function measure({ minFont, minCodeFont, tolerance }) {
         (n) => n.nodeType === Node.TEXT_NODE && n.textContent.trim() !== '',
       );
       if (!hasText || el.getClientRects().length === 0) continue;
-      const size = parseFloat(getComputedStyle(el).fontSize) || 0;
-      const min = el.closest('pre, code, table') ? minCodeFont : minFont;
+      // marp の auto-scaling は長いコードを shadow DOM の SVG で縮めるので、計算後の px に縮尺を掛ける
+      const fit = el.closest('marp-pre')?.shadowRoot?.querySelector('marp-auto-scaling')?.shadowRoot?.querySelector('svg');
+      const shrink = fit?.viewBox.baseVal.width ? fit.getBoundingClientRect().width / scale / fit.viewBox.baseVal.width : 1;
+      const size = (parseFloat(getComputedStyle(el).fontSize) || 0) * shrink;
+      const min = el.closest('pre, marp-pre, code, table') ? minCodeFont : minFont;
       if (size < min) {
         violations.push({ page, kind: 'font', value: size, text: excerpt(el) });
       }

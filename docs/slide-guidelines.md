@@ -29,6 +29,7 @@ PR の CI (`.github/workflows/slide-check.yml`) が、スライドのはみ出�
 | それ以外 | 20px |
 
 `style="font-size: 0.6em"` のように直接縮めた文字も同じ基準で測ります。
+Marp が長いコードブロックを自動で縮小 (auto-scaling) したときは、縮小後の大きさで測ります。
 
 ### 検査から外すもの
 
