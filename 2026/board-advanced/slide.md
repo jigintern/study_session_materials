@@ -952,12 +952,12 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 **書く場所 1**: `showPosts` の上
 
 ```javascript
-@@const posts = [];                   // ブラウザ側で持つ投稿。画面と同じ並び@@
+@@const posts = [];@@                   // ブラウザ側で持つ投稿。画面と同じ並び
 
-@@async function loadPosts() {        // 取ってきて posts に入れる。開いたときに1回だけ呼ぶ@@
+@@async function loadPosts() {@@        // 取ってきて posts に入れる。開いたときに1回だけ呼ぶ
 @@  const res = await fetch(`${API}/posts`);@@
-@@  const loaded = await res.json();  // サーバーにある投稿の全件@@
-@@  for (const post of loaded) {      // 1件ずつ posts に入れる@@
+@@  const loaded = await res.json();@@  // サーバーにある投稿の全件
+@@  for (const post of loaded) {@@      // 1件ずつ posts に入れる
 @@    posts.push(post);@@
 @@  }@@
 @@  showPosts();@@
@@ -1026,7 +1026,7 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 ```javascript
 %%source.onmessage = showPosts;%%
 @@function receivePost(e) {@@
-@@  posts.push(JSON.parse(e.data));   // 届いた文字列をオブジェクトに戻して足す@@
+@@  posts.push(JSON.parse(e.data));@@   // 届いた文字列をオブジェクトに戻して足す
 @@  showPosts();@@
 @@}@@
 @@source.onmessage = receivePost;@@
@@ -1145,7 +1145,7 @@ data: {"name":"たろう","text":"やっほー"}
 
 ```javascript
 const posts = [];                    // すでにある行
-@@let connection = null;             // 現在の接続。新しい接続が来ると上書きされる@@
+@@let connection = null;@@             // 現在の接続。新しい接続が来ると上書きされる
 ```
 
 **書く場所 2**: `▼ 4章: ここに GET /events を足す` の行の下
@@ -1157,7 +1157,7 @@ const posts = [];                    // すでにある行
 @@      'Cache-Control': 'no-cache',@@
 @@      'Connection': 'keep-alive',@@
 @@    });@@
-@@    res.flushHeaders();              // ヘッダーだけ先に送る@@
+@@    res.flushHeaders();@@              // ヘッダーだけ先に送る
 @@    connection = res;@@
 @@    return;@@
 @@  }@@
@@ -1250,8 +1250,8 @@ source.onmessage = receivePost;      // すでにある行
 @@  status.className = 'status offline';@@
 @@}@@
 
-@@source.addEventListener('open', showOnline);     // 接続したとき@@
-@@source.addEventListener('error', showOffline);   // 切れたとき@@
+@@source.addEventListener('open', showOnline);@@     // 接続したとき
+@@source.addEventListener('error', showOffline);@@   // 切れたとき
 ```
 
 **成功**: `server.js` を保存すると一瞬「切れています」になり、「つながっています」に戻る
