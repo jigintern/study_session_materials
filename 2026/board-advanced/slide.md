@@ -280,6 +280,10 @@ style: |
   section.compact table {
     font-size: 0.85em;
   }
+  /* 半透明のままだと、縞模様の行の上で色が変わる。白の上での色に固定する */
+  section table code {
+    background-color: #f0f1f2;
+  }
   section .jump {
     position: absolute;
     left: 78px;
