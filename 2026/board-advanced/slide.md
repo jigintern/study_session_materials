@@ -1136,9 +1136,92 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 ---
 
+## 4-1. SSE のレスポンスを返す手順
+
+<div class="seq">
+  <div class="seq-title">GET /events のレスポンス</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
+      <div class="seq-row left"><div class="seq-msg">ヘッダー（Content-Type: text/event-stream）</div></div>
+      <div class="seq-row left"><div class="seq-msg">data: たろうの投稿</div></div>
+      <div class="seq-row left"><div class="seq-msg">data: はなこの投稿</div></div>
+    </div>
+    <div class="seq-repeat">閉じずに書き足し続ける</div>
+  </div>
+</div>
+
+1. ヘッダーで、SSE のレスポンスであることを伝える
+2. ヘッダーだけ先に送る
+3. 投稿があるたびに、1件ずつ区切って書き足す
+
+---
+
 <!-- _class: compact -->
 
-## 4-1. SSE ではデータを1件ずつ区切って送る
+## 4-1. 手順1: ヘッダーで SSE だと伝える
+
+```javascript
+res.writeHead(200, {
+  'Content-Type': 'text/event-stream',
+  'Cache-Control': 'no-cache',
+  'Connection': 'keep-alive',
+});
+```
+
+| ヘッダー | 意味 |
+|---|---|
+| `Content-Type: text/event-stream` | 中身が SSE の形式であること |
+| `Cache-Control: no-cache` | キャッシュを使わず、毎回サーバーから受け取る |
+| `Connection: keep-alive` | レスポンスのあとも接続を切らない |
+
+`EventSource` は、`Content-Type` が `text/event-stream` でないレスポンスを受け付けません。
+
+---
+
+## 4-1. 手順2: ヘッダーだけ先に送る
+
+<div class="columns">
+<div>
+
+<div class="seq">
+  <div class="seq-title">res.flushHeaders() なし</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
+      <div class="seq-row left"><div class="seq-msg">ヘッダー + data（最初の投稿のとき）</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div>
+
+<div class="seq">
+  <div class="seq-title">res.flushHeaders() あり</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
+      <div class="seq-row left"><div class="seq-msg">ヘッダー（すぐ）</div></div>
+      <div class="seq-row left"><div class="seq-msg">data（投稿のとき）</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+`res.writeHead` を呼んだだけでは、ヘッダーはまだ送られません。最初に `res.write` したときに、データと一緒に送られます。
+`res.flushHeaders()` を呼ぶと、ヘッダーだけをすぐ送ります。ブラウザはヘッダーを受け取った時点で接続できたと判定し、`open` イベントが発生します。
+
+---
+
+<!-- _class: compact -->
+
+## 4-1. 手順3: データを1件ずつ区切って送る
 
 ```
 data: {"name":"たろう","text":"やっほー"}
@@ -1149,8 +1232,6 @@ data: {"name":"たろう","text":"やっほー"}
 |---|---|
 | `data: 中身` | イベント1件の中身 |
 | 空行 | ここまでで1件、という区切り |
-
-`Content-Type` は `text/event-stream` にし、`res.flushHeaders()` ですぐ送ります。送らないと、最初のデータを送るまでブラウザ側で `open` イベントが発生しません。
 
 `data:` の行末の改行と空行で、改行が `\n\n` と2つ並びます。
 空行がないと、ブラウザはそのイベントの受信が終わったと判定しないので、`onmessage` の関数が実行されません。
