@@ -406,14 +406,14 @@ const name = document.getElementById('name-input').value;   // 'たろう'
 
 ### 決めうちのメッセージではなく、入力された文字を使う
 
-**書く場所** — `addPost` の中を丸ごと置き換え
+**書く場所** — `addPost` の中。**2行足して、`alert` の行を書き換える**
 
 ```javascript
 function addPost() {
-  const name = document.getElementById('name-input').value;
-  const text = document.getElementById('text-input').value;
+  @@const name = document.getElementById('name-input').value;@@
+  @@const text = document.getElementById('text-input').value;@@
 
-  alert(`${name} さん: ${text}`);
+  @@alert(`${name} さん: ${text}`);@@
 }
 ```
 
@@ -455,16 +455,16 @@ function addPost() {
 
 ### `alert` をやめて、一覧に並べる
 
-**書く場所** — `addPost` の中を丸ごと置き換え
+**書く場所** — `addPost` の中。**`alert` の行を消して、3行足す**
 
 ```javascript
 function addPost() {
   const name = document.getElementById('name-input').value;
   const text = document.getElementById('text-input').value;
 
-  const item = document.createElement('li');
-  item.textContent = `${name}: ${text}`;
-  document.getElementById('posts').appendChild(item);
+  @@const item = document.createElement('li');@@
+  @@item.textContent = `${name}: ${text}`;@@
+  @@document.getElementById('posts').appendChild(item);@@
 }
 ```
 
