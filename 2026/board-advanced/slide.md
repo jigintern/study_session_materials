@@ -1063,6 +1063,7 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 ## 3-2. 届いた1件は `e.data` に文字列で入っている
 
 `onmessage` に登録した関数の引数 `e` の `data` に、投稿1件が文字列で入っています。
+サーバーが、投稿のオブジェクトを JSON の文字列にして送っています。
 
 ```javascript
 '{"id":"1757480580000-a1b2c3d4","name":"たろう","text":"やっほー","createdAt":"..."}'
@@ -1393,7 +1394,7 @@ const posts = [];                    // すでにある行
 **書く場所**: `server.js` の `▼ 4章: 接続しているブラウザに投稿を送る` の行の下
 
 ```javascript
-    if (posts.length > MAX_POSTS) posts.shift();        // すでにある行
+@@    const data = JSON.stringify(post);@@                  // 投稿を JSON の文字列にする
 @@    if (connection) {@@                                   // 接続がなければ null のまま
 @@      connection.write(______);@@                         // 4-1 の手順3 の形式で書き足す
 @@    }@@
@@ -1401,7 +1402,7 @@ const posts = [];                    // すでにある行
 
 **`res.write(文字列)`** = レスポンスを閉じずに、文字列を書き足す
 
-`JSON.stringify(post)` で、投稿のオブジェクトを JSON の文字列にできます。
+ブラウザは 3-2 で `e.data` を `JSON.parse` しているので、サーバーは投稿を JSON の文字列にして送ります。
 文字列に式の値を入れるには、`` `${API}/posts` `` のように `` ` `` で囲み、`${ }` に式を書きます。
 
 **成功**: 投稿すると、一覧に出る
@@ -1412,12 +1413,13 @@ const posts = [];                    // すでにある行
 
 ```javascript
     if (posts.length > MAX_POSTS) posts.shift();        // すでにある行
+    const data = JSON.stringify(post);
     if (connection) {
-      connection.write(@@`data: ${JSON.stringify(post)}\n\n`@@);
+      connection.write(@@`data: ${data}\n\n`@@);
     }
 ```
 
-- `data: ` のあとに、投稿を `JSON.stringify` で文字列にしたものを入れる
+- `data: ` のあとに、JSON の文字列にした投稿 `data` を入れる
 - 末尾の `\n\n` の1つ目で `data:` の行が終わり、2つ目で空行になる
 
 ---
@@ -1519,9 +1521,10 @@ source.onmessage = receivePost;      // すでにある行
 **書く場所**: 投稿を受け取ったところ。4章で書いた `if (connection)` の行
 
 ```javascript
+    const data = JSON.stringify(post);                  // 変わらない行
 %%    if (connection) {%%
 @@    for (const connection of connections) {@@
-      connection.write(`data: ${JSON.stringify(post)}\n\n`);  // 変わらない行
+      connection.write(`data: ${data}\n\n`);              // 変わらない行
     }
 ```
 
