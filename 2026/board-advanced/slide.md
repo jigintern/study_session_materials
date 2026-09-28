@@ -1310,9 +1310,29 @@ const posts = [];                    // すでにある行
 
 ---
 
+<!-- _class: record -->
+
+## 4-2. 接続先を自分のサーバーに変える
+
+<div class="timer" data-seconds="120"></div>
+
+共有サーバーの URL が入っている `API` を書き換えます。
+
+**書く場所**: `public/script.js` の `API` の行
+
+```javascript
+@@const API = location.origin;@@
+```
+
+**`location.origin`** = いま開いているページを配信しているサーバーの URL
+
+**成功**: 再読み込みすると一覧が空になり、Network タブの `events` の行が Status 200 のまま Time が伸び続ける
+
+---
+
 <!-- _class: record compact -->
 
-## 4-2. 投稿が来たらその接続に書き込む
+## 4-3. 投稿が来たらその接続に書き込む
 
 <div class="timer" data-seconds="240"></div>
 
@@ -1331,26 +1351,6 @@ const posts = [];                    // すでにある行
 `JSON.stringify` で投稿のオブジェクトを JSON の文字列にして、先頭に `data: `、末尾に `\n\n` を付けます。
 
 接続がなければ `connection` は `null` のままなので、`if` で確かめてから書きます。
-
----
-
-<!-- _class: record -->
-
-## 4-3. 接続先を自分のサーバーに変える
-
-<div class="timer" data-seconds="120"></div>
-
-共有サーバーの URL が入っている `API` を書き換えます。
-
-**書く場所**: `public/script.js` の `API` の行
-
-```javascript
-@@const API = location.origin;@@
-```
-
-**`location.origin`** = いま開いているページを配信しているサーバーの URL
-
-プレビューのページは自分の `server.js` から届いているので、URL を書き写さなくても、これで自分のサーバーに接続できます。
 
 **成功**: 投稿すると、一覧に出る
 
