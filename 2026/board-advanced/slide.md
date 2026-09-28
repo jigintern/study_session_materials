@@ -386,6 +386,7 @@ style: |
 
 書くコードはそのまま載っています。黄色いところだけを書きます。
 赤く取り消されている行は、消します。
+`______` は空欄です。前の説明のスライドを見て、自分で埋めます。
 
 記述スライドは自分のペースで進めてかまいません。章が早く終わった人は、章の最後のスライドの左上にあるリンクから応用課題に進みましょう。
 
@@ -393,6 +394,7 @@ style: |
 // 例
 const posts = [];
 @@let connection = null;@@           // 黄色: 書いてもらう行
+@@const max = ______;@@              // 空欄: 自分で埋める
 %%setInterval(showPosts, 10000);%%   // 赤: 消してもらう行
 ```
 
@@ -785,10 +787,11 @@ ChatGPT などの AI チャットでは、回答を全部作り終えてから�
 ブラウザ側は、`EventSource` を使うと1行で接続できます。
 
 ```javascript
-const source = new EventSource(`${API}/events`);
+// 例: https://example.com/stream に接続する
+const source = new EventSource('https://example.com/stream');
 ```
 
-- `new EventSource(URL)` で、サーバーの `/events` に接続する
+- `new EventSource(URL)` で、URL のサーバーに接続する
 - 接続したあとは、閉じないレスポンスを受信し続ける
 - 接続が切れたら、ブラウザが自動で再接続する
 - 作った接続は `source` に入れておき、このあと使う
@@ -826,13 +829,27 @@ source.onmessage = handleMessage;    // 関数を登録する。() は付けな�
 ```javascript
 showPosts();                         // すでにある行
 %%setInterval(showPosts, 10000);%%
-@@const source = new EventSource(`${API}/events`);@@
-@@source.onmessage = showPosts;@@
+@@const source = new EventSource(______);@@   // 共有サーバーの /events に接続する
+@@source.onmessage = ______;@@                // データが届くたびに一覧を取り直す
 ```
 
-データが届くたびに `showPosts` を呼び、一覧を取り直します。
+共有サーバーの URL は `API` に入っています。`showPosts` の中の `fetch` と同じ書き方で、パスを付けます。
 
 **成功**: メッセージが投稿された瞬間に表示される
+
+---
+
+## 2-1. 答え
+
+```javascript
+showPosts();                         // すでにある行
+%%setInterval(showPosts, 10000);%%
+const source = new EventSource(@@`${API}/events`@@);
+source.onmessage = @@showPosts@@;
+```
+
+- 接続先は、`showPosts` の中の `` fetch(`${API}/posts`) `` と同じく、`${API}` のあとにパスを付ける
+- `onmessage` には、一覧を取り直す `showPosts` を `()` を付けずに代入する
 
 ---
 
@@ -1051,6 +1068,8 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 '{"id":"1757480580000-a1b2c3d4","name":"たろう","text":"やっほー","createdAt":"..."}'
 ```
 
+**`JSON.parse(文字列)`** = JSON の文字列をオブジェクトに戻す
+
 `JSON.parse` に通すと、`showPosts` が並べているのと同じ形のオブジェクトになります。
 
 ---
@@ -1068,13 +1087,27 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 ```javascript
 %%source.onmessage = showPosts;%%
 @@function receivePost(e) {@@
-@@  posts.push(JSON.parse(e.data));@@   // 届いた文字列をオブジェクトに戻して足す
+@@  posts.push(______);@@                // 届いた文字列をオブジェクトに戻して足す
 @@  showPosts();@@
 @@}@@
 @@source.onmessage = receivePost;@@
 ```
 
 **成功**: 投稿しても `posts` の GET が増えず、一覧にはその投稿が出る
+
+---
+
+## 3-2. 答え
+
+```javascript
+function receivePost(e) {
+  posts.push(@@JSON.parse(e.data)@@);
+  showPosts();
+}
+source.onmessage = receivePost;
+```
+
+- `e.data` は文字列なので、`JSON.parse` でオブジェクトに戻してから `posts` に足す
 
 ---
 
@@ -1202,13 +1235,14 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 ## 4-1. 手順1: ヘッダーで SSE だと伝える
 
+**`res.writeHead(ステータスコード, ヘッダー)`** = レスポンスのヘッダーを設定する
+
 ```javascript
-res.writeHead(200, {
-  'Content-Type': 'text/event-stream',
-  'Cache-Control': 'no-cache',
-  'Connection': 'keep-alive',
-});
+// 例: server.js の sendJson。中身が JSON であることを伝える
+res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
 ```
+
+SSE では、次の3つのヘッダーを設定します。
 
 | ヘッダー | 意味 |
 |---|---|
@@ -1294,19 +1328,37 @@ const posts = [];                    // すでにある行
 **書く場所 2**: `▼ 4章: ここに GET /events を足す` の行の下
 
 ```javascript
-@@  if (req.method === 'GET' && url.pathname === '/events') {@@
+@@  if (req.method === 'GET' && url.pathname === '______') {@@  // すぐ上の GET /posts と同じ形
 @@    res.writeHead(200, {@@
-@@      'Content-Type': 'text/event-stream',@@
+@@      'Content-Type': '______',@@
 @@      'Cache-Control': 'no-cache',@@
 @@      'Connection': 'keep-alive',@@
 @@    });@@
-@@    res.flushHeaders();@@              // ヘッダーだけ先に送る
-@@    connection = res;@@
+@@    res.______();@@                    // ヘッダーだけ先に送る
+@@    connection = res;@@                // res.end() は呼ばず、閉じないまま保持する
 @@    return;@@
 @@  }@@
 ```
 
-ここでは `res.end()` を呼びません。閉じないまま変数 `connection` に保持します。
+---
+
+## 4-1. 答え
+
+```javascript
+  if (req.method === 'GET' && url.pathname === '@@/events@@') {
+    res.writeHead(200, {
+      'Content-Type': '@@text/event-stream@@',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+    });
+    res.@@flushHeaders@@();
+    connection = res;
+    return;
+  }
+```
+
+- `Content-Type` は、手順1 の `text/event-stream`
+- ヘッダーだけ先に送るのは、手順2 の `res.flushHeaders()`
 
 ---
 
@@ -1342,17 +1394,31 @@ const posts = [];                    // すでにある行
 
 ```javascript
     if (posts.length > MAX_POSTS) posts.shift();        // すでにある行
-
-@@    if (connection) {@@
-@@      connection.write(`data: ${JSON.stringify(post)}\n\n`);@@
+@@    if (connection) {@@                                   // 接続がなければ null のまま
+@@      connection.write(______);@@                         // 4-1 の手順3 の形式で書き足す
 @@    }@@
 ```
 
-`JSON.stringify` で投稿のオブジェクトを JSON の文字列にして、先頭に `data: `、末尾に `\n\n` を付けます。
+**`res.write(文字列)`** = レスポンスを閉じずに、文字列を書き足す
 
-接続がなければ `connection` は `null` のままなので、`if` で確かめてから書きます。
+`JSON.stringify(post)` で、投稿のオブジェクトを JSON の文字列にできます。
+文字列に式の値を入れるには、`` `${API}/posts` `` のように `` ` `` で囲み、`${ }` に式を書きます。
 
 **成功**: 投稿すると、一覧に出る
+
+---
+
+## 4-3. 答え
+
+```javascript
+    if (posts.length > MAX_POSTS) posts.shift();        // すでにある行
+    if (connection) {
+      connection.write(@@`data: ${JSON.stringify(post)}\n\n`@@);
+    }
+```
+
+- `data: ` のあとに、投稿を `JSON.stringify` で文字列にしたものを入れる
+- 末尾の `\n\n` の1つ目で `data:` の行が終わり、2つ目で空行になる
 
 ---
 
@@ -1525,12 +1591,27 @@ source.onmessage = receivePost;      // すでにある行
 @@      connections.splice(connections.indexOf(res), 1);@@
 @@      console.log(`接続数: ${connections.length}`);@@
 @@    }@@
-@@    req.on('close', removeConnection);@@
+@@    req.on(______);@@                  // 接続が切れたら removeConnection を呼ぶ
 ```
 
 `indexOf` で並びの何番目かを探して、`splice` でそこから1つ抜いています。
 
 **成功**: タブを閉じると、ターミナルの接続数が1減る
+
+---
+
+## 5-3. 答え
+
+```javascript
+    function removeConnection() {
+      connections.splice(connections.indexOf(res), 1);
+      console.log(`接続数: ${connections.length}`);
+    }
+    req.on(@@'close', removeConnection@@);
+```
+
+- 1つ目はイベントの名前 `'close'`、2つ目は切れたときに呼ぶ関数 `removeConnection`
+- 関数は `()` を付けずに渡す
 
 ---
 
