@@ -1,3 +1,6 @@
 .DS_Store
 
 node_modules/
+
+# ライブプレビューの出力 (marp-serve と pnpm rehearsal)
+*.preview.html
