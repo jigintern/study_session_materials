@@ -965,6 +965,24 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 ---
 
+<!-- _class: compact -->
+
+## 3-2. 関数の役割を分け直す
+
+| 名前 | いま | 分け直したあと |
+|---|---|---|
+| `posts` | `showPosts` を呼ぶたびに作る | ブラウザ側で1つだけ持つ配列 |
+| `loadPosts` | なし | 開いたときに1回だけ全件を取得して、`posts` に入れる |
+| `showPosts` | 全件を取得して並べる | `posts` を画面に並べるだけ |
+| `receivePost` | なし | 届いた1件を `posts` に足す |
+
+1. `loadPosts` を作る
+2. `showPosts` から `fetch` を消す
+3. 受信した1件を `posts` に追加する
+4. 使わなくなった `showPosts` の呼び出しを消す
+
+---
+
 <!-- _class: record compact -->
 
 ## 3-2. 投稿を取ってくる `loadPosts` を作る
@@ -1056,15 +1074,38 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 ---
 
-<!-- _class: record compact -->
+## 3-2. 自分の投稿も SSE で届く
 
-## 3-2. サーバーから取得するのは最初の1回だけ
+<div class="seq">
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events（ページを開いたとき）</div></div>
+    </div>
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">POST /posts（自分の投稿）</div></div>
+      <div class="seq-row left"><div class="seq-msg">保存した投稿</div></div>
+    </div>
+    <div class="seq-group">
+      <div class="seq-row left"><div class="seq-msg">data: 自分の投稿（/events の接続で届く）</div></div>
+    </div>
+  </div>
+</div>
 
-<div class="timer" data-seconds="120"></div>
+自分の投稿も、ほかの人の投稿と同じく `/events` から届き、`receivePost` が一覧に足します。
+`addPost` の最後で呼んでいる `showPosts` は、`posts` を並べ直すだけなので、呼んでも一覧は変わりません。
 
-`fetch` は `loadPosts` に1つだけ残りました。自分の投稿もサーバーから SSE で届いて戻ってくるので、`addPost` から呼び直す必要はありません。`showPosts` はサーバーから取得しない関数になったので、更新ボタンを押しても並べ直すだけです。
+---
 
-**書く場所 1**: `addPost` の中、`text-input` を空にした行の下
+<!-- _class: record -->
+
+## 3-2. `addPost` から `showPosts` を消す
+
+<div class="timer" data-seconds="60"></div>
+
+`addPost` の最後で呼んでいる `showPosts` を消します。
+
+**書く場所**: `addPost` の中、`text-input` を空にした行の下
 
 ```javascript
   document.getElementById('text-input').value = '';   // ここから下
@@ -1072,14 +1113,9 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 }
 ```
 
-**書く場所 2**: `reload-btn` にイベントを登録している行
+これで `fetch` は `loadPosts` の1つだけになり、サーバーから投稿を取得するのはページを開いたときの1回だけになります。
 
-```javascript
-%%document.getElementById('reload-btn').addEventListener('click', showPosts);%%
-@@document.getElementById('reload-btn').remove();@@
-```
-
-**成功**: 投稿しても一覧が二重に増えず、更新ボタンが画面から消える
+**成功**: 投稿すると、一覧に1件だけ出る
 
 ---
 
