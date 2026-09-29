@@ -1309,13 +1309,16 @@ res.setHeader('Cache-Control', 'no-cache');
 <div class="columns">
 <div>
 
-<div class="seq">
+<div class="seq no-num">
   <div class="seq-title"><code>res.flushHeaders()</code> なし</div>
   <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
   <div class="seq-body">
     <div class="seq-group">
       <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
-      <div class="seq-row left"><div class="seq-msg">ヘッダー + data（最初の投稿のとき）</div></div>
+    </div>
+    <div class="seq-repeat">最初の投稿まで何も届かない</div>
+    <div class="seq-group">
+      <div class="seq-row left"><div class="seq-msg">ヘッダー + data</div></div>
     </div>
   </div>
 </div>
@@ -1323,14 +1326,17 @@ res.setHeader('Cache-Control', 'no-cache');
 </div>
 <div>
 
-<div class="seq">
+<div class="seq no-num">
   <div class="seq-title"><code>res.flushHeaders()</code> あり</div>
   <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
   <div class="seq-body">
     <div class="seq-group">
       <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
-      <div class="seq-row left"><div class="seq-msg">ヘッダー（すぐ）</div></div>
-      <div class="seq-row left"><div class="seq-msg">data（投稿のとき）</div></div>
+      <div class="seq-row left"><div class="seq-msg">ヘッダー</div></div>
+    </div>
+    <div class="seq-repeat">最初の投稿を待つ</div>
+    <div class="seq-group">
+      <div class="seq-row left"><div class="seq-msg">data</div></div>
     </div>
   </div>
 </div>
@@ -1338,11 +1344,8 @@ res.setHeader('Cache-Control', 'no-cache');
 </div>
 </div>
 
-| 書き方 | 意味 |
-|---|---|
-| `res.flushHeaders()` | 設定したヘッダーだけをすぐ送る。呼ばないと最初の `res.write` でデータと一緒に送られる |
-
-ブラウザはヘッダーを受け取った時点で接続できたと判定し、`open` イベントが発生します。
+ブラウザはヘッダーを受け取るまで、接続できたかどうかが分かりません。
+そこで、`setHeader` のあとに `res.flushHeaders()` を呼んで、ヘッダーだけ先に送ります。
 
 ---
 
