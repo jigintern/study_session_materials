@@ -1239,13 +1239,12 @@ SSE では、ブラウザがこのヘッダーを見て、SSE のレスポンス
 
 **`res.writeHead(ステータスコード, ヘッダー)`** = レスポンスのヘッダーを設定する
 
-SSE では、次の3つのヘッダーを設定します。
+SSE では、次の2つのヘッダーを設定します。
 
 | ヘッダー | 意味 |
 |---|---|
 | `Content-Type: text/event-stream` | 中身が SSE の形式であること。これ以外だと `EventSource` が受け付けない |
 | `Cache-Control: no-cache` | キャッシュを使わず、毎回サーバーから受け取る |
-| `Connection: keep-alive` | レスポンスのあとも接続を切らない |
 
 ---
 
@@ -1327,7 +1326,6 @@ const posts = [];                    // すでにある行
 @@    res.writeHead(200, {@@
 @@      'Content-Type': '______',@@
 @@      'Cache-Control': 'no-cache',@@
-@@      'Connection': 'keep-alive',@@
 @@    });@@
 @@    res.______();@@                    // ヘッダーだけ先に送る
 @@    connection = res;@@                // res.end() は呼ばず、閉じないまま保持する
@@ -1344,7 +1342,6 @@ const posts = [];                    // すでにある行
     res.writeHead(200, {
       'Content-Type': '@@text/event-stream@@',
       'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
     });
     res.@@flushHeaders@@();
     connection = res;

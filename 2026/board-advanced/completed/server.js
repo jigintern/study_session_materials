@@ -30,7 +30,6 @@ const server = createServer(async (req, res) => {
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
     });
     res.flushHeaders();
     connections.push(res);
