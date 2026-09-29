@@ -154,7 +154,7 @@ const frame = $('frame');
 // 表示中のデッキ。スライドの一覧と表示中の位置は iframe から読む
 const deck = {
   path: new URLSearchParams(location.search).get('deck') || '',
-  slides: [],       // { key, title, isH1 }
+  slides: [],       // { key, title, isH1, text, section }
   current: 0,       // 表示中のスライドの添字
 };
 
@@ -584,6 +584,56 @@ function rebuildHits() {
   $('search-count').textContent = `${session.hits.length} 件`;
   $('search-count').classList.toggle('none', searching && !session.hits.length);
   renderHitRows();
+  highlightHits(term);
+}
+
+const HIGHLIGHT_NAME = 'rehearsal-search';
+
+// 一致した箇所をスライドの上で塗る。DOM を書き換えないよう CSS Custom Highlight API を使う。
+// バッジなど ::before の文字は DOM にないので、そこでの一致は塗れない
+function highlightHits(term) {
+  const win = frame.contentWindow;
+  if (!win?.CSS?.highlights || !win.Highlight) return;
+  const doc = win.document;
+  if (!doc.getElementById(HIGHLIGHT_NAME)) {
+    const style = doc.createElement('style');
+    style.id = HIGHLIGHT_NAME;
+    style.textContent = `::highlight(${HIGHLIGHT_NAME}) { background: rgba(0, 150, 255, 0.35); }`;
+    doc.head.append(style);
+  }
+  const ranges = session.hits
+    .map((i) => deck.slides[i].section)
+    .filter(Boolean)
+    .flatMap((section) => matchRanges(section, term));
+  win.CSS.highlights.set(HIGHLIGHT_NAME, new win.Highlight(...ranges));
+}
+
+// slide.text と同じく空白の連なりを 1 つにまとめた文字列で term を探し、当たった箇所を元のテキストノードの Range にする
+function matchRanges(root, term) {
+  const doc = root.ownerDocument;
+  const walker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let text = '';
+  const at = [];  // text の各文字が元のどのノードの何文字目か
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    for (let i = 0; i < node.data.length; i++) {
+      const space = /\s/.test(node.data[i]);
+      if (space && (text === '' || text.endsWith(' '))) continue;
+      for (const c of (space ? ' ' : node.data[i].toLowerCase())) {
+        text += c;
+        at.push({ node, offset: i });
+      }
+    }
+  }
+  const ranges = [];
+  for (let i = text.indexOf(term); i !== -1; i = text.indexOf(term, i + term.length)) {
+    const first = at[i];
+    const last = at[i + term.length - 1];
+    const range = doc.createRange();
+    range.setStart(first.node, first.offset);
+    range.setEnd(last.node, last.offset + 1);
+    ranges.push(range);
+  }
+  return ranges;
 }
 
 function hitRow(i, term) {
@@ -679,7 +729,7 @@ function readSlides(doc) {
     const n = (seen.get(title) ?? 0) + 1;
     seen.set(title, n);
     const text = section ? [pseudoText(section, '::before'), section.textContent, pseudoText(section, '::after')].join(' ') : '';
-    return { key: `${title}#${n}`, title, isH1: heading?.tagName === 'H1', text: text.replace(/\s+/g, ' ').trim() };
+    return { key: `${title}#${n}`, title, isH1: heading?.tagName === 'H1', text: text.replace(/\s+/g, ' ').trim(), section };
   });
 }
 
