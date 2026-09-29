@@ -110,7 +110,7 @@ style: |
     display: block;
   }
   section.compact pre {
-    font-size: 0.65em;
+    font-size: 0.7em;
   }
   section.compact table {
     font-size: 0.8em;
@@ -317,7 +317,7 @@ sayHello();   // ← ここではじめて中身が実行される
 
 **`部品.addEventListener('きっかけ', 関数)`** = きっかけが起きたら関数を動かす
 
-<div class="columns">
+<div class="columns" style="grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);">
 <div>
 
 ```html
@@ -332,7 +332,7 @@ button.addEventListener('click', sayHello);
 ```
 
 </div>
-<div>
+<div style="font-size: 0.85em;">
 
 | きっかけ | いつ起きるか |
 |---|---|
@@ -921,7 +921,7 @@ async function addPost() {
 - 名前を変えて投稿する
 - 絵文字を入れてみる
 - 長い文章を投稿してみる（一定の長さで切られます）
-- 空のまま投稿してみる（送られません）
+- 名前かメッセージを空にして投稿してみる（投稿されず、書いたメッセージも消えます）
 
 サーバー側には「1つの掲示板に置ける投稿は200件まで」という制限があります。古いものから順に消えていきます。
 
