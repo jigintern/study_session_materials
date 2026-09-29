@@ -923,13 +923,11 @@ document.getElementById('reload-btn').addEventListener('click', showPosts);
 
 showPosts();                         // すでにある行
 %%setInterval(showPosts, 10000);%%
-@@const source = new EventSource(______);@@   // 共有サーバーの /events に接続する
-@@source.onmessage = ______;@@                // データが届くたびに一覧を取り直す
+@@const source = new ______(`${API}/events`);@@   // 共有サーバーの /events に接続する
+@@source.______ = showPosts;@@                    // データが届くたびに一覧を取り直す
 ```
 
-共有サーバーの URL は `API` に入っています。`showPosts` の中の `fetch` と同じ書き方で、パスを付けます。
-
-**成功**: メッセージが投稿された瞬間に表示される
+**成功**: 新しい投稿が、投稿された瞬間に表示される
 
 ---
 
@@ -940,12 +938,12 @@ document.getElementById('reload-btn').addEventListener('click', showPosts);
 
 showPosts();                         // すでにある行
 %%setInterval(showPosts, 10000);%%
-const source = new EventSource(@@`${API}/events`@@);
-source.onmessage = @@showPosts@@;
+const source = new @@EventSource@@(`${API}/events`);
+source.@@onmessage@@ = showPosts;
 ```
 
-- 接続先は、`showPosts` の中の `` fetch(`${API}/posts`) `` と同じく、`${API}` のあとにパスを付ける
-- `onmessage` には、一覧を取り直す `showPosts` を `()` を付けずに代入する
+- 接続は `new EventSource(<URL>)` で作る
+- データを受信するたびに呼ぶ関数は、`onmessage` に代入する
 
 ---
 
