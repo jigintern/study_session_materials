@@ -1723,23 +1723,6 @@ source.onmessage = receivePost;      // すでにある行
 
 ---
 
-## 関数を登録して、きっかけが起きたら実行する
-
-今日のコードでは、関数を登録しておき、決まったきっかけで実行させる書き方を3回使いました。
-
-```javascript
-// 10秒たつたび
-setInterval(showPosts, 10000);
-// クリックされるたび
-document.getElementById('post-btn').addEventListener('click', addPost);
-// データを受信するたび
-source.onmessage = receivePost;
-```
-
-どれも関数名に `()` を付けずに渡します。
-
----
-
 <!-- _class: lead -->
 
 # おつかれさまでした！
