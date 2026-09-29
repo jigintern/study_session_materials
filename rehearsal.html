@@ -22,7 +22,7 @@
   }
   .app {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 500px;
+    grid-template-columns: minmax(0, 1fr) 540px;
     height: 100vh;
   }
   .app.empty { grid-template-columns: 1fr; }
@@ -52,6 +52,7 @@
   .clock .big { font-size: 28px; }
   .clock col.label { width: 5em; }
   .clock col.time { width: 11em; }
+  .clock col.check { width: 2em; }
   .controls { display: flex; gap: 6px; align-items: center; margin-top: 8px; }
   button, input { font: inherit; }
   button { white-space: nowrap; flex-shrink: 0; padding: 3px 10px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 3px; cursor: pointer; }
@@ -75,6 +76,8 @@
   tr.slide td.title { padding-left: 1.6em; }
   tr.slide .idx { display: inline-block; min-width: 2em; color: var(--muted); font-variant-numeric: tabular-nums; }
   tr.slide.unvisited td.title { color: var(--muted); }
+  tr.slide.done .name { text-decoration: line-through; }
+  table.data .check { text-align: center; }
   .visits { color: var(--muted); margin-left: 4px; }
   input.budget { width: 3.5em; text-align: right; font-variant-numeric: tabular-nums; padding: 1px 4px; border: 1px solid var(--line); border-radius: 3px; }
   aside > section.plan, aside > section.hits { flex: 1; min-height: 0; overflow-y: auto; padding-top: 0; padding-bottom: 0; border-bottom: 0; }
@@ -102,10 +105,10 @@
     <p class="error" id="error" role="alert"></p>
     <section class="clock">
       <table>
-        <colgroup><col class="label"><col><col class="time"></colgroup>
-        <tr><th>通し</th><td class="title"></td><td class="num big" id="total"></td></tr>
-        <tr><th>区間</th><td class="title" id="seg-title"></td><td class="num" id="seg-time"></td></tr>
-        <tr><th>スライド</th><td class="title" id="slide-title"></td><td class="num" id="slide-time"></td></tr>
+        <colgroup><col class="label"><col class="check"><col><col class="time"></colgroup>
+        <tr><th>通し</th><td></td><td class="title"></td><td class="num big" id="total"></td></tr>
+        <tr><th>区間</th><td></td><td class="title" id="seg-title"></td><td class="num" id="seg-time"></td></tr>
+        <tr><th>スライド</th><td><input type="checkbox" id="slide-done" aria-label="表示中のスライドを完了にする" title="完了 (Shift+D)"></td><td class="title" id="slide-title"></td><td class="num" id="slide-time"></td></tr>
       </table>
       <div class="controls">
         <button class="primary" id="toggle"></button>
@@ -126,10 +129,10 @@
     </section>
     <section class="plan" id="plan">
       <table class="data">
-        <colgroup><col><col class="budget"><col class="actual"><col class="n"><col class="n"><col class="toggle"></colgroup>
-        <thead><tr><th>区間 / スライド</th><th class="num">予定 (分)</th><th class="num">実績</th><th class="num">差</th><th class="num">累計差</th><th title="このスライドから区間を始める">区切り</th></tr></thead>
+        <colgroup><col class="toggle"><col><col class="budget"><col class="actual"><col class="n"><col class="n"><col class="toggle"></colgroup>
+        <thead><tr><th class="check" title="作業を終えたスライド">完了</th><th>区間 / スライド</th><th class="num">予定 (分)</th><th class="num">実績</th><th class="num">差</th><th class="num">累計差</th><th title="このスライドから区間を始める">区切り</th></tr></thead>
         <tbody id="plan-body"></tbody>
-        <tfoot><tr><td>合計</td><td class="num" id="sum-budget"></td><td class="num" id="sum-actual"></td><td class="num" id="sum-diff"></td><td></td><td></td></tr></tfoot>
+        <tfoot><tr><td class="num check" id="sum-done"></td><td>合計</td><td class="num" id="sum-budget"></td><td class="num" id="sum-actual"></td><td class="num" id="sum-diff"></td><td></td><td></td></tr></tfoot>
       </table>
     </section>
     <footer>
@@ -160,7 +163,7 @@ const deck = {
 
 // localStorage に保存する分。表示中のページと一緒に snapshot() が書き出す
 const saved = {
-  config: { boundaries: null, budgets: {} },  // boundaries が null なら h1 のスライドで区切る
+  config: { boundaries: null, budgets: {}, done: [] },  // boundaries が null なら h1 のスライドで区切る。done は作業を終えたスライドの key
   run: emptyRun(),
 };
 
@@ -202,6 +205,7 @@ function applySaved(data) {
   saved.config = {
     boundaries: Array.isArray(data.config?.boundaries) ? data.config.boundaries : null,
     budgets: data.config?.budgets ?? {},
+    done: Array.isArray(data.config?.done) ? data.config.done : [],
   };
   // 開き直した時点では止まっている。閉じていた間を今のスライドに足さない
   saved.run = { status: stoppedStatus(data.run?.status), perSlide: data.run?.perSlide ?? {}, lastKey: data.run?.lastKey };
@@ -245,6 +249,10 @@ function showError(message) {
 
 function boundarySet() {
   return new Set(saved.config.boundaries ?? deck.slides.filter((s) => s.isH1).map((s) => s.key));
+}
+
+function isDone(key) {
+  return saved.config.done.includes(key);
 }
 
 function slideMs(key) {
@@ -393,6 +401,19 @@ function setBudget(key, value) {
   render();
 }
 
+function setDone(key, on) {
+  const done = saved.config.done.filter((k) => k !== key);
+  if (on) done.push(key);
+  saved.config.done = done;
+  save();
+  render();
+}
+
+function toggleCurrentDone() {
+  const slide = deck.slides[deck.current];
+  if (slide) setDone(slide.key, !isDone(slide.key));
+}
+
 // ---- 描画 ----
 
 // 既定では表示中の区間だけを開く。手で開け閉めした分は、表示中の区間が移るまで覚えておく
@@ -431,7 +452,7 @@ function rebuildTable() {
 function segmentRow(seg, i) {
   const tr = document.createElement('tr');
   tr.className = 'seg';
-  tr.innerHTML = '<td class="title"><button class="disclosure" type="button"></button><span class="name"></span><span class="count"></span></td><td class="num"><input class="budget" type="number" min="0" step="1"></td><td class="num actual"></td><td class="num diff"></td><td class="num cum"></td><td></td>';
+  tr.innerHTML = '<td class="num check done"></td><td class="title"><button class="disclosure" type="button"></button><span class="name"></span><span class="count"></span></td><td class="num"><input class="budget" type="number" min="0" step="1"></td><td class="num actual"></td><td class="num diff"></td><td class="num cum"></td><td></td>';
   const button = tr.querySelector('button');
   button.setAttribute('aria-label', `${seg.title} のスライドを開閉`);
   const count = seg.to - seg.from + 1;
@@ -448,23 +469,26 @@ function segmentRow(seg, i) {
   input.value = saved.config.budgets[seg.key] ?? '';
   input.setAttribute('aria-label', `${seg.title} の予定 (分)`);
   input.addEventListener('input', () => setBudget(seg.key, input.value));
-  return { tr, button, actual: tr.querySelector('.actual'), diff: tr.querySelector('.diff'), cum: tr.querySelector('.cum') };
+  return { tr, button, actual: tr.querySelector('.actual'), diff: tr.querySelector('.diff'), cum: tr.querySelector('.cum'), done: tr.querySelector('.done') };
 }
 
 function slideRow(i, segIndex, boundaries) {
   const slide = deck.slides[i];
   const tr = document.createElement('tr');
   tr.className = 'slide';
-  tr.innerHTML = '<td class="title" colspan="2"><span class="idx"></span><span class="name"></span></td><td class="num actual"></td><td></td><td></td><td><input type="checkbox"></td>';
+  tr.innerHTML = '<td class="check"><input type="checkbox" class="done"></td><td class="title" colspan="2"><span class="idx"></span><span class="name"></span></td><td class="num actual"></td><td></td><td></td><td><input type="checkbox" class="boundary"></td>';
   tr.querySelector('.idx').textContent = i + 1;
   tr.querySelector('.name').textContent = slide.title;
   tr.querySelector('.title').title = slide.title;
-  const box = tr.querySelector('input');
+  const done = tr.querySelector('input.done');
+  done.setAttribute('aria-label', `${slide.title} を完了にする`);
+  done.addEventListener('change', () => setDone(slide.key, done.checked));
+  const box = tr.querySelector('input.boundary');
   box.checked = i === 0 || boundaries.has(slide.key);
   box.disabled = i === 0;
   box.setAttribute('aria-label', `${slide.title} から区間を始める`);
   box.addEventListener('change', () => setBoundary(slide.key, box.checked));
-  const row = { tr, segIndex, actual: tr.querySelector('.actual') };
+  const row = { tr, segIndex, actual: tr.querySelector('.actual'), done };
   tableRows.slides[i] = row;
   return row;
 }
@@ -488,7 +512,7 @@ function render() {
 function renderControls() {
   $('toggle').innerHTML = `${TOGGLE_LABEL[saved.run.status]}<kbd>Shift+T</kbd>`;
   $('undo').hidden = !session.undo;
-  for (const id of ['toggle', 'reset', 'search', 'export-segments', 'export-slides', 'export-json', 'import-json']) {
+  for (const id of ['toggle', 'reset', 'slide-done', 'search', 'export-segments', 'export-slides', 'export-json', 'import-json']) {
     $(id).disabled = !deck.slides.length;
   }
 }
@@ -505,6 +529,7 @@ function renderClock(seg, total) {
   $('slide-title').textContent = `${deck.current + 1}. ${slide.title}`;
   $('slide-title').title = slide.title;
   $('slide-time').textContent = fmt(slideMs(slide.key));
+  $('slide-done').checked = isDone(slide.key);
 }
 
 function renderSegmentRows(list, curSeg, open) {
@@ -520,11 +545,18 @@ function renderSegmentRows(list, curSeg, open) {
     row.button.textContent = open[i] ? '▾' : '▸';
     row.button.setAttribute('aria-expanded', open[i]);
     row.actual.textContent = reached ? fmt(seg.ms) : '';
+    row.done.textContent = doneLabel(seg.from, seg.to);
     const diff = seg.budgetMs == null || !reached ? null : seg.ms - seg.budgetMs;
     showDiff(row.diff, diff);
     const cum = !reached || !cumBudget ? null : cumActual - cumBudget;
     showDiff(row.cum, cum);
   });
+}
+
+// from から to までのスライドのうち完了した枚数を「3/5」の形で返す
+function doneLabel(from, to) {
+  const slides = deck.slides.slice(from, to + 1);
+  return `${slides.filter((s) => isDone(s.key)).length}/${slides.length}`;
 }
 
 function renderTotals(list, total) {
@@ -533,6 +565,7 @@ function renderTotals(list, total) {
   $('sum-budget').textContent = budgeted.length ? fmt(budgetTotal) : '';
   $('sum-actual').textContent = fmt(total);
   showDiff($('sum-diff'), budgeted.length ? total - budgetTotal : null);
+  $('sum-done').textContent = doneLabel(0, deck.slides.length - 1);
 }
 
 function renderSlideRows(open) {
@@ -540,9 +573,12 @@ function renderSlideRows(open) {
     const row = tableRows.slides[i];
     if (!row) return;
     const measured = saved.run.perSlide[slide.key];
+    const done = isDone(slide.key);
     row.tr.hidden = !open[row.segIndex];
     row.tr.classList.toggle('current', i === deck.current);
     row.tr.classList.toggle('unvisited', !measured);
+    row.tr.classList.toggle('done', done);
+    row.done.checked = done;
     row.actual.textContent = measured ? fmt(measured.ms) : '';
     if (measured?.visits > 1) {
       const v = document.createElement('span');
@@ -804,11 +840,11 @@ function exportSegments() {
 
 function exportSlides() {
   const list = segments();
-  const rows = [['番号', '見出し', '区間', '実績 (秒)', '訪問回数']];
+  const rows = [['番号', '見出し', '区間', '実績 (秒)', '訪問回数', '完了']];
   deck.slides.forEach((s, i) => {
     const seg = list[segmentIndexOf(list, i)];
     const e = saved.run.perSlide[s.key];
-    rows.push([i + 1, s.title, seg.title, e ? sec(e.ms) : '', e ? e.visits : '']);
+    rows.push([i + 1, s.title, seg.title, e ? sec(e.ms) : '', e ? e.visits : '', isDone(s.key) ? 1 : 0]);
   });
   download(`${baseName()}-slides.csv`, csv(rows), 'text/csv');
 }
@@ -836,6 +872,8 @@ async function importJson(file) {
 
 // ---- 操作 ----
 
+const SHIFT_KEYS = { T: toggleRun, D: toggleCurrentDone };
+
 function onKeydown(e) {
   // ブラウザの検索は SVG の中のスライドへ飛べないので、同じキーでこちらの検索を開く
   if (e.key === 'f' && (e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey) {
@@ -845,12 +883,13 @@ function onKeydown(e) {
     focusSearch();
     return;
   }
-  if (e.key !== 'T' || !e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
+  const action = SHIFT_KEYS[e.key];
+  if (!action || !e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
   const t = e.target;
   if (t instanceof t.ownerDocument.defaultView.HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
   e.preventDefault();
   e.stopPropagation();
-  toggleRun();
+  action();
 }
 
 // ボタンを押したあともスライド送りのキーが効くよう、フォーカスをスライドへ戻す
@@ -860,6 +899,7 @@ function refocusDeck() {
 
 $('toggle').addEventListener('click', () => { toggleRun(); refocusDeck(); });
 $('reset').addEventListener('click', () => { reset(); refocusDeck(); });
+$('slide-done').addEventListener('change', (e) => { setDone(deck.slides[deck.current].key, e.target.checked); refocusDeck(); });
 $('undo').addEventListener('click', () => { undoReset(); refocusDeck(); });
 $('export-segments').addEventListener('click', exportSegments);
 $('export-slides').addEventListener('click', exportSlides);
