@@ -392,8 +392,7 @@ style: |
 
 ## 準備
 
-1. ブラウザで StackBlitz のテンプレートを開く
-   https://stackblitz.com/edit/node-cdfr3jqk?file=public%2Fscript.js,server.js
+1. ブラウザで [StackBlitz のテンプレート](https://stackblitz.com/fork/github/jigintern/study_session_materials/tree/main/2026/board-advanced/template?file=public%2Fscript.js,server.js) を開く
 2. 左上の **Fork** を押す
 3. `public/script.js` を開き、`API` の値を今から伝える URL に書き換える
 

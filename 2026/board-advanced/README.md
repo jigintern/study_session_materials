@@ -26,7 +26,7 @@ JavaScript そのものが初めてでも構いません。
 
 - ブラウザのみ（StackBlitz を使用）
 - 開発環境のインストール不要
-- テンプレート: https://stackblitz.com/edit/node-cdfr3jqk?file=public%2Fscript.js,server.js
+- テンプレート: https://stackblitz.com/fork/github/jigintern/study_session_materials/tree/main/2026/board-advanced/template?file=public%2Fscript.js,server.js
 
 ### Fork してから書く
 
