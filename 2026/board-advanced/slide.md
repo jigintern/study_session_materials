@@ -1594,7 +1594,7 @@ source.onmessage = receivePost;      // すでにある行
 
 ---
 
-## 5-3. 閉じた接続が配列に残り続ける
+## 5-3. 切れた接続が配列に残り続ける
 
 タブを閉じたり再読み込みしたりすると、そのタブの接続は切れます。
 いまの `server.js` は、切れた接続を `connections` から消していません。
@@ -1629,7 +1629,7 @@ source.onmessage = receivePost;      // すでにある行
 
 <!-- _class: record -->
 
-## 5-3. 閉じた接続を消す
+## 5-3. 切れた接続を消す
 
 <div class="timer" data-seconds="240"></div>
 
