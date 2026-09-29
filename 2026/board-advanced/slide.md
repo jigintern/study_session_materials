@@ -981,7 +981,7 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 # 休憩
 
-<div class="timer" data-seconds="600"></div>
+<div class="timer" data-seconds="300"></div>
 
 ---
 
@@ -1512,7 +1512,7 @@ data: {"name":"たろう","text":"やっほー"}
 
 ## 4-3. 投稿が来たらその接続に書き込む
 
-<div class="timer" data-seconds="240"></div>
+<div class="timer" data-seconds="180"></div>
 
 保存したあと、保持しておいた接続に1件ぶん書き足します。
 
