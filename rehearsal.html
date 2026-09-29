@@ -77,7 +77,14 @@
   tr.slide.unvisited td.title { color: var(--muted); }
   .visits { color: var(--muted); margin-left: 4px; }
   input.budget { width: 3.5em; text-align: right; font-variant-numeric: tabular-nums; padding: 1px 4px; border: 1px solid var(--line); border-radius: 3px; }
-  aside > section.plan { flex: 1; min-height: 0; overflow-y: auto; padding-top: 0; padding-bottom: 0; border-bottom: 0; }
+  aside > section.plan, aside > section.hits { flex: 1; min-height: 0; overflow-y: auto; padding-top: 0; padding-bottom: 0; border-bottom: 0; }
+  .search { display: flex; gap: 8px; align-items: center; }
+  .search input { flex: 1; min-width: 0; padding: 3px 6px; border: 1px solid var(--line); border-radius: 3px; }
+  #search-count { color: var(--muted); }
+  #search-count.none { color: var(--over); }
+  table.data tr.hit td { cursor: pointer; }
+  tr.hit .snippet { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  tr.hit mark { background: rgba(42, 92, 138, 0.2); color: inherit; }
   footer { border-top: 1px solid var(--line); padding: 6px 14px; display: flex; gap: 6px; align-items: center; color: var(--muted); }
   footer .deck { margin-right: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 </style>
@@ -106,7 +113,18 @@
         <button id="undo" hidden>元に戻す</button>
       </div>
     </section>
-    <section class="plan">
+    <section class="search">
+      <input type="search" id="search" placeholder="スライドを検索" aria-label="スライドを検索" title="Enter で次、Shift+Enter で前、Esc で閉じる">
+      <span class="num" id="search-count" hidden></span>
+      <kbd>⌘F</kbd>
+    </section>
+    <section class="hits" id="hits" hidden>
+      <table class="data">
+        <colgroup><col class="n"><col></colgroup>
+        <tbody id="hits-body"></tbody>
+      </table>
+    </section>
+    <section class="plan" id="plan">
       <table class="data">
         <colgroup><col><col class="budget"><col class="actual"><col class="n"><col class="n"><col class="toggle"></colgroup>
         <thead><tr><th>区間 / スライド</th><th class="num">予定 (分)</th><th class="num">実績</th><th class="num">差</th><th class="num">累計差</th><th title="このスライドから区間を始める">区切り</th></tr></thead>
@@ -152,10 +170,12 @@ const session = {
   undo: null,       // リセット直前の run
   open: {},         // 区間の開閉を手で変えたもの。区間の key → 開いているか
   openSeg: null,    // open を決めたときの表示中の区間。変わったら open を捨てて既定に戻す
+  hits: [],         // 検索語を含むスライドの添字
+  jumped: false,    // 今の検索語で一度でも飛んだか。まだなら表示中のスライドも飛び先に含める
 };
 
-// 表の行の DOM。rebuildTable() が作り直す
-const tableRows = { segments: [], slides: [] };
+// 表の行の DOM。rebuildTable() と rebuildHits() が作り直す
+const tableRows = { segments: [], slides: [], hits: [] };
 
 function emptyRun() {
   return { status: 'idle', perSlide: {} };
@@ -462,12 +482,13 @@ function render() {
   renderSegmentRows(list, curSeg, open);
   renderTotals(list, total);
   renderSlideRows(open);
+  renderHitRows();
 }
 
 function renderControls() {
   $('toggle').innerHTML = `${TOGGLE_LABEL[saved.run.status]}<kbd>Shift+T</kbd>`;
   $('undo').hidden = !session.undo;
-  for (const id of ['toggle', 'reset', 'export-segments', 'export-slides', 'export-json', 'import-json']) {
+  for (const id of ['toggle', 'reset', 'search', 'export-segments', 'export-slides', 'export-json', 'import-json']) {
     $(id).disabled = !deck.slides.length;
   }
 }
@@ -535,6 +556,97 @@ function renderSlideRows(open) {
 
 function scrollCurrentIntoView() {
   tableRows.slides[deck.current]?.tr.scrollIntoView({ block: 'nearest' });
+  tableRows.hits.find((row) => row.index === deck.current)?.tr.scrollIntoView({ block: 'nearest' });
+}
+
+// ---- 検索 ----
+
+const SNIPPET_BEFORE = 16;
+
+// スライドの本文は空白の連なりを 1 つにしてあるので、検索語もそろえる。前後の空白も検索語に含める
+function searchTerm() {
+  const value = $('search').value;
+  return value.trim() ? value.toLowerCase().replace(/\s+/g, ' ') : '';
+}
+
+// 検索語を含むスライドを拾い、区間の表の代わりに一覧で出す
+function rebuildHits() {
+  const term = searchTerm();
+  const searching = term !== '';
+  session.hits = searching
+    ? deck.slides.flatMap((slide, i) => (slide.text.toLowerCase().includes(term) ? [i] : []))
+    : [];
+  tableRows.hits = session.hits.map((i) => hitRow(i, term));
+  $('hits-body').replaceChildren(...tableRows.hits.map((row) => row.tr));
+  $('hits').hidden = !searching;
+  $('plan').hidden = searching;
+  $('search-count').hidden = !searching;
+  $('search-count').textContent = `${session.hits.length} 件`;
+  $('search-count').classList.toggle('none', searching && !session.hits.length);
+  renderHitRows();
+}
+
+function hitRow(i, term) {
+  const slide = deck.slides[i];
+  const tr = document.createElement('tr');
+  tr.className = 'hit';
+  tr.innerHTML = '<td class="num"></td><td><div class="title"></div><div class="snippet"></div></td>';
+  tr.querySelector('.num').textContent = i + 1;
+  tr.querySelector('.title').textContent = slide.title;
+  tr.querySelector('.title').title = slide.title;
+  const at = slide.text.toLowerCase().indexOf(term);
+  const from = Math.max(0, at - SNIPPET_BEFORE);
+  appendMarked(tr.querySelector('.snippet'), (from > 0 ? '…' : '') + slide.text.slice(from), term);
+  tr.addEventListener('click', () => { jumpTo(i); refocusDeck(); });
+  return { tr, index: i };
+}
+
+// text を snippet 要素に足し、検索語に当たる箇所を mark で囲む
+function appendMarked(el, text, term) {
+  const lower = text.toLowerCase();
+  let start = 0;
+  for (let at = lower.indexOf(term); at !== -1; at = lower.indexOf(term, start)) {
+    el.append(text.slice(start, at), Object.assign(document.createElement('mark'), { textContent: text.slice(at, at + term.length) }));
+    start = at + term.length;
+  }
+  el.append(text.slice(start));
+}
+
+function renderHitRows() {
+  for (const row of tableRows.hits) row.tr.classList.toggle('current', row.index === deck.current);
+}
+
+function jumpTo(i) {
+  session.jumped = true;
+  frame.contentWindow.location.hash = `#${i + 1}`;
+}
+
+// 表示中のスライドから数えて次 (step = -1 なら前) の一致へ飛ぶ。端まで行ったら反対の端へ回る
+function jumpToHit(step) {
+  const hits = session.hits;
+  if (!hits.length) return;
+  // tick を待つと連打で同じスライドに飛ぶので、iframe の位置を直接読む
+  const cur = readCurrent();
+  if (!session.jumped && hits.includes(cur)) {
+    jumpTo(cur);
+  } else if (step > 0) {
+    jumpTo(hits.find((i) => i > cur) ?? hits[0]);
+  } else {
+    jumpTo(hits.findLast((i) => i < cur) ?? hits[hits.length - 1]);
+  }
+}
+
+function focusSearch() {
+  window.focus();
+  $('search').focus();
+  $('search').select();
+}
+
+function closeSearch() {
+  $('search').value = '';
+  session.jumped = false;
+  rebuildHits();
+  refocusDeck();
 }
 
 // ---- デッキの読み込み ----
@@ -566,8 +678,18 @@ function readSlides(doc) {
     const title = (heading?.textContent ?? '').replace(/\s+/g, ' ').trim() || `(${i + 1} 枚目)`;
     const n = (seen.get(title) ?? 0) + 1;
     seen.set(title, n);
-    return { key: `${title}#${n}`, title, isH1: heading?.tagName === 'H1' };
+    const text = section ? [pseudoText(section, '::before'), section.textContent, pseudoText(section, '::after')].join(' ') : '';
+    return { key: `${title}#${n}`, title, isH1: heading?.tagName === 'H1', text: text.replace(/\s+/g, ' ').trim() };
   });
+}
+
+// 「記述」などのバッジは section の ::before の content で出していて textContent に入らないので、計算済みのスタイルから読む。
+// 文字列だけの content に限る。attr() や counter() を含むものは値を解決できない
+function pseudoText(el, pseudo) {
+  const content = el.ownerDocument.defaultView.getComputedStyle(el, pseudo).content;
+  const strings = content.match(/"(?:[^"\\]|\\.)*"/g);
+  if (!strings || strings.join(' ') !== content) return '';
+  return strings.map((s) => JSON.parse(s)).join('');
 }
 
 function onFrameLoad() {
@@ -591,6 +713,7 @@ function onFrameLoad() {
   deck.current = readCurrent();
   doc.addEventListener('keydown', onKeydown, true);
   rebuildTable();
+  rebuildHits();
   scrollCurrentIntoView();
   frame.contentWindow.focus();
 }
@@ -664,6 +787,14 @@ async function importJson(file) {
 // ---- 操作 ----
 
 function onKeydown(e) {
+  // ブラウザの検索は SVG の中のスライドへ飛べないので、同じキーでこちらの検索を開く
+  if (e.key === 'f' && (e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey) {
+    if (!deck.slides.length) return;
+    e.preventDefault();
+    e.stopPropagation();
+    focusSearch();
+    return;
+  }
   if (e.key !== 'T' || !e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
   const t = e.target;
   if (t instanceof t.ownerDocument.defaultView.HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
@@ -690,6 +821,17 @@ $('import-file').addEventListener('change', (e) => {
   if (file) importJson(file);
 });
 document.addEventListener('keydown', onKeydown);
+$('search').addEventListener('input', () => { session.jumped = false; rebuildHits(); });
+$('search').addEventListener('keydown', (e) => {
+  if (e.isComposing) return;
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    jumpToHit(e.shiftKey ? -1 : 1);
+  } else if (e.key === 'Escape') {
+    e.preventDefault();
+    closeSearch();
+  }
+});
 
 const deckInput = $('open-deck').elements.deck;
 $('open-deck').addEventListener('submit', (e) => {
