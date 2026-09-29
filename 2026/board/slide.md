@@ -110,7 +110,7 @@ style: |
     display: block;
   }
   section.compact pre {
-    font-size: 0.65em;
+    font-size: 0.7em;
   }
   section.compact table {
     font-size: 0.8em;
@@ -317,7 +317,7 @@ sayHello();   // ← ここではじめて中身が実行される
 
 **`部品.addEventListener('きっかけ', 関数)`** = きっかけが起きたら関数を動かす
 
-<div class="columns">
+<div class="columns" style="grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);">
 <div>
 
 ```html
@@ -332,7 +332,7 @@ button.addEventListener('click', sayHello);
 ```
 
 </div>
-<div>
+<div style="font-size: 0.85em;">
 
 | きっかけ | いつ起きるか |
 |---|---|
