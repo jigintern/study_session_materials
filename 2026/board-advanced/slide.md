@@ -1565,6 +1565,8 @@ data: {"name":"たろう","text":"やっほー"}
 
 ## 5章の動作チェック
 
+![bg right:40% fit](imgs/stackblitz-terminal.png)
+
 ### タブを3枚開いて確かめる
 
 1. ターミナルの「接続数」が、開いているページの数と同じ (StackBlitz のプレビューも1つと数える)
