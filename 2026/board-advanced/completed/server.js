@@ -25,7 +25,7 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // 接続を閉じずに保持し、投稿が来たら送信する
+  // レスポンスを終了せずに保持し、投稿が来たら送信する
   if (req.method === 'GET' && url.pathname === '/events') {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');

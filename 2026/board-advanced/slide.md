@@ -880,7 +880,7 @@ ChatGPT などの AI チャットでは、回答を全部作り終えてから�
 
 | 書き方 | 意味 |
 |---|---|
-| `new EventSource(<URL>)` | &lt;URL&gt;のサーバーに接続し、閉じないレスポンスを受信し続ける |
+| `new EventSource(<URL>)` | &lt;URL&gt;のサーバーに接続し、終了しないレスポンスを受信し続ける |
 
 ```javascript
 // 例: https://example.com/stream に接続する
@@ -947,7 +947,7 @@ source.@@onmessage@@ = showPosts;
 
 ---
 
-## 2-2. 閉じないレスポンスが1本続いているのを見る
+## 2-2. 終了しないレスポンスが1本続いているのを見る
 
 ![bg right:40% fit](imgs/network-eventstream.png)
 
@@ -1353,7 +1353,7 @@ source.onmessage = receivePost;
       <div class="seq-row left"><div class="seq-msg">② data: たろうの投稿</div></div>
       <div class="seq-row left"><div class="seq-msg">② data: はなこの投稿</div></div>
     </div>
-    <div class="seq-repeat">閉じずに書き足し続ける</div>
+    <div class="seq-repeat">終了せずに書き足し続ける</div>
   </div>
 </div>
 
@@ -1450,7 +1450,7 @@ const posts = [];                    // すでにある行
 @@    res.setHeader('Content-Type', '______');@@
 @@    res.setHeader('Cache-Control', 'no-cache');@@
 @@    res.______();@@                    // ヘッダーだけ先に送る
-@@    connection = res;@@                // res.end() は呼ばず、閉じないまま保持する
+@@    connection = res;@@                // res.end() は呼ばず、終了しないまま保持する
 @@    console.log('接続を受け付けた');@@
 @@    return;@@
 @@  }@@
