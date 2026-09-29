@@ -1290,16 +1290,15 @@ source.onmessage = receivePost;
 ## 4-1. 手順1: SSE 用のヘッダーを設定する
 
 レスポンスの先頭には、中身の種類などを書いた **HTTP ヘッダー** が付きます。
-`EventSource` はこのヘッダーの `Content-Type` を見て、`text/event-stream` でなければ受け付けません。
 
 | 書き方 | 意味 |
 |---|---|
 | `res.setHeader(<名前>, <値>)` | レスポンスのヘッダーを1つ設定する |
 
 ```javascript
-// 中身は SSE の形式
+// EventSource は、text/event-stream でないと受け付けない
 res.setHeader('Content-Type', 'text/event-stream');
-// キャッシュを使わず、毎回サーバーから受け取る
+// 念のため、キャッシュを使い回さないよう伝える
 res.setHeader('Cache-Control', 'no-cache');
 ```
 
