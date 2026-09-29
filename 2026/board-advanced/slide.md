@@ -298,9 +298,6 @@ style: |
     margin: 0;
     font-size: 0.9em;
   }
-  section .jump a::after {
-    content: " ↗";
-  }
   section mark {
     background: #ffe066;
     color: inherit;
@@ -419,15 +416,10 @@ const posts = [];                // 色なし: すでにある行。この下に
 %%setInterval(showPosts, 10000);%%   // 赤: 消してもらう行
 ```
 
----
-
-## 記述スライドは自分のペースで進める
-
-章が早く終わった人は、章の最後のスライドの左上にあるリンクから応用課題に進みましょう。
-
-早く終わった人は → <a href="https://github.com/jigintern/study_session_materials/blob/main/2026/board-advanced/advanced.md" target="_blank">応用課題</a> {.jump}
+早く終わった人は、章の最後のスライドの左上にあるリンクから応用課題に進んでください。
 
 ---
+
 
 <!-- _class: lead -->
 
@@ -914,7 +906,7 @@ source.onmessage = @@showPosts@@;
 
 EventStream タブの中の行が増えます。通信そのものは、1本を使い回しています。
 
-早く終わった人は → <a href="https://github.com/jigintern/study_session_materials/blob/main/2026/board-advanced/advanced.md#2章が早く終わった人へ" target="_blank">2章の応用課題</a> {.jump}
+早く終わった人は → [2章の応用課題](#adv-ch2) {.jump #ch2-end}
 
 ---
 
@@ -1219,7 +1211,7 @@ source.onmessage = receivePost;
 
 届いてはいるので、受け取ったあとの処理でつまずいています。Console タブの赤い文字を見てください。
 
-早く終わった人は → <a href="https://github.com/jigintern/study_session_materials/blob/main/2026/board-advanced/advanced.md#3章が早く終わった人へ" target="_blank">3章の応用課題</a> {.jump}
+早く終わった人は → [3章の応用課題](#adv-ch3) {.jump #ch3-end}
 
 ---
 
@@ -1494,7 +1486,7 @@ data: {"name":"たろう","text":"やっほー"}
 3. 一覧にも、投稿が出る
 4. ターミナルに `接続を受け付けた` が出る (右の赤枠)
 
-早く終わった人は → <a href="https://github.com/jigintern/study_session_materials/blob/main/2026/board-advanced/advanced.md#4章が早く終わった人へ" target="_blank">4章の応用課題</a> {.jump}
+早く終わった人は → [4章の応用課題](#adv-ch4) {.jump #ch4-end}
 
 ---
 
@@ -1661,7 +1653,7 @@ data: {"name":"たろう","text":"やっほー"}
 - 1つ目はイベントの名前 `'close'`、2つ目は切れたときに呼ぶ関数 `removeConnection`
 - 関数は `()` を付けずに渡す
 
-早く終わった人は → <a href="https://github.com/jigintern/study_session_materials/blob/main/2026/board-advanced/advanced.md#5章が早く終わった人へ" target="_blank">5章の応用課題</a> {.jump}
+早く終わった人は → [5章の応用課題](#adv-ch5) {.jump #ch5-end}
 
 ---
 
@@ -1816,7 +1808,83 @@ data: {"name":"たろう","text":"やっほー"}
 data: {"name":"たろう","text":"やっほー"}
 ```
 
-接続が切れないように、一定間隔で `:` の行だけを送る **ハートビート** に使います。
+接続が切れないように、一定間隔で `:` の行だけを送る **ハートビート** に使います。 {#comment-line}
+
+---
+
+<!-- _class: lead break -->
+
+# 応用課題
+
+章が早く終わった人向けの課題です。終わったら左上のリンクで、来た章に戻ります。 {#advanced}
+
+---
+
+<!-- _class: extra -->
+
+## 2章の応用課題: 見ていない間に届いた件数をタブに出す
+
+[← 2章の動作チェックに戻る](#ch2-end) {.jump #adv-ch2}
+
+別のタブを見ている間に届いた投稿の数を、`(3) みんなの掲示板` のようにタブのタイトルに出します。掲示板のタブに戻ったら元のタイトルに戻します。
+
+- タイトルは `document.title` で読み書きできる
+- いま見られていないかは `document.hidden` で分かる
+- 見られる状態に戻ったことは `visibilitychange` イベントで分かる
+- 3章で `onmessage` を置き換えるので、`source.addEventListener('message', 関数)` で書くと消えずに残る
+
+---
+
+<!-- _class: extra -->
+
+## 3章の応用課題1: 再接続したときに、切断中の投稿を取得する
+
+[← 3章の動作チェックに戻る](#ch3-end) {.jump #adv-ch3}
+
+接続が切れている間の投稿は、再接続しても届きません。接続するたびに `/posts` を取得し直し、`posts` にない投稿だけを追加します。
+
+- 接続したことは `source.addEventListener('open', 関数)` で分かる
+- 共有サーバーの投稿には `id` があるので、`posts` にあるかどうかを `posts.some(...)` で確かめられる
+
+---
+
+<!-- _class: extra -->
+
+## 3章の応用課題2: 投稿に失敗したことを伝える
+
+[← 3章の動作チェックに戻る](#ch3-end) {.jump}
+
+メッセージを空で投稿すると、共有サーバーは 400 と `{"message": "..."}` を返します。失敗したら `alert` で知らせ、入力欄は空にしないようにします。
+
+- 成否は `fetch` の戻り値の `res.ok` で分かる
+
+---
+
+<!-- _class: extra -->
+
+## 4章の応用課題: 接続状態を画面に出す
+
+[← 4章の動作チェックに戻る](#ch4-end) {.jump #adv-ch4}
+
+「みんなの投稿」の横に、SSE の接続がつながっているか切れているかを出します。`server.js` を保存するとサーバーが再起動するので、一瞬「切れています」になり、「つながっています」に戻れば完成です。
+
+- 表示する場所は `index.html` に `<span id="status">` として用意してある
+- `class` を `status online` にすると緑、`status offline` にすると赤になる
+- 接続したことは `source.addEventListener('open', 関数)` で、切れたことは `source.addEventListener('error', 関数)` で分かる
+
+---
+
+<!-- _class: extra compact -->
+
+## 5章の応用課題: `server.js` に機能を追加する
+
+[← 5章の動作チェックに戻る](#ch5-end) {.jump #adv-ch5}
+
+上から順に難しくなります。
+
+1. ハートビートを送る: 15秒ごとに、接続している全員へコメント行 `: ping\n\n` を書く。データが流れない時間が続くと、プロキシなどが接続を切ることがある ([付録: SSE のコメント行](#comment-line))
+2. 空の投稿を受け付けない: `text` が空なら保存せず、ステータス `400` と `{"message": "..."}` を返す。3章の「投稿に失敗したことを伝える」を済ませていれば、ブラウザにエラーが表示される
+3. 接続数を全員に送る: 接続したときと切れたときに `event: count\ndata: 3\n\n` を全員に書く。ブラウザ側は `source.addEventListener('count', 関数)` で受け取り、画面に出す
 
 <script>
 document.querySelectorAll('.timer[data-seconds]').forEach(el => {
