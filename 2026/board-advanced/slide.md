@@ -1520,33 +1520,19 @@ data: {"name":"たろう","text":"やっほー"}
     // ▼ 4章: 接続しているブラウザに投稿を送る
 @@    const data = JSON.stringify(post);@@                  // 投稿を JSON の文字列にする
 @@    if (connection) {@@                                   // 接続がなければ null のまま
-@@      connection.write(______);@@                         // 手順2 の形式で書き足す
+@@      connection.write(`data: ${data}\n\n`);@@            // 手順2 の形式で書き足す
 @@    }@@
 ```
 
 | 書き方 | 意味 |
 |---|---|
 | `JSON.stringify(<値>)` | <値>を JSON の文字列にする。ブラウザ側の `JSON.parse` で元に戻る |
-| `res.write(<文字列>)` | レスポンスを閉じずに、<文字列>を書き足す |
-| `<文字列> + <文字列>` | 2つの文字列をつなげた文字列 |
+| `res.write(<文字列>)` | レスポンスを終了せずに、<文字列>を書き足す |
+| `\n` | 文字列の中で、改行1文字を表す |
+
+末尾の `\n\n` の1つ目で `data:` の行が終わり、2つ目で空行になります。
 
 **成功**: 投稿すると、一覧に出る
-
----
-
-## 4-3. 答え
-
-```javascript {data-file=server.js}
-    // ▼ 4章: 接続しているブラウザに投稿を送る
-    const data = JSON.stringify(post);
-    if (connection) {
-      // 'data: ' + data + '\n\n' と書いてもよい
-      connection.write(@@`data: ${data}\n\n`@@);
-    }
-```
-
-- `data: ` のあとに、JSON の文字列にした投稿 `data` を入れる
-- 末尾の `\n\n` の1つ目で `data:` の行が終わり、2つ目で空行になる
 
 ---
 
