@@ -1781,8 +1781,6 @@ EventSource's response has a MIME type ("text/html")
 that is not "text/event-stream". Aborting the connection.
 ```
 
-4-4 の接続状態の表示では「切れています」になり、ページを読み込み直すまで戻りません。
-
 ---
 
 <!-- _class: extra -->
