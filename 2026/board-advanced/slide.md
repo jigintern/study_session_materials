@@ -1698,7 +1698,20 @@ source.onmessage = receivePost;      // すでにある行
 
 ---
 
-## ポーリング / SSE / WebSocket のどれを選ぶか
+## 今日やったこと
+
+| やったこと | 使ったもの |
+|---|---|
+| 決まった間隔で読み直す | `setInterval` |
+| サーバーからの通知を受け取る | `EventSource` |
+| 受信した1件だけを追加する | ブラウザ側の配列 `posts` |
+| 通信を1本ずつ見る | Network タブ / EventStream タブ |
+| 終わらないレスポンスを返す | `text/event-stream` / `res.write` |
+| 接続している全員に送る | 接続の配列 / `req.on('close')` |
+
+---
+
+## ほかのやり方: WebSocket
 
 今回は、ポーリング・SSE を実装しましたが、他にも有名なものに `WebSocket` があります。
 
@@ -1710,19 +1723,6 @@ source.onmessage = receivePost;      // すでにある行
 
 
 双方向で通信する必要があるなら WebSocket ですが、そうでないなら SSE のほうが少ないコードで済みます。
-
----
-
-## 今日やったこと
-
-| やったこと | 使ったもの |
-|---|---|
-| 決まった間隔で読み直す | `setInterval` |
-| サーバーからの通知を受け取る | `EventSource` |
-| 受信した1件だけを追加する | ブラウザ側の配列 `posts` |
-| 通信を1本ずつ見る | Network タブ / EventStream タブ |
-| 終わらないレスポンスを返す | `text/event-stream` / `res.write` |
-| 接続している全員に送る | 接続の配列 / `req.on('close')` |
 
 ---
 
