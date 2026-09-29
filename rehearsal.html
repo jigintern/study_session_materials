@@ -539,6 +539,24 @@ function scrollCurrentIntoView() {
 
 // ---- デッキの読み込み ----
 
+// deck を iframe に渡せる URL にする。渡せないものは null。
+// javascript: の URL を渡すとこのページの権限でスクリプトが動くので、同じ配信元の http(s) だけを通す
+function deckUrl(path) {
+  let url;
+  try {
+    url = new URL(path, location.href);
+  } catch {
+    return null;
+  }
+  const http = url.protocol === 'http:' || url.protocol === 'https:';
+  return http && url.origin === location.origin ? url : null;
+}
+
+function rejectDeck(input) {
+  input.setCustomValidity('rehearsal.html と同じサーバーにあるスライドのパスを入れてください');
+  input.reportValidity();
+}
+
 function readSlides(doc) {
   const seen = new Map();
   return [...doc.querySelectorAll('svg[data-marpit-svg]')].map((svg, i) => {
@@ -673,25 +691,36 @@ $('import-file').addEventListener('change', (e) => {
 });
 document.addEventListener('keydown', onKeydown);
 
+const deckInput = $('open-deck').elements.deck;
 $('open-deck').addEventListener('submit', (e) => {
   e.preventDefault();
-  const path = new FormData(e.target).get('deck').trim();
+  const path = deckInput.value.trim();
+  if (!deckUrl(path)) {
+    rejectDeck(deckInput);
+    return;
+  }
   location.search = new URLSearchParams({ deck: path }).toString();
 });
+deckInput.addEventListener('input', () => deckInput.setCustomValidity(''));
 
-if (deck.path) {
+const frameUrl = deck.path && deckUrl(deck.path);
+if (frameUrl) {
   $('deck-path').textContent = deck.path;
   $('deck-path').title = deck.path;
-  const page = load();
+  frameUrl.hash = load();
   frame.addEventListener('load', onFrameLoad);
-  frame.src = `${deck.path}#${page}`;
+  frame.src = frameUrl.href;
   setInterval(tick, TICK_MS);
 } else {
   frame.hidden = true;
   $('panel').hidden = true;
   $('app').classList.add('empty');
   $('open-deck').hidden = false;
-  $('open-deck').elements.deck.focus();
+  deckInput.focus();
+  if (deck.path) {
+    deckInput.value = deck.path;
+    rejectDeck(deckInput);
+  }
 }
 render();
 </script>
