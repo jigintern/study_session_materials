@@ -31,6 +31,7 @@ const server = createServer(async (req, res) => {
     });
     res.flushHeaders();
     connection = res;
+    console.log('接続を受け付けた');
     return;
   }
 

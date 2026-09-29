@@ -1369,6 +1369,7 @@ const posts = [];                    // すでにある行
 @@    });@@
 @@    res.______();@@                    // ヘッダーだけ先に送る
 @@    connection = res;@@                // res.end() は呼ばず、閉じないまま保持する
+@@    console.log('接続を受け付けた');@@
 @@    return;@@
 @@  }@@
 ```
@@ -1386,6 +1387,7 @@ const posts = [];                    // すでにある行
     });
     res.@@flushHeaders@@();
     connection = res;
+    console.log('接続を受け付けた');
     return;
   }
 ```
@@ -1479,11 +1481,14 @@ data: {"name":"たろう","text":"やっほー"}
 
 ## 4章の動作チェック
 
-### 3つとも当てはまれば 4章は完了
+![bg right:40% fit](imgs/stackblitz-terminal.png)
+
+### 4つとも当てはまれば 4章は完了
 
 1. Network タブの `events` の行は、Status が 200 のまま Time が伸び続ける
 2. 投稿すると、`events` の EventStream タブに行が1つ増える
 3. 一覧にも、投稿が出る
+4. ターミナルに `接続を受け付けた` が出る (右の赤枠)
 
 早く終わった人は → <a href="https://github.com/jigintern/study_session_materials/blob/main/2026/board-advanced/advanced.md#4章が早く終わった人へ" target="_blank">4章の応用課題</a> {.jump}
 
@@ -1505,11 +1510,12 @@ data: {"name":"たろう","text":"やっほー"}
 
 ![bg right:40% fit](imgs/two-tabs.png)
 
-いまの `server.js` は、接続を1本しか保持していません。
-
 1. プレビュー右上の「新しいタブで開く」を2回押す
 2. それぞれのタブで投稿する
 3. 投稿が出るのは、あとから開いたタブだけ
+
+ターミナルには、タブを開くたびに `接続を受け付けた` が出ます。
+受け取った接続のうち、`connection` に残るのは最後の1本だけです。
 
 この章で、開いているすべてのタブに投稿が届くように直します。
 
@@ -1529,6 +1535,7 @@ data: {"name":"たろう","text":"やっほー"}
 
 ```javascript {data-file=server.js}
 %%    connection = res;%%
+%%    console.log('接続を受け付けた');%%
 @@    connections.push(res);@@
 @@    console.log(`接続数: ${connections.length}`);@@
 ```
@@ -1539,7 +1546,7 @@ data: {"name":"たろう","text":"やっほー"}
 |---|---|
 | `<配列>.length` | <配列>の要素の数 |
 
-**成功**: `server.js` を保存すると、StackBlitz の下側のターミナルに `接続数: ` が出る
+**成功**: `server.js` を保存すると、ターミナルに `接続数: ` が出る
 
 ---
 
@@ -1566,8 +1573,6 @@ data: {"name":"たろう","text":"やっほー"}
 ---
 
 ## 5章の動作チェック
-
-![bg right:40% fit](imgs/stackblitz-terminal.png)
 
 ### タブを3枚開いて確かめる
 
