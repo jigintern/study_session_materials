@@ -1874,6 +1874,7 @@ source.onmessage = showPosts;   // すでにある行
 
 - 接続したことは `source.addEventListener('open', 関数)` で分かる
 - 共有サーバーの投稿には `id` があるので、`posts` にあるかどうかを `posts.some(...)` で確かめられる
+- 最初に接続したときも `open` は発生するので、最後の行の `loadPosts();` は消す。残すと取得が2つ同時に走り、同じ投稿が2件ずつ入ることがある
 
 ---
 
