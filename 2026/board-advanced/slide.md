@@ -395,7 +395,7 @@ style: |
 1. ブラウザで StackBlitz のテンプレートを開く
    https://stackblitz.com/edit/node-cdfr3jqk?file=public%2Fscript.js,server.js
 2. 左上の **Fork** を押す
-3. `public/script.js` を開き、`API` の値を当日伝える URL に書き換える
+3. `public/script.js` を開き、`API` の値を今から伝える URL に書き換える
 
 ---
 
@@ -1257,7 +1257,7 @@ source.onmessage = receivePost;
 共有サーバーの URL が入っている `API` を書き換えます。
 
 ```javascript {data-file=public/script.js}
-%%const API = 'https://example.deno.net';%%   // 当日の URL が入っている
+%%const API = 'https://example.deno.net';%%   // 共有サーバーの URL が入っている
 @@const API = location.origin;@@
 ```
 
@@ -1680,7 +1680,7 @@ data: {"name":"たろう","text":"やっほー"}
 @@const API = 'https://example.deno.net';@@
 ```
 
-当日の URL を入れ直します。
+共有サーバーの URL を入れ直します。
 
 **成功**: ページを再読み込みすると他の人のメッセージが表示される
 
