@@ -1285,8 +1285,6 @@ source.onmessage = receivePost;
 
 ---
 
-<!-- _class: compact -->
-
 ## 4-1. 手順1: SSE 用のヘッダーを設定する
 
 レスポンスの先頭には、中身の種類などを書いた **HTTP ヘッダー** が付きます。
