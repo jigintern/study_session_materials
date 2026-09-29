@@ -2,5 +2,5 @@
 
 node_modules/
 
-# marp-serve のライブプレビュー出力
+# ライブプレビューの出力 (marp-serve と pnpm rehearsal)
 *.preview.html

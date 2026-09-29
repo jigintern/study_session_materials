@@ -195,13 +195,11 @@ HTML と CSS は用意済みです。今日書くのは **JavaScript** だけ。
 
 1. ブラウザで StackBlitz のテンプレートを開く
    https://stackblitz.com/edit/board-beginner
-2. 左上の **Fork** を押す（URL が自分専用のものに変わります）
+2. 左上の **Fork** を押す（自分専用のコピーになる）
 3. `script.js` を開く
 4. 1〜2行目の `API` と `ROOM` を、伝えられた値に書き換える
 
-左にファイル、右にプレビューが並びます。今日書くのは `script.js` だけです。
-
-テンプレートは「入力欄とボタンが並んだ、まだ何も動かない状態」から始まります。
+左にファイル、右にプレビューが並びます。最初は入力欄とボタンが並んでいるだけで、まだ何も動きません。
 
 ---
 
@@ -406,14 +404,14 @@ const name = document.getElementById('name-input').value;   // 'たろう'
 
 ### 決めうちのメッセージではなく、入力された文字を使う
 
-**書く場所** — `addPost` の中を丸ごと置き換え
+**書く場所** — `addPost` の中。**2行足して、`alert` の行を書き換える**
 
 ```javascript
 function addPost() {
-  const name = document.getElementById('name-input').value;
-  const text = document.getElementById('text-input').value;
+  @@const name = document.getElementById('name-input').value;@@
+  @@const text = document.getElementById('text-input').value;@@
 
-  alert(`${name} さん: ${text}`);
+  @@alert(`${name} さん: ${text}`);@@
 }
 ```
 
@@ -455,16 +453,16 @@ function addPost() {
 
 ### `alert` をやめて、一覧に並べる
 
-**書く場所** — `addPost` の中を丸ごと置き換え
+**書く場所** — `addPost` の中。**`alert` の行を消して、3行足す**
 
 ```javascript
 function addPost() {
   const name = document.getElementById('name-input').value;
   const text = document.getElementById('text-input').value;
 
-  const item = document.createElement('li');
-  item.textContent = `${name}: ${text}`;
-  document.getElementById('posts').appendChild(item);
+  @@const item = document.createElement('li');@@
+  @@item.textContent = `${name}: ${text}`;@@
+  @@document.getElementById('posts').appendChild(item);@@
 }
 ```
 
@@ -502,7 +500,7 @@ function addPost() {
 - ページを再読み込みすると消える
 - 他の人のブラウザには出ない
 
-`posts` という配列は、開いているページの中にだけあります。ページを閉じれば一緒に消えます。
+Chapter 1 で足した `<li>` は、開いているページの中にだけあります。ページを閉じれば一緒に消えます。
 
 この2つは、投稿を**自分のブラウザの外**に置けば解決します。ページを閉じても残っていて、他の人からも読める場所が要ります。
 

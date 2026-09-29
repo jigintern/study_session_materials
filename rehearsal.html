@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>リハーサル計測</title>
+<style>
+  :root {
+    --bg: #fff;
+    --fg: #222;
+    --line: #ddd;
+    --accent: #2a5c8a;
+    --over: #b3261e;
+    --muted: #777;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  }
+  .app {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 500px;
+    height: 100vh;
+  }
+  .app.empty { grid-template-columns: 1fr; }
+  .stage { position: relative; background: #000; }
+  .stage iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .open-deck {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--bg);
+  }
+  .open-deck input { width: 360px; }
+  aside {
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--line);
+    min-width: 0;
+    min-height: 0;
+  }
+  aside > section { padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  .error { margin: 0; padding: 8px 14px; color: var(--over); border-bottom: 1px solid var(--line); }
+  .error:empty { display: none; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .over { color: var(--over); }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .clock th { text-align: left; font-weight: normal; color: var(--muted); width: 5em; padding: 2px 0; }
+  .clock td { padding: 2px 0; }
+  .clock .big { font-size: 28px; }
+  .clock col.label { width: 5em; }
+  .clock col.time { width: 11em; }
+  .controls { display: flex; gap: 6px; align-items: center; margin-top: 8px; }
+  button, input { font: inherit; }
+  button { white-space: nowrap; flex-shrink: 0; padding: 3px 10px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 3px; cursor: pointer; }
+  button.primary { border-color: var(--accent); color: var(--accent); }
+  button:disabled { color: var(--muted); cursor: default; }
+  kbd { font: 11px ui-monospace, monospace; color: var(--muted); margin-left: 4px; }
+  table.data th, table.data td { padding: 2px 6px; border-bottom: 1px solid var(--line); }
+  table.data th { font-weight: normal; color: var(--muted); text-align: left; position: sticky; top: 0; background: var(--bg); }
+  table.data th.num { text-align: right; }
+  table.data tfoot td { border-bottom: 0; font-weight: 600; position: sticky; bottom: 0; background: var(--bg); box-shadow: inset 0 1px 0 var(--line); }
+  table.data tr.current td { box-shadow: inset 0 0 0 9999px rgba(42, 92, 138, 0.1); }
+  table.data tr.current td:first-child { box-shadow: inset 3px 0 0 var(--accent), inset 0 0 0 9999px rgba(42, 92, 138, 0.1); }
+  table.data tr.seg td { border-top: 1px solid #aaa; cursor: pointer; }
+  .title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px; }
+  col.n { width: 5em; }
+  col.budget { width: 4.5em; }
+  col.actual { width: 5.5em; }
+  col.toggle { width: 4em; }
+  button.disclosure { border: 0; padding: 0; width: 1.4em; text-align: left; color: var(--muted); background: none; }
+  tr.seg .count { color: var(--muted); margin-left: 6px; }
+  tr.slide td.title { padding-left: 1.6em; }
+  tr.slide .idx { display: inline-block; min-width: 2em; color: var(--muted); font-variant-numeric: tabular-nums; }
+  tr.slide.unvisited td.title { color: var(--muted); }
+  .visits { color: var(--muted); margin-left: 4px; }
+  input.budget { width: 3.5em; text-align: right; font-variant-numeric: tabular-nums; padding: 1px 4px; border: 1px solid var(--line); border-radius: 3px; }
+  aside > section.plan { flex: 1; min-height: 0; overflow-y: auto; padding-top: 0; padding-bottom: 0; border-bottom: 0; }
+  footer { border-top: 1px solid var(--line); padding: 6px 14px; display: flex; gap: 6px; align-items: center; color: var(--muted); }
+  footer .deck { margin-right: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="stage">
+    <iframe id="frame" title="スライド"></iframe>
+    <form class="open-deck" id="open-deck" hidden>
+      <input name="deck" placeholder="2026/board-advanced/slide.html" required>
+      <button class="primary">開く</button>
+    </form>
+  </div>
+  <aside id="panel">
+    <p class="error" id="error" role="alert"></p>
+    <section class="clock">
+      <table>
+        <colgroup><col class="label"><col><col class="time"></colgroup>
+        <tr><th>通し</th><td class="title"></td><td class="num big" id="total"></td></tr>
+        <tr><th>区間</th><td class="title" id="seg-title"></td><td class="num" id="seg-time"></td></tr>
+        <tr><th>スライド</th><td class="title" id="slide-title"></td><td class="num" id="slide-time"></td></tr>
+      </table>
+      <div class="controls">
+        <button class="primary" id="toggle"></button>
+        <button id="reset">リセット</button>
+        <button id="undo" hidden>元に戻す</button>
+      </div>
+    </section>
+    <section class="plan">
+      <table class="data">
+        <colgroup><col><col class="budget"><col class="actual"><col class="n"><col class="n"><col class="toggle"></colgroup>
+        <thead><tr><th>区間 / スライド</th><th class="num">予定 (分)</th><th class="num">実績</th><th class="num">差</th><th class="num">累計差</th><th title="このスライドから区間を始める">区切り</th></tr></thead>
+        <tbody id="plan-body"></tbody>
+        <tfoot><tr><td>合計</td><td class="num" id="sum-budget"></td><td class="num" id="sum-actual"></td><td class="num" id="sum-diff"></td><td></td><td></td></tr></tfoot>
+      </table>
+    </section>
+    <footer>
+      <span class="deck" id="deck-path"></span>
+      <button id="export-segments">区間 CSV</button>
+      <button id="export-slides">スライド CSV</button>
+      <button id="export-json">JSON</button>
+      <button id="import-json">読み込み</button>
+      <input type="file" id="import-file" accept="application/json,.json" hidden>
+    </footer>
+  </aside>
+</div>
+<script>
+const STORAGE_PREFIX = 'rehearsal-timer:';
+const SCHEMA_VERSION = 1;
+const TICK_MS = 250;
+const TOGGLE_LABEL = { idle: '開始', running: '一時停止', paused: '再開' };
+
+const $ = (id) => document.getElementById(id);
+const frame = $('frame');
+
+// 表示中のデッキ。スライドの一覧と表示中の位置は iframe から読む
+const deck = {
+  path: new URLSearchParams(location.search).get('deck') || '',
+  slides: [],       // { key, title, isH1 }
+  current: 0,       // 表示中のスライドの添字
+};
+
+// localStorage に保存する分。表示中のページと一緒に snapshot() が書き出す
+const saved = {
+  config: { boundaries: null, budgets: {} },  // boundaries が null なら h1 のスライドで区切る
+  run: emptyRun(),
+};
+
+// ページを開いている間だけ持つ分。保存しない
+const session = {
+  lastTick: null,   // 最後に時間を足した時刻。計測中だけ意味を持つ
+  undo: null,       // リセット直前の run
+  open: {},         // 区間の開閉を手で変えたもの。区間の key → 開いているか
+  openSeg: null,    // open を決めたときの表示中の区間。変わったら open を捨てて既定に戻す
+};
+
+// 表の行の DOM。rebuildTable() が作り直す
+const tableRows = { segments: [], slides: [] };
+
+function emptyRun() {
+  return { status: 'idle', perSlide: {} };
+}
+
+// 計測中のまま保存された run は、読み戻した時点では一時停止として扱う
+function stoppedStatus(status) {
+  return !status || status === 'idle' ? 'idle' : 'paused';
+}
+
+// ---- 保存 ----
+
+function storageKey() {
+  return STORAGE_PREFIX + deck.path;
+}
+
+function migrate(data) {
+  if (!data || typeof data !== 'object') return null;
+  if (data.version === 1) return data;
+  return null;
+}
+
+function applySaved(data) {
+  saved.config = {
+    boundaries: Array.isArray(data.config?.boundaries) ? data.config.boundaries : null,
+    budgets: data.config?.budgets ?? {},
+  };
+  // 開き直した時点では止まっている。閉じていた間を今のスライドに足さない
+  saved.run = { status: stoppedStatus(data.run?.status), perSlide: data.run?.perSlide ?? {}, lastKey: data.run?.lastKey };
+}
+
+function snapshot() {
+  return { version: SCHEMA_VERSION, deck: deck.path, page: deck.current + 1, config: saved.config, run: saved.run };
+}
+
+// 保存した状態を読み戻し、開き直したときに戻すページを返す
+function load() {
+  try {
+    const raw = localStorage.getItem(storageKey());
+    if (!raw) return 1;
+    const data = migrate(JSON.parse(raw));
+    if (!data) {
+      showError('保存データの形式が読めません。書き出してから「リセット」で作り直せます');
+      return 1;
+    }
+    applySaved(data);
+    return Number.isInteger(data.page) ? data.page : 1;
+  } catch (e) {
+    showError('保存データを読めません: ' + e.message);
+    return 1;
+  }
+}
+
+function save() {
+  try {
+    localStorage.setItem(storageKey(), JSON.stringify(snapshot()));
+  } catch (e) {
+    showError('保存できません: ' + e.message);
+  }
+}
+
+function showError(message) {
+  $('error').textContent = message;
+}
+
+// ---- 派生値 ----
+
+function boundarySet() {
+  return new Set(saved.config.boundaries ?? deck.slides.filter((s) => s.isH1).map((s) => s.key));
+}
+
+function slideMs(key) {
+  return saved.run.perSlide[key]?.ms ?? 0;
+}
+
+function segments() {
+  const boundaries = boundarySet();
+  const list = [];
+  deck.slides.forEach((slide, i) => {
+    if (i === 0 || boundaries.has(slide.key)) {
+      const minutes = saved.config.budgets[slide.key];
+      list.push({ key: slide.key, title: slide.title, from: i, to: i, ms: 0, budgetMs: minutes == null ? null : minutes * 60000 });
+    }
+    const seg = list[list.length - 1];
+    seg.to = i;
+    seg.ms += slideMs(slide.key);
+  });
+  return list;
+}
+
+function segmentIndexOf(list, slideIndex) {
+  return list.findIndex((seg) => seg.from <= slideIndex && slideIndex <= seg.to);
+}
+
+function fmt(ms) {
+  const sec = Math.floor(Math.abs(ms) / 1000);
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor(sec / 60) % 60;
+  const s = String(sec % 60).padStart(2, '0');
+  return h ? `${h}:${String(m).padStart(2, '0')}:${s}` : `${m}:${s}`;
+}
+
+function fmtDiff(ms) {
+  if (Math.abs(ms) < 1000) return '±0:00';
+  return (ms > 0 ? '+' : '−') + fmt(ms);
+}
+
+// 差がないとき (null) は空欄にする。予定より長ければ赤くする
+function showDiff(el, ms) {
+  el.textContent = ms == null ? '' : fmtDiff(ms);
+  el.classList.toggle('over', ms > 0);
+}
+
+// ---- 計測 ----
+
+function entry(key) {
+  return (saved.run.perSlide[key] ??= { ms: 0, visits: 0 });
+}
+
+// 計測中なら、前回足した時刻から now までを表示中のスライドに足す
+function credit(now) {
+  if (saved.run.status !== 'running') return;
+  const slide = deck.slides[deck.current];
+  if (slide) {
+    entry(slide.key).ms += now - session.lastTick;
+    saved.run.lastKey = slide.key;
+  }
+  session.lastTick = now;
+}
+
+// 直前まで計測していたスライドと違えば、そこを訪れたと数える
+function arrive(key) {
+  if (key !== saved.run.lastKey) entry(key).visits++;
+  saved.run.lastKey = key;
+}
+
+function readCurrent() {
+  try {
+    const m = /^#(\d+)/.exec(frame.contentWindow.location.hash);
+    const idx = m ? Number(m[1]) - 1 : 0;
+    return Math.min(Math.max(idx, 0), deck.slides.length - 1);
+  } catch {
+    return deck.current;
+  }
+}
+
+function tick() {
+  if (!deck.slides.length) return;
+  const running = saved.run.status === 'running';
+  credit(Date.now());
+  const idx = readCurrent();
+  const moved = idx !== deck.current;
+  if (moved) {
+    deck.current = idx;
+    if (running) arrive(deck.slides[idx].key);
+  }
+  if (running || moved) save();
+  render();
+  if (moved) scrollCurrentIntoView();
+}
+
+function toggleRun() {
+  if (!deck.slides.length) return;
+  const run = saved.run;
+  if (run.status === 'running') {
+    credit(Date.now());
+    run.status = 'paused';
+  } else {
+    if (run.status === 'idle') session.undo = null;
+    // 止めていた間に別のスライドへ移っていたら、再開した時点でそこを訪れたと数える
+    arrive(deck.slides[deck.current].key);
+    run.status = 'running';
+    session.lastTick = Date.now();
+  }
+  save();
+  render();
+}
+
+function reset() {
+  credit(Date.now());
+  session.undo = saved.run;
+  saved.run = emptyRun();
+  save();
+  render();
+}
+
+function undoReset() {
+  if (!session.undo) return;
+  saved.run = { ...session.undo, status: stoppedStatus(session.undo.status) };
+  session.undo = null;
+  save();
+  render();
+}
+
+// ---- 設定の変更 ----
+
+function setBoundary(key, on) {
+  const set = boundarySet();
+  if (on) set.add(key);
+  else set.delete(key);
+  saved.config.boundaries = [...set];
+  // 操作したスライドが閉じた区間に入って見えなくならないよう、その区間を開いておく
+  const list = segments();
+  const seg = list[segmentIndexOf(list, deck.slides.findIndex((s) => s.key === key))];
+  if (seg) session.open[seg.key] = true;
+  save();
+  rebuildTable();
+}
+
+function setBudget(key, value) {
+  const minutes = parseFloat(value);
+  if (Number.isFinite(minutes) && minutes >= 0) saved.config.budgets[key] = minutes;
+  else delete saved.config.budgets[key];
+  save();
+  render();
+}
+
+// ---- 描画 ----
+
+// 既定では表示中の区間だけを開く。手で開け閉めした分は、表示中の区間が移るまで覚えておく
+function openFlags(list, curSeg) {
+  const curKey = list[curSeg].key;
+  if (session.openSeg !== curKey) {
+    session.open = {};
+    session.openSeg = curKey;
+  }
+  return list.map((seg, i) => session.open[seg.key] ?? i === curSeg);
+}
+
+function toggleOpen(i) {
+  const list = segments();
+  const open = openFlags(list, segmentIndexOf(list, deck.current));
+  session.open[list[i].key] = !open[i];
+  render();
+}
+
+function rebuildTable() {
+  const list = segments();
+  const boundaries = boundarySet();
+  const trs = [];
+  tableRows.slides = [];
+
+  tableRows.segments = list.map((seg, i) => {
+    const row = segmentRow(seg, i);
+    trs.push(row.tr);
+    for (let j = seg.from; j <= seg.to; j++) trs.push(slideRow(j, i, boundaries).tr);
+    return row;
+  });
+  $('plan-body').replaceChildren(...trs);
+  render();
+}
+
+function segmentRow(seg, i) {
+  const tr = document.createElement('tr');
+  tr.className = 'seg';
+  tr.innerHTML = '<td class="title"><button class="disclosure" type="button"></button><span class="name"></span><span class="count"></span></td><td class="num"><input class="budget" type="number" min="0" step="1"></td><td class="num actual"></td><td class="num diff"></td><td class="num cum"></td><td></td>';
+  const button = tr.querySelector('button');
+  button.setAttribute('aria-label', `${seg.title} のスライドを開閉`);
+  const count = seg.to - seg.from + 1;
+  const countEl = tr.querySelector('.count');
+  countEl.textContent = count;
+  countEl.title = `${count} 枚`;
+  tr.querySelector('.name').textContent = seg.title;
+  tr.querySelector('.title').title = seg.title;
+  tr.addEventListener('click', (e) => {
+    if (e.target.closest('input')) return;
+    toggleOpen(i);
+  });
+  const input = tr.querySelector('input');
+  input.value = saved.config.budgets[seg.key] ?? '';
+  input.setAttribute('aria-label', `${seg.title} の予定 (分)`);
+  input.addEventListener('input', () => setBudget(seg.key, input.value));
+  return { tr, button, actual: tr.querySelector('.actual'), diff: tr.querySelector('.diff'), cum: tr.querySelector('.cum') };
+}
+
+function slideRow(i, segIndex, boundaries) {
+  const slide = deck.slides[i];
+  const tr = document.createElement('tr');
+  tr.className = 'slide';
+  tr.innerHTML = '<td class="title" colspan="2"><span class="idx"></span><span class="name"></span></td><td class="num actual"></td><td></td><td></td><td><input type="checkbox"></td>';
+  tr.querySelector('.idx').textContent = i + 1;
+  tr.querySelector('.name').textContent = slide.title;
+  tr.querySelector('.title').title = slide.title;
+  const box = tr.querySelector('input');
+  box.checked = i === 0 || boundaries.has(slide.key);
+  box.disabled = i === 0;
+  box.setAttribute('aria-label', `${slide.title} から区間を始める`);
+  box.addEventListener('change', () => setBoundary(slide.key, box.checked));
+  const row = { tr, segIndex, actual: tr.querySelector('.actual') };
+  tableRows.slides[i] = row;
+  return row;
+}
+
+function render() {
+  renderControls();
+  if (!deck.slides.length) return;
+
+  const list = segments();
+  const curSeg = segmentIndexOf(list, deck.current);
+  const total = list.reduce((sum, seg) => sum + seg.ms, 0);
+  const open = openFlags(list, curSeg);
+
+  renderClock(list[curSeg], total);
+  renderSegmentRows(list, curSeg, open);
+  renderTotals(list, total);
+  renderSlideRows(open);
+}
+
+function renderControls() {
+  $('toggle').innerHTML = `${TOGGLE_LABEL[saved.run.status]}<kbd>Shift+T</kbd>`;
+  $('undo').hidden = !session.undo;
+  for (const id of ['toggle', 'reset', 'export-segments', 'export-slides', 'export-json', 'import-json']) {
+    $(id).disabled = !deck.slides.length;
+  }
+}
+
+function renderClock(seg, total) {
+  $('total').textContent = fmt(total);
+
+  $('seg-title').textContent = seg.title;
+  $('seg-title').title = seg.title;
+  $('seg-time').textContent = seg.budgetMs == null ? fmt(seg.ms) : `${fmt(seg.ms)} / ${fmt(seg.budgetMs)}`;
+  $('seg-time').classList.toggle('over', seg.budgetMs != null && seg.ms > seg.budgetMs);
+
+  const slide = deck.slides[deck.current];
+  $('slide-title').textContent = `${deck.current + 1}. ${slide.title}`;
+  $('slide-title').title = slide.title;
+  $('slide-time').textContent = fmt(slideMs(slide.key));
+}
+
+function renderSegmentRows(list, curSeg, open) {
+  let cumActual = 0;
+  let cumBudget = 0;
+  list.forEach((seg, i) => {
+    const row = tableRows.segments[i];
+    if (!row) return;
+    const reached = i <= curSeg || seg.ms > 0;
+    cumActual += seg.ms;
+    cumBudget += seg.budgetMs ?? 0;
+    row.tr.classList.toggle('current', i === curSeg);
+    row.button.textContent = open[i] ? '▾' : '▸';
+    row.button.setAttribute('aria-expanded', open[i]);
+    row.actual.textContent = reached ? fmt(seg.ms) : '';
+    const diff = seg.budgetMs == null || !reached ? null : seg.ms - seg.budgetMs;
+    showDiff(row.diff, diff);
+    const cum = !reached || !cumBudget ? null : cumActual - cumBudget;
+    showDiff(row.cum, cum);
+  });
+}
+
+function renderTotals(list, total) {
+  const budgeted = list.filter((seg) => seg.budgetMs != null);
+  const budgetTotal = budgeted.reduce((sum, seg) => sum + seg.budgetMs, 0);
+  $('sum-budget').textContent = budgeted.length ? fmt(budgetTotal) : '';
+  $('sum-actual').textContent = fmt(total);
+  showDiff($('sum-diff'), budgeted.length ? total - budgetTotal : null);
+}
+
+function renderSlideRows(open) {
+  deck.slides.forEach((slide, i) => {
+    const row = tableRows.slides[i];
+    if (!row) return;
+    const measured = saved.run.perSlide[slide.key];
+    row.tr.hidden = !open[row.segIndex];
+    row.tr.classList.toggle('current', i === deck.current);
+    row.tr.classList.toggle('unvisited', !measured);
+    row.actual.textContent = measured ? fmt(measured.ms) : '';
+    if (measured?.visits > 1) {
+      const v = document.createElement('span');
+      v.className = 'visits';
+      v.title = `${measured.visits} 回訪問`;
+      v.textContent = `×${measured.visits}`;
+      row.actual.append(v);
+    }
+  });
+}
+
+function scrollCurrentIntoView() {
+  tableRows.slides[deck.current]?.tr.scrollIntoView({ block: 'nearest' });
+}
+
+// ---- デッキの読み込み ----
+
+function readSlides(doc) {
+  const seen = new Map();
+  return [...doc.querySelectorAll('svg[data-marpit-svg]')].map((svg, i) => {
+    const section = [...svg.querySelectorAll('section')]
+      .find((s) => !['background', 'pseudo'].includes(s.dataset.marpitAdvancedBackground));
+    const heading = section?.querySelector('h1, h2, h3, h4, h5, h6');
+    const title = (heading?.textContent ?? '').replace(/\s+/g, ' ').trim() || `(${i + 1} 枚目)`;
+    const n = (seen.get(title) ?? 0) + 1;
+    seen.set(title, n);
+    return { key: `${title}#${n}`, title, isH1: heading?.tagName === 'H1' };
+  });
+}
+
+function onFrameLoad() {
+  let doc;
+  try {
+    doc = frame.contentDocument;
+  } catch {
+    doc = null;
+  }
+  if (!doc) {
+    showError('スライドの中身を読めません。rehearsal.html と同じサーバーから配信してください (file:// では読めません)');
+    return;
+  }
+  deck.slides = readSlides(doc);
+  if (!deck.slides.length) {
+    showError(`スライドが見つかりません: ${deck.path}`);
+    render();
+    return;
+  }
+  showError('');
+  deck.current = readCurrent();
+  doc.addEventListener('keydown', onKeydown, true);
+  rebuildTable();
+  scrollCurrentIntoView();
+  frame.contentWindow.focus();
+}
+
+// ---- 書き出しと読み込み ----
+
+function download(filename, text, type) {
+  const url = URL.createObjectURL(new Blob([text], { type }));
+  const a = Object.assign(document.createElement('a'), { href: url, download: filename });
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function csv(rows) {
+  const cell = (v) => (/[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v));
+  // Excel で開いたときに文字化けしないよう BOM を付ける
+  return '﻿' + rows.map((r) => r.map(cell).join(',')).join('\n') + '\n';
+}
+
+function baseName() {
+  const name = deck.path.replace(/\/[^/]*$/, '').replace(/[^a-zA-Z0-9-]+/g, '-').replace(/^-|-$/g, '') || 'deck';
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  const stamp = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}`;
+  return `rehearsal-${name}-${stamp}`;
+}
+
+const sec = (ms) => (ms == null ? '' : Math.round(ms / 1000));
+
+function exportSegments() {
+  const rows = [['区間', '開始スライド', '予定 (秒)', '実績 (秒)', '差 (秒)']];
+  for (const seg of segments()) {
+    const diff = seg.budgetMs == null || !seg.ms ? null : seg.ms - seg.budgetMs;
+    rows.push([seg.title, seg.from + 1, sec(seg.budgetMs), sec(seg.ms), sec(diff)]);
+  }
+  download(`${baseName()}-segments.csv`, csv(rows), 'text/csv');
+}
+
+function exportSlides() {
+  const list = segments();
+  const rows = [['番号', '見出し', '区間', '実績 (秒)', '訪問回数']];
+  deck.slides.forEach((s, i) => {
+    const seg = list[segmentIndexOf(list, i)];
+    const e = saved.run.perSlide[s.key];
+    rows.push([i + 1, s.title, seg.title, e ? sec(e.ms) : '', e ? e.visits : '']);
+  });
+  download(`${baseName()}-slides.csv`, csv(rows), 'text/csv');
+}
+
+function exportJson() {
+  download(`${baseName()}.json`, JSON.stringify(snapshot(), null, 2), 'application/json');
+}
+
+async function importJson(file) {
+  try {
+    const data = migrate(JSON.parse(await file.text()));
+    if (!data) {
+      showError(`${file.name} は書き出した JSON の形式ではありません`);
+      return;
+    }
+    session.undo = saved.run;
+    applySaved(data);
+    save();
+    showError('');
+    rebuildTable();
+  } catch (e) {
+    showError(`${file.name} を読めません: ${e.message}`);
+  }
+}
+
+// ---- 操作 ----
+
+function onKeydown(e) {
+  if (e.key !== 'T' || !e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
+  const t = e.target;
+  if (t instanceof t.ownerDocument.defaultView.HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+  e.preventDefault();
+  e.stopPropagation();
+  toggleRun();
+}
+
+// ボタンを押したあともスライド送りのキーが効くよう、フォーカスをスライドへ戻す
+function refocusDeck() {
+  frame.contentWindow?.focus();
+}
+
+$('toggle').addEventListener('click', () => { toggleRun(); refocusDeck(); });
+$('reset').addEventListener('click', () => { reset(); refocusDeck(); });
+$('undo').addEventListener('click', () => { undoReset(); refocusDeck(); });
+$('export-segments').addEventListener('click', exportSegments);
+$('export-slides').addEventListener('click', exportSlides);
+$('export-json').addEventListener('click', exportJson);
+$('import-json').addEventListener('click', () => $('import-file').click());
+$('import-file').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (file) importJson(file);
+});
+document.addEventListener('keydown', onKeydown);
+
+$('open-deck').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const path = new FormData(e.target).get('deck').trim();
+  location.search = new URLSearchParams({ deck: path }).toString();
+});
+
+if (deck.path) {
+  $('deck-path').textContent = deck.path;
+  $('deck-path').title = deck.path;
+  const page = load();
+  frame.addEventListener('load', onFrameLoad);
+  frame.src = `${deck.path}#${page}`;
+  setInterval(tick, TICK_MS);
+} else {
+  frame.hidden = true;
+  $('panel').hidden = true;
+  $('app').classList.add('empty');
+  $('open-deck').hidden = false;
+  $('open-deck').elements.deck.focus();
+}
+render();
+</script>
+</body>
+</html>
