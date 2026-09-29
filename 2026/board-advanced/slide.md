@@ -200,6 +200,64 @@ style: |
     padding: 0 8px;
     z-index: 2;
   }
+  .hub {
+    display: block;
+    margin: 0.4em auto 0;
+    font-size: 22px;
+  }
+  .hub .box {
+    fill: #fff;
+    stroke: var(--primary);
+    stroke-width: 2;
+  }
+  .hub .list {
+    fill: #fff;
+    stroke: #bbb;
+    stroke-width: 1;
+  }
+  .hub .list.new {
+    stroke: var(--primary);
+    stroke-dasharray: 6 4;
+  }
+  .hub .line {
+    stroke: var(--primary);
+    stroke-width: 4;
+  }
+  .hub path.line {
+    fill: none;
+  }
+  .hub .head {
+    fill: var(--primary);
+  }
+  .hub .double {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 3;
+    stroke-linejoin: miter;
+  }
+  .hub text {
+    fill: #333;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+  .hub text.name {
+    font-weight: 700;
+  }
+  .hub text.left {
+    text-anchor: start;
+  }
+  .hub text.sub {
+    fill: #666;
+  }
+  .hub .mono {
+    font-family: monospace;
+  }
+  .hub .frame {
+    fill: none;
+    stroke: #999;
+    stroke-width: 2;
+    stroke-dasharray: 8 6;
+  }
   .tl {
     margin: 1.1em 1.2em 0.6em;
     font-size: 0.72em;
@@ -450,15 +508,72 @@ server.js      ← 4〜5章で書く
 
 ## サーバーは何をしているのか
 
-掲示板は、**ブラウザ** と **サーバー** の2つのプログラムが分担して動いています。
+掲示板の投稿は、サーバーが全員分をまとめて保存しています。
 
-| | ブラウザ | サーバー |
-|---|---|---|
-| どこで動く | 自分のパソコン | ネットワークでつながった別のコンピュータ |
-| 掲示板での役目 | 画面を表示する。入力やボタン操作を受け付ける | 全員の投稿を1か所に保存し、投稿の一覧をブラウザに返す |
-| 今日のプログラム | `public/script.js` | 1〜3章: 講師の共有サーバー<br>4〜5章: 自分の `server.js` |
+<svg class="hub" width="1100" height="280" viewBox="0 60 1100 280">
+  <rect class="box" x="760" y="70" width="300" height="260" rx="6"/>
+  <text class="name" x="910" y="105">サーバー</text>
+  <rect class="list" x="780" y="130" width="260" height="176" rx="4"/>
+  <text x="910" y="175">Aさんの投稿</text>
+  <text x="910" y="218">Bさんの投稿</text>
+  <text x="910" y="261">Cさんの投稿</text>
+  <rect class="box" x="40" y="75" width="220" height="50" rx="6"/>
+  <text class="name" x="150" y="100">Aさんのブラウザ</text>
+  <line class="line" x1="270" y1="100" x2="741" y2="100"/>
+  <polygon class="head" points="738,89 758,100 738,111"/>
+  <text x="505" y="76">投稿を送る</text>
+  <rect class="box" x="40" y="175" width="220" height="50" rx="6"/>
+  <text class="name" x="150" y="200">Bさんのブラウザ</text>
+  <line class="line" x1="289" y1="200" x2="758" y2="200"/>
+  <polygon class="head" points="292,189 272,200 292,211"/>
+  <text x="515" y="176">投稿一覧を受け取る</text>
+  <rect class="box" x="40" y="275" width="220" height="50" rx="6"/>
+  <text class="name" x="150" y="300">Cさんのブラウザ</text>
+  <line class="line" x1="289" y1="300" x2="758" y2="300"/>
+  <polygon class="head" points="292,289 272,300 292,311"/>
+  <text x="515" y="276">投稿一覧を受け取る</text>
+</svg>
 
-投稿がサーバーに集まっているので、ほかの人の投稿を自分の画面に出せます。
+---
+
+## 今日書くところ
+
+点線で囲んだ部分を、それぞれの章で書きます。
+1〜3章では、講師が用意したサーバー (**共有サーバー**) を使います。
+
+<svg class="hub" width="1100" height="350" viewBox="0 10 1100 350">
+  <text class="sub" x="150" y="30">1〜3章</text>
+  <text class="sub" x="910" y="30">4〜5章</text>
+  <rect class="box" x="760" y="50" width="300" height="300" rx="6"/>
+  <text class="name" x="910" y="78">サーバー</text>
+  <rect class="frame" x="800" y="96" width="220" height="32" rx="4"/>
+  <text class="mono" x="910" y="112">server.js</text>
+  <rect class="list" x="780" y="144" width="260" height="186" rx="4"/>
+  <text x="910" y="190">Aさんの投稿</text>
+  <text x="910" y="237">Bさんの投稿</text>
+  <text x="910" y="284">Cさんの投稿</text>
+  <rect class="box" x="40" y="62" width="220" height="76" rx="6"/>
+  <text class="name" x="150" y="84">Aさんのブラウザ</text>
+  <rect class="frame" x="65" y="100" width="170" height="28" rx="4"/>
+  <text class="mono" x="150" y="114">script.js</text>
+  <line class="line" x1="270" y1="100" x2="741" y2="100"/>
+  <polygon class="head" points="738,89 758,100 738,111"/>
+  <text x="505" y="76">投稿を送る</text>
+  <rect class="box" x="40" y="162" width="220" height="76" rx="6"/>
+  <text class="name" x="150" y="184">Bさんのブラウザ</text>
+  <rect class="frame" x="65" y="200" width="170" height="28" rx="4"/>
+  <text class="mono" x="150" y="214">script.js</text>
+  <line class="line" x1="289" y1="200" x2="758" y2="200"/>
+  <polygon class="head" points="292,189 272,200 292,211"/>
+  <text x="515" y="176">投稿一覧を受け取る</text>
+  <rect class="box" x="40" y="262" width="220" height="76" rx="6"/>
+  <text class="name" x="150" y="284">Cさんのブラウザ</text>
+  <rect class="frame" x="65" y="300" width="170" height="28" rx="4"/>
+  <text class="mono" x="150" y="314">script.js</text>
+  <line class="line" x1="289" y1="300" x2="758" y2="300"/>
+  <polygon class="head" points="292,289 272,300 292,311"/>
+  <text x="515" y="276">投稿一覧を受け取る</text>
+</svg>
 
 ---
 
@@ -1236,7 +1351,7 @@ source.onmessage = receivePost;
 
 ## 4-0. `server.js` の中身
 
-`server.js` には、1〜3章で使っていた2つのリクエストの処理がすでに書いてあります。
+`server.js` には、1〜3章で使っていた2つのリクエストの処理がすでに書いてあります。共有サーバーでも、同じ処理が動いています。
 
 | 書いてあるもの | 役割 |
 |---|---|
