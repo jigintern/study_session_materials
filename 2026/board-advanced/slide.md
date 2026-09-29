@@ -1533,6 +1533,8 @@ data: {"name":"たろう","text":"やっほー"}
 @@    console.log(`接続数: ${connections.length}`);@@
 ```
 
+<img src="imgs/stackblitz-terminal-strip.png" style="float: right; width: 45%;">
+
 | 書き方 | 意味 |
 |---|---|
 | `<配列>.length` | <配列>の要素の数 |
