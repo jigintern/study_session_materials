@@ -1273,6 +1273,8 @@ source.onmessage = receivePost;
 
 **成功**: 再読み込みすると一覧が空になり、Network タブの `events` の行が 404 になる。`/events` はまだないので、エラーになれば成功
 
+![w:820](imgs/network-events-404.png)
+
 ---
 
 ## 4-2. SSE のレスポンスを返す手順
@@ -1394,6 +1396,8 @@ const posts = [];                    // すでにある行
 ```
 
 **成功**: 再読み込みすると、Network タブの `events` の行の Status が 404 から 200 に変わる。まだ何も送っていないので、Time は Pending のまま
+
+![w:820](imgs/network-events-200.png)
 
 ---
 
