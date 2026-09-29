@@ -1232,26 +1232,17 @@ source.onmessage = receivePost;
 
 ---
 
-<!-- _class: compact -->
-
 ## 4-1. 手順1: ヘッダーで SSE だと伝える
 
 **`res.writeHead(ステータスコード, ヘッダー)`** = レスポンスのヘッダーを設定する
-
-```javascript
-// 例: server.js の sendJson。中身が JSON であることを伝える
-res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-```
 
 SSE では、次の3つのヘッダーを設定します。
 
 | ヘッダー | 意味 |
 |---|---|
-| `Content-Type: text/event-stream` | 中身が SSE の形式であること |
+| `Content-Type: text/event-stream` | 中身が SSE の形式であること。これ以外だと `EventSource` が受け付けない |
 | `Cache-Control: no-cache` | キャッシュを使わず、毎回サーバーから受け取る |
 | `Connection: keep-alive` | レスポンスのあとも接続を切らない |
-
-`EventSource` は、`Content-Type` が `text/event-stream` でないレスポンスを受け付けません。
 
 ---
 
