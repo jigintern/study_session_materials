@@ -1206,7 +1206,7 @@ async function showPosts() {            // すでにある行
 ```javascript {data-file=public/script.js}
 %%source.onmessage = showPosts;%%
 @@function receivePost(e) {@@
-@@  posts.push(______);@@                // 届いた文字列をオブジェクトに戻して追加する
+@@  posts.push(JSON.parse(e.data));@@   // 届いた文字列をオブジェクトに戻して追加する
 @@  showPosts();@@
 @@}@@
 @@source.onmessage = receivePost;@@
@@ -1216,41 +1216,40 @@ async function showPosts() {            // すでにある行
 
 ---
 
-## 3-2. 答え
+## 3-2. 自分の投稿を一覧に足すのも `receivePost`
 
-```javascript {data-file=public/script.js}
-const source = new EventSource(`${API}/events`);   // すでにある行
-function receivePost(e) {
-  posts.push(@@JSON.parse(e.data)@@);
-  showPosts();
-}
-source.onmessage = receivePost;
-```
-
-- `e.data` は文字列なので、`JSON.parse` でオブジェクトに戻してから `posts` に追加する
-
----
-
-## 3-2. 自分の投稿も SSE で届く
+<div class="columns" style="align-items: center">
+<div>
 
 <div class="seq">
   <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
   <div class="seq-body">
     <div class="seq-group">
-      <div class="seq-row right"><div class="seq-msg">GET /events（ページを開いたとき）</div></div>
+      <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
+      <div class="seq-fn" data-label="addPost">
+        <div class="seq-group">
+          <div class="seq-row right"><div class="seq-msg">POST /posts</div></div>
+          <div class="seq-row left"><div class="seq-msg">保存した投稿（使わない）</div></div>
+        </div>
+      </div>
+      <div class="seq-fn" data-label="receivePost">
+        <div class="seq-group">
+          <div class="seq-row left"><div class="seq-msg">data: 自分の投稿</div></div>
+        </div>
+      </div>
     </div>
-    <div class="seq-group">
-      <div class="seq-row right"><div class="seq-msg">POST /posts（自分の投稿）</div></div>
-      <div class="seq-row left"><div class="seq-msg">保存した投稿</div></div>
-    </div>
-    <div class="seq-group">
-      <div class="seq-row left"><div class="seq-msg">data: 自分の投稿（/events の接続で届く）</div></div>
-    </div>
+    <div class="seq-tail"></div>
   </div>
 </div>
 
-自分の投稿も、ほかの人の投稿と同じく `/events` から届き、`receivePost` が一覧に追加します。
-`addPost` の最後で呼んでいる `showPosts` は、`posts` を並べ直すだけなので、呼んでも一覧は変わりません。
+</div>
+<div>
+
+サーバーは、保存した投稿を `/events` につないでいる全員に送ります。投稿した本人も含まれます。
+
+自分の投稿も `receivePost` が `posts` に追加し、一覧に出します。
+</div>
+</div>
 
 ---
 
