@@ -1695,6 +1695,12 @@ source.onmessage = receivePost;      // すでにある行
 
 ---
 
+<!-- _class: lead -->
+
+# ふりかえり
+
+---
+
 ## ポーリング / SSE / WebSocket のどれを選ぶか
 
 今回は、ポーリング・SSE を実装しましたが、他にも有名なものに `WebSocket` があります。
