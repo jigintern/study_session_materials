@@ -1080,21 +1080,50 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 ---
 
-<!-- _class: compact -->
+## 3-2. 取得と表示を別の関数に分ける
 
-## 3-2. 関数の役割を分け直す
+いまの `showPosts` は、全件の取得と画面への表示を両方やっています。そのため、届いた1件を足して並べ直すだけの処理が書けません。
+取得と表示を別の関数に分け、投稿はブラウザ側の配列 `posts` に持ち続けます。
 
-| 名前 | いま | 分け直したあと |
-|---|---|---|
-| `posts` | `showPosts` を呼ぶたびに作る | ブラウザ側で1つだけ持つ配列 |
-| `loadPosts` | なし | 開いたときに1回だけ全件を取得して、`posts` に入れる |
-| `showPosts` | 全件を取得して並べる | `posts` を画面に並べるだけ |
-| `receivePost` | なし | 届いた1件を `posts` に追加する |
-
-1. `loadPosts` を作る
-2. `showPosts` から `fetch` を消す
-3. 受信した1件を `posts` に追加する
-4. 使わなくなった `showPosts` の呼び出しを消す
+<svg class="hub" width="1100" height="270" viewBox="0 10 1100 270">
+  <text class="name mono" x="170" y="30">GET /posts</text>
+  <rect class="box" x="60" y="45" width="220" height="92" rx="6"/>
+  <rect class="list" x="75" y="55" width="190" height="34" rx="4"/>
+  <text x="170" y="72">Aさんの投稿</text>
+  <rect class="list" x="75" y="93" width="190" height="34" rx="4"/>
+  <text x="170" y="110">Bさんの投稿</text>
+  <line class="line" x1="280" y1="91" x2="423" y2="91"/>
+  <polygon class="head" points="420,80 440,91 420,102"/>
+  <text class="mono" x="360" y="67">loadPosts</text>
+  <text class="name mono" x="170" y="165">/events</text>
+  <rect class="box" x="60" y="180" width="220" height="92" rx="6"/>
+  <rect class="list new" x="75" y="190" width="190" height="34" rx="4"/>
+  <text x="170" y="207">Cさんの投稿</text>
+  <text x="170" y="247">⋮</text>
+  <path class="line" d="M280,207 H400 V148 H423"/>
+  <polygon class="head" points="420,137 440,148 420,159"/>
+  <text class="mono" x="362" y="235">receivePost</text>
+  <text class="name mono" x="550" y="30">posts</text>
+  <rect class="box" x="440" y="45" width="220" height="165" rx="6"/>
+  <rect class="list" x="455" y="55" width="190" height="34" rx="4"/>
+  <text x="550" y="72">Aさんの投稿</text>
+  <rect class="list" x="455" y="93" width="190" height="34" rx="4"/>
+  <text x="550" y="110">Bさんの投稿</text>
+  <rect class="list new" x="455" y="131" width="190" height="34" rx="4"/>
+  <text x="550" y="148">Cさんの投稿</text>
+  <text x="550" y="188">⋮</text>
+  <path class="double" d="M660,111 H806 M660,125 H806 M796,100 L816,118 L796,136"/>
+  <text class="mono" x="740" y="85">showPosts</text>
+  <text class="name" x="930" y="30">画面の一覧</text>
+  <rect class="box" x="820" y="45" width="220" height="165" rx="6"/>
+  <rect class="list" x="835" y="55" width="190" height="34" rx="4"/>
+  <text x="930" y="72">Aさんの投稿</text>
+  <rect class="list" x="835" y="93" width="190" height="34" rx="4"/>
+  <text x="930" y="110">Bさんの投稿</text>
+  <rect class="list" x="835" y="131" width="190" height="34" rx="4"/>
+  <text x="930" y="148">Cさんの投稿</text>
+  <text x="930" y="188">⋮</text>
+</svg>
 
 ---
 
