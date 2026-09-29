@@ -35,4 +35,19 @@ export default ({ marp }) => marp
       }
       return html;
     };
+  })
+  .use((md) => {
+    // ```js {data-file=server.js} の data-file を <code> から <pre> に移す。
+    // marp-pre は縮小のために <code> を内側の枠に入れ、枠からはみ出した部分を切り取る。
+    // <code> の ::before では上の余白にラベルを出せないので、<pre> の ::before で出す。
+    const fence = md.renderer.rules.fence;
+    md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+      const token = tokens[idx];
+      const file = token.attrGet('data-file');
+      if (file === null) return fence(tokens, idx, options, env, self);
+
+      token.attrs = token.attrs.filter(([name]) => name !== 'data-file');
+      const html = fence(tokens, idx, options, env, self);
+      return html.replace('<pre', `<pre data-file="${md.utils.escapeHtml(file)}"`);
+    };
   });

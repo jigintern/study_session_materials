@@ -313,6 +313,26 @@ style: |
     text-decoration-thickness: 2px;
     padding: 0 0.15em;
   }
+  /* ```javascript {data-file=server.js} と書くと、コードブロックの右上にファイル名を出す。
+     ラベルは上辺に半分はみ出させ、コードの行と重ならないようにする */
+  section pre[data-file] {
+    position: relative;
+    overflow: visible;
+  }
+  section pre[data-file]::before {
+    content: attr(data-file);
+    position: absolute;
+    top: 0;
+    right: 0.8em;
+    transform: translateY(-50%);
+    padding: 0.1em 0.6em;
+    border: inherit;
+    border-radius: 4px;
+    background: inherit;
+    font-size: 0.75em;
+    line-height: 1.4;
+    color: #555;
+  }
   .timer-box {
     position: absolute; top: 44px; right: 190px;
     display: flex; align-items: center; gap: 8px;
