@@ -21,7 +21,7 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // ▼ 4章: ここに GET /events を足す
+  // ▼ 4章: ここに GET /events を追加する
 
   // 投稿を 1 件受け取る
   if (req.method === 'POST' && url.pathname === '/posts') {

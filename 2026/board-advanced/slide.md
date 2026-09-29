@@ -732,7 +732,7 @@ Network タブには、開いたあとの通信しか出ません。
   </div>
 </div>
 
-ふつうのレスポンスは、1回返し終えると閉じます。閉じたレスポンスには、あとからデータを足せません。
+ふつうのレスポンスは、1回返し終えると閉じます。閉じたレスポンスには、あとからデータを追加できません。
 はなこの投稿を受信するには、ブラウザがもう一度リクエストを送る必要があります。投稿のたびにリクエストが必要な点は、ポーリングと同じです。
 
 ---
@@ -933,7 +933,7 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 この章で編集するファイル: `public/script.js`
 
 いまは投稿が届くたびに全件を取り直しています。
-届いた新しいメッセージだけを画面に足すようにして、サーバーとやり取りする量を減らします。
+届いた新しいメッセージだけを画面に追加するようにして、サーバーとやり取りする量を減らします。
 
 ---
 
@@ -990,7 +990,7 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 ---
 
-## 3-1. 届いた投稿を画面に足す
+## 3-1. 届いた投稿を画面に追加する
 
 <div class="columns">
 <div>
@@ -1012,7 +1012,7 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 `/events` の `data:` には、新着の投稿1件がそのまま入っています。
 
-これを画面に足せば、`GET /posts` を送るのはページを開いたときの1回だけになります。
+これを画面に追加すれば、`GET /posts` を送るのはページを開いたときの1回だけになります。
 
 </div>
 </div>
@@ -1028,7 +1028,7 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 | `posts` | `showPosts` を呼ぶたびに作る | ブラウザ側で1つだけ持つ配列 |
 | `loadPosts` | なし | 開いたときに1回だけ全件を取得して、`posts` に入れる |
 | `showPosts` | 全件を取得して並べる | `posts` を画面に並べるだけ |
-| `receivePost` | なし | 届いた1件を `posts` に足す |
+| `receivePost` | なし | 届いた1件を `posts` に追加する |
 
 1. `loadPosts` を作る
 2. `showPosts` から `fetch` を消す
@@ -1037,15 +1037,15 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 ---
 
-## 3-2. 配列の要素を1つずつ別の配列に足す
+## 3-2. 配列の要素を1つずつ別の配列に追加する
 
 | 書き方 | 意味 |
 |---|---|
 | `for (const <変数> of <配列>) { }` | <配列>の要素を先頭から1つずつ<変数>に入れて、`{ }` の中を繰り返す |
-| `<配列>.push(<値>)` | <配列>の末尾に<値>を足す |
+| `<配列>.push(<値>)` | <配列>の末尾に<値>を追加する |
 
 ```javascript
-// 例: [1, 2, 3] の要素を1つずつ nums に足す
+// 例: [1, 2, 3] の要素を1つずつ nums に追加する
 const nums = [];
 for (const n of [1, 2, 3]) {
   nums.push(n);
@@ -1136,7 +1136,7 @@ document.getElementById('reload-btn').addEventListener('click', showPosts);
 ```javascript {data-file=public/script.js}
 %%source.onmessage = showPosts;%%
 @@function receivePost(e) {@@
-@@  posts.push(______);@@                // 届いた文字列をオブジェクトに戻して足す
+@@  posts.push(______);@@                // 届いた文字列をオブジェクトに戻して追加する
 @@  showPosts();@@
 @@}@@
 @@source.onmessage = receivePost;@@
@@ -1157,7 +1157,7 @@ function receivePost(e) {
 source.onmessage = receivePost;
 ```
 
-- `e.data` は文字列なので、`JSON.parse` でオブジェクトに戻してから `posts` に足す
+- `e.data` は文字列なので、`JSON.parse` でオブジェクトに戻してから `posts` に追加する
 
 ---
 
@@ -1179,7 +1179,7 @@ source.onmessage = receivePost;
   </div>
 </div>
 
-自分の投稿も、ほかの人の投稿と同じく `/events` から届き、`receivePost` が一覧に足します。
+自分の投稿も、ほかの人の投稿と同じく `/events` から届き、`receivePost` が一覧に追加します。
 `addPost` の最後で呼んでいる `showPosts` は、`posts` を並べ直すだけなので、呼んでも一覧は変わりません。
 
 ---
@@ -1248,9 +1248,9 @@ source.onmessage = receivePost;
 | 書いてあるもの | 役割 |
 |---|---|
 | `GET /posts` | 投稿を全部返す |
-| `POST /posts` | 投稿を1件受け取って、配列 `posts` に足す |
+| `POST /posts` | 投稿を1件受け取って、配列 `posts` に追加する |
 
-この章では、SSE で投稿を配信する `GET /events` を足します。
+この章では、SSE で投稿を配信する `GET /events` を追加します。
 
 ---
 
@@ -1372,7 +1372,7 @@ res.setHeader('Cache-Control', 'no-cache');
 
 <!-- _class: record compact -->
 
-## 4-2. `GET /events` を足す
+## 4-2. `GET /events` を追加する
 
 <div class="timer" data-seconds="360"></div>
 
@@ -1382,7 +1382,7 @@ const posts = [];                    // すでにある行
 ```
 
 ```javascript {data-file=server.js}
-  // ▼ 4章: ここに GET /events を足す
+  // ▼ 4章: ここに GET /events を追加する
 @@  if (req.method === 'GET' && url.pathname === '______') {@@  // すぐ上の GET /posts と同じ形
 @@    res.setHeader('Content-Type', '______');@@
 @@    res.setHeader('Cache-Control', 'no-cache');@@
@@ -1400,7 +1400,7 @@ const posts = [];                    // すでにある行
 ## 4-2. 答え
 
 ```javascript {data-file=server.js}
-  // ▼ 4章: ここに GET /events を足す
+  // ▼ 4章: ここに GET /events を追加する
   if (req.method === 'GET' && url.pathname === '@@/events@@') {
     res.setHeader('Content-Type', '@@text/event-stream@@');
     res.setHeader('Cache-Control', 'no-cache');
