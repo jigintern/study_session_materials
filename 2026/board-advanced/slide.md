@@ -1313,7 +1313,7 @@ res.setHeader('Cache-Control', 'no-cache');
 <div>
 
 <div class="seq">
-  <div class="seq-title">res.flushHeaders() なし</div>
+  <div class="seq-title"><code>res.flushHeaders()</code> なし</div>
   <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
   <div class="seq-body">
     <div class="seq-group">
@@ -1327,7 +1327,7 @@ res.setHeader('Cache-Control', 'no-cache');
 <div>
 
 <div class="seq">
-  <div class="seq-title">res.flushHeaders() あり</div>
+  <div class="seq-title"><code>res.flushHeaders()</code> あり</div>
   <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
   <div class="seq-body">
     <div class="seq-group">
