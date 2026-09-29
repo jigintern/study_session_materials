@@ -1714,6 +1714,29 @@ source.onmessage = handleMessage();  // この行でいったん実行し、戻�
 
 ---
 
+<!-- _class: extra compact -->
+
+## 付録: `Content-Type` が違うとどうなるか
+
+`Content-Type` が `text/event-stream` 以外だと、ブラウザはヘッダーを受け取った時点で接続をやめます。
+
+| | `text/event-stream` | それ以外 (例: `text/html`) |
+|---|---|---|
+| `open` イベント | 発生する | 発生しない |
+| `error` イベント | 接続が切れたとき | ヘッダーを受け取ってすぐ1回 |
+| 切れたあと | 数秒後に自動で再接続する | 再接続しない |
+
+Console には次のエラーが出ます (実際は1行)。
+
+```
+EventSource's response has a MIME type ("text/html")
+that is not "text/event-stream". Aborting the connection.
+```
+
+4-4 の接続状態の表示では「切れています」になり、ページを読み込み直すまで戻りません。
+
+---
+
 <!-- _class: extra -->
 
 ## 付録: SSE のコメント行
