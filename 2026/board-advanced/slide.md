@@ -174,6 +174,9 @@ style: |
     font-size: 1.3em;
     color: #bbb;
   }
+  .seq.no-num .seq-row.right::before {
+    content: none;
+  }
   .seq .seq-row.blocked .seq-msg {
     border-bottom-color: #c0392b;
     color: #c0392b;
@@ -1254,29 +1257,38 @@ source.onmessage = receivePost;
 
 ## 4-1. SSE のレスポンスを返す手順
 
-<div class="seq">
+<div class="columns" style="align-items: center">
+<div>
+
+<div class="seq no-num">
   <div class="seq-title">GET /events のレスポンス</div>
   <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
   <div class="seq-body">
     <div class="seq-group">
       <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
-      <div class="seq-row left"><div class="seq-msg">ヘッダー（Content-Type: text/event-stream）</div></div>
-      <div class="seq-row left"><div class="seq-msg">data: たろうの投稿</div></div>
-      <div class="seq-row left"><div class="seq-msg">data: はなこの投稿</div></div>
+      <div class="seq-row left"><div class="seq-msg">① ヘッダー</div></div>
+      <div class="seq-row left"><div class="seq-msg">② data: たろうの投稿</div></div>
+      <div class="seq-row left"><div class="seq-msg">② data: はなこの投稿</div></div>
     </div>
     <div class="seq-repeat">閉じずに書き足し続ける</div>
   </div>
 </div>
 
-1. ヘッダーで、SSE のレスポンスであることを伝える
-2. ヘッダーだけ先に送る
-3. 投稿があるたびに、1件ずつ区切って書き足す
+</div>
+<div>
+
+① SSE 用のヘッダーを先に送る
+
+② データを1件ずつ区切って送る
+
+</div>
+</div>
 
 ---
 
 <!-- _class: compact -->
 
-## 4-1. 手順1: ヘッダーで SSE だと伝える
+## 4-1. 手順1: SSE 用のヘッダーを設定する
 
 サーバーはデータを返すとき、中身の種類などを書いた **HTTP ヘッダー** を付けます。
 SSE では、ブラウザがこのヘッダーを見て、SSE のレスポンスかどうかを確かめます。
@@ -1296,7 +1308,7 @@ SSE では、次の2つのヘッダーを設定します。
 
 <!-- _class: compact -->
 
-## 4-1. 手順2: ヘッダーだけ先に送る
+## 4-1. 手順1: ヘッダーだけ先に送る
 
 <div class="columns">
 <div>
@@ -1340,7 +1352,7 @@ SSE では、次の2つのヘッダーを設定します。
 
 <!-- _class: compact -->
 
-## 4-1. 手順3: データを1件ずつ区切って送る
+## 4-1. 手順2: データを1件ずつ区切って送る
 
 ```
 data: {"name":"たろう","text":"やっほー"}
@@ -1399,7 +1411,7 @@ const posts = [];                    // すでにある行
 ```
 
 - `Content-Type` は、手順1 の `text/event-stream`
-- ヘッダーだけ先に送るのは、手順2 の `res.flushHeaders()`
+- ヘッダーだけ先に送るのは、手順1 の `res.flushHeaders()`
 
 ---
 
@@ -1436,7 +1448,7 @@ const posts = [];                    // すでにある行
     // ▼ 4章: 接続しているブラウザに投稿を送る
 @@    const data = JSON.stringify(post);@@                  // 投稿を JSON の文字列にする
 @@    if (connection) {@@                                   // 接続がなければ null のまま
-@@      connection.write(______);@@                         // 4-1 の手順3 の形式で書き足す
+@@      connection.write(______);@@                         // 4-1 の手順2 の形式で書き足す
 @@    }@@
 ```
 
