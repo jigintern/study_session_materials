@@ -1289,19 +1289,19 @@ source.onmessage = receivePost;
 
 ## 4-1. 手順1: SSE 用のヘッダーを設定する
 
-サーバーはデータを返すとき、中身の種類などを書いた **HTTP ヘッダー** を付けます。
-SSE では、ブラウザがこのヘッダーを見て、SSE のレスポンスかどうかを確かめます。
+レスポンスの先頭には、中身の種類などを書いた **HTTP ヘッダー** が付きます。
+`EventSource` はこのヘッダーの `Content-Type` を見て、`text/event-stream` でなければ受け付けません。
 
 | 書き方 | 意味 |
 |---|---|
-| `res.writeHead(<ステータスコード>, <ヘッダー>)` | レスポンスのヘッダーを設定する。<ステータスコード>は成功なら `200`、<ヘッダー>はオブジェクトで書く |
+| `res.setHeader(<名前>, <値>)` | レスポンスのヘッダーを1つ設定する |
 
-SSE では、次の2つのヘッダーを設定します。
-
-| ヘッダー | 意味 |
-|---|---|
-| `Content-Type: text/event-stream` | 中身が SSE の形式であること。これ以外だと `EventSource` が受け付けない |
-| `Cache-Control: no-cache` | キャッシュを使わず、毎回サーバーから受け取る |
+```javascript
+// 中身は SSE の形式
+res.setHeader('Content-Type', 'text/event-stream');
+// キャッシュを使わず、毎回サーバーから受け取る
+res.setHeader('Cache-Control', 'no-cache');
+```
 
 ---
 
@@ -1363,10 +1363,8 @@ const posts = [];                    // すでにある行
 ```javascript {data-file=server.js}
   // ▼ 4章: ここに GET /events を足す
 @@  if (req.method === 'GET' && url.pathname === '______') {@@  // すぐ上の GET /posts と同じ形
-@@    res.writeHead(200, {@@
-@@      'Content-Type': '______',@@
-@@      'Cache-Control': 'no-cache',@@
-@@    });@@
+@@    res.setHeader('Content-Type', '______');@@
+@@    res.setHeader('Cache-Control', 'no-cache');@@
 @@    res.______();@@                    // ヘッダーだけ先に送る
 @@    connection = res;@@                // res.end() は呼ばず、閉じないまま保持する
 @@    console.log('接続を受け付けた');@@
@@ -1381,10 +1379,8 @@ const posts = [];                    // すでにある行
 ```javascript {data-file=server.js}
   // ▼ 4章: ここに GET /events を足す
   if (req.method === 'GET' && url.pathname === '@@/events@@') {
-    res.writeHead(200, {
-      'Content-Type': '@@text/event-stream@@',
-      'Cache-Control': 'no-cache',
-    });
+    res.setHeader('Content-Type', '@@text/event-stream@@');
+    res.setHeader('Cache-Control', 'no-cache');
     res.@@flushHeaders@@();
     connection = res;
     console.log('接続を受け付けた');

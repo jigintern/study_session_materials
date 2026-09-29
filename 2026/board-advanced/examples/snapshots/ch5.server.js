@@ -25,10 +25,8 @@ const server = createServer(async (req, res) => {
 
   // 接続を閉じずに保持し、投稿が来たら送信する
   if (req.method === 'GET' && url.pathname === '/events') {
-    res.writeHead(200, {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-    });
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
     res.flushHeaders();
     connections.push(res);
     console.log(`接続数: ${connections.length}`);
