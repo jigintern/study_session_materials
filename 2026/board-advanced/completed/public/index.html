@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>みんなの掲示板</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main>
+      <h1>みんなの掲示板</h1>
+
+      <div class="form">
+        <input id="name-input" type="text" placeholder="名前" />
+        <input id="text-input" type="text" placeholder="メッセージ" />
+        <button id="post-btn" class="primary">投稿する</button>
+      </div>
+
+      <div class="list-header">
+        <h2>みんなの投稿</h2>
+        <span id="status" class="status">—</span>
+        <button id="reload-btn">更新する</button>
+      </div>
+
+      <ul id="posts"></ul>
+    </main>
+
+    <script src="script.js"></script>
+
+    <!-- プレビュー更新用。講座の内容とは関係ありません -->
+    <script src="livereload.js"></script>
+  </body>
+</html>

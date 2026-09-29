@@ -8,5 +8,6 @@
   { "slide": "2026/web-intro", "output_name": "web-intro-2026" },
   { "slide": "2026/quiz", "output_name": "quiz-2026" },
   { "slide": "2026/shinkei-suijaku", "output_name": "shinkei-suijaku-2026" },
-  { "slide": "2026/board", "output_name": "board-2026" }
+  { "slide": "2026/board", "output_name": "board-2026" },
+  { "slide": "2026/board-advanced", "output_name": "board-advanced-2026" }
 ]

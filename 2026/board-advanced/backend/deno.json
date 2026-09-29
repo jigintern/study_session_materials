@@ -1,0 +1,17 @@
+{
+  "unstable": ["kv"],
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1"
+  },
+  "tasks": {
+    "dev": "deno run --allow-net --allow-read --allow-write --allow-env --watch main.ts",
+    "test": "KV_PATH=:memory: deno test --allow-read --allow-write --allow-env",
+    "check": "deno fmt --check && deno lint && deno check main.ts main_test.ts"
+  },
+  "fmt": {
+    "lineWidth": 80,
+    // 地の文は折り返さない。80 桁で折られると 1 文 1 行が崩れ、
+    // 差分が文単位で出なくなる
+    "proseWrap": "preserve"
+  }
+}

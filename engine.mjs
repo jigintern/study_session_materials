@@ -11,19 +11,28 @@ export default ({ marp }) => marp
   .use(container, 'row')
   .use(container, '_')
   .use((md) => {
-    // コードブロック内の @@...@@ を <mark> に変換する。
+    // コードブロック内の @@...@@ を <mark>、%%...%% を <del> に変換する。
     // シンタックスハイライトを保つため、いったん番兵文字に置き換えてから
-    // ハイライト処理を通し、生成された HTML 上で <mark> に戻す。
-    const OPEN = '\u0091';
-    const CLOSE = '\u0092';
+    // ハイライト処理を通し、生成された HTML 上でタグに戻す。
+    const MARKERS = [
+      { delim: '@@', tag: 'mark', open: '', close: '' },
+      { delim: '%%', tag: 'del', open: '', close: '' },
+    ];
     const orig = md.options.highlight;
     md.options.highlight = (code, lang, attrs) => {
-      if (!code.includes('@@')) return orig ? orig(code, lang, attrs) : '';
-      let i = 0;
-      const sentinel = code.replace(/@@/g, () => (i++ % 2 === 0 ? OPEN : CLOSE));
-      const html = orig ? orig(sentinel, lang, attrs) : md.utils.escapeHtml(sentinel);
-      return html
-        .replace(new RegExp(OPEN, 'g'), '<mark>')
-        .replace(new RegExp(CLOSE, 'g'), '</mark>');
+      const used = MARKERS.filter((m) => code.includes(m.delim));
+      if (used.length === 0) return orig ? orig(code, lang, attrs) : '';
+
+      let sentinel = code;
+      for (const m of used) {
+        let i = 0;
+        sentinel = sentinel.replaceAll(m.delim, () => (i++ % 2 === 0 ? m.open : m.close));
+      }
+
+      let html = orig ? orig(sentinel, lang, attrs) : md.utils.escapeHtml(sentinel);
+      for (const m of used) {
+        html = html.replaceAll(m.open, `<${m.tag}>`).replaceAll(m.close, `</${m.tag}>`);
+      }
+      return html;
     };
   });
