@@ -1343,7 +1343,7 @@ res.setHeader('Cache-Control', 'no-cache');
 
 | 書き方 | 意味 |
 |---|---|
-| `res.flushHeaders()` | 設定したヘッダーだけを、すぐ送る。呼ばないと、最初の `res.write` でデータと一緒に送られる |
+| `res.flushHeaders()` | 設定したヘッダーだけをすぐ送る。呼ばないと最初の `res.write` でデータと一緒に送られる |
 
 ブラウザはヘッダーを受け取った時点で接続できたと判定し、`open` イベントが発生します。
 
