@@ -1657,6 +1657,8 @@ data: {"name":"たろう","text":"やっほー"}
 - 1つ目はイベントの名前 `'close'`、2つ目は切れたときに呼ぶ関数 `removeConnection`
 - 関数は `()` を付けずに渡す
 
+早く終わった人は → <a href="https://github.com/jigintern/study_session_materials/blob/main/2026/board-advanced/advanced.md#5章が早く終わった人へ" target="_blank">5章の応用課題</a> {.jump}
+
 ---
 
 <!-- _class: lead -->
@@ -1666,24 +1668,6 @@ data: {"name":"たろう","text":"やっほー"}
 ## 投稿がリアルタイムに届く掲示板ができました
 
 ![w:900](imgs/three-tabs.gif)
-
----
-
-## 接続が切れたときの動き
-
-![bg right:40% fit](imgs/network-reconnect.png)
-
-自分のサーバーなので、止めて確かめられます。
-
-1. `Filter` 欄を `events` に変える
-2. ターミナルで `Ctrl + C` を押して止める
-3. `npm start` で起動し直す
-
-再接続に失敗した赤い行が数秒おきに増え、起動し直すと次の再接続で接続できます。再接続はブラウザが自動で行います。
-
-ただし、切れている間の投稿は届きません。埋めるには `Last-Event-ID` を使います。
-
-早く終わった人は → <a href="https://github.com/jigintern/study_session_materials/blob/main/2026/board-advanced/advanced.md#5章が早く終わった人へ" target="_blank">5章の応用課題</a> {.jump}
 
 ---
 
@@ -1780,6 +1764,24 @@ Console には次のエラーが出ます (実際は1行)。
 EventSource's response has a MIME type ("text/html")
 that is not "text/event-stream". Aborting the connection.
 ```
+
+---
+
+<!-- _class: extra -->
+
+## 付録: 接続が切れるとどうなるか
+
+![bg right:40% fit](imgs/network-reconnect.png)
+
+ブラウザが数秒おきに自動で再接続します。ただし、切れている間の投稿は届きません。
+
+接続先を自分のサーバーにして確かめてみましょう。
+
+1. Network タブの `Filter` 欄を `events` に変える
+2. ターミナルで `Ctrl + C` を押して止める
+3. `npm start` で起動し直す
+
+止めている間は再接続に失敗した赤い行が数秒おきに増え、起動し直すと次の再接続でつながります。
 
 ---
 
