@@ -802,53 +802,10 @@ Network タブには、開いたあとの通信しか出ません。
 
 ---
 
-## 2-1. 先にリクエストを送っておく
+## 2-1. レスポンスを終了せずに書き足し続ける
 
 <div class="seq">
-  <div class="seq-title">ロングポーリング</div>
-  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
-  <div class="seq-body">
-    <div class="seq-group">
-      <div class="seq-row right"><div class="seq-msg">GET（次の投稿を待つ）</div></div>
-      <div class="seq-row left"><div class="seq-msg">たろうの投稿（投稿された時点で返す）</div></div>
-    </div>
-    <div class="seq-group">
-      <div class="seq-row right"><div class="seq-msg">GET（次の投稿を待つ）</div></div>
-      <div class="seq-row left"><div class="seq-msg">はなこの投稿（投稿された時点で返す）</div></div>
-    </div>
-  </div>
-</div>
-
-サーバーから通信を始められないので、先にリクエストを送っておきます。
-サーバーは投稿があるまでレスポンスを保留し、投稿された時点で返します。
-ブラウザはレスポンスを受け取るたびに、次のリクエストを送ります。
-この方法を **ロングポーリング** といいます。
-
----
-
-## 2-1. レスポンスは1回返すと閉じる
-
-<div class="seq">
-  <div class="seq-title">ふつうのレスポンス</div>
-  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
-  <div class="seq-body">
-    <div class="seq-group">
-      <div class="seq-row right"><div class="seq-msg">GET（次の投稿を待つ）</div></div>
-      <div class="seq-row left"><div class="seq-msg">たろうの投稿（ここで閉じる）</div></div>
-      <div class="seq-row left blocked"><div class="seq-msg">はなこの投稿</div></div>
-    </div>
-  </div>
-</div>
-
-ふつうのレスポンスは、1回返し終えると閉じます。閉じたレスポンスには、あとからデータを追加できません。
-はなこの投稿を受信するには、ブラウザがもう一度リクエストを送る必要があります。投稿のたびにリクエストが必要な点は、ポーリングと同じです。
-
----
-
-## 2-1. レスポンスを閉じずに書き足し続ける
-
-<div class="seq">
-  <div class="seq-title">閉じないレスポンス</div>
+  <div class="seq-title">終了しないレスポンス</div>
   <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
   <div class="seq-body">
     <div class="seq-group">
@@ -860,10 +817,8 @@ Network タブには、開いたあとの通信しか出ません。
   </div>
 </div>
 
-そこで、サーバーはレスポンスを閉じずに、投稿があるたびに続きを書き足します。
-ブラウザからのリクエストは最初の1回だけで済みます。
-
-**SSE** (Server-Sent Events) とは、このようにサーバーからブラウザへデータを送り続ける仕組みです。
+そこで、ブラウザが最初に1回だけリクエストを送っておきます。ふつうのレスポンスは1回返すと終了しますが、サーバーはこのレスポンスを終了せずに、投稿があるたびに書き足します。
+この仕組みを **SSE** (Server-Sent Events) といいます。
 
 ---
 
