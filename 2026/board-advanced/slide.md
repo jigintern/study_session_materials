@@ -1195,7 +1195,7 @@ async function showPosts() {            // すでにある行
 
 ---
 
-<!-- _class: record compact -->
+<!-- _class: record -->
 
 ## 3-2. 受信した1件を `posts` に追加する
 
@@ -1394,8 +1394,6 @@ res.setHeader('Cache-Control', 'no-cache');
 
 ---
 
-<!-- _class: compact -->
-
 ## 4-2. 手順1: ヘッダーだけ先に送る
 
 <div class="columns">
@@ -1441,7 +1439,7 @@ res.setHeader('Cache-Control', 'no-cache');
 
 ---
 
-<!-- _class: record compact -->
+<!-- _class: record -->
 
 ## 4-2. `GET /events` を追加する
 
@@ -1488,8 +1486,6 @@ const posts = [];                    // すでにある行
 - ヘッダーだけ先に送るのは、手順1 の `res.flushHeaders()`
 
 ---
-
-<!-- _class: compact -->
 
 ## 4-3. 手順2: データを1件ずつ区切って送る
 
@@ -1578,7 +1574,7 @@ data: {"name":"たろう","text":"やっほー"}
 
 ---
 
-<!-- _class: record compact -->
+<!-- _class: record -->
 
 ## 5-1. 接続の置き場を配列にする
 
@@ -1804,7 +1800,7 @@ source.onmessage = handleMessage();  // この行でいったん実行し、戻�
 
 ---
 
-<!-- _class: extra compact -->
+<!-- _class: extra -->
 
 ## 付録: `Content-Type` が違うとどうなるか
 
@@ -1940,7 +1936,7 @@ source.onmessage = showPosts;   // すでにある行
 
 ---
 
-<!-- _class: extra compact -->
+<!-- _class: extra -->
 
 ## 3章の応用課題1の答え: `posts` にない投稿だけを追加する
 
@@ -2067,7 +2063,7 @@ source.onmessage = receivePost;   // すでにある行
 
 ---
 
-<!-- _class: extra compact -->
+<!-- _class: extra -->
 
 ## 5章の応用課題: `server.js` に機能を追加する
 
@@ -2122,7 +2118,7 @@ const connections = [];   // すでにある行
 
 ---
 
-<!-- _class: extra compact -->
+<!-- _class: extra -->
 
 ## 5章の応用課題の答え3: 接続数を全員に送る
 
