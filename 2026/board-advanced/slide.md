@@ -1254,7 +1254,28 @@ source.onmessage = receivePost;
 
 ---
 
-## 4-1. SSE のレスポンスを返す手順
+<!-- _class: record -->
+
+## 4-1. 接続先を自分のサーバーに変える
+
+<div class="timer" data-seconds="120"></div>
+
+共有サーバーの URL が入っている `API` を書き換えます。
+
+```javascript {data-file=public/script.js}
+%%const API = 'https://example.deno.net';%%   // 当日の URL が入っている
+@@const API = location.origin;@@
+```
+
+| 書き方 | 意味 |
+|---|---|
+| `location.origin` | いま開いているページを配信しているサーバーの URL |
+
+**成功**: 再読み込みすると一覧が空になり、Network タブの `events` の行が 404 になる。`/events` はまだないので、エラーになれば成功
+
+---
+
+## 4-2. SSE のレスポンスを返す手順
 
 <div class="columns" style="align-items: center">
 <div>
@@ -1285,7 +1306,7 @@ source.onmessage = receivePost;
 
 ---
 
-## 4-1. 手順1: SSE 用のヘッダーを設定する
+## 4-2. 手順1: SSE 用のヘッダーを設定する
 
 レスポンスの先頭には、中身の種類などを書いた **HTTP ヘッダー** が付きます。
 
@@ -1304,7 +1325,7 @@ res.setHeader('Cache-Control', 'no-cache');
 
 <!-- _class: compact -->
 
-## 4-1. 手順1: ヘッダーだけ先に送る
+## 4-2. 手順1: ヘッダーだけ先に送る
 
 <div class="columns">
 <div>
@@ -1351,7 +1372,7 @@ res.setHeader('Cache-Control', 'no-cache');
 
 <!-- _class: record compact -->
 
-## 4-1. `GET /events` を足す
+## 4-2. `GET /events` を足す
 
 <div class="timer" data-seconds="360"></div>
 
@@ -1372,9 +1393,11 @@ const posts = [];                    // すでにある行
 @@  }@@
 ```
 
+**成功**: 再読み込みすると、Network タブの `events` の行の Status が 404 から 200 に変わる。まだ何も送っていないので、Time は Pending のまま
+
 ---
 
-## 4-1. 答え
+## 4-2. 答え
 
 ```javascript {data-file=server.js}
   // ▼ 4章: ここに GET /events を足す
@@ -1390,27 +1413,6 @@ const posts = [];                    // すでにある行
 
 - `Content-Type` は、手順1 の `text/event-stream`
 - ヘッダーだけ先に送るのは、手順1 の `res.flushHeaders()`
-
----
-
-<!-- _class: record -->
-
-## 4-2. 接続先を自分のサーバーに変える
-
-<div class="timer" data-seconds="120"></div>
-
-共有サーバーの URL が入っている `API` を書き換えます。
-
-```javascript {data-file=public/script.js}
-%%const API = 'https://example.deno.net';%%   // 当日の URL が入っている
-@@const API = location.origin;@@
-```
-
-| 書き方 | 意味 |
-|---|---|
-| `location.origin` | いま開いているページを配信しているサーバーの URL |
-
-**成功**: 再読み込みすると一覧が空になり、Network タブの `events` の行が Status 200 のまま Time が伸び続ける
 
 ---
 
