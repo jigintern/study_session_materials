@@ -1659,6 +1659,16 @@ data: {"name":"たろう","text":"やっほー"}
 
 ---
 
+<!-- _class: lead -->
+
+# 完成しました！
+
+## 投稿がリアルタイムに届く掲示板ができました
+
+![w:900](imgs/three-tabs.gif)
+
+---
+
 ## 接続が切れたときの動き
 
 ![bg right:40% fit](imgs/network-reconnect.png)
