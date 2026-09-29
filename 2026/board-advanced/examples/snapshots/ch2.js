@@ -1,7 +1,7 @@
 // Chapter 2 の終わりの public/script.js
 // ポーリングをやめて、共有サーバーから届いた合図で読み込み直している状態。
 
-const API = 'https://example.deno.net'; // 当日の URL に差し替える
+const API = 'https://example.deno.net';
 
 async function showPosts() {
   const res = await fetch(`${API}/posts`);

@@ -1,7 +1,7 @@
 // 講座を通しで書き終えたときの public/script.js
 // 共有サーバーに接続し、受信した 1 件だけを配列 posts に追加している状態。
 
-const API = 'https://example.deno.net'; // 当日の URL に差し替える
+const API = 'https://example.deno.net';
 
 // ブラウザ側で持つ投稿。画面と同じ並び。
 const posts = [];

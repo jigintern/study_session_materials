@@ -1,4 +1,4 @@
-const API = 'https://example.deno.net'; // 当日の URL に差し替える
+const API = 'https://example.deno.net';
 
 async function showPosts() {
   const res = await fetch(`${API}/posts`);
