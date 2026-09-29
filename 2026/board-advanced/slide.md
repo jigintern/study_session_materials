@@ -411,12 +411,12 @@ style: |
 書くコードはそのまま載っています。黄色いところだけを書きます。
 赤く取り消されている行は、消します。
 `______` は空欄です。前の説明のスライドを見て、自分で埋めます。
+右上はファイル名です。色のない行はすでにある行で、書く場所の目印です。
 
 記述スライドは自分のペースで進めてかまいません。章が早く終わった人は、章の最後のスライドの左上にあるリンクから応用課題に進みましょう。
 
-```javascript
-// 例
-const posts = [];
+```javascript {data-file=public/script.js}
+const posts = [];                // 色なし: すでにある行。この下に書く
 @@let connection = null;@@           // 黄色: 書いてもらう行
 @@const max = ______;@@              // 空欄: 自分で埋める
 %%setInterval(showPosts, 10000);%%   // 赤: 消してもらう行
@@ -538,9 +538,9 @@ setInterval(showPosts, 10000);
 
 10 秒ごとに `showPosts()` を実行して、投稿一覧を読み直します。
 
-**書く場所**: `public/script.js` のいちばん下
+```javascript {data-file=public/script.js}
+document.getElementById('reload-btn').addEventListener('click', showPosts);
 
-```javascript
 showPosts();                         // すでにある行
 @@setInterval(showPosts, 10000);@@
 ```
@@ -852,11 +852,9 @@ source.onmessage = handleMessage;    // 関数を登録する。() は付けな�
 
 一定間隔の自動更新をやめて、サーバーからの通知に切り替えます。
 
-**書く場所**: `public/script.js` のいちばん下
+```javascript {data-file=public/script.js}
+document.getElementById('reload-btn').addEventListener('click', showPosts);
 
-赤い行を消して、黄色い行を追加します。
-
-```javascript
 showPosts();                         // すでにある行
 %%setInterval(showPosts, 10000);%%
 @@const source = new EventSource(______);@@   // 共有サーバーの /events に接続する
@@ -871,7 +869,9 @@ showPosts();                         // すでにある行
 
 ## 2-1. 答え
 
-```javascript
+```javascript {data-file=public/script.js}
+document.getElementById('reload-btn').addEventListener('click', showPosts);
+
 showPosts();                         // すでにある行
 %%setInterval(showPosts, 10000);%%
 const source = new EventSource(@@`${API}/events`@@);
@@ -1058,9 +1058,7 @@ for (const n of [1, 2, 3]) {
 
 <div class="timer" data-seconds="180"></div>
 
-**書く場所 1**: `showPosts` の上
-
-```javascript
+```javascript {data-file=public/script.js}
 @@const posts = [];@@                   // ブラウザ側で持つ投稿。画面と同じ並び
 
 @@async function loadPosts() {@@        // 取ってきて posts に入れる。開いたときに1回だけ呼ぶ
@@ -1071,11 +1069,13 @@ for (const n of [1, 2, 3]) {
 @@  }@@
 @@  showPosts();@@
 @@}@@
+
+async function showPosts() {         // すでにある行
 ```
 
-**書く場所 2**: いちばん下の `showPosts();` の行。赤い行を消して、黄色い行を書きます
+```javascript {data-file=public/script.js}
+document.getElementById('reload-btn').addEventListener('click', showPosts);
 
-```javascript
 %%showPosts();%%
 @@loadPosts();@@
 ```
@@ -1092,9 +1092,7 @@ for (const n of [1, 2, 3]) {
 
 `showPosts` に残っている `fetch` を消すと、`showPosts` は配列 `posts` を画面に並べるだけの関数になります。
 
-**書く場所**: `showPosts` の先頭
-
-```javascript
+```javascript {data-file=public/script.js}
 %%async %%function showPosts() {
 %%  const res = await fetch(`${API}/posts`);%%
 %%  const posts = await res.json();%%
@@ -1133,9 +1131,7 @@ for (const n of [1, 2, 3]) {
 
 `posts` に追加してから `showPosts` を呼ぶと、その1件が一覧に表示されます。
 
-**書く場所**: いちばん下の `source.onmessage` の行。赤い行を消して、黄色い行を書きます
-
-```javascript
+```javascript {data-file=public/script.js}
 %%source.onmessage = showPosts;%%
 @@function receivePost(e) {@@
 @@  posts.push(______);@@                // 届いた文字列をオブジェクトに戻して足す
@@ -1150,7 +1146,8 @@ for (const n of [1, 2, 3]) {
 
 ## 3-2. 答え
 
-```javascript
+```javascript {data-file=public/script.js}
+const source = new EventSource(`${API}/events`);   // すでにある行
 function receivePost(e) {
   posts.push(@@JSON.parse(e.data)@@);
   showPosts();
@@ -1193,9 +1190,7 @@ source.onmessage = receivePost;
 
 `addPost` の最後で呼んでいる `showPosts` を消します。
 
-**書く場所**: `addPost` の中、`text-input` を空にした行の下
-
-```javascript
+```javascript {data-file=public/script.js}
   document.getElementById('text-input').value = '';   // ここから下
 %%  showPosts();%%
 }
@@ -1371,16 +1366,13 @@ data: {"name":"たろう","text":"やっほー"}
 
 <div class="timer" data-seconds="360"></div>
 
-**書く場所 1**: 投稿の置き場を作っている行の下
-
-```javascript
+```javascript {data-file=server.js}
 const posts = [];                    // すでにある行
 @@let connection = null;@@             // 現在の接続。新しい接続が来ると上書きされる
 ```
 
-**書く場所 2**: `▼ 4章: ここに GET /events を足す` の行の下
-
-```javascript
+```javascript {data-file=server.js}
+  // ▼ 4章: ここに GET /events を足す
 @@  if (req.method === 'GET' && url.pathname === '______') {@@  // すぐ上の GET /posts と同じ形
 @@    res.writeHead(200, {@@
 @@      'Content-Type': '______',@@
@@ -1396,7 +1388,8 @@ const posts = [];                    // すでにある行
 
 ## 4-1. 答え
 
-```javascript
+```javascript {data-file=server.js}
+  // ▼ 4章: ここに GET /events を足す
   if (req.method === 'GET' && url.pathname === '@@/events@@') {
     res.writeHead(200, {
       'Content-Type': '@@text/event-stream@@',
@@ -1421,9 +1414,8 @@ const posts = [];                    // すでにある行
 
 共有サーバーの URL が入っている `API` を書き換えます。
 
-**書く場所**: `public/script.js` の `API` の行
-
-```javascript
+```javascript {data-file=public/script.js}
+%%const API = 'https://example.deno.net';%%   // 当日の URL が入っている
 @@const API = location.origin;@@
 ```
 
@@ -1443,9 +1435,8 @@ const posts = [];                    // すでにある行
 
 保存したあと、保持しておいた接続に1件ぶん書き足します。
 
-**書く場所**: `server.js` の `▼ 4章: 接続しているブラウザに投稿を送る` の行の下
-
-```javascript
+```javascript {data-file=server.js}
+    // ▼ 4章: 接続しているブラウザに投稿を送る
 @@    const data = JSON.stringify(post);@@                  // 投稿を JSON の文字列にする
 @@    if (connection) {@@                                   // 接続がなければ null のまま
 @@      connection.write(______);@@                         // 4-1 の手順3 の形式で書き足す
@@ -1464,8 +1455,8 @@ const posts = [];                    // すでにある行
 
 ## 4-3. 答え
 
-```javascript
-    if (posts.length > MAX_POSTS) posts.shift();        // すでにある行
+```javascript {data-file=server.js}
+    // ▼ 4章: 接続しているブラウザに投稿を送る
     const data = JSON.stringify(post);
     if (connection) {
       connection.write(@@`data: ${data}\n\n`@@);
@@ -1498,9 +1489,7 @@ const posts = [];                    // すでにある行
 
 <div class="timer" data-seconds="240"></div>
 
-**書く場所**: `public/script.js` のいちばん下
-
-```javascript
+```javascript {data-file=public/script.js}
 source.onmessage = receivePost;      // すでにある行
 
 @@const status = document.getElementById('status');@@
@@ -1540,17 +1529,13 @@ source.onmessage = receivePost;      // すでにある行
 
 <div class="timer" data-seconds="240"></div>
 
-**書く場所 1**: 接続の置き場を作っている2行
-
-```javascript
+```javascript {data-file=server.js}
 %%let connection = null;             // 現在の接続。新しい接続が来ると上書きされる%%
 @@// 現在の接続の一覧。接続した順に並ぶ。@@
 @@const connections = [];@@
 ```
 
-**書く場所 2**: `GET /events` の中で接続を保持している行
-
-```javascript
+```javascript {data-file=server.js}
 %%    connection = res;%%
 @@    connections.push(res);@@
 @@    console.log(`接続数: ${connections.length}`);@@
@@ -1572,9 +1557,7 @@ source.onmessage = receivePost;      // すでにある行
 
 1本に書いていたところを、配列ぶん繰り返します。
 
-**書く場所**: 投稿を受け取ったところ。4章で書いた `if (connection)` の行
-
-```javascript
+```javascript {data-file=server.js}
     const data = JSON.stringify(post);                  // 変わらない行
 %%    if (connection) {%%
 @@    for (const connection of connections) {@@
@@ -1641,9 +1624,8 @@ source.onmessage = receivePost;      // すでにある行
 
 <div class="timer" data-seconds="240"></div>
 
-**書く場所**: 接続を配列に足している行の下
-
-```javascript
+```javascript {data-file=server.js}
+    console.log(`接続数: ${connections.length}`);   // すでにある行
 @@    function removeConnection() {@@
 @@      connections.splice(connections.indexOf(res), 1);@@
 @@      console.log(`接続数: ${connections.length}`);@@
@@ -1662,7 +1644,8 @@ source.onmessage = receivePost;      // すでにある行
 
 ## 5-3. 答え
 
-```javascript
+```javascript {data-file=server.js}
+    console.log(`接続数: ${connections.length}`);   // すでにある行
     function removeConnection() {
       connections.splice(connections.indexOf(res), 1);
       console.log(`接続数: ${connections.length}`);
@@ -1701,9 +1684,8 @@ source.onmessage = receivePost;      // すでにある行
 
 最後に接続先を共有サーバーに戻して、全員で投稿してみましょう。
 
-**書く場所**: `public/script.js` の `API` の行を上書き
-
-```javascript
+```javascript {data-file=public/script.js}
+%%const API = location.origin;%%
 @@const API = 'https://example.deno.net';@@
 ```
 
