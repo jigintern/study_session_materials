@@ -1835,6 +1835,35 @@ data: {"name":"たろう","text":"やっほー"}
 
 ---
 
+<!-- _class: extra compact -->
+
+## 2章の応用課題の答え
+
+[← 2章の動作チェックに戻る](#ch2-end) {.jump}
+
+```javascript {data-file=public/script.js}
+source.onmessage = showPosts;   // すでにある行
+@@const title = document.title;@@
+@@let unread = 0;@@
+@@function countUnread() {@@
+@@  if (!document.hidden) return;@@
+@@  unread = unread + 1;@@
+@@  document.title = `(${unread}) ${title}`;@@
+@@}@@
+@@function resetTitle() {@@
+@@  if (document.hidden) return;@@
+@@  unread = 0;@@
+@@  document.title = title;@@
+@@}@@
+@@source.addEventListener('message', countUnread);@@
+@@document.addEventListener('visibilitychange', resetTitle);@@
+```
+
+- 元のタイトルを `title` に取っておき、戻すときに使う
+- `visibilitychange` は隠れたときにも発生するので、見えているときだけ戻す
+
+---
+
 <!-- _class: extra -->
 
 ## 3章の応用課題1: 再接続したときに、切断中の投稿を取得する
@@ -1845,6 +1874,55 @@ data: {"name":"たろう","text":"やっほー"}
 
 - 接続したことは `source.addEventListener('open', 関数)` で分かる
 - 共有サーバーの投稿には `id` があるので、`posts` にあるかどうかを `posts.some(...)` で確かめられる
+
+---
+
+<!-- _class: extra compact -->
+
+## 3章の応用課題1の答え: `posts` にない投稿だけを追加する
+
+[← 3章の動作チェックに戻る](#ch3-end) {.jump}
+
+```javascript {data-file=public/script.js}
+@@function hasPost(id) {@@
+@@  function isSame(post) {@@
+@@    return post.id === id;@@
+@@  }@@
+@@  return posts.some(isSame);@@
+@@}@@
+
+async function loadPosts() {
+  const res = await fetch(`${API}/posts`);
+  const loaded = await res.json();
+
+  for (const post of loaded) {
+    @@if (!hasPost(post.id))@@ posts.push(post);
+  }
+```
+
+- `some` は、`isSame` が `true` を返す要素が1つでもあれば `true` を返す
+
+---
+
+<!-- _class: extra -->
+
+## 3章の応用課題1の答え: 接続するたびに投稿を取得する
+
+[← 3章の動作チェックに戻る](#ch3-end) {.jump}
+
+```javascript {data-file=public/script.js}
+%%loadPosts();%%
+
+const source = new EventSource(`${API}/events`);   // すでにある行
+```
+
+```javascript {data-file=public/script.js}
+source.onmessage = receivePost;   // すでにある行
+@@source.addEventListener('open', loadPosts);@@
+```
+
+- ページを開いて最初に接続したときも `open` が発生するので、最初の取得もここで済む
+- `loadPosts();` の行を残すと取得が2つ同時に走り、同じ投稿が2件ずつ入ることがある
 
 ---
 
@@ -1862,6 +1940,33 @@ data: {"name":"たろう","text":"やっほー"}
 
 <!-- _class: extra -->
 
+## 3章の応用課題2の答え
+
+[← 3章の動作チェックに戻る](#ch3-end) {.jump}
+
+```javascript {data-file=public/script.js}
+  @@const res = @@await fetch(`${API}/posts`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: name, text: text }),
+  });
+
+@@  if (!res.ok) {@@
+@@    const { message } = await res.json();@@
+@@    alert(message);@@
+@@    return;@@
+@@  }@@
+
+  document.getElementById('text-input').value = '';
+```
+
+- 失敗したら `return` で抜けるので、入力欄を空にする行まで進まない
+- `const { message }` は、受け取ったオブジェクトから `message` を取り出す
+
+---
+
+<!-- _class: extra -->
+
 ## 4章の応用課題: 接続状態を画面に出す
 
 [← 4章の動作チェックに戻る](#ch4-end) {.jump #adv-ch4}
@@ -1871,6 +1976,31 @@ data: {"name":"たろう","text":"やっほー"}
 - 表示する場所は `index.html` に `<span id="status">` として用意してある
 - `class` を `status online` にすると緑、`status offline` にすると赤になる
 - 接続したことは `source.addEventListener('open', 関数)` で、切れたことは `source.addEventListener('error', 関数)` で分かる
+
+---
+
+<!-- _class: extra -->
+
+## 4章の応用課題の答え
+
+[← 4章の動作チェックに戻る](#ch4-end) {.jump}
+
+```javascript {data-file=public/script.js}
+source.onmessage = receivePost;   // すでにある行
+@@const status = document.getElementById('status');@@
+@@function showOnline() {@@
+@@  status.textContent = 'つながっています';@@
+@@  status.className = 'status online';@@
+@@}@@
+@@function showOffline() {@@
+@@  status.textContent = '切れています';@@
+@@  status.className = 'status offline';@@
+@@}@@
+@@source.addEventListener('open', showOnline);@@
+@@source.addEventListener('error', showOffline);@@
+```
+
+- 切れたあとはブラウザが自動で再接続するので、つながり直すと `open` がまた発生する
 
 ---
 
@@ -1885,6 +2015,98 @@ data: {"name":"たろう","text":"やっほー"}
 1. ハートビートを送る: 15秒ごとに、接続している全員へコメント行 `: ping\n\n` を書く。データが流れない時間が続くと、プロキシなどが接続を切ることがある ([付録: SSE のコメント行](#comment-line))
 2. 空の投稿を受け付けない: `text` が空なら保存せず、ステータス `400` と `{"message": "..."}` を返す。3章の「投稿に失敗したことを伝える」を済ませていれば、ブラウザにエラーが表示される
 3. 接続数を全員に送る: 接続したときと切れたときに `event: count\ndata: 3\n\n` を全員に書く。ブラウザ側は `source.addEventListener('count', 関数)` で受け取り、画面に出す
+
+---
+
+<!-- _class: extra -->
+
+## 5章の応用課題の答え1: ハートビートを送る
+
+[← 5章の動作チェックに戻る](#ch5-end) {.jump}
+
+```javascript {data-file=server.js}
+const connections = [];   // すでにある行
+@@function sendPing() {@@
+@@  for (const connection of connections) {@@
+@@    connection.write(': ping\n\n');@@
+@@  }@@
+@@}@@
+@@setInterval(sendPing, 15000);@@
+```
+
+- コメント行なので、ブラウザの `onmessage` は呼ばれない
+
+---
+
+<!-- _class: extra -->
+
+## 5章の応用課題の答え2: 空の投稿を受け付けない
+
+[← 5章の動作チェックに戻る](#ch5-end) {.jump}
+
+```javascript {data-file=server.js}
+    const post = await readPost(req);   // すでにある行
+@@    if (post.text === '') {@@
+@@      res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });@@
+@@      res.end(JSON.stringify({ message: 'text が空です' }));@@
+@@      return;@@
+@@    }@@
+    posts.push(post);
+```
+
+- `readPost` は `text` がないときも `''` にするので、`''` と比べれば足りる
+- `sendJson` はステータスが `200` で決まっているので、`res.writeHead` で直接書く
+
+---
+
+<!-- _class: extra compact -->
+
+## 5章の応用課題の答え3: 接続数を全員に送る
+
+[← 5章の動作チェックに戻る](#ch5-end) {.jump}
+
+```javascript {data-file=server.js}
+const connections = [];   // すでにある行
+@@function sendCount() {@@
+@@  for (const connection of connections) {@@
+@@    connection.write(`event: count\ndata: ${connections.length}\n\n`);@@
+@@  }@@
+@@}@@
+```
+
+```javascript {data-file=server.js}
+    console.log(`接続数: ${connections.length}`);   // すでにある行
+@@    sendCount();@@
+
+    function removeConnection() {
+      connections.splice(connections.indexOf(res), 1);
+      console.log(`接続数: ${connections.length}`);
+@@      sendCount();@@
+    }
+```
+
+---
+
+<!-- _class: extra -->
+
+## 5章の応用課題の答え3: 接続数を画面に出す
+
+[← 5章の動作チェックに戻る](#ch5-end) {.jump}
+
+```html {data-file=public/index.html}
+        <h2>みんなの投稿</h2>   <!-- すでにある行 -->
+@@        <span id="count"></span>@@
+```
+
+```javascript {data-file=public/script.js}
+source.onmessage = receivePost;   // すでにある行
+@@function showCount(e) {@@
+@@  document.getElementById('count').textContent = `${e.data}人が接続中`;@@
+@@}@@
+@@source.addEventListener('count', showCount);@@
+```
+
+- `event:` の行を付けたデータは `onmessage` には届かず、同じ名前で登録した関数だけが呼ばれる
 
 <script>
 document.querySelectorAll('.timer[data-seconds]').forEach(el => {
