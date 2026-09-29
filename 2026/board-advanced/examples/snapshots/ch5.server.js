@@ -46,7 +46,8 @@ const server = createServer(async (req, res) => {
     if (posts.length > MAX_POSTS) posts.shift();
 
     const data = JSON.stringify(post);
-    for (const connection of connections) {
+    for (let i = 0; i < connections.length; i++) {
+      const connection = connections[i];
       connection.write(`data: ${data}\n\n`);
     }
 

@@ -1098,49 +1098,29 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 ---
 
-## 3-2. 配列の要素を1つずつ別の配列に追加する
-
-| 書き方 | 意味 |
-|---|---|
-| `for (const <変数> of <配列>) { }` | <配列>の要素を先頭から1つずつ<変数>に入れて、`{ }` の中を繰り返す |
-| `<配列>.push(<値>)` | <配列>の末尾に<値>を追加する |
-
-```javascript
-// 例: [1, 2, 3] の要素を1つずつ nums に追加する
-const nums = [];
-for (const n of [1, 2, 3]) {
-  nums.push(n);
-}
-// nums は [1, 2, 3]
-```
-
----
-
-<!-- _class: record compact -->
+<!-- _class: record -->
 
 ## 3-2. 投稿を取ってくる `loadPosts` を作る
 
 <div class="timer" data-seconds="180"></div>
 
 ```javascript {data-file=public/script.js}
-@@const posts = [];@@                   // ブラウザ側で持つ投稿。画面と同じ並び
+@@const posts = [];@@                      // ブラウザ側で持つ投稿。画面と同じ並び
 
-@@async function loadPosts() {@@        // 取ってきて posts に入れる。開いたときに1回だけ呼ぶ
+@@async function loadPosts() {@@           // 開いたときに1回だけ呼ぶ
 @@  const res = await fetch(`${API}/posts`);@@
-@@  const loaded = await res.json();@@  // サーバーにある投稿の全件
-@@  for (const post of loaded) {@@      // 1件ずつ posts に入れる
-@@    posts.push(post);@@
+@@  const loaded = await res.json();@@     // サーバーにある投稿の全件
+@@  for (let i = 0; i < loaded.length; i++) {@@
+@@    posts.push(loaded[i]);@@              // 1件ずつ posts の末尾に追加する
 @@  }@@
 @@  showPosts();@@
 @@}@@
 
-async function showPosts() {         // すでにある行
+async function showPosts() {            // すでにある行
 ```
 
 ```javascript {data-file=public/script.js}
-document.getElementById('reload-btn').addEventListener('click', showPosts);
-
-%%showPosts();%%
+%%showPosts();%%                        // ファイルの最後の行
 @@loadPosts();@@
 ```
 
@@ -1624,12 +1604,13 @@ data: {"name":"たろう","text":"やっほー"}
 ```javascript {data-file=server.js}
     const data = JSON.stringify(post);                  // 変わらない行
 %%    if (connection) {%%
-@@    for (const connection of connections) {@@
+@@    for (let i = 0; i < connections.length; i++) {@@
+@@      const connection = connections[i];@@
       connection.write(`data: ${data}\n\n`);              // 変わらない行
     }
 ```
 
-入れ替えるのは1行だけです。`write` の行も閉じ括弧も、そのままにします。
+`write` の行も閉じ括弧も、そのままにします。
 
 **成功**: タブを3枚開くと、どのタブで投稿しても残り2枚に出る
 
@@ -1963,8 +1944,8 @@ async function loadPosts() {
   const res = await fetch(`${API}/posts`);
   const loaded = await res.json();
 
-  for (const post of loaded) {
-    @@if (!hasPost(post.id))@@ posts.push(post);
+  for (let i = 0; i < loaded.length; i++) {
+    @@if (!hasPost(loaded[i].id))@@ posts.push(loaded[i]);
   }
 ```
 
@@ -2095,8 +2076,8 @@ source.onmessage = receivePost;   // すでにある行
 ```javascript {data-file=server.js}
 const connections = [];   // すでにある行
 @@function sendPing() {@@
-@@  for (const connection of connections) {@@
-@@    connection.write(': ping\n\n');@@
+@@  for (let i = 0; i < connections.length; i++) {@@
+@@    connections[i].write(': ping\n\n');@@
 @@  }@@
 @@}@@
 @@setInterval(sendPing, 15000);@@
@@ -2136,8 +2117,8 @@ const connections = [];   // すでにある行
 ```javascript {data-file=server.js}
 const connections = [];   // すでにある行
 @@function sendCount() {@@
-@@  for (const connection of connections) {@@
-@@    connection.write(`event: count\ndata: ${connections.length}\n\n`);@@
+@@  for (let i = 0; i < connections.length; i++) {@@
+@@    connections[i].write(`event: count\ndata: ${connections.length}\n\n`);@@
 @@  }@@
 @@}@@
 ```

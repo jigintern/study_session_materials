@@ -11,8 +11,8 @@ async function loadPosts() {
   const res = await fetch(`${API}/posts`);
   const loaded = await res.json();
 
-  for (const post of loaded) {
-    posts.push(post);
+  for (let i = 0; i < loaded.length; i++) {
+    posts.push(loaded[i]);
   }
 
   showPosts();
@@ -23,7 +23,8 @@ function showPosts() {
   const list = document.getElementById('posts');
   list.textContent = '';
 
-  for (const post of posts) {
+  for (let i = 0; i < posts.length; i++) {
+    const post = posts[i];
     const item = document.createElement('li');
     const time = new Date(post.createdAt).toLocaleTimeString();
     item.textContent = `${post.name}: ${post.text} (${time})`;
