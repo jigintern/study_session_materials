@@ -1543,8 +1543,7 @@ source.onmessage = receivePost;      // すでにある行
 **書く場所 1**: 接続の置き場を作っている2行
 
 ```javascript
-%%// 現在の接続。新しい接続が来ると上書きされる。%%
-%%let connection = null;%%
+%%let connection = null;             // 現在の接続。新しい接続が来ると上書きされる%%
 @@// 現在の接続の一覧。接続した順に並ぶ。@@
 @@const connections = [];@@
 ```
