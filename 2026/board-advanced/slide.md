@@ -1486,33 +1486,7 @@ data: {"name":"たろう","text":"やっほー"}
 2. 投稿すると、`events` の EventStream タブに行が1つ増える
 3. 一覧にも、投稿が出る
 
----
-
-<!-- _class: record compact -->
-
-## 4-4. 接続状態を画面に出す
-
-<div class="timer" data-seconds="240"></div>
-
-```javascript {data-file=public/script.js}
-source.onmessage = receivePost;      // すでにある行
-
-@@const status = document.getElementById('status');@@
-
-@@function showOnline() {@@
-@@  status.textContent = 'つながっています';@@
-@@  status.className = 'status online';@@
-@@}@@
-@@function showOffline() {@@
-@@  status.textContent = '切れています';@@
-@@  status.className = 'status offline';@@
-@@}@@
-
-@@source.addEventListener('open', showOnline);@@     // 接続したとき
-@@source.addEventListener('error', showOffline);@@   // 切れたとき
-```
-
-**成功**: `server.js` を保存すると一瞬「切れています」になり、「つながっています」に戻る
+早く終わった人は → <a href="https://github.com/jigintern/study_session_materials/blob/main/2026/board-advanced/advanced.md#4章が早く終わった人へ" target="_blank">4章の応用課題</a> {.jump}
 
 ---
 

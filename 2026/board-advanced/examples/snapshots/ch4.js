@@ -1,5 +1,5 @@
 // Chapter 4 の終わりの public/script.js
-// 接続先を自分のサーバーに変え、接続状態を画面に出している状態。
+// 接続先を自分のサーバーに変えた状態。
 
 const API = location.origin; // Chapter 4 で自分のサーバーに向けた
 
@@ -55,17 +55,3 @@ function receivePost(e) {
   showPosts();
 }
 source.onmessage = receivePost;
-
-const status = document.getElementById('status');
-
-function showOnline() {
-  status.textContent = 'つながっています';
-  status.className = 'status online';
-}
-function showOffline() {
-  status.textContent = '切れています';
-  status.className = 'status offline';
-}
-
-source.addEventListener('open', showOnline);
-source.addEventListener('error', showOffline);

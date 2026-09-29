@@ -55,17 +55,3 @@ function receivePost(e) {
   showPosts();
 }
 source.onmessage = receivePost;
-
-const status = document.getElementById('status');
-
-function showOnline() {
-  status.textContent = 'つながっています';
-  status.className = 'status online';
-}
-function showOffline() {
-  status.textContent = '切れています';
-  status.className = 'status offline';
-}
-
-source.addEventListener('open', showOnline);
-source.addEventListener('error', showOffline);
