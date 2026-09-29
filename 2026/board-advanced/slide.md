@@ -1094,6 +1094,7 @@ document.getElementById('reload-btn').addEventListener('click', showPosts);
 <div class="timer" data-seconds="120"></div>
 
 `showPosts` に残っている `fetch` を消すと、`showPosts` は配列 `posts` を画面に並べるだけの関数になります。
+`await` がなくなるので `async` も外します。
 
 ```javascript {data-file=public/script.js}
 %%async %%function showPosts() {
@@ -1102,8 +1103,6 @@ document.getElementById('reload-btn').addEventListener('click', showPosts);
 
   const list = document.getElementById('posts');   // ここから下はそのまま
 ```
-
-`await` がなくなるので `async` も外します。`for` の行は書き換えません。関数の中で `posts` を宣言しなくなったので、`for` は関数の外で宣言した `posts` を参照します。
 
 **成功**: ページを再読み込みすると、一覧が出る
 
