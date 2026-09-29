@@ -55,7 +55,7 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(PORT);
-console.log(`http://localhost:${PORT} で待っています`);
+console.log(`サーバーを起動しました: http://localhost:${PORT}`);
 
 // 送られてきた JSON を、投稿の形に整える
 function readPost(req) {
