@@ -46,10 +46,3 @@ function showOffline() {
 
 source.addEventListener('open', showOnline);
 source.addEventListener('error', showOffline);
-
-// 5章の応用課題3: 接続数を画面に出す
-function showCount(e) {
-  document.getElementById('count').textContent = `${e.data}人が接続中`;
-}
-
-source.addEventListener('count', showCount);

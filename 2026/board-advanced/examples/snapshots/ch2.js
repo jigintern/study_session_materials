@@ -3,6 +3,8 @@
 
 const API = 'https://example.deno.net';
 
+// ▼ 3章: ここに posts と loadPosts を追加する
+
 async function showPosts() {
   const res = await fetch(`${API}/posts`);
   const posts = await res.json();
