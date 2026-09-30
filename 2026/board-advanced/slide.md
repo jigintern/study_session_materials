@@ -997,18 +997,6 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 ---
 
-## 3-1. 投稿のたびに全件を取り直しているのを見る
-
-![bg right:40% fit](imgs/network-refetch.png)
-
-`Filter` 欄を `posts` に変えて、投稿が届くのを待ちます。
-
-投稿が増えるほど通信も増えます。10秒ごとより多くなることもあります。
-
-**成功**: `posts` の GET が投稿のたびに1本ずつ増える
-
----
-
 ## 3-1. 届いた投稿を使わずに全件を取り直している
 
 <div class="columns" style="align-items: center">
@@ -1211,7 +1199,7 @@ async function showPosts() {            // すでにある行
 @@source.onmessage = receivePost;@@
 ```
 
-**成功**: 投稿しても `posts` の GET が増えず、一覧にはその投稿が出る
+**成功**: Network タブの `Filter` 欄を `posts` にして投稿すると、`posts` の GET は増えず、一覧にはその投稿が出る
 
 ---
 
