@@ -1812,8 +1812,6 @@ SSE とは、1回のリクエストに対して、サーバーがレスポンス
 
 ## 掲示板全体の通信の流れ
 
-左端は、その部分を書いた章です。
-
 <svg class="hub" width="1100" height="430" viewBox="0 0 1100 430">
   <g id="lanes">
     <rect class="conn" x="250" y="212" width="370" height="188"/>
