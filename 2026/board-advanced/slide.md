@@ -479,6 +479,7 @@ const posts = [];                // 色なし: すでにある行。この下に
 ```
 
 早く終わった人は、章の最後のスライドの左上にあるリンクから応用課題に進んでください。
+書きかけのコードがエラーで止まっても本編はそのまま動くので、次の章が始まったら途中のまま戻ってきて大丈夫です。
 
 ---
 
@@ -553,6 +554,7 @@ public/
   index.html
   styles.css
   script.js    ← ブラウザで動く JavaScript
+  extra.js     ← 応用課題を書く
 package.json
 server.js      ← サーバーで動く JavaScript
 ```
