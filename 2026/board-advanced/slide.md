@@ -850,7 +850,7 @@ Windows は `F12`、Mac は `Cmd + Option + I` でも開けます。
 
 ---
 
-## 2-1. レスポンスを終了せずに書き足し続ける
+## 2-1. レスポンスを終了せずに送り続ける
 
 <div class="seq">
   <div class="seq-title">終了しないレスポンス</div>
@@ -861,11 +861,11 @@ Windows は `F12`、Mac は `Cmd + Option + I` でも開けます。
       <div class="seq-row left"><div class="seq-msg">たろうの投稿</div></div>
       <div class="seq-row left"><div class="seq-msg">はなこの投稿</div></div>
     </div>
-    <div class="seq-repeat">投稿されるたびに書き足す</div>
+    <div class="seq-repeat">投稿されるたびに送る</div>
   </div>
 </div>
 
-そこで、ブラウザが最初に1回だけリクエストを送っておきます。ふつうのレスポンスは1回返すと終了しますが、サーバーはこのレスポンスを終了せずに、投稿があるたびに書き足します。
+そこで、ブラウザが最初に1回だけリクエストを送っておきます。ふつうのレスポンスは1回返すと終了しますが、サーバーはこのレスポンスを終了せず、投稿があるたびに続きを送ります。
 この仕組みを **SSE** (Server-Sent Events) といいます。
 
 ---
@@ -1387,7 +1387,7 @@ async function showPosts() {            // すでにある行
       <div class="seq-row left"><div class="seq-msg">② data: たろうの投稿</div></div>
       <div class="seq-row left"><div class="seq-msg">② data: はなこの投稿</div></div>
     </div>
-    <div class="seq-repeat">終了せずに書き足し続ける</div>
+    <div class="seq-repeat">終了せずに送り続ける</div>
   </div>
 </div>
 
@@ -1536,20 +1536,20 @@ data: {"name":"たろう","text":"やっほー"}
 
 <div class="timer" data-seconds="180"></div>
 
-保存したあと、保持しておいた接続に1件ぶん書き足します。
+保存したあと、保持しておいた接続に投稿を1件送ります。
 
 ```javascript {data-file=server.js}
     // ▼ 4章: 接続しているブラウザに投稿を送る
 @@    const data = JSON.stringify(post);@@                  // 投稿を JSON の文字列にする
 @@    if (connection) {@@                                   // 接続がなければ null のまま
-@@      connection.write(`data: ${data}\n\n`);@@            // 手順2 の形式で書き足す
+@@      connection.write(`data: ${data}\n\n`);@@            // 手順2 の形式で送る
 @@    }@@
 ```
 
 | 書き方 | 意味 |
 |---|---|
 | `JSON.stringify(<値>)` | <値>を JSON の文字列にする。ブラウザ側の `JSON.parse` で元に戻る |
-| `res.write(<文字列>)` | レスポンスを終了せずに、<文字列>を書き足す |
+| `res.write(<文字列>)` | レスポンスを終了せずに、<文字列>を送る |
 | `\n` | 文字列の中で、改行1文字を表す |
 
 末尾の `\n\n` の1つ目で `data:` の行が終わり、2つ目で空行になります。
@@ -1565,7 +1565,7 @@ data: {"name":"たろう","text":"やっほー"}
 ### やったこと
 
 - `GET /events` で SSE 用のヘッダーを先に送り、レスポンスを終了せずに持っておくようにした
-- 投稿を受け取ったら、`data: 中身` と空行の形で接続に書き足すようにした
+- 投稿を受け取ったら、`data: 中身` と空行の形で接続に送るようにした
 - ターミナルには、接続を受け付けるたびに `接続を受け付けた` が出る (右の赤枠)
 
 ### 残っている課題
@@ -1790,14 +1790,14 @@ data: {"name":"たろう","text":"やっほー"}
       <div class="seq-row left"><div class="seq-msg">data: たろうの投稿</div></div>
       <div class="seq-row left"><div class="seq-msg">data: はなこの投稿</div></div>
     </div>
-    <div class="seq-repeat">終了せずに書き足し続ける</div>
+    <div class="seq-repeat">終了せずに送り続ける</div>
   </div>
 </div>
 
 </div>
 <div>
 
-SSE とは、1回のリクエストに対して、サーバーがレスポンスを **終了せずに書き足し続ける** 仕組みです。
+SSE とは、1回のリクエストに対して、サーバーがレスポンスを **終了せずに送り続ける** 仕組みです。
 サーバーは1件ごとに `data: 中身` の行と空行を送ります。
 
 ポーリングと比べた利点は2つです。
