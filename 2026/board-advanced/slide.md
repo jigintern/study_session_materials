@@ -455,7 +455,7 @@ style: |
 
 ブラウザは Chrome か Edge を使ってください。ない場合は Firefox を使います (開発者ツールの画面がスライドと少し違います)。
 
-1. ブラウザで [StackBlitz のテンプレート](https://stackblitz.com/fork/github/jigintern/study_session_materials/tree/main/2026/board-advanced/template?file=public%2Fscript.js,server.js) を開く
+1. ブラウザで <a href="https://stackblitz.com/fork/github/jigintern/study_session_materials/tree/main/2026/board-advanced/template?file=public%2Fscript.js,server.js" target="_blank">StackBlitz のテンプレート</a> を開く
 2. 左上の **Fork** を押す
 3. `public/script.js` を開き、`API` の値を今から伝える URL に書き換える
 
