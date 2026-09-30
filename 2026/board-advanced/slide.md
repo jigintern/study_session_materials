@@ -960,17 +960,17 @@ source.@@onmessage@@ = showPosts;
 
 ---
 
-## 2章の動作チェック
+## 2章のふりかえり
 
-### 3つとも当てはまれば 2章は完了
+### やったこと
 
-1. `posts` の行が、10秒ごとに増えるのをやめている
-2. `events` の行は1本だけで、Status は 200 のまま Time が伸び続ける
-3. 投稿が届くたびに EventStream タブの行が1つ増える
+- ブラウザから10秒ごとに確かめに行くのをやめ、サーバーが投稿のたびに送るようにした
+- `new EventSource(<URL>)` で接続し、届くたびに呼ぶ関数を `onmessage` に登録した
+- `events` の通信は1本のままで、投稿が届くたびに EventStream タブの行が増える
 
-### 投稿しても `events` の行は増えない
+### 残っている課題
 
-EventStream タブの中の行が増えます。通信そのものは、1本を使い回しています。
+届いた投稿の中身は使わず、そのたびに `GET /posts` で全件を取り直しています。
 
 早く終わった人は → [2章の応用課題](#adv-ch2) {.jump #ch2-end}
 
@@ -1259,18 +1259,17 @@ async function showPosts() {            // すでにある行
 
 ---
 
-## 3章の動作チェック
+## 3章のふりかえり
 
-### 4つとも当てはまれば 3章は完了
+### やったこと
 
-1. ページを開いたとき、`posts` の GET が1本だけある
-2. そのあとは何件投稿されても、`posts` の GET が増えない
-3. EventStream タブの行は、投稿のたびに増える
-4. 一覧にも、届いた投稿が出る
+- 取得する `loadPosts` と、表示する `showPosts` を分けた
+- 届いた1件を `JSON.parse` でオブジェクトに戻し、`posts` に追加して並べ直すようにした
+- `GET /posts` を送るのは、ページを開いたときの1回だけになった
 
-### 3は増えるのに4が変わらないなら
+### 一覧に出ないとき
 
-届いてはいるので、受け取ったあとの処理でつまずいています。Console タブの赤い文字を見てください。
+EventStream タブの行は増えるのに一覧に出ないなら、受け取ったあとの処理でつまずいています。Console タブの赤い文字を見てください。
 
 早く終わった人は → [3章の応用課題](#adv-ch3) {.jump #ch3-end}
 
@@ -1518,16 +1517,19 @@ data: {"name":"たろう","text":"やっほー"}
 
 ---
 
-## 4章の動作チェック
+## 4章のふりかえり
 
 ![bg right:40% fit](imgs/stackblitz-terminal.png)
 
-### 4つとも当てはまれば 4章は完了
+### やったこと
 
-1. Network タブの `events` の行は、Status が 200 のまま Time が伸び続ける
-2. 投稿すると、`events` の EventStream タブに行が1つ増える
-3. 一覧にも、投稿が出る
-4. ターミナルに `接続を受け付けた` が出る (右の赤枠)
+- `GET /events` で SSE 用のヘッダーを先に送り、レスポンスを終了せずに持っておくようにした
+- 投稿を受け取ったら、`data: 中身` と空行の形で接続に書き足すようにした
+- ターミナルには、接続を受け付けるたびに `接続を受け付けた` が出る (右の赤枠)
+
+### 残っている課題
+
+持っておける接続は1本だけです。
 
 早く終わった人は → [4章の応用課題](#adv-ch4) {.jump #ch4-end}
 
@@ -1612,24 +1614,10 @@ data: {"name":"たろう","text":"やっほー"}
 
 ---
 
-## 5章の動作チェック
-
-### タブを3枚開いて確かめる
-
-1. ターミナルの「接続数」が、開いているページの数と同じ (StackBlitz のプレビューも1つと数える)
-2. どのタブで投稿しても、残り2枚に出る
-3. 5-0 では何も出なかった「先に開いたタブ」にも出る
-
-### タブを1枚閉じる
-
-ターミナルの接続数を見ます。減らずにそのままです。
-
----
-
 ## 5-3. 切れた接続が配列に残り続ける
 
 タブを閉じたり再読み込みしたりすると、そのタブの接続は切れます。
-いまの `server.js` は、切れた接続を `connections` から消していません。
+いまの `server.js` は、切れた接続を `connections` から消していないので、タブを1枚閉じてもターミナルの接続数は減りません。
 
 | 操作 | `connections` の中身 |
 |---|---|
@@ -1696,6 +1684,16 @@ data: {"name":"たろう","text":"やっほー"}
 
 - 1つ目はイベントの名前 `'close'`、2つ目は切れたときに呼ぶ関数 `removeConnection`
 - 関数は `()` を付けずに渡す
+
+---
+
+## 5章のふりかえり
+
+### やったこと
+
+- 接続を配列 `connections` に持ち、投稿を全員に書き込むようにした
+- 接続が切れたら、`close` イベントで `connections` から抜くようにした
+- ターミナルの接続数が、開いているページの数と同じになる (StackBlitz のプレビューも1つと数える)
 
 早く終わった人は → [5章の応用課題](#adv-ch5) {.jump #ch5-end}
 
@@ -1868,7 +1866,7 @@ data: {"name":"たろう","text":"やっほー"}
 
 ## 2章の応用課題: 見ていない間に届いた件数をタブに出す
 
-[← 2章の動作チェックに戻る](#ch2-end) {.jump #adv-ch2}
+[← 2章のふりかえりに戻る](#ch2-end) {.jump #adv-ch2}
 
 別のタブを見ている間に届いた投稿の数を、`(3) みんなの掲示板` のようにタブのタイトルに出します。掲示板のタブに戻ったら元のタイトルに戻します。
 
@@ -1883,7 +1881,7 @@ data: {"name":"たろう","text":"やっほー"}
 
 ## 2章の応用課題の答え
 
-[← 2章の動作チェックに戻る](#ch2-end) {.jump}
+[← 2章のふりかえりに戻る](#ch2-end) {.jump}
 
 ```javascript {data-file=public/script.js}
 source.onmessage = showPosts;   // すでにある行
@@ -1912,7 +1910,7 @@ source.onmessage = showPosts;   // すでにある行
 
 ## 3章の応用課題1: 再接続したときに、切断中の投稿を取得する
 
-[← 3章の動作チェックに戻る](#ch3-end) {.jump #adv-ch3}
+[← 3章のふりかえりに戻る](#ch3-end) {.jump #adv-ch3}
 
 接続が切れている間の投稿は、再接続しても届きません。接続するたびに `/posts` を取得し直し、`posts` にない投稿だけを追加します。
 
@@ -1926,7 +1924,7 @@ source.onmessage = showPosts;   // すでにある行
 
 ## 3章の応用課題1の答え: `posts` にない投稿だけを追加する
 
-[← 3章の動作チェックに戻る](#ch3-end) {.jump}
+[← 3章のふりかえりに戻る](#ch3-end) {.jump}
 
 ```javascript {data-file=public/script.js}
 @@function hasPost(id) {@@
@@ -1953,7 +1951,7 @@ async function loadPosts() {
 
 ## 3章の応用課題1の答え: 接続するたびに投稿を取得する
 
-[← 3章の動作チェックに戻る](#ch3-end) {.jump}
+[← 3章のふりかえりに戻る](#ch3-end) {.jump}
 
 ```javascript {data-file=public/script.js}
 %%loadPosts();%%
@@ -1975,7 +1973,7 @@ source.onmessage = receivePost;   // すでにある行
 
 ## 3章の応用課題2: 投稿に失敗したことを伝える
 
-[← 3章の動作チェックに戻る](#ch3-end) {.jump}
+[← 3章のふりかえりに戻る](#ch3-end) {.jump}
 
 メッセージを空で投稿すると、共有サーバーは 400 と `{"message": "..."}` を返します。失敗したら `alert` で知らせ、入力欄は空にしないようにします。
 
@@ -1987,7 +1985,7 @@ source.onmessage = receivePost;   // すでにある行
 
 ## 3章の応用課題2の答え
 
-[← 3章の動作チェックに戻る](#ch3-end) {.jump}
+[← 3章のふりかえりに戻る](#ch3-end) {.jump}
 
 ```javascript {data-file=public/script.js}
   @@const res = @@await fetch(`${API}/posts`, {
@@ -2014,7 +2012,7 @@ source.onmessage = receivePost;   // すでにある行
 
 ## 4章の応用課題: 接続状態を画面に出す
 
-[← 4章の動作チェックに戻る](#ch4-end) {.jump #adv-ch4}
+[← 4章のふりかえりに戻る](#ch4-end) {.jump #adv-ch4}
 
 「みんなの投稿」の横に、SSE の接続がつながっているか切れているかを出します。`server.js` を保存するとサーバーが再起動するので、一瞬「切れています」になり、「つながっています」に戻れば完成です。
 
@@ -2028,7 +2026,7 @@ source.onmessage = receivePost;   // すでにある行
 
 ## 4章の応用課題の答え
 
-[← 4章の動作チェックに戻る](#ch4-end) {.jump}
+[← 4章のふりかえりに戻る](#ch4-end) {.jump}
 
 ```javascript {data-file=public/script.js}
 source.onmessage = receivePost;   // すでにある行
@@ -2053,7 +2051,7 @@ source.onmessage = receivePost;   // すでにある行
 
 ## 5章の応用課題: `server.js` に機能を追加する
 
-[← 5章の動作チェックに戻る](#ch5-end) {.jump #adv-ch5}
+[← 5章のふりかえりに戻る](#ch5-end) {.jump #adv-ch5}
 
 上から順に難しくなります。
 
@@ -2067,7 +2065,7 @@ source.onmessage = receivePost;   // すでにある行
 
 ## 5章の応用課題の答え1: ハートビートを送る
 
-[← 5章の動作チェックに戻る](#ch5-end) {.jump}
+[← 5章のふりかえりに戻る](#ch5-end) {.jump}
 
 ```javascript {data-file=server.js}
 const connections = [];   // すでにある行
@@ -2087,7 +2085,7 @@ const connections = [];   // すでにある行
 
 ## 5章の応用課題の答え2: 空の投稿を受け付けない
 
-[← 5章の動作チェックに戻る](#ch5-end) {.jump}
+[← 5章のふりかえりに戻る](#ch5-end) {.jump}
 
 ```javascript {data-file=server.js}
     const post = await readPost(req);   // すでにある行
@@ -2108,7 +2106,7 @@ const connections = [];   // すでにある行
 
 ## 5章の応用課題の答え3: 接続数を全員に送る
 
-[← 5章の動作チェックに戻る](#ch5-end) {.jump}
+[← 5章のふりかえりに戻る](#ch5-end) {.jump}
 
 ```javascript {data-file=server.js}
 const connections = [];   // すでにある行
@@ -2136,7 +2134,7 @@ const connections = [];   // すでにある行
 
 ## 5章の応用課題の答え3: 接続数を画面に出す
 
-[← 5章の動作チェックに戻る](#ch5-end) {.jump}
+[← 5章のふりかえりに戻る](#ch5-end) {.jump}
 
 ```html {data-file=public/index.html}
         <h2>みんなの投稿</h2>   <!-- すでにある行 -->
