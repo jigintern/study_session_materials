@@ -2076,103 +2076,40 @@ data: {"name":"たろう","text":"やっほー"}
 
 <!-- _class: extra -->
 
-## 3章の応用課題1: 再接続したときに、切断中の投稿を取得する
+## 3章の応用課題: 名前を呼ばれたら知らせる
 
 [← 3章のふりかえりに戻る](#ch3-end) {.jump #adv-ch3}
 
-接続が切れている間の投稿は、再接続しても届きません。接続するたびに `/posts` を取得し直し、`posts` にない投稿だけを追加します。
+ほかの人の投稿のメッセージに自分の名前が入っていたら、`alert` で知らせます。
 
-- 接続したことは `source.addEventListener('open', 関数)` で分かる
-- 投稿には `id` があるので、`posts` にあるかどうかを `posts.some(...)` で確かめられる
-- 最初に接続したときも `open` は発生するので、最後の行の `loadPosts();` は消す。残すと取得が2つ同時に走り、同じ投稿が2件ずつ入ることがある
+- 届いた1件は、3章と同じく `JSON.parse(e.data)` でオブジェクトに戻せる
+- 自分の名前は、名前欄 (`name-input`) の `value` で分かる
+- 文字列に別の文字列が入っているかは、`<文字列>.includes(<探す文字列>)` で分かる
+- 自分の投稿と、名前欄が空のときは知らせない
+
+**成功**: 「新しいタブで開く」で開いたタブから、違う名前で自分の名前を含むメッセージを投稿し、元のタブに戻ると `alert` が出ている
 
 ---
 
 <!-- _class: extra -->
 
-## 3章の応用課題1の答え: `posts` にない投稿だけを追加する
+## 3章の応用課題の答え
 
 [← 3章のふりかえりに戻る](#ch3-end) {.jump}
 
-```javascript {data-file=public/script.js}
-@@function hasPost(id) {@@
-@@  function isSame(post) {@@
-@@    return post.id === id;@@
-@@  }@@
-@@  return posts.some(isSame);@@
+```javascript {data-file=public/extra.js}
+@@function notifyMention(e) {@@
+@@  const post = JSON.parse(e.data);@@
+@@  const me = document.getElementById('name-input').value;@@
+@@  if (me === '' || post.name === me) return;@@
+@@  if (!post.text.includes(me)) return;@@
+@@  alert(`${post.name}さんに呼ばれました: ${post.text}`);@@
 @@}@@
-
-async function loadPosts() {
-  const res = await fetch(`${API}/posts`);
-  const loaded = await res.json();
-
-  for (let i = 0; i < loaded.length; i++) {
-    @@if (!hasPost(loaded[i].id))@@ posts.push(loaded[i]);
-  }
+@@source.addEventListener('message', notifyMention);@@
 ```
 
-- `some` は、`isSame` が `true` を返す要素が1つでもあれば `true` を返す
-
----
-
-<!-- _class: extra -->
-
-## 3章の応用課題1の答え: 接続するたびに投稿を取得する
-
-[← 3章のふりかえりに戻る](#ch3-end) {.jump}
-
-```javascript {data-file=public/script.js}
-%%loadPosts();%%
-
-const source = new EventSource(`${API}/events`);   // すでにある行
-```
-
-```javascript {data-file=public/script.js}
-source.onmessage = receivePost;   // すでにある行
-@@source.addEventListener('open', loadPosts);@@
-```
-
-- ページを開いて最初に接続したときも `open` が発生するので、最初の取得もここで済む
-- `loadPosts();` の行を残すと取得が2つ同時に走り、同じ投稿が2件ずつ入ることがある
-
----
-
-<!-- _class: extra -->
-
-## 3章の応用課題2: 投稿に失敗したことを伝える
-
-[← 3章のふりかえりに戻る](#ch3-end) {.jump}
-
-メッセージを空で投稿すると、共有サーバーは 400 と `{"message": "..."}` を返します。失敗したら `alert` で知らせ、入力欄は空にしないようにします。
-
-- 成否は `fetch` の戻り値の `res.ok` で分かる
-
----
-
-<!-- _class: extra -->
-
-## 3章の応用課題2の答え
-
-[← 3章のふりかえりに戻る](#ch3-end) {.jump}
-
-```javascript {data-file=public/script.js}
-  @@const res = @@await fetch(`${API}/posts`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: name, text: text }),
-  });
-
-@@  if (!res.ok) {@@
-@@    const { message } = await res.json();@@
-@@    alert(message);@@
-@@    return;@@
-@@  }@@
-
-  document.getElementById('text-input').value = '';
-```
-
-- 失敗したら `return` で抜けるので、入力欄を空にする行まで進まない
-- `const { message }` は、受け取ったオブジェクトから `message` を取り出す
+- `receivePost` と同じく、届いた文字列をオブジェクトに戻してから使う
+- 名前欄が空だと `includes('')` がいつも `true` になるので、先に抜ける
 
 ---
 
