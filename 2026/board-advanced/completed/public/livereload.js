@@ -11,7 +11,7 @@
 // 再読み込みで名前欄が空になると、共有サーバーが投稿を 400 で弾く。
 // 名前欄の中身を sessionStorage に取っておき、読み込んだときに戻す。
 
-const TARGETS = ['/index.html', '/styles.css', '/script.js'];
+const TARGETS = ['/index.html', '/styles.css', '/script.js', '/extra.js'];
 const INTERVAL = 500;
 const QUIET = 1000;
 
