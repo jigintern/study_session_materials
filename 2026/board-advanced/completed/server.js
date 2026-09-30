@@ -17,6 +17,21 @@ const posts = [];
 // 現在の接続の一覧。接続した順に並ぶ。
 const connections = [];
 
+// 15 秒ごとにコメント行を送り、データが流れない接続が切られないようにする
+function sendPing() {
+  for (let i = 0; i < connections.length; i++) {
+    connections[i].write(': ping\n\n');
+  }
+}
+setInterval(sendPing, 15000);
+
+// いまの接続数を、接続している全員に送る
+function sendCount() {
+  for (let i = 0; i < connections.length; i++) {
+    connections[i].write(`event: count\ndata: ${connections.length}\n\n`);
+  }
+}
+
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
@@ -33,10 +48,12 @@ const server = createServer(async (req, res) => {
     res.flushHeaders();
     connections.push(res);
     console.log(`接続数: ${connections.length}`);
+    sendCount();
 
     function removeConnection() {
       connections.splice(connections.indexOf(res), 1);
       console.log(`接続数: ${connections.length}`);
+      sendCount();
     }
     req.on('close', removeConnection);
     return;
@@ -45,6 +62,11 @@ const server = createServer(async (req, res) => {
   // 投稿を 1 件受け取る
   if (req.method === 'POST' && url.pathname === '/posts') {
     const post = await readPost(req);
+    if (post.text === '') {
+      res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ message: 'text が空です' }));
+      return;
+    }
     posts.push(post);
     if (posts.length > MAX_POSTS) posts.shift();
 

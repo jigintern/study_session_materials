@@ -3,6 +3,36 @@
 // script.js のあとに読み込むので、script.js の source や posts をそのまま使える。
 // このファイルが途中で止まっても、script.js は動き続ける。
 
+// 2章の応用課題: 見ていない間に届いた件数をタブに出す
+const title = document.title;
+let unread = 0;
+
+function countUnread() {
+  if (!document.hidden) return;
+  unread = unread + 1;
+  document.title = `(${unread}) ${title}`;
+}
+function resetTitle() {
+  if (document.hidden) return;
+  unread = 0;
+  document.title = title;
+}
+
+source.addEventListener('message', countUnread);
+document.addEventListener('visibilitychange', resetTitle);
+
+// 3章の応用課題: 名前を呼ばれたら知らせる
+function notifyMention(e) {
+  const post = JSON.parse(e.data);
+  const me = document.getElementById('name-input').value;
+  if (me === '' || post.name === me) return;
+  if (!post.text.includes(me)) return;
+  alert(`${post.name}さんに呼ばれました: ${post.text}`);
+}
+
+source.addEventListener('message', notifyMention);
+
+// 4章の応用課題: 接続状態を画面に出す
 const status = document.getElementById('status');
 
 function showOnline() {
@@ -16,3 +46,10 @@ function showOffline() {
 
 source.addEventListener('open', showOnline);
 source.addEventListener('error', showOffline);
+
+// 5章の応用課題3: 接続数を画面に出す
+function showCount(e) {
+  document.getElementById('count').textContent = `${e.data}人が接続中`;
+}
+
+source.addEventListener('count', showCount);
