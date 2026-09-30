@@ -21,6 +21,17 @@ function resetTitle() {
 source.addEventListener('message', countUnread);
 document.addEventListener('visibilitychange', resetTitle);
 
+// 3章の応用課題: 名前を呼ばれたら知らせる
+function notifyMention(e) {
+  const post = JSON.parse(e.data);
+  const me = document.getElementById('name-input').value;
+  if (me === '' || post.name === me) return;
+  if (!post.text.includes(me)) return;
+  alert(`${post.name}さんに呼ばれました: ${post.text}`);
+}
+
+source.addEventListener('message', notifyMention);
+
 // 4章の応用課題: 接続状態を画面に出す
 const status = document.getElementById('status');
 
