@@ -246,6 +246,15 @@ style: |
   .hub .mono {
     font-family: monospace;
   }
+  .hub .lifeline {
+    stroke: #bbb;
+    stroke-width: 3;
+  }
+  /* 開いたままの /events の接続を、ブラウザとサーバーの間の帯で表す */
+  .hub .conn {
+    fill: var(--primary);
+    fill-opacity: 0.08;
+  }
   .hub .frame {
     fill: none;
     stroke: #999;
@@ -1766,16 +1775,143 @@ data: {"name":"たろう","text":"やっほー"}
 
 ---
 
-## 今日やったこと
+## SSE の仕組み
 
-| やったこと | 使ったもの |
-|---|---|
-| 決まった間隔で読み直す | `setInterval` |
-| サーバーからの通知を受け取る | `EventSource` |
-| 受信した1件だけを追加する | ブラウザ側の配列 `posts` |
-| 通信を1本ずつ見る | Network タブ / EventStream タブ |
-| 終わらないレスポンスを返す | `text/event-stream` / `res.write` |
-| 接続している全員に送る | 接続の配列 / `req.on('close')` |
+<div class="columns" style="align-items: center">
+<div>
+
+<div class="seq no-num">
+  <div class="seq-title">GET /events のレスポンス</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events（最初の1回）</div></div>
+      <div class="seq-row left"><div class="seq-msg">ヘッダー</div></div>
+      <div class="seq-row left"><div class="seq-msg">data: たろうの投稿</div></div>
+      <div class="seq-row left"><div class="seq-msg">data: はなこの投稿</div></div>
+    </div>
+    <div class="seq-repeat">終了せずに書き足し続ける</div>
+  </div>
+</div>
+
+</div>
+<div>
+
+SSE とは、ブラウザが送った1回のリクエストに対して、サーバーがレスポンスを **終了せずに書き足し続ける** 仕組みのことです。
+
+- 通信を始めるのはブラウザで、リクエストは最初の1回だけ
+- そのあとは、サーバーからブラウザへの一方通行
+- 1件ずつ `data: 中身` と空行で区切って届く
+
+使っているのは、ふつうの HTTP のリクエストとレスポンスです。
+
+</div>
+</div>
+
+---
+
+## 掲示板全体の通信の流れ
+
+左端は、その部分を書いた章です。
+
+<svg class="hub" width="1100" height="430" viewBox="0 0 1100 430">
+  <g id="lanes">
+    <rect class="conn" x="250" y="212" width="370" height="188"/>
+    <rect class="conn" x="620" y="212" width="370" height="218"/>
+    <text class="sub" x="435" y="250">開いたままの接続</text>
+    <line class="lifeline" x1="250" y1="44" x2="250" y2="400"/>
+    <line class="lifeline" x1="620" y1="44" x2="620" y2="430"/>
+    <line class="lifeline" x1="990" y1="44" x2="990" y2="430"/>
+    <rect class="box" x="150" y="0" width="200" height="44" rx="6"/>
+    <text class="name" x="250" y="22">Aさんのブラウザ</text>
+    <rect class="box" x="520" y="0" width="200" height="44" rx="6"/>
+    <text class="name" x="620" y="22">サーバー</text>
+    <rect class="box" x="890" y="0" width="200" height="44" rx="6"/>
+    <text class="name" x="990" y="22">Bさんのブラウザ</text>
+  </g>
+  <g id="open">
+    <text class="sub" x="50" y="80">3章</text>
+    <line class="line" x1="250" y1="80" x2="595" y2="80"/>
+    <polygon class="head" points="592,69 612,80 592,91"/>
+    <text class="mono" x="435" y="62">GET /posts</text>
+    <line class="line" x1="990" y1="80" x2="645" y2="80"/>
+    <polygon class="head" points="648,69 628,80 648,91"/>
+    <text class="mono" x="805" y="62">GET /posts</text>
+    <line class="line" x1="610" y1="124" x2="267" y2="124"/>
+    <polygon class="head" points="270,113 250,124 270,135"/>
+    <text x="435" y="106">投稿一覧</text>
+    <line class="line" x1="630" y1="124" x2="973" y2="124"/>
+    <polygon class="head" points="970,113 990,124 970,135"/>
+    <text x="805" y="106">投稿一覧</text>
+  </g>
+  <g id="connect">
+    <text class="sub" x="50" y="168">2章</text>
+    <line class="line" x1="250" y1="168" x2="595" y2="168"/>
+    <polygon class="head" points="592,157 612,168 592,179"/>
+    <text class="mono" x="435" y="150">GET /events</text>
+    <line class="line" x1="990" y1="168" x2="645" y2="168"/>
+    <polygon class="head" points="648,157 628,168 648,179"/>
+    <text class="mono" x="805" y="150">GET /events</text>
+    <text class="sub" x="50" y="212">4章</text>
+    <line class="line" x1="610" y1="212" x2="267" y2="212"/>
+    <polygon class="head" points="270,201 250,212 270,223"/>
+    <text x="435" y="194">ヘッダー</text>
+    <line class="line" x1="630" y1="212" x2="973" y2="212"/>
+    <polygon class="head" points="970,201 990,212 970,223"/>
+    <text x="805" y="194">ヘッダー</text>
+  </g>
+  <g id="post">
+    <line class="line" x1="990" y1="262" x2="645" y2="262"/>
+    <polygon class="head" points="648,251 628,262 648,273"/>
+    <text class="mono" x="805" y="244">POST /posts</text>
+    <text class="sub" x="50" y="306">4・5章</text>
+    <line class="line" x1="610" y1="306" x2="267" y2="306"/>
+    <polygon class="head" points="270,295 250,306 270,317"/>
+    <text x="435" y="288">data: Bさんの投稿</text>
+    <line class="line" x1="630" y1="306" x2="973" y2="306"/>
+    <polygon class="head" points="970,295 990,306 970,317"/>
+    <text x="805" y="288">data: Bさんの投稿</text>
+    <text class="sub" x="50" y="352">3章</text>
+    <rect class="box" x="160" y="334" width="180" height="36" rx="4"/>
+    <text x="250" y="352">一覧に1件足す</text>
+    <rect class="box" x="900" y="334" width="180" height="36" rx="4"/>
+    <text x="990" y="352">一覧に1件足す</text>
+  </g>
+  <g id="close">
+    <text class="sub" x="50" y="400">5章</text>
+    <rect class="box" x="160" y="382" width="180" height="36" rx="4"/>
+    <text x="250" y="400">タブを閉じる</text>
+    <rect class="box" x="530" y="382" width="180" height="36" rx="4"/>
+    <text x="620" y="400">接続を外す</text>
+  </g>
+</svg>
+
+---
+
+## ブラウザとサーバーの役割分担
+
+<div class="columns">
+<div>
+
+### ブラウザ (`script.js`)
+
+- ページを開いたときに、投稿一覧を1回だけ取る
+- `/events` に接続したままにする
+- 届いた1件を、手元の一覧に足す
+
+</div>
+<div>
+
+### サーバー (`server.js`)
+
+- `/events` のレスポンスを終了せずに持っておく
+- 投稿を受け取ったら、持っている接続すべてに書き足す
+- 切れた接続を外す
+
+</div>
+</div>
+
+ブラウザは新着を問い合わせません。代わりに、サーバーが新着を送る先の接続を持っておきます。
 
 ---
 
