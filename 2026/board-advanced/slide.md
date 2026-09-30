@@ -485,23 +485,6 @@ const posts = [];                // 色なし: すでにある行。この下に
 
 ---
 
-## プロジェクトの中身
-
-```
-public/
-  index.html
-  styles.css
-  script.js    ← 1〜3章で書く
-package.json
-server.js      ← 4〜5章で書く
-```
-
-`public/script.js` はブラウザ側の JavaScript、`server.js` はバックエンドサーバー側の JavaScript ファイルです。
-
-ファイルは保存するだけで反映されるので、プレビューの再読み込みやサーバーの起動し直しは基本的に必要ありません。
-
----
-
 ## サーバーは何をしているのか
 
 掲示板の投稿は、サーバーが全員分をまとめて保存しています。
@@ -529,6 +512,59 @@ server.js      ← 4〜5章で書く
   <polygon class="head" points="292,289 272,300 292,311"/>
   <text x="515" y="276">投稿一覧を受け取る</text>
 </svg>
+
+---
+
+## ブラウザとサーバーのやり取り
+
+<div class="seq">
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">POST /posts（投稿1件を送信）</div></div>
+      <div class="seq-row left"><div class="seq-msg">保存した投稿</div></div>
+    </div>
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /posts（投稿の一覧を取得）</div></div>
+      <div class="seq-row left"><div class="seq-msg">投稿一覧</div></div>
+    </div>
+  </div>
+</div>
+
+ブラウザが送る要求を **リクエスト**、サーバーが返す応答を **レスポンス** といいます。
+JavaScript では `fetch` でリクエストを送ります。
+
+---
+
+## プロジェクトの中身
+
+```
+public/
+  index.html
+  styles.css
+  script.js    ← 1〜3章で書く
+package.json
+server.js      ← 4〜5章で書く
+```
+
+`public/script.js` はブラウザ側の JavaScript、`server.js` はバックエンドサーバー側の JavaScript ファイルです。
+
+ファイルは保存するだけで反映されるので、プレビューの再読み込みやサーバーの起動し直しは基本的に必要ありません。
+
+---
+
+## 配布コードの現状の実装
+
+投稿ボタンを押すと `addPost()` が呼び出され、入力欄の内容がサーバーに送られます。
+そのあと `showPosts()` が呼び出され、一覧が更新されます。ページを開いたときと更新ボタンを押したときも `showPosts()` が一覧を更新します。
+
+| 名前 | やっていること |
+|---|---|
+| `addPost` | 入力欄の中身をサーバーに送って、`showPosts` を呼ぶ |
+| `showPosts` | サーバーから投稿を全件取得して、一覧に並べ直す |
+| いちばん下の3行 | ボタンに関数を登録し、開いた瞬間に1回読み込む |
+
+投稿する部分はできています。1〜3章では **投稿を表示する部分** を作り変えます。
 
 ---
 
@@ -570,42 +606,6 @@ server.js      ← 4〜5章で書く
   <polygon class="head" points="292,289 272,300 292,311"/>
   <text x="515" y="276">投稿一覧を受け取る</text>
 </svg>
-
----
-
-## ブラウザとサーバーのやり取り
-
-<div class="seq">
-  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
-  <div class="seq-body">
-    <div class="seq-group">
-      <div class="seq-row right"><div class="seq-msg">POST /posts（投稿1件を送信）</div></div>
-      <div class="seq-row left"><div class="seq-msg">保存した投稿</div></div>
-    </div>
-    <div class="seq-group">
-      <div class="seq-row right"><div class="seq-msg">GET /posts（投稿の一覧を取得）</div></div>
-      <div class="seq-row left"><div class="seq-msg">投稿一覧</div></div>
-    </div>
-  </div>
-</div>
-
-ブラウザが送る要求を **リクエスト**、サーバーが返す応答を **レスポンス** といいます。
-JavaScript では `fetch` でリクエストを送ります。
-
----
-
-## 配布コードの現状の実装
-
-投稿ボタンを押すと `addPost()` が呼び出され、入力欄の内容がサーバーに送られます。
-そのあと `showPosts()` が呼び出され、一覧が更新されます。ページを開いたときと更新ボタンを押したときも `showPosts()` が一覧を更新します。
-
-| 名前 | やっていること |
-|---|---|
-| `addPost` | 入力欄の中身をサーバーに送って、`showPosts` を呼ぶ |
-| `showPosts` | サーバーから投稿を全件取得して、一覧に並べ直す |
-| いちばん下の3行 | ボタンに関数を登録し、開いた瞬間に1回読み込む |
-
-投稿する部分はできています。1〜3章では **投稿を表示する部分** を作り変えます。
 
 ---
 
