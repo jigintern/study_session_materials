@@ -1246,7 +1246,8 @@ async function showPosts() {            // すでにある行
 
 <div class="timer" data-seconds="60"></div>
 
-`addPost` の最後で呼んでいる `showPosts` を消します。
+`addPost` の最後で呼んでいる `showPosts` は、`posts` が投稿の前と変わらないので、同じ一覧を並べ直すだけです。
+投稿した1件は `receivePost` が一覧に出すので、この `showPosts` は消します。
 
 ```javascript {data-file=public/script.js}
   document.getElementById('text-input').value = '';   // ここから下
@@ -1254,9 +1255,7 @@ async function showPosts() {            // すでにある行
 }
 ```
 
-これで `fetch` は `loadPosts` の1つだけになり、サーバーから投稿を取得するのはページを開いたときの1回だけになります。
-
-**成功**: 投稿すると、一覧に1件だけ出る
+**成功**: 投稿すると、いままでどおり一覧にその投稿が出る
 
 ---
 
