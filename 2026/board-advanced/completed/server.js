@@ -53,6 +53,11 @@ const server = createServer(async (req, res) => {
   // 投稿を 1 件受け取る
   if (req.method === 'POST' && url.pathname === '/posts') {
     const post = await readPost(req);
+    if (post.text === '') {
+      res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify({ message: 'text が空です' }));
+      return;
+    }
     posts.push(post);
     if (posts.length > MAX_POSTS) posts.shift();
 
