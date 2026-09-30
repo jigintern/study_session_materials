@@ -616,8 +616,9 @@ server.js      ← サーバーで動く JavaScript
 
 ## 今日書くところ
 
-点線で囲んだ部分を、それぞれの章で書きます。
-1〜3章では、共有サーバーを使います。
+1〜3章では、サーバーは共有サーバーを使い、
+ブラウザ側 (`public/script.js`) を実装します。
+4〜5章では、サーバー側 (`server.js`) を実装します。
 
 <svg class="hub" width="1100" height="350" viewBox="0 10 1100 350">
   <text class="sub" x="150" y="30">1〜3章</text>
