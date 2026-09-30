@@ -911,7 +911,7 @@ source.onmessage = handleMessage;    // 関数を登録する。() は付けな�
 
 ## 2-1. ポーリングをやめて EventSource で接続する
 
-<div class="timer" data-seconds="300"></div>
+<div class="timer" data-seconds="180"></div>
 
 一定間隔の自動更新をやめて、サーバーからの通知に切り替えます。
 
@@ -1116,7 +1116,7 @@ source.@@onmessage@@ = showPosts;
 
 ## 3-2. 投稿を取ってくる `loadPosts` を作る
 
-<div class="timer" data-seconds="180"></div>
+<div class="timer" data-seconds="300"></div>
 
 ```javascript {data-file=public/script.js}
 @@const posts = [];@@                      // ブラウザ側で持つ投稿。画面と同じ並び
@@ -1184,7 +1184,7 @@ async function showPosts() {            // すでにある行
 
 ## 3-2. 受信した1件を `posts` に追加する
 
-<div class="timer" data-seconds="120"></div>
+<div class="timer" data-seconds="180"></div>
 
 `posts` に追加してから `showPosts` を呼ぶと、その1件が一覧に表示されます。
 
@@ -1589,7 +1589,7 @@ data: {"name":"たろう","text":"やっほー"}
 
 ## 5-2. 接続している全員に投稿を書き込む
 
-<div class="timer" data-seconds="240"></div>
+<div class="timer" data-seconds="180"></div>
 
 1本に書いていたところを、配列ぶん繰り返します。
 
