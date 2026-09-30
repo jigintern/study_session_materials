@@ -17,6 +17,14 @@ const posts = [];
 // 現在の接続の一覧。接続した順に並ぶ。
 const connections = [];
 
+// 15 秒ごとにコメント行を送り、データが流れない接続が切られないようにする
+function sendPing() {
+  for (let i = 0; i < connections.length; i++) {
+    connections[i].write(': ping\n\n');
+  }
+}
+setInterval(sendPing, 15000);
+
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
