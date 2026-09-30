@@ -25,6 +25,13 @@ function sendPing() {
 }
 setInterval(sendPing, 15000);
 
+// いまの接続数を、接続している全員に送る
+function sendCount() {
+  for (let i = 0; i < connections.length; i++) {
+    connections[i].write(`event: count\ndata: ${connections.length}\n\n`);
+  }
+}
+
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
@@ -41,10 +48,12 @@ const server = createServer(async (req, res) => {
     res.flushHeaders();
     connections.push(res);
     console.log(`接続数: ${connections.length}`);
+    sendCount();
 
     function removeConnection() {
       connections.splice(connections.indexOf(res), 1);
       console.log(`接続数: ${connections.length}`);
+      sendCount();
     }
     req.on('close', removeConnection);
     return;
