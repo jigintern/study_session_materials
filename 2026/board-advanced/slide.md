@@ -1710,7 +1710,7 @@ data: {"name":"たろう","text":"やっほー"}
 
 ## 5-3. 切れた接続を消す
 
-<div class="timer" data-seconds="240"></div>
+<div class="timer" data-seconds="180"></div>
 
 ```javascript {data-file=server.js}
   if (req.method === 'GET' && url.pathname === '/events') {
@@ -1721,7 +1721,7 @@ data: {"name":"たろう","text":"やっほー"}
 @@      connections.splice(connections.indexOf(res), 1);@@
 @@      console.log(`接続数: ${connections.length}`);@@
 @@    }@@
-@@    req.on(______);@@                  // 接続が切れたら removeConnection を呼ぶ
+@@    req.on('close', removeConnection);@@   // 接続が切れたら removeConnection を呼ぶ
 ```
 
 | 書き方 | 意味 |
@@ -1729,24 +1729,9 @@ data: {"name":"たろう","text":"やっほー"}
 | `<配列>.indexOf(<値>)` | <値>が<配列>の何番目にあるかを返す。先頭は `0` |
 | `<配列>.splice(<位置>, <個数>)` | <配列>の<位置>から、<個数>ぶんの要素を抜く |
 
-**成功**: タブを閉じると、ターミナルの接続数が1減る
+**成功**: `server.js` を保存したあと、ターミナルにエラーが出ない
 
----
-
-## 5-3. 答え
-
-```javascript {data-file=server.js}
-    connections.push(res);
-    console.log(`接続数: ${connections.length}`);
-    function removeConnection() {
-      connections.splice(connections.indexOf(res), 1);
-      console.log(`接続数: ${connections.length}`);
-    }
-    req.on(@@'close', removeConnection@@);
-```
-
-- 1つ目はイベントの名前 `'close'`、2つ目は切れたときに呼ぶ関数 `removeConnection`
-- 関数は `()` を付けずに渡す
+StackBlitz の中では、タブを閉じても切断がサーバーに伝わらないので、接続数は減りません。ふつうの Node で動かすと、閉じたときに1減ります。
 
 ---
 
@@ -1756,7 +1741,6 @@ data: {"name":"たろう","text":"やっほー"}
 
 - 接続を配列 `connections` に持ち、投稿を全員に書き込むようにした
 - 接続が切れたら、`close` イベントで `connections` から抜くようにした
-- ターミナルの接続数が、開いているページの数と同じになる (StackBlitz のプレビューも1つと数える)
 
 早く終わった人は → [5章の応用課題](#adv-ch5) {.jump #ch5-end}
 
@@ -2184,7 +2168,6 @@ data: {"name":"たろう","text":"やっほー"}
 
 1. ハートビートを送る: 15秒ごとに、接続している全員へコメント行 `: ping\n\n` を書く関数 `sendPing` を作る。データが流れない時間が続くと、プロキシなどが接続を切ることがある ([付録: SSE のコメント行](#comment-line))
 2. 空の投稿を受け付けない: `text` が空なら保存せず、ステータス `400` と `{"message": "..."}` を返す。Network タブで、空の投稿の `posts` の行が 400 になれば成功
-3. 接続数を全員に送る: 接続したときと切れたときに、`event: count\ndata: 3\n\n` を全員に書く関数 `sendCount` を呼ぶ。ブラウザ側は、受け取って画面に出す関数 `showCount` を `source.addEventListener('count', showCount)` で登録する
 
 ---
 
@@ -2226,56 +2209,6 @@ const connections = [];   // すでにある行
 
 - `readPost` は `text` がないときも `''` にするので、`''` と比べれば足りる
 - `sendJson` はステータスが `200` で決まっているので、`res.writeHead` で直接書く
-
----
-
-<!-- _class: extra -->
-
-## 5章の応用課題の答え3: 接続数を全員に送る
-
-[← 5章のふりかえりに戻る](#ch5-end) {.jump}
-
-```javascript {data-file=server.js}
-const connections = [];   // すでにある行
-@@function sendCount() {@@
-@@  for (let i = 0; i < connections.length; i++) {@@
-@@    connections[i].write(`event: count\ndata: ${connections.length}\n\n`);@@
-@@  }@@
-@@}@@
-```
-
-```javascript {data-file=server.js}
-    console.log(`接続数: ${connections.length}`);   // すでにある行
-@@    sendCount();@@
-
-    function removeConnection() {
-      connections.splice(connections.indexOf(res), 1);
-      console.log(`接続数: ${connections.length}`);
-@@      sendCount();@@
-    }
-```
-
----
-
-<!-- _class: extra -->
-
-## 5章の応用課題の答え3: 接続数を画面に出す
-
-[← 5章のふりかえりに戻る](#ch5-end) {.jump}
-
-```html {data-file=public/index.html}
-        <h2>みんなの投稿</h2>   <!-- すでにある行 -->
-@@        <span id="count"></span>@@
-```
-
-```javascript {data-file=public/extra.js}
-@@function showCount(e) {@@
-@@  document.getElementById('count').textContent = `${e.data}人が接続中`;@@
-@@}@@
-@@source.addEventListener('count', showCount);@@
-```
-
-- `event:` の行を付けたデータは `onmessage` には届かず、同じ名前で登録した関数だけが呼ばれる
 
 <script>
 document.querySelectorAll('.timer[data-seconds]').forEach(el => {
