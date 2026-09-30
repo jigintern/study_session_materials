@@ -469,7 +469,6 @@ style: |
 
 黄色い行だけを書き、赤く取り消された行は消します。
 `______` は空欄です。前の説明のスライドを見て、自分で埋めます。
-コードの右上はファイル名です。
 
 ```javascript {data-file=public/script.js}
 const posts = [];                // 色なし: すでにある行。この下に書く
@@ -479,6 +478,7 @@ const posts = [];                // 色なし: すでにある行。この下に
 ```
 
 早く終わった人は、章の最後のスライドの左上にあるリンクから応用課題に進んでください。
+書きかけのコードがエラーで止まっても本編はそのまま動くので、次の章が始まったら途中のまま戻ってきて大丈夫です。
 
 ---
 
@@ -553,6 +553,7 @@ public/
   index.html
   styles.css
   script.js    ← ブラウザで動く JavaScript
+  extra.js     ← 応用課題を書く
 package.json
 server.js      ← サーバーで動く JavaScript
 ```
@@ -1159,7 +1160,7 @@ source.@@onmessage@@ = showPosts;
 
 ---
 
-<!-- _class: record -->
+<!-- _class: record compact -->
 
 ## 3-2. 投稿を取ってくる `loadPosts` を作る
 
@@ -1181,8 +1182,9 @@ async function showPosts() {            // すでにある行
 ```
 
 ```javascript {data-file=public/script.js}
-%%showPosts();%%                        // ファイルの最後の行
+%%showPosts();%%
 @@loadPosts();@@
+const source = new EventSource(`${API}/events`);   // すでにある行
 ```
 
 **成功**: 画面はいままでどおり動く
@@ -2024,6 +2026,9 @@ data: {"name":"たろう","text":"やっほー"}
 
 章が早く終わった人向けの課題です。終わったら左上のリンクで、来た章に戻ります。 {#advanced}
 
+コードは `public/extra.js` に書きます。`script.js` の `source` や `posts` は、そのまま使えます。
+関数は、課題に書いてある名前で作ってください。`script.js` と同じ名前にすると、本編の関数が置き換わって動かなくなります。
+
 ---
 
 <!-- _class: extra -->
@@ -2034,10 +2039,11 @@ data: {"name":"たろう","text":"やっほー"}
 
 別のタブを見ている間に届いた投稿の数を、`(3) みんなの掲示板` のようにタブのタイトルに出します。掲示板のタブに戻ったら元のタイトルに戻します。
 
+- 届いたときに数える `countUnread` と、タブに戻ったときにタイトルを戻す `resetTitle` の2つの関数を作る
 - タイトルは `document.title` で読み書きできる
 - いま見られていないかは `document.hidden` で分かる
 - 見られる状態に戻ったことは `visibilitychange` イベントで分かる
-- 3章で `onmessage` を置き換えるので、`source.addEventListener('message', 関数)` で書くと消えずに残る
+- `source.onmessage` に代入すると本編の関数が外れるので、`source.addEventListener('message', 関数)` で登録する
 
 ---
 
@@ -2047,8 +2053,7 @@ data: {"name":"たろう","text":"やっほー"}
 
 [← 2章のふりかえりに戻る](#ch2-end) {.jump}
 
-```javascript {data-file=public/script.js}
-source.onmessage = showPosts;   // すでにある行
+```javascript {data-file=public/extra.js}
 @@const title = document.title;@@
 @@let unread = 0;@@
 @@function countUnread() {@@
@@ -2072,103 +2077,41 @@ source.onmessage = showPosts;   // すでにある行
 
 <!-- _class: extra -->
 
-## 3章の応用課題1: 再接続したときに、切断中の投稿を取得する
+## 3章の応用課題: 名前を呼ばれたら知らせる
 
 [← 3章のふりかえりに戻る](#ch3-end) {.jump #adv-ch3}
 
-接続が切れている間の投稿は、再接続しても届きません。接続するたびに `/posts` を取得し直し、`posts` にない投稿だけを追加します。
+ほかの人の投稿のメッセージに自分の名前が入っていたら、`alert` で知らせます。
 
-- 接続したことは `source.addEventListener('open', 関数)` で分かる
-- 投稿には `id` があるので、`posts` にあるかどうかを `posts.some(...)` で確かめられる
-- 最初に接続したときも `open` は発生するので、最後の行の `loadPosts();` は消す。残すと取得が2つ同時に走り、同じ投稿が2件ずつ入ることがある
+- 届いたときに名前を探して知らせる `notifyMention` という関数を作る
+- 届いた1件は、3章と同じく `JSON.parse(e.data)` でオブジェクトに戻せる
+- 自分の名前は、名前欄 (`name-input`) の `value` で分かる
+- 文字列に別の文字列が入っているかは、`<文字列>.includes(<探す文字列>)` で分かる
+- 自分の投稿と、名前欄が空のときは知らせない
+
+**成功**: 「新しいタブで開く」で開いたタブから、違う名前で自分の名前を含むメッセージを投稿し、元のタブに戻ると `alert` が出ている
 
 ---
 
 <!-- _class: extra -->
 
-## 3章の応用課題1の答え: `posts` にない投稿だけを追加する
+## 3章の応用課題の答え
 
 [← 3章のふりかえりに戻る](#ch3-end) {.jump}
 
-```javascript {data-file=public/script.js}
-@@function hasPost(id) {@@
-@@  function isSame(post) {@@
-@@    return post.id === id;@@
-@@  }@@
-@@  return posts.some(isSame);@@
+```javascript {data-file=public/extra.js}
+@@function notifyMention(e) {@@
+@@  const post = JSON.parse(e.data);@@
+@@  const me = document.getElementById('name-input').value;@@
+@@  if (me === '' || post.name === me) return;@@
+@@  if (!post.text.includes(me)) return;@@
+@@  alert(`${post.name}さんに呼ばれました: ${post.text}`);@@
 @@}@@
-
-async function loadPosts() {
-  const res = await fetch(`${API}/posts`);
-  const loaded = await res.json();
-
-  for (let i = 0; i < loaded.length; i++) {
-    @@if (!hasPost(loaded[i].id))@@ posts.push(loaded[i]);
-  }
+@@source.addEventListener('message', notifyMention);@@
 ```
 
-- `some` は、`isSame` が `true` を返す要素が1つでもあれば `true` を返す
-
----
-
-<!-- _class: extra -->
-
-## 3章の応用課題1の答え: 接続するたびに投稿を取得する
-
-[← 3章のふりかえりに戻る](#ch3-end) {.jump}
-
-```javascript {data-file=public/script.js}
-%%loadPosts();%%
-
-const source = new EventSource(`${API}/events`);   // すでにある行
-```
-
-```javascript {data-file=public/script.js}
-source.onmessage = receivePost;   // すでにある行
-@@source.addEventListener('open', loadPosts);@@
-```
-
-- ページを開いて最初に接続したときも `open` が発生するので、最初の取得もここで済む
-- `loadPosts();` の行を残すと取得が2つ同時に走り、同じ投稿が2件ずつ入ることがある
-
----
-
-<!-- _class: extra -->
-
-## 3章の応用課題2: 投稿に失敗したことを伝える
-
-[← 3章のふりかえりに戻る](#ch3-end) {.jump}
-
-メッセージを空で投稿すると、共有サーバーは 400 と `{"message": "..."}` を返します。失敗したら `alert` で知らせ、入力欄は空にしないようにします。
-
-- 成否は `fetch` の戻り値の `res.ok` で分かる
-
----
-
-<!-- _class: extra -->
-
-## 3章の応用課題2の答え
-
-[← 3章のふりかえりに戻る](#ch3-end) {.jump}
-
-```javascript {data-file=public/script.js}
-  @@const res = @@await fetch(`${API}/posts`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: name, text: text }),
-  });
-
-@@  if (!res.ok) {@@
-@@    const { message } = await res.json();@@
-@@    alert(message);@@
-@@    return;@@
-@@  }@@
-
-  document.getElementById('text-input').value = '';
-```
-
-- 失敗したら `return` で抜けるので、入力欄を空にする行まで進まない
-- `const { message }` は、受け取ったオブジェクトから `message` を取り出す
+- `receivePost` と同じく、届いた文字列をオブジェクトに戻してから使う
+- 名前欄が空だと `includes('')` がいつも `true` になるので、先に抜ける
 
 ---
 
@@ -2180,6 +2123,7 @@ source.onmessage = receivePost;   // すでにある行
 
 「みんなの投稿」の横に、SSE の接続がつながっているか切れているかを出します。`server.js` を保存するとサーバーが再起動するので、一瞬「切れています」になり、「つながっています」に戻れば完成です。
 
+- つながったときに表示する `showOnline` と、切れたときに表示する `showOffline` の2つの関数を作る
 - 表示する場所は `index.html` に `<span id="status">` として用意してある
 - `class` を `status online` にすると緑、`status offline` にすると赤になる
 - 接続したことは `source.addEventListener('open', 関数)` で、切れたことは `source.addEventListener('error', 関数)` で分かる
@@ -2192,8 +2136,7 @@ source.onmessage = receivePost;   // すでにある行
 
 [← 4章のふりかえりに戻る](#ch4-end) {.jump}
 
-```javascript {data-file=public/script.js}
-source.onmessage = receivePost;   // すでにある行
+```javascript {data-file=public/extra.js}
 @@const status = document.getElementById('status');@@
 @@function showOnline() {@@
 @@  status.textContent = 'つながっています';@@
@@ -2219,9 +2162,9 @@ source.onmessage = receivePost;   // すでにある行
 
 上から順に難しくなります。
 
-1. ハートビートを送る: 15秒ごとに、接続している全員へコメント行 `: ping\n\n` を書く。データが流れない時間が続くと、プロキシなどが接続を切ることがある ([付録: SSE のコメント行](#comment-line))
-2. 空の投稿を受け付けない: `text` が空なら保存せず、ステータス `400` と `{"message": "..."}` を返す。3章の「投稿に失敗したことを伝える」を済ませていれば、ブラウザにエラーが表示される
-3. 接続数を全員に送る: 接続したときと切れたときに `event: count\ndata: 3\n\n` を全員に書く。ブラウザ側は `source.addEventListener('count', 関数)` で受け取り、画面に出す
+1. ハートビートを送る: 15秒ごとに、接続している全員へコメント行 `: ping\n\n` を書く関数 `sendPing` を作る。データが流れない時間が続くと、プロキシなどが接続を切ることがある ([付録: SSE のコメント行](#comment-line))
+2. 空の投稿を受け付けない: `text` が空なら保存せず、ステータス `400` と `{"message": "..."}` を返す。Network タブで、空の投稿の `posts` の行が 400 になれば成功
+3. 接続数を全員に送る: 接続したときと切れたときに、`event: count\ndata: 3\n\n` を全員に書く関数 `sendCount` を呼ぶ。ブラウザ側は、受け取って画面に出す関数 `showCount` を `source.addEventListener('count', showCount)` で登録する
 
 ---
 
@@ -2305,8 +2248,7 @@ const connections = [];   // すでにある行
 @@        <span id="count"></span>@@
 ```
 
-```javascript {data-file=public/script.js}
-source.onmessage = receivePost;   // すでにある行
+```javascript {data-file=public/extra.js}
 @@function showCount(e) {@@
 @@  document.getElementById('count').textContent = `${e.data}人が接続中`;@@
 @@}@@
