@@ -694,6 +694,7 @@ setInterval(showPosts, 10000);
 <div class="timer" data-seconds="60"></div>
 
 10 秒ごとに `showPosts()` を実行して、投稿一覧を読み直します。
+`public/script.js` の一番下に1行書き足します。
 
 ```javascript {data-file=public/script.js}
 document.getElementById('reload-btn').addEventListener('click', showPosts);
@@ -963,6 +964,7 @@ source.onmessage = handleMessage;    // 関数を登録する。() は付けな�
 <div class="timer" data-seconds="180"></div>
 
 一定間隔の自動更新をやめて、サーバーからの通知に切り替えます。
+ファイルの一番下にある `setInterval` の行を消して、そこに書きます。
 
 ```javascript {data-file=public/script.js}
 document.getElementById('reload-btn').addEventListener('click', showPosts);
@@ -1240,6 +1242,7 @@ const source = new EventSource(`${API}/events`);   // すでにある行
 <div class="timer" data-seconds="180"></div>
 
 `posts` に追加してから `showPosts` を呼ぶと、その1件が一覧に表示されます。
+ファイルの一番下にある `source.onmessage` の行を置き換えます。
 
 ```javascript {data-file=public/script.js}
 const source = new EventSource(`${API}/events`);   // すでにある行
@@ -1364,7 +1367,7 @@ async function addPost() {
 
 <div class="timer" data-seconds="120"></div>
 
-共有サーバーの URL が入っている `API` を書き換えます。
+ファイルの先頭にある、共有サーバーの URL が入っている `API` を書き換えます。
 
 ```javascript {data-file=public/script.js}
 %%const API = 'https://example.deno.net';%%   // 共有サーバーの URL が入っている
@@ -1482,7 +1485,7 @@ res.setHeader('Cache-Control', 'no-cache');
 
 ```javascript {data-file=server.js}
 // 投稿の置き場。再起動すると空に戻る。
-const posts = [];                    // すでにある行
+const posts = [];                    // すでにある行。ファイルの上のほう
 @@let connection = null;@@             // 現在の接続。新しい接続が来ると上書きされる
 ```
 
@@ -1650,7 +1653,7 @@ data: {"name":"たろう","text":"やっほー"}
 
 <div class="timer" data-seconds="180"></div>
 
-1本に書いていたところを、配列ぶん繰り返します。
+`POST /posts` の中で1本に書いていたところを、配列ぶん繰り返します。
 
 ```javascript {data-file=server.js}
     const data = JSON.stringify(post);                  // 変わらない行
@@ -1779,7 +1782,7 @@ data: {"name":"たろう","text":"やっほー"}
 @@const API = 'https://example.deno.net';@@
 ```
 
-共有サーバーの URL を入れ直します。
+ファイルの先頭にある `API` に、共有サーバーの URL を入れ直します。
 
 **成功**: ページを再読み込みすると他の人の投稿が表示される
 
