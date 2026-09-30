@@ -2,6 +2,7 @@
 // 接続を 1 本だけ保持し、投稿が来たらそこに書き込む状態。
 
 import { createServer } from 'node:http';
+import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 
@@ -65,6 +66,7 @@ function readPost(req) {
     req.on('end', () => {
       const body = JSON.parse(raw);
       resolve({
+        id: randomUUID(),
         name: String(body.name || '名無し').slice(0, 20),
         text: String(body.text || '').slice(0, 200),
         createdAt: new Date().toISOString(),

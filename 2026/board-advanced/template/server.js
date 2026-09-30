@@ -3,6 +3,7 @@
 // public/ の中身をブラウザに配信する + 投稿を保存・取得する
 
 import { createServer } from 'node:http';
+import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 
@@ -52,6 +53,7 @@ function readPost(req) {
     req.on('end', () => {
       const body = JSON.parse(raw);
       resolve({
+        id: randomUUID(),
         name: String(body.name || '名無し').slice(0, 20),
         text: String(body.text || '').slice(0, 200),
         createdAt: new Date().toISOString(),
