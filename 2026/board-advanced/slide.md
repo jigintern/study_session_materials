@@ -1476,6 +1476,7 @@ res.setHeader('Cache-Control', 'no-cache');
 <div class="timer" data-seconds="360"></div>
 
 ```javascript {data-file=server.js}
+// 投稿の置き場。再起動すると空に戻る。
 const posts = [];                    // すでにある行
 @@let connection = null;@@             // 現在の接続。新しい接続が来ると上書きされる
 ```
