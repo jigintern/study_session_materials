@@ -554,14 +554,53 @@ server.js      ← サーバーで動く JavaScript
 
 ## 配布コードの現状の実装
 
-`public/script.js` には、前のスライドの2つのリクエストを送る関数があります。
+`public/script.js` では、ボタンやページを開いたことをきっかけに関数が呼ばれ、その関数がリクエストを送ります。
 
-- `addPost`: 入力欄の中身を `POST /posts` で送り、そのあと `showPosts` を呼ぶ
-- `showPosts`: `GET /posts` で投稿を全件取得し、一覧に並べ直す
+<svg class="hub" width="1100" height="340" viewBox="0 10 1100 340">
+  <title>配布コードの呼び出し関係</title>
+  <desc>投稿ボタンで addPost、更新ボタンとページを開いたときに showPosts が呼ばれる。addPost は POST /posts でメッセージを送信したあと showPosts を呼び、showPosts は GET /posts で取得したメッセージを表示する。</desc>
+  <g id="triggers">
+    <rect class="box" x="30" y="40" width="240" height="50" rx="6"/>
+    <text x="150" y="65">投稿ボタン</text>
+    <rect class="box" x="30" y="190" width="240" height="50" rx="6"/>
+    <text x="150" y="215">更新ボタン</text>
+    <rect class="box" x="30" y="270" width="240" height="50" rx="6"/>
+    <text x="150" y="295">ページを開いたとき</text>
+  </g>
+  <g id="functions">
+    <rect class="box" x="370" y="40" width="240" height="90" rx="6"/>
+    <text class="mono" x="490" y="65">addPost</text>
+    <text class="sub" x="490" y="105">メッセージを送信</text>
+    <rect class="box" x="370" y="190" width="240" height="130" rx="6"/>
+    <text class="mono" x="490" y="235">showPosts</text>
+    <text class="sub" x="490" y="275">メッセージを表示</text>
+  </g>
+  <g id="server">
+    <rect class="box" x="820" y="40" width="240" height="280" rx="6"/>
+    <text class="name" x="940" y="180">サーバー</text>
+  </g>
+  <g id="calls">
+    <line class="line" x1="270" y1="65" x2="352" y2="65"/>
+    <polygon class="head" points="350,54 370,65 350,76"/>
+    <line class="line" x1="270" y1="215" x2="352" y2="215"/>
+    <polygon class="head" points="350,204 370,215 350,226"/>
+    <line class="line" x1="270" y1="295" x2="352" y2="295"/>
+    <polygon class="head" points="350,284 370,295 350,306"/>
+    <line class="line" x1="490" y1="130" x2="490" y2="172"/>
+    <polygon class="head" points="479,170 490,190 501,170"/>
+    <text class="sub left" x="505" y="160">送信のあとに呼ぶ</text>
+  </g>
+  <g id="requests">
+    <line class="line" x1="610" y1="65" x2="802" y2="65"/>
+    <polygon class="head" points="800,54 820,65 800,76"/>
+    <text class="mono" x="715" y="40">POST /posts</text>
+    <line class="line" x1="610" y1="255" x2="802" y2="255"/>
+    <polygon class="head" points="800,244 820,255 800,266"/>
+    <text class="mono" x="715" y="230">GET /posts</text>
+  </g>
+</svg>
 
-いちばん下の3行で、投稿ボタンに `addPost`、更新ボタンに `showPosts` を登録し、ページを開いたときに `showPosts` を1回呼んでいます。
 リクエストの送り先は、先頭の定数 `API` に入っているサーバーです。
-
 投稿する部分はできています。1〜3章では **投稿を表示する部分** を作り変えます。
 
 ---
