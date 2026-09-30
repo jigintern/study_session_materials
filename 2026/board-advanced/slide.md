@@ -2026,6 +2026,9 @@ data: {"name":"たろう","text":"やっほー"}
 
 章が早く終わった人向けの課題です。終わったら左上のリンクで、来た章に戻ります。 {#advanced}
 
+コードは `public/extra.js` に書きます。`script.js` の `source` や `posts` は、そのまま使えます。
+`script.js` にある名前で変数や関数を作ると `extra.js` 全体が動かなくなるので、別の名前を付けてください。
+
 ---
 
 <!-- _class: extra -->
@@ -2039,7 +2042,7 @@ data: {"name":"たろう","text":"やっほー"}
 - タイトルは `document.title` で読み書きできる
 - いま見られていないかは `document.hidden` で分かる
 - 見られる状態に戻ったことは `visibilitychange` イベントで分かる
-- 3章で `onmessage` を置き換えるので、`source.addEventListener('message', 関数)` で書くと消えずに残る
+- `source.onmessage` に代入すると本編の関数が外れるので、`source.addEventListener('message', 関数)` で登録する
 
 ---
 
@@ -2049,8 +2052,7 @@ data: {"name":"たろう","text":"やっほー"}
 
 [← 2章のふりかえりに戻る](#ch2-end) {.jump}
 
-```javascript {data-file=public/script.js}
-source.onmessage = showPosts;   // すでにある行
+```javascript {data-file=public/extra.js}
 @@const title = document.title;@@
 @@let unread = 0;@@
 @@function countUnread() {@@
@@ -2194,8 +2196,7 @@ source.onmessage = receivePost;   // すでにある行
 
 [← 4章のふりかえりに戻る](#ch4-end) {.jump}
 
-```javascript {data-file=public/script.js}
-source.onmessage = receivePost;   // すでにある行
+```javascript {data-file=public/extra.js}
 @@const status = document.getElementById('status');@@
 @@function showOnline() {@@
 @@  status.textContent = 'つながっています';@@
@@ -2307,8 +2308,7 @@ const connections = [];   // すでにある行
 @@        <span id="count"></span>@@
 ```
 
-```javascript {data-file=public/script.js}
-source.onmessage = receivePost;   // すでにある行
+```javascript {data-file=public/extra.js}
 @@function showCount(e) {@@
 @@  document.getElementById('count').textContent = `${e.data}人が接続中`;@@
 @@}@@
