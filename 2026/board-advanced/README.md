@@ -26,7 +26,7 @@ JavaScript そのものが初めてでも構いません。
 
 - ブラウザのみ（StackBlitz を使用）
 - 開発環境のインストール不要
-- テンプレート: https://stackblitz.com/edit/node-cdfr3jqk?file=public%2Fscript.js,server.js
+- テンプレート: https://stackblitz.com/fork/github/jigintern/study_session_materials/tree/main/2026/board-advanced/template?file=public%2Fscript.js,server.js
 
 ### Fork してから書く
 
@@ -38,12 +38,11 @@ Fork せずに書くと、ページを再読み込みした時点で書いたコ
 
 ### 当日伝える値
 
-`public/script.js` の先頭に、書き換える定数が 2 つあります。
+`public/script.js` の先頭の定数 `API` に、共有サーバーの URL を入れてもらいます。
 
-| 定数 | 入れる値 |
-| --- | --- |
-| `API` | 共有サーバーの URL |
-| `ROOM` | 開催回ごとの部屋 ID。英数字とハイフンで 32 文字まで |
+受講者のコードは部屋 ID (`room`) を送りません。
+共有サーバーは、`room` がないリクエストを環境変数 `DEFAULT_ROOM` の部屋 (未設定なら `default`) で扱います。
+前の回の投稿を出したくないときは、デプロイ前に `DEFAULT_ROOM` を開催回ごとの値 (英数字とハイフンで 32 文字まで) に変えてください。
 
 Chapter 4 で受講者が `API` を `location.origin` に書き換えて自分のサーバーへ向け、まとめで共有サーバーの URL に戻します。
 戻すときに URL を入れ直すので、受講者が見返せる場所に残しておいてください。
@@ -55,42 +54,40 @@ Chapter 1 の時点で「自分が書いていない投稿が並んでいる」�
 
 ```sh
 API=https://<アプリ名>.<org>.deno.net
-ROOM=<今日の部屋>
 
-curl -sX POST "$API/posts?room=$ROOM" -H 'Content-Type: application/json' \
+curl -sX POST "$API/posts" -H 'Content-Type: application/json' \
   -d '{"name":"たろう","text":"はじめまして！"}'; sleep 1
-curl -sX POST "$API/posts?room=$ROOM" -H 'Content-Type: application/json' \
+curl -sX POST "$API/posts" -H 'Content-Type: application/json' \
   -d '{"name":"はなこ","text":"こんにちは〜"}'
 
-curl -s "$API/posts?room=$ROOM"   # 2 件並んでいれば準備完了
+curl -s "$API/posts"   # 2 件並んでいれば準備完了
 ```
 
 ### 講師がサクラ役を務める
 
 Chapter 1 から 3 とまとめは「他人の投稿が届く」ことで動作チェックが成立します。
 オンラインでは進度がばらけるため、受講者同士では章が空振りします。
-講師が同じ部屋に投稿を入れて、他人の投稿を発生させてください。
+講師も同じ共有サーバーに投稿して、他人の投稿を発生させてください。
 
 Chapter 3 の最初は「投稿のたびに `posts` が1本ずつ増える」ところを見せます。
 1 件だけでは増え方が見えないので、数秒おきに続けて投稿してください。
 
 ### 接続者一覧を開いておく
 
-Chapter 2 で受講者が `EventSource` でつなぐと、その接続が `GET /connections?room=<今日の部屋>` に一覧で出ます。
+Chapter 2 で受講者が `EventSource` でつなぐと、その接続が `GET /connections` に一覧で出ます。
 
 この画面を共有しておくと、受講者は自分がつながったことを人数の増え方で確かめられます。
-認証はないので、部屋 ID を知っている人は誰でも開けます。
+認証はないので、URL を知っている人は誰でも開けます。
 
 Chapter 4 でつなぎ先を自分のサーバーに変えると一覧から消え、まとめで共有サーバーに戻すとまた出ます。
 
 ## 時間が押したときの短縮ルート
 
-どちらも到達の下限（Chapter 2 の完成）には影響しません。
+到達の下限（Chapter 2 の完成）には影響しません。
 
 | 落とすもの | やり方 | 浮く時間 |
 | --- | --- | --- |
 | Chapter 5 を丸ごとコピペにする | 3 箇所を書かせず、`examples/snapshots/ch5.server.js` を貼ってもらう。読み合わせと動作チェックだけ残す | 15 分 |
-| Chapter 4 の接続状態表示を配る | 接続状態を出すコードを先に配り、`GET /events` を足すところだけ書かせる | 5 分 |
 
 ## 困ったときは
 

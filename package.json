@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "preview": "marp -p -s -w --html ",
+    "preview": "marp -p -s -w --html --no-stdin ",
     "rehearsal": "node tools/slide-preview/serve.mjs",
-    "build": "marp --html ",
+    "build": "marp --html --no-stdin ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "check:slides": "node tools/slide-check/check.mjs"
   },

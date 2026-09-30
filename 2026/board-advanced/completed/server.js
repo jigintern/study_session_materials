@@ -1,9 +1,10 @@
 // みんなの掲示板サーバー (完成形)
 //
-// public/ の中身をブラウザに配りながら、投稿の保存と取り出しと配信を引き受ける。
+// public/ の中身をブラウザに配信し、投稿を保存・取得・配信する。
 // 保存すると node --watch が自動で再起動する。
 
 import { createServer } from 'node:http';
+import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 
@@ -13,7 +14,7 @@ const MAX_POSTS = 500;
 // 投稿の置き場。再起動すると空に戻る。
 const posts = [];
 
-// いまつながっている接続。つながった順に並ぶ。
+// 現在の接続の一覧。接続した順に並ぶ。
 const connections = [];
 
 const server = createServer(async (req, res) => {
@@ -25,20 +26,19 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // つなぎっぱなしにして、投稿が来たら流す
+  // レスポンスを終了せずに保持し、投稿が来たら送信する
   if (req.method === 'GET' && url.pathname === '/events') {
-    res.writeHead(200, {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-    });
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.flushHeaders();
     connections.push(res);
     console.log(`接続数: ${connections.length}`);
 
-    req.on('close', () => {
+    function removeConnection() {
       connections.splice(connections.indexOf(res), 1);
       console.log(`接続数: ${connections.length}`);
-    });
+    }
+    req.on('close', removeConnection);
     return;
   }
 
@@ -48,8 +48,10 @@ const server = createServer(async (req, res) => {
     posts.push(post);
     if (posts.length > MAX_POSTS) posts.shift();
 
-    for (const connection of connections) {
-      connection.write(`data: ${JSON.stringify(post)}\n\n`);
+    const data = JSON.stringify(post);
+    for (let i = 0; i < connections.length; i++) {
+      const connection = connections[i];
+      connection.write(`data: ${data}\n\n`);
     }
 
     sendJson(res, post);
@@ -61,7 +63,7 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(PORT);
-console.log(`http://localhost:${PORT} で待っています`);
+console.log(`サーバーを起動しました: http://localhost:${PORT}`);
 
 // 送られてきた JSON を、投稿の形に整える
 function readPost(req) {
@@ -73,6 +75,7 @@ function readPost(req) {
     req.on('end', () => {
       const body = JSON.parse(raw);
       resolve({
+        id: randomUUID(),
         name: String(body.name || '名無し').slice(0, 20),
         text: String(body.text || '').slice(0, 200),
         createdAt: new Date().toISOString(),

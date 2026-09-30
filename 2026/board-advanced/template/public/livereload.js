@@ -7,6 +7,9 @@
 //
 // server.js を保存したときは node --watch がサーバーを再起動するため、
 // 応答が途切れて戻ってきたことを再起動の合図として扱う。
+//
+// 再読み込みで名前欄が空になると、共有サーバーが投稿を 400 で弾く。
+// 名前欄の中身を sessionStorage に取っておき、読み込んだときに戻す。
 
 const TARGETS = ['/index.html', '/styles.css', '/script.js'];
 const INTERVAL = 500;
@@ -53,3 +56,19 @@ async function check() {
 }
 
 setInterval(check, INTERVAL);
+
+const NAME_KEY = 'board-name';
+const nameInput = document.getElementById('name-input');
+
+// プライベートウィンドウなどで sessionStorage が使えないときは、何もしない。
+try {
+  const saved = sessionStorage.getItem(NAME_KEY);
+  if (saved !== null && nameInput.value === '') nameInput.value = saved;
+} catch {}
+
+function saveName() {
+  try {
+    sessionStorage.setItem(NAME_KEY, nameInput.value);
+  } catch {}
+}
+nameInput.addEventListener('input', saveName);

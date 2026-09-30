@@ -1,7 +1,8 @@
 // Chapter 4 の終わりの server.js
-// つながった接続を 1 本だけ覚えて、投稿が来たらそこに書き込む状態。
+// 接続を 1 本だけ保持し、投稿が来たらそこに書き込む状態。
 
 import { createServer } from 'node:http';
+import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 
@@ -11,7 +12,7 @@ const MAX_POSTS = 500;
 // 投稿の置き場。再起動すると空に戻る。
 const posts = [];
 
-// いまつながっている接続。あとから来たほうで上書きされる。
+// 現在の接続。新しい接続が来ると上書きされる。
 let connection = null;
 
 const server = createServer(async (req, res) => {
@@ -23,14 +24,13 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // つなぎっぱなしにして、投稿が来たら流す
+  // レスポンスを終了せずに保持し、投稿が来たら送信する
   if (req.method === 'GET' && url.pathname === '/events') {
-    res.writeHead(200, {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
-    });
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.flushHeaders();
     connection = res;
+    console.log('接続を受け付けた');
     return;
   }
 
@@ -40,8 +40,9 @@ const server = createServer(async (req, res) => {
     posts.push(post);
     if (posts.length > MAX_POSTS) posts.shift();
 
+    const data = JSON.stringify(post);
     if (connection) {
-      connection.write(`data: ${JSON.stringify(post)}\n\n`);
+      connection.write(`data: ${data}\n\n`);
     }
 
     sendJson(res, post);
@@ -53,7 +54,7 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(PORT);
-console.log(`http://localhost:${PORT} で待っています`);
+console.log(`サーバーを起動しました: http://localhost:${PORT}`);
 
 // 送られてきた JSON を、投稿の形に整える
 function readPost(req) {
@@ -65,6 +66,7 @@ function readPost(req) {
     req.on('end', () => {
       const body = JSON.parse(raw);
       resolve({
+        id: randomUUID(),
         name: String(body.name || '名無し').slice(0, 20),
         text: String(body.text || '').slice(0, 200),
         createdAt: new Date().toISOString(),

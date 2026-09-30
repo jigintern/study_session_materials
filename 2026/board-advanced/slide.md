@@ -24,8 +24,7 @@ style: |
     margin-bottom: 1.5em;
   }
   section.record::before,
-  section.extra::before,
-  section.tips::before {
+  section.extra::before {
     content: "記述";
     position: absolute;
     border: 3px solid var(--primary);
@@ -43,13 +42,9 @@ style: |
     border-color: #6b4fa0;
     color: #6b4fa0;
   }
-  section.tips::before {
-    content: "Tips";
-    border-color: #888;
-    color: #888;
-  }
   .seq {
-    margin: 0.4em 0.6em;
+    max-width: 760px;
+    margin: 0.4em auto;
   }
   .seq .seq-title {
     text-align: center;
@@ -110,7 +105,7 @@ style: |
   .seq .seq-msg {
     position: relative;
     flex: 1;
-    border-bottom: 1px solid var(--primary);
+    border-bottom: 4px solid var(--primary);
     font-size: 0.7em;
     text-align: center;
     padding-bottom: 3px;
@@ -119,23 +114,41 @@ style: |
   .seq .seq-row.right .seq-msg::after {
     content: "";
     position: absolute;
-    right: -9px;
-    bottom: -5px;
+    right: -18px;
+    bottom: -12px;
     border-style: solid;
-    border-width: 5px 0 5px 9px;
+    border-width: 10px 0 10px 18px;
     border-color: transparent transparent transparent var(--primary);
   }
   .seq .seq-row.left .seq-msg::before {
     content: "";
     position: absolute;
-    left: -9px;
-    bottom: -5px;
+    left: -18px;
+    bottom: -12px;
     border-style: solid;
-    border-width: 5px 9px 5px 0;
+    border-width: 10px 18px 10px 0;
     border-color: transparent var(--primary) transparent transparent;
   }
   .seq .seq-group + .seq-group {
     margin-top: 50px;
+  }
+  .seq .seq-fn {
+    position: relative;
+    margin-top: 22px;
+    padding: 0 24px 12px 6px;
+    border: 2px dashed #999;
+    border-radius: 6px;
+  }
+  .seq .seq-fn::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -0.75em;
+    left: 10px;
+    padding: 0 4px;
+    background: #fff;
+    color: #666;
+    font-family: monospace;
+    font-size: 0.6em;
   }
   .seq .seq-tail {
     margin-left: 12.5px;
@@ -144,7 +157,7 @@ style: |
   }
   .seq .seq-repeat {
     text-align: center;
-    font-size: 0.65em;
+    font-size: 0.7em;
     color: #999;
     margin: 28px 0 0;
   }
@@ -154,6 +167,9 @@ style: |
     line-height: 0.5;
     font-size: 1.3em;
     color: #bbb;
+  }
+  .seq.no-num .seq-row.right::before {
+    content: none;
   }
   .seq .seq-row.blocked .seq-msg {
     border-bottom-color: #c0392b;
@@ -177,6 +193,73 @@ style: |
     font-weight: 700;
     padding: 0 8px;
     z-index: 2;
+  }
+  .hub {
+    display: block;
+    margin: 0.4em auto 0;
+    font-size: 22px;
+  }
+  .hub .box {
+    fill: #fff;
+    stroke: var(--primary);
+    stroke-width: 2;
+  }
+  .hub .list {
+    fill: #fff;
+    stroke: #bbb;
+    stroke-width: 1;
+  }
+  .hub .list.new {
+    stroke: var(--primary);
+    stroke-dasharray: 6 4;
+  }
+  .hub .line {
+    stroke: var(--primary);
+    stroke-width: 4;
+  }
+  .hub path.line {
+    fill: none;
+  }
+  .hub .head {
+    fill: var(--primary);
+  }
+  .hub .double {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 3;
+    stroke-linejoin: miter;
+  }
+  .hub text {
+    fill: #333;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+  .hub text.name {
+    font-weight: 700;
+  }
+  .hub text.left {
+    text-anchor: start;
+  }
+  .hub text.sub {
+    fill: #666;
+  }
+  .hub .mono {
+    font-family: monospace;
+  }
+  .hub .lifeline {
+    stroke: #bbb;
+    stroke-width: 3;
+  }
+  /* 開いたままの /events の接続を、ブラウザとサーバーの間の帯で表す */
+  .hub .conn {
+    fill: var(--primary);
+    fill-opacity: 0.08;
+  }
+  .hub .frame {
+    fill: none;
+    stroke: #999;
+    stroke-width: 2;
+    stroke-dasharray: 8 6;
   }
   .tl {
     margin: 1.1em 1.2em 0.6em;
@@ -256,10 +339,25 @@ style: |
     font-weight: 700;
   }
   section.compact pre {
-    font-size: 0.65em;
+    font-size: 0.7em;
   }
   section.compact table {
-    font-size: 0.8em;
+    font-size: 0.85em;
+  }
+  /* 半透明のままだと、縞模様の行の上で色が変わる。白の上での色に固定する */
+  section table code {
+    background-color: #f0f1f2;
+  }
+  /* 1 列目に置いた書き方やヘッダーを、途中で折り返さない */
+  section td:first-child code {
+    white-space: nowrap;
+  }
+  section .jump {
+    position: absolute;
+    left: 78px;
+    top: 30px;
+    margin: 0;
+    font-size: 0.9em;
   }
   section mark {
     background: #ffe066;
@@ -275,6 +373,26 @@ style: |
     text-decoration: line-through;
     text-decoration-thickness: 2px;
     padding: 0 0.15em;
+  }
+  /* ```javascript {data-file=server.js} と書くと、コードブロックの右上にファイル名を出す。
+     ラベルは上辺に半分はみ出させ、コードの行と重ならないようにする */
+  section pre[data-file] {
+    position: relative;
+    overflow: visible;
+  }
+  section pre[data-file]::before {
+    content: attr(data-file);
+    position: absolute;
+    top: 0;
+    right: 0.8em;
+    transform: translateY(-50%);
+    padding: 0.1em 0.6em;
+    border: inherit;
+    border-radius: 4px;
+    background: inherit;
+    font-size: 0.75em;
+    line-height: 1.4;
+    color: #555;
   }
   .timer-box {
     position: absolute; top: 44px; right: 190px;
@@ -326,34 +444,105 @@ style: |
 
 ## 今日のゴール
 
-ブラウザとサーバーをつないだままにして、サーバー側から新しい情報を送り続ける仕組み ( **SSE** ) について学びます。
-掲示板を題材に、ブラウザ側・サーバー側両方の作り方を体験します。
+誰かが投稿したら、開いている画面が自動で更新される掲示板を作ります。
+この仕組みを、SSE という技術を使ってブラウザ側とサーバー側の両方に実装します。
 
-- ブラウザ側: サーバーにつなぎっぱなしにして、受け取ったデータを表示する
-- サーバー側: サーバーからリアルタイムに、接続している全員にデータを送信する
-
----
-
-## 今日の進め方
-
-| 章 | やること |
-|---|---|
-| 1 | 一定間隔で自動更新する (ポーリング) |
-| 2 | サーバーからの通知に切り替える (SSE) |
-| 3 | 全件取得から差分更新に |
-| 4 | SSE のサーバー側を書く |
-| 5 | 同時に複数接続できるようにする |
-
-1〜3 章はブラウザ側の JavaScript を、4〜5 章はバックエンドサーバー側の JavaScript を実装します。
+![w:1000](imgs/three-tabs.gif)
 
 ---
 
 ## 準備
 
-1. ブラウザで StackBlitz のテンプレートを開く
-   https://stackblitz.com/edit/node-cdfr3jqk?file=public%2Fscript.js,server.js
+ブラウザは Chrome か Edge を使ってください。ない場合は Firefox を使います (開発者ツールの画面がスライドと少し違います)。
+
+1. ブラウザで [StackBlitz のテンプレート](https://stackblitz.com/fork/github/jigintern/study_session_materials/tree/main/2026/board-advanced/template?file=public%2Fscript.js,server.js) を開く
 2. 左上の **Fork** を押す
-3. `public/script.js` を開き、`API` と `ROOM` の値を書き換える
+3. `public/script.js` を開き、`API` の値を今から伝える URL に書き換える
+
+---
+
+<!-- _class: record -->
+
+## 演習の進め方
+
+手を動かしてもらうスライドには、右上に 記述 のバッジが出ます。
+
+黄色い行だけを書き、赤く取り消された行は消します。
+`______` は空欄です。前の説明のスライドを見て、自分で埋めます。
+コードの右上はファイル名です。
+
+```javascript {data-file=public/script.js}
+const posts = [];                // 色なし: すでにある行。この下に書く
+@@let connection = null;@@           // 黄色: 書いてもらう行
+@@const max = ______;@@              // 空欄: 自分で埋める
+%%setInterval(showPosts, 10000);%%   // 赤: 消してもらう行
+```
+
+早く終わった人は、章の最後のスライドの左上にあるリンクから応用課題に進んでください。
+
+---
+
+
+<!-- _class: lead -->
+
+# 0章
+
+## ブラウザとサーバーの役割と配布コードを確認する
+
+掲示板でブラウザとサーバーがそれぞれ何をしていて、リクエストとレスポンスでどうやり取りしているかを学びます。
+また、配布コードの `public/script.js` がいまどう動いているかを確認します。
+
+---
+
+## サーバーは何をしているのか
+
+掲示板の投稿は、サーバーが全員分をまとめて保存しています。
+ブラウザは、投稿をサーバーに送ったり、サーバーから投稿一覧を受け取って画面に並べたりします。
+
+<svg class="hub" width="1100" height="280" viewBox="0 60 1100 280">
+  <rect class="box" x="760" y="70" width="300" height="260" rx="6"/>
+  <text class="name" x="910" y="105">サーバー</text>
+  <rect class="list" x="780" y="130" width="260" height="176" rx="4"/>
+  <text x="910" y="175">Aさんの投稿</text>
+  <text x="910" y="218">Bさんの投稿</text>
+  <text x="910" y="261">Cさんの投稿</text>
+  <rect class="box" x="40" y="75" width="220" height="50" rx="6"/>
+  <text class="name" x="150" y="100">Aさんのブラウザ</text>
+  <line class="line" x1="270" y1="100" x2="741" y2="100"/>
+  <polygon class="head" points="738,89 758,100 738,111"/>
+  <text x="505" y="76">投稿を送る</text>
+  <rect class="box" x="40" y="175" width="220" height="50" rx="6"/>
+  <text class="name" x="150" y="200">Bさんのブラウザ</text>
+  <line class="line" x1="289" y1="200" x2="758" y2="200"/>
+  <polygon class="head" points="292,189 272,200 292,211"/>
+  <text x="515" y="176">投稿一覧を受け取る</text>
+  <rect class="box" x="40" y="275" width="220" height="50" rx="6"/>
+  <text class="name" x="150" y="300">Cさんのブラウザ</text>
+  <line class="line" x1="289" y1="300" x2="758" y2="300"/>
+  <polygon class="head" points="292,289 272,300 292,311"/>
+  <text x="515" y="276">投稿一覧を受け取る</text>
+</svg>
+
+---
+
+## ブラウザとサーバーのやり取り
+
+<div class="seq">
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">POST /posts（投稿1件を送信）</div></div>
+      <div class="seq-row left"><div class="seq-msg">保存した投稿</div></div>
+    </div>
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /posts（投稿の一覧を取得）</div></div>
+      <div class="seq-row left"><div class="seq-msg">投稿一覧</div></div>
+    </div>
+  </div>
+</div>
+
+ブラウザが送る要求を **リクエスト**、サーバーが返す応答を **レスポンス** といいます。
+JavaScript では `fetch` でリクエストを送ります。
 
 ---
 
@@ -363,45 +552,107 @@ style: |
 public/
   index.html
   styles.css
-  script.js    ← 1〜3章で書く
+  script.js    ← ブラウザで動く JavaScript
 package.json
-server.js      ← 4〜5章で書く
+server.js      ← サーバーで動く JavaScript
 ```
 
-`public/script.js` はブラウザ側の JavaScript、`server.js` はバックエンドサーバー側の JavaScript ファイルです。
-
-ファイルを保存すると、サーバーは自動で再起動します。
-
----
-
-<!-- _class: record -->
-
-## スライドの見かた
-
-手を動かしてもらうスライドには、右上に 記述 のバッジが出ます。
-
-書くコードはそのまま載っています。黄色いところだけを書きます。
-赤く取り消されている行は、消します。
-
-```javascript
-// 例
-const posts = [];
-@@let connection = null;@@           // 黄色: 書いてもらう行
-%%setInterval(showPosts, 10000);%%   // 赤: 消してもらう行
-```
+ファイルは保存するだけで反映されるので、プレビューの再読み込みやサーバーの起動し直しは基本的に必要ありません。
 
 ---
 
 ## 配布コードの現状の実装
 
-画面をリロードする、または更新ボタンを押すと `showPosts()` が呼び出されてメッセージが表示されます。
-また、投稿ボタンを押すと `addPost()` が呼び出されて、テキストボックスに入れた内容でメッセージが投稿されます。
+`public/script.js` では、ボタンやページを開いたことをきっかけに関数が呼ばれ、その関数がリクエストを送ります。
 
-| 名前 | やっていること |
-|---|---|
-| `showPosts` | サーバーから投稿を全部もらって、一覧に並べ直す |
-| `addPost` | 入力欄の中身をサーバーに送って、`showPosts` を呼ぶ |
-| いちばん下の3行 | ボタンに関数を登録し、開いた瞬間に1回読み込む |
+<svg class="hub" width="1100" height="340" viewBox="0 10 1100 340">
+  <title>配布コードの呼び出し関係</title>
+  <desc>投稿ボタンで addPost、更新ボタンとページを開いたときに showPosts が呼ばれる。addPost は POST /posts でメッセージを送信したあと showPosts を呼び、showPosts は GET /posts で取得したメッセージを表示する。</desc>
+  <g id="triggers">
+    <rect class="box" x="30" y="40" width="240" height="50" rx="6"/>
+    <text x="150" y="65">投稿ボタン</text>
+    <rect class="box" x="30" y="190" width="240" height="50" rx="6"/>
+    <text x="150" y="215">更新ボタン</text>
+    <rect class="box" x="30" y="270" width="240" height="50" rx="6"/>
+    <text x="150" y="295">ページを開いたとき</text>
+  </g>
+  <g id="functions">
+    <rect class="box" x="370" y="40" width="240" height="90" rx="6"/>
+    <text class="mono" x="490" y="65">addPost</text>
+    <text class="sub" x="490" y="105">メッセージを送信</text>
+    <rect class="box" x="370" y="190" width="240" height="130" rx="6"/>
+    <text class="mono" x="490" y="235">showPosts</text>
+    <text class="sub" x="490" y="275">メッセージを表示</text>
+  </g>
+  <g id="server">
+    <rect class="box" x="820" y="40" width="240" height="280" rx="6"/>
+    <text class="name" x="940" y="180">サーバー</text>
+  </g>
+  <g id="calls">
+    <line class="line" x1="270" y1="65" x2="352" y2="65"/>
+    <polygon class="head" points="350,54 370,65 350,76"/>
+    <line class="line" x1="270" y1="215" x2="352" y2="215"/>
+    <polygon class="head" points="350,204 370,215 350,226"/>
+    <line class="line" x1="270" y1="295" x2="352" y2="295"/>
+    <polygon class="head" points="350,284 370,295 350,306"/>
+    <line class="line" x1="490" y1="130" x2="490" y2="172"/>
+    <polygon class="head" points="479,170 490,190 501,170"/>
+    <text class="sub left" x="505" y="160">送信のあとに呼ぶ</text>
+  </g>
+  <g id="requests">
+    <line class="line" x1="610" y1="65" x2="802" y2="65"/>
+    <polygon class="head" points="800,54 820,65 800,76"/>
+    <text class="mono" x="715" y="40">POST /posts</text>
+    <line class="line" x1="610" y1="255" x2="802" y2="255"/>
+    <polygon class="head" points="800,244 820,255 800,266"/>
+    <text class="mono" x="715" y="230">GET /posts</text>
+  </g>
+</svg>
+
+リクエストの送り先は、講師が用意した共有サーバーです。
+1〜3章では、**投稿を表示する部分** を作り変えます。
+
+---
+
+## 今日書くところ
+
+1〜3章では、サーバーは共有サーバーを使い、
+ブラウザ側 (`public/script.js`) を実装します。
+4〜5章では、サーバー側 (`server.js`) を実装します。
+
+<svg class="hub" width="1100" height="350" viewBox="0 10 1100 350">
+  <text class="sub" x="150" y="30">1〜3章</text>
+  <text class="sub" x="910" y="30">4〜5章</text>
+  <rect class="box" x="760" y="50" width="300" height="300" rx="6"/>
+  <text class="name" x="910" y="78">サーバー</text>
+  <rect class="frame" x="800" y="96" width="220" height="32" rx="4"/>
+  <text class="mono" x="910" y="112">server.js</text>
+  <rect class="list" x="780" y="144" width="260" height="186" rx="4"/>
+  <text x="910" y="190">Aさんの投稿</text>
+  <text x="910" y="237">Bさんの投稿</text>
+  <text x="910" y="284">Cさんの投稿</text>
+  <rect class="box" x="40" y="62" width="220" height="76" rx="6"/>
+  <text class="name" x="150" y="84">Aさんのブラウザ</text>
+  <rect class="frame" x="65" y="100" width="170" height="28" rx="4"/>
+  <text class="mono" x="150" y="114">script.js</text>
+  <line class="line" x1="270" y1="100" x2="741" y2="100"/>
+  <polygon class="head" points="738,89 758,100 738,111"/>
+  <text x="505" y="76">投稿を送る</text>
+  <rect class="box" x="40" y="162" width="220" height="76" rx="6"/>
+  <text class="name" x="150" y="184">Bさんのブラウザ</text>
+  <rect class="frame" x="65" y="200" width="170" height="28" rx="4"/>
+  <text class="mono" x="150" y="214">script.js</text>
+  <line class="line" x1="289" y1="200" x2="758" y2="200"/>
+  <polygon class="head" points="292,189 272,200 292,211"/>
+  <text x="515" y="176">投稿一覧を受け取る</text>
+  <rect class="box" x="40" y="262" width="220" height="76" rx="6"/>
+  <text class="name" x="150" y="284">Cさんのブラウザ</text>
+  <rect class="frame" x="65" y="300" width="170" height="28" rx="4"/>
+  <text class="mono" x="150" y="314">script.js</text>
+  <line class="line" x1="289" y1="300" x2="758" y2="300"/>
+  <polygon class="head" points="292,289 272,300 292,311"/>
+  <text x="515" y="276">投稿一覧を受け取る</text>
+</svg>
 
 ---
 
@@ -413,16 +664,19 @@ const posts = [];
 
 この章で編集するファイル: `public/script.js`
 
-一定間隔でメッセージを受信できるようにします。SSE の前に、一定時間ごとに自動で読み直す処理を実装します。
+一定間隔で新しい投稿を受信できるようにします。SSE の前に、一定時間ごとに自動で読み直す処理を実装します。
 
 ---
 
 ## 1-1. 繰り返し同じ関数を実行する
 
-現在の実装では、他の人が投稿した新しいメッセージは、更新ボタンを押すまで画面に反映されません。
-そこで、自動でメッセージを決まった間隔で読み込むように実装します。
+現在の実装では、他の人の新しい投稿は、更新ボタンを押すまで画面に反映されません。
+そこで、決まった間隔で自動で投稿を読み込むように実装します。
+このように、決まった間隔でサーバーに新着を確かめに行くやり方を **ポーリング** といいます。
 
-一定間隔で同じ関数を繰り返し呼び出したいときは `setInterval()` を使用します。
+| 書き方 | 意味 |
+|---|---|
+| `setInterval(<関数>, <ミリ秒>)` | <ミリ秒>ごとに<関数>を繰り返し呼ぶ |
 
 ```javascript
 // 例: 10000 ミリ秒ごとに `showPosts()` 関数を実行する
@@ -439,9 +693,9 @@ setInterval(showPosts, 10000);
 
 10 秒ごとに `showPosts()` を実行して、投稿一覧を読み直します。
 
-**書く場所**: `public/script.js` のいちばん下
+```javascript {data-file=public/script.js}
+document.getElementById('reload-btn').addEventListener('click', showPosts);
 
-```javascript
 showPosts();                         // すでにある行
 @@setInterval(showPosts, 10000);@@
 ```
@@ -450,23 +704,46 @@ showPosts();                         // すでにある行
 
 ---
 
+## 開発者ツールの開き方
+
+StackBlitz では、**右側のプレビューの上で** 右クリックします。エディタの上では、開発者ツールのメニューが出ません。
+
+| ブラウザ | 右クリックのメニュー |
+|---|---|
+| Chrome | 検証 (Inspect) |
+| Edge | 開発者ツールで調査する (Inspect) |
+| Firefox | 調査 (Inspect) |
+
+Windows は `F12`、Mac は `Cmd + Option + I` でも開けます。
+
+---
+
+## 開発者ツールが開けたかを確かめる
+
+開発者ツールの上の端に、下の画像のようなタブが並んでいれば開けています。
+通信は **Network** (ネットワーク) タブで見ます。
+
+![w:900](imgs/devtools-tabs.png)
+
+---
+
 ## 1-2. 実際のサーバーとの通信を見る
 
 ![bg right:40% fit](imgs/network-polling.png)
 
-開発者ツールの Network タブで、サーバーとの通信内容を見ることができます。
-
-1. 右クリック → 「検証」を選択して開発者ツールを開き、**Network** タブを選ぶ
+1. プレビューの上で右クリック → 「検証」で開発者ツールを開き、**Network** タブを選ぶ
 2. 上の `Filter` 欄に `posts` と入れる
-3. そのまま再読み込みして、10秒待つ
+   (`showPosts` が `fetch` している `/posts` の通信だけが残る)
+3. プレビューを再読み込みする
+   (Network タブには開いたあとの通信しか出ないため)
 
-**成功**: `posts` の行が、新しい投稿があってもなくても10秒ごとに1本ずつ増えていきます。
+**成功**: `posts` の行が、新しい投稿があってもなくても10秒ごとに1本ずつ増える
 
 ---
 
 ## 1-3. ポーリングで困ること
 
-この「決まった間隔でサーバーと通信する」やり方を **ポーリング** といいます。
+ポーリングでは、投稿されてから届くまでに遅れが出ます。10秒ごとなら、最大10秒遅れます。
 
 <div class="tl">
   <div class="tl-above"><span class="tl-post" style="left:45%">投稿された</span></div>
@@ -475,11 +752,7 @@ showPosts();                         // すでにある行
   <div class="tl-gaprow"><span class="tl-gap" style="left:45%;width:17%"><span>遅れ 最大10秒</span></span></div>
 </div>
 
-- 間隔を短くすると、新着なしの通信がそのぶん増える
-- 間隔を長くすると、届くのが遅くなる。10秒なら最悪10秒遅れる
-
-間隔をどう決めても、どちらか片方は必ず悪くなります。
-次の章では、このデメリットを克服する方法を実装します。
+遅れを縮めようと間隔を短くすると、今度は新着がなくても通信する回数が増え、通信量とサーバーへの負荷が大きくなります。早く届けることと通信を少なくすることは、ポーリングでは両立できません。
 
 ---
 
@@ -495,7 +768,51 @@ showPosts();                         // すでにある行
 
 ---
 
-## 2-1. サーバーはリクエストへの応答しかできない
+## 2-1. ポーリングではブラウザから新着を問い合わせる
+
+<div class="seq">
+  <div class="seq-title">ポーリング</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /posts</div></div>
+      <div class="seq-row left"><div class="seq-msg">投稿一覧（新着なし）</div></div>
+    </div>
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /posts（10秒後）</div></div>
+      <div class="seq-row left"><div class="seq-msg">投稿一覧（新着なし）</div></div>
+    </div>
+    <div class="seq-repeat">10秒ごとに繰り返す</div>
+  </div>
+</div>
+
+1章で作ったポーリングでは、新着があってもなくても、ブラウザから10秒ごとにサーバーへ問い合わせます。
+投稿されてから次に問い合わせるまでの間は、新着が届きません。
+
+---
+
+## 2-1. 投稿があったらサーバーからすぐに送りたい
+
+<div class="seq">
+  <div class="seq-title">やりたい通信</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row left"><div class="seq-msg">たろうの投稿</div></div>
+      <div class="seq-row left"><div class="seq-msg">はなこの投稿</div></div>
+    </div>
+    <div class="seq-repeat">投稿された時点で送る</div>
+  </div>
+</div>
+
+サーバーは、投稿を受け取った時点で新着があったことを知っています。
+投稿を受け取ったら **サーバーからブラウザへすぐに送る** ようにすれば、投稿は遅れずに届きます。新着を確かめるためだけの通信もいらなくなります。
+
+ところが、リクエストとレスポンスのやり取りでは、これをそのままでは実現できません。
+
+---
+
+## 2-1. サーバーから通信を始めることはできない
 
 <div class="columns">
 <div>
@@ -515,11 +832,12 @@ showPosts();                         // すでにある行
 <div>
 
 <div class="seq">
-  <div class="seq-title">サーバーからの新規通信</div>
+  <div class="seq-title">サーバーから始める通信</div>
   <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
   <div class="seq-body">
     <div class="seq-group">
-      <div class="seq-row left blocked"><div class="seq-msg">投稿を知らせたい</div></div>
+      <div class="seq-row left blocked"><div class="seq-msg">たろうの投稿</div></div>
+      <div class="seq-row left blocked"><div class="seq-msg">はなこの投稿</div></div>
     </div>
   </div>
 </div>
@@ -527,16 +845,15 @@ showPosts();                         // すでにある行
 </div>
 </div>
 
-サーバーは、受け取ったリクエストにレスポンス (サーバーが返す応答) を返すことしかできません。そのため、サーバーのほうからブラウザに向けて新しく通信を始めることはできません。
-
-また、レスポンスを返し終える (閉じる) とあとからデータを追加で返すことはできません。
+通信は、いつもブラウザのリクエストから始まります。
+サーバーはリクエストに対してレスポンスを返すだけで、サーバーから通信を始めることはできません。
 
 ---
 
-## 2-1. サーバーが、閉じないレスポンスに投稿を書き足す
+## 2-1. レスポンスを終了せずに送り続ける
 
 <div class="seq">
-  <div class="seq-title">閉じないレスポンス</div>
+  <div class="seq-title">終了しないレスポンス</div>
   <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
   <div class="seq-body">
     <div class="seq-group">
@@ -544,18 +861,16 @@ showPosts();                         // すでにある行
       <div class="seq-row left"><div class="seq-msg">たろうの投稿</div></div>
       <div class="seq-row left"><div class="seq-msg">はなこの投稿</div></div>
     </div>
-    <div class="seq-repeat">投稿されるたびに書き足す</div>
+    <div class="seq-repeat">投稿されるたびに送る</div>
   </div>
 </div>
 
-ブラウザからのリクエストは最初の1回だけにします。
-サーバーはそのレスポンスを閉じず、投稿があるたびに続きを書き足します。
-
-**SSE** (Server-Sent Events) とは、こうしてサーバーからブラウザへデータを流し続けるしくみのことです。
+そこで、ブラウザが最初に1回だけリクエストを送っておきます。ふつうのレスポンスは1回返すと終了しますが、サーバーはこのレスポンスを終了せず、投稿があるたびに続きを送ります。
+この仕組みを **SSE** (Server-Sent Events) といいます。
 
 ---
 
-## 2-1. 閉じるレスポンスと閉じないレスポンスを比べる
+## 2-1. ポーリングと SSE を比べる
 
 <div class="columns">
 <div>
@@ -599,69 +914,110 @@ showPosts();                         // すでにある行
 
 ---
 
-## 2-1. EventSource でつないでメッセージを受け取る
+## SSE が使われている例: AI チャット
 
-SSE でデータを受け取るには、`new EventSource(URL)` でサーバーに接続します。
-`onmessage` に関数を渡すと、データが1件届くたびにその関数が呼ばれます。
+ChatGPT などの AI チャットでは、回答を全部作り終えてから返すのではなく、できた部分から少しずつ画面に表示します。この回答は SSE で届いています。
+
+![](imgs/chatgpt.webp)
+
+---
+
+## 2-1. EventSource でサーバーに接続する
+
+ブラウザ側は、`EventSource` を使うと1行で接続できます。
+
+| 書き方 | 意味 |
+|---|---|
+| `new EventSource(<URL>)` | &lt;URL&gt;のサーバーに接続し、終了しないレスポンスを受信し続ける |
 
 ```javascript
-const source = new EventSource(`${API}/events?room=${ROOM}`);  // 接続する
+// 例: https://example.com/stream に接続する
+const source = new EventSource('https://example.com/stream');
+```
 
-source.onmessage = (e) => {          // データが1件届くたびに呼ばれる
-  console.log(e.data);               // 届いたデータの中身 (文字列)
-};
+---
+
+## 2-1. データを受信したときに実行する関数を登録する
+
+| 書き方 | 意味 |
+|---|---|
+| `<接続>.onmessage = <関数>` | データを1件受信するたびに<関数>を呼ぶ |
+
+```javascript
+// 例
+function handleMessage() {
+  console.log('受信した');
+}
+
+source.onmessage = handleMessage;    // 関数を登録する。() は付けない
 ```
 
 ---
 
 <!-- _class: record -->
 
-## 2-1. ポーリングをやめて EventSource でつなぐ
+## 2-1. ポーリングをやめて EventSource で接続する
 
-<div class="timer" data-seconds="300"></div>
+<div class="timer" data-seconds="180"></div>
 
 一定間隔の自動更新をやめて、サーバーからの通知に切り替えます。
 
-**書く場所**: `public/script.js` のいちばん下
+```javascript {data-file=public/script.js}
+document.getElementById('reload-btn').addEventListener('click', showPosts);
 
-赤い行を消して、黄色い行を追加します。
-
-```javascript
 showPosts();                         // すでにある行
 %%setInterval(showPosts, 10000);%%
-@@const source = new EventSource(`${API}/events?room=${ROOM}`);@@
-@@source.onmessage = () => showPosts();@@
+@@const source = new ______(`${API}/events`);@@   // 共有サーバーの /events に接続する
+@@source.______ = showPosts;@@                    // データが届くたびに一覧を取り直す
 ```
 
-**成功**: メッセージが投稿された瞬間に表示される
+**成功**: 新しい投稿が、投稿された瞬間に表示される
 
 ---
 
-## 2-2. 閉じないレスポンスが1本続いているのを見る
+## 2-1. 答え
+
+```javascript {data-file=public/script.js}
+document.getElementById('reload-btn').addEventListener('click', showPosts);
+
+showPosts();                         // すでにある行
+%%setInterval(showPosts, 10000);%%
+const source = new @@EventSource@@(`${API}/events`);
+source.@@onmessage@@ = showPosts;
+```
+
+- 接続は `new EventSource(<URL>)` で作る
+- データを受信するたびに呼ぶ関数は、`onmessage` に代入する
+
+---
+
+## 2-2. 終了しないレスポンスが1本続いているのを見る
 
 ![bg right:40% fit](imgs/network-eventstream.png)
 
-開発者ツールの Network タブで、SSE の通信を見ることができます。
+`events` の接続はページを開いた瞬間に始まるので、再読み込みしないと行が出ません。
 
 1. `Filter` 欄を `events` に変えて、再読み込みする
 2. 出てきた `events` の行を選び、**EventStream** タブを開く
 3. 誰かの投稿が届くのを待つ
 
-**成功**: `events` の行は1本のまま Time が伸び続け、投稿が届くたびに EventStream タブの行が1つ増えます。
+**成功**: `events` の行は1本のまま Time が伸び続け、投稿が届くたびに EventStream タブの行が1つ増える
 
 ---
 
-## 2章の動作チェック
+## 2章のふりかえり
 
-### 3つとも当てはまれば 2章は完了
+### やったこと
 
-1. `posts` の行が、10秒ごとに増えるのをやめている
-2. `events` の行は1本だけで、Status は 200 のまま Time が伸び続ける
-3. 投稿が届くたびに EventStream タブの行が1つ増える
+- ブラウザから10秒ごとに問い合わせるのをやめ、サーバーが投稿のたびに送るようにした
+- `new EventSource(<URL>)` で接続し、届くたびに呼ぶ関数を `onmessage` に登録した
+- `events` の通信は1本のままで、投稿が届くたびに EventStream タブの行が増える
 
-### 投稿しても `events` の行は増えない
+### 残っている課題
 
-EventStream タブの中の行が増えます。通信そのものは、1本を使い回しています。
+届いた投稿の中身は使わず、そのたびに `GET /posts` で全件を取り直しています。
+
+早く終わった人は → [2章の応用課題](#adv-ch2) {.jump #ch2-end}
 
 ---
 
@@ -669,7 +1025,7 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 # 休憩
 
-<div class="timer" data-seconds="600"></div>
+<div class="timer" data-seconds="300"></div>
 
 ---
 
@@ -682,51 +1038,154 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 この章で編集するファイル: `public/script.js`
 
 いまは投稿が届くたびに全件を取り直しています。
-届いた新しいメッセージだけを画面に足すようにして、サーバーとやり取りする量を減らします。
+届いた新しい投稿だけを画面に追加するようにして、サーバーとやり取りする量を減らします。
 
 ---
 
-## 3-1. 投稿のたびに全件を取り直しているのを見る
+## 3-1. 届いた投稿を使わずに全件を取り直している
 
-![bg right:40% fit](imgs/network-refetch.png)
+<div class="columns" style="align-items: center">
+<div>
 
-`Filter` 欄を空にして、投稿が届くのを待ちます。
+<div class="seq">
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
+      <div class="seq-row left"><div class="seq-msg">data: たろうの投稿</div></div>
+      <div class="seq-fn" data-label="showPosts">
+        <div class="seq-group">
+          <div class="seq-row right"><div class="seq-msg">GET /posts</div></div>
+          <div class="seq-row left"><div class="seq-msg">投稿一覧（全件）</div></div>
+        </div>
+      </div>
+      <div class="seq-row left"><div class="seq-msg">data: はなこの投稿</div></div>
+      <div class="seq-fn" data-label="showPosts">
+        <div class="seq-group">
+          <div class="seq-row right"><div class="seq-msg">GET /posts</div></div>
+          <div class="seq-row left"><div class="seq-msg">投稿一覧（全件）</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="seq-tail"></div>
+  </div>
+</div>
 
-**成功**: `events` は1本のままで、その下に `posts` の GET が投稿のたびに1本ずつ増えます。
+</div>
+<div>
 
-投稿が増えるほど通信も増えます。10秒ごとより多くなることもあります。
+いまの実装では、`/events` を「新着が来た」ことを知るためだけに使っています。
+
+投稿の中身は、そのたびに `GET /posts` で全件を取り直しています。
+
+</div>
+</div>
 
 ---
 
-<!-- _class: record compact -->
+## 3-1. 届いた投稿を画面に追加する
+
+<div class="columns">
+<div>
+
+<div class="seq">
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
+      <div class="seq-row left"><div class="seq-msg">data: たろうの投稿</div></div>
+      <div class="seq-row left"><div class="seq-msg">data: はなこの投稿</div></div>
+    </div>
+    <div class="seq-tail"></div>
+  </div>
+</div>
+
+</div>
+<div>
+
+`/events` の `data:` には、新着の投稿1件がそのまま入っています。
+
+これを画面に追加すれば、`GET /posts` を送るのはページを開いたときの1回だけになります。
+
+</div>
+</div>
+
+---
+
+## 3-2. 取得と表示を別の関数に分ける
+
+いまの `showPosts` は、全件の取得と画面への表示を両方やっています。そのため、届いた1件を足して並べ直すだけの処理が書けません。
+取得と表示を別の関数に分け、投稿はブラウザ側の配列 `posts` に持ち続けます。
+
+<svg class="hub" width="1100" height="270" viewBox="0 10 1100 270">
+  <text class="name mono" x="170" y="30">GET /posts</text>
+  <rect class="box" x="60" y="45" width="220" height="92" rx="6"/>
+  <rect class="list" x="75" y="55" width="190" height="34" rx="4"/>
+  <text x="170" y="72">Aさんの投稿</text>
+  <rect class="list" x="75" y="93" width="190" height="34" rx="4"/>
+  <text x="170" y="110">Bさんの投稿</text>
+  <line class="line" x1="280" y1="91" x2="423" y2="91"/>
+  <polygon class="head" points="420,80 440,91 420,102"/>
+  <text class="mono" x="360" y="67">loadPosts</text>
+  <text class="name mono" x="170" y="165">/events</text>
+  <rect class="box" x="60" y="180" width="220" height="92" rx="6"/>
+  <rect class="list new" x="75" y="190" width="190" height="34" rx="4"/>
+  <text x="170" y="207">Cさんの投稿</text>
+  <text x="170" y="247">⋮</text>
+  <path class="line" d="M280,207 H400 V148 H423"/>
+  <polygon class="head" points="420,137 440,148 420,159"/>
+  <text class="mono" x="362" y="235">receivePost</text>
+  <text class="name mono" x="550" y="30">posts</text>
+  <rect class="box" x="440" y="45" width="220" height="165" rx="6"/>
+  <rect class="list" x="455" y="55" width="190" height="34" rx="4"/>
+  <text x="550" y="72">Aさんの投稿</text>
+  <rect class="list" x="455" y="93" width="190" height="34" rx="4"/>
+  <text x="550" y="110">Bさんの投稿</text>
+  <rect class="list new" x="455" y="131" width="190" height="34" rx="4"/>
+  <text x="550" y="148">Cさんの投稿</text>
+  <text x="550" y="188">⋮</text>
+  <path class="double" d="M660,111 H806 M660,125 H806 M796,100 L816,118 L796,136"/>
+  <text class="mono" x="740" y="85">showPosts</text>
+  <text class="name" x="930" y="30">画面の一覧</text>
+  <rect class="box" x="820" y="45" width="220" height="165" rx="6"/>
+  <rect class="list" x="835" y="55" width="190" height="34" rx="4"/>
+  <text x="930" y="72">Aさんの投稿</text>
+  <rect class="list" x="835" y="93" width="190" height="34" rx="4"/>
+  <text x="930" y="110">Bさんの投稿</text>
+  <rect class="list" x="835" y="131" width="190" height="34" rx="4"/>
+  <text x="930" y="148">Cさんの投稿</text>
+  <text x="930" y="188">⋮</text>
+</svg>
+
+---
+
+<!-- _class: record -->
 
 ## 3-2. 投稿を取ってくる `loadPosts` を作る
 
-<div class="timer" data-seconds="180"></div>
+<div class="timer" data-seconds="300"></div>
 
-**書く場所 1**: `showPosts` の上
+```javascript {data-file=public/script.js}
+@@const posts = [];@@                      // ブラウザ側で持つ投稿。画面と同じ並び
 
-```javascript
-@@const posts = [];                   // 手元の投稿。画面に出ているものと同じ並び@@
-
-@@async function loadPosts() {        // 取ってきて posts に入れる。開いたときに1回だけ呼ぶ@@
-@@  const res = await fetch(`${API}/posts?room=${ROOM}`);@@
-@@  const loaded = await res.json();  // サーバーにある投稿の全件@@
-@@  for (const post of loaded) {      // 1件ずつ手元に入れる@@
-@@    posts.push(post);@@
+@@async function loadPosts() {@@           // 開いたときに1回だけ呼ぶ
+@@  const res = await fetch(`${API}/posts`);@@
+@@  const loaded = await res.json();@@     // サーバーにある投稿の全件
+@@  for (let i = 0; i < loaded.length; i++) {@@
+@@    posts.push(loaded[i]);@@              // 1件ずつ posts の末尾に追加する
 @@  }@@
 @@  showPosts();@@
 @@}@@
+
+async function showPosts() {            // すでにある行
 ```
 
-**書く場所 2**: いちばん下の `showPosts();` の行。赤い行を消して、黄色い行を書きます
-
-```javascript
-%%showPosts();%%
+```javascript {data-file=public/script.js}
+%%showPosts();%%                        // ファイルの最後の行
 @@loadPosts();@@
 ```
 
-ここまでで、画面はいままでどおり動きます。
+**成功**: 画面はいままでどおり動く
 
 ---
 
@@ -736,96 +1195,124 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 <div class="timer" data-seconds="120"></div>
 
-`showPosts` に残っている `fetch` を消すと、`showPosts` は手元の `posts` を並べるだけの関数になります。
+`showPosts` に残っている `fetch` を消すと、`showPosts` は配列 `posts` を画面に並べるだけの関数になります。
+`await` がなくなるので `async` も外します。
 
-**書く場所**: `showPosts` の先頭
-
-```javascript
+```javascript {data-file=public/script.js}
 %%async %%function showPosts() {
-%%  const res = await fetch(`${API}/posts?room=${ROOM}`);%%
+%%  const res = await fetch(`${API}/posts`);%%
 %%  const posts = await res.json();%%
 
   const list = document.getElementById('posts');   // ここから下はそのまま
 ```
 
-`await` がなくなるので `async` も外します。
-
-`for` の行は書き換えません。関数の中から `posts` がなくなったので、手元の `posts` を見るようになります。
+**成功**: ページを再読み込みすると、一覧が出る
 
 ---
 
 ## 3-2. 届いた1件は `e.data` に文字列で入っている
 
-`onmessage` が受け取る `e` の `data` に、投稿1件がそのまま載っています。
+`onmessage` に登録した関数の引数 `e` の `data` に、投稿1件が文字列で入っています。
+サーバーが、投稿のオブジェクトを JSON の文字列にして送っています。
 
 ```javascript
 '{"id":"1757480580000-a1b2c3d4","name":"たろう","text":"やっほー","createdAt":"..."}'
 ```
 
+| 書き方 | 意味 |
+|---|---|
+| `JSON.parse(<文字列>)` | JSON の<文字列>をオブジェクトに戻す |
+
 `JSON.parse` に通すと、`showPosts` が並べているのと同じ形のオブジェクトになります。
 
 ---
 
-<!-- _class: record compact -->
+<!-- _class: record -->
 
-## 3-2. 届いた1件を手元に足す
+## 3-2. 受信した1件を `posts` に追加する
 
-<div class="timer" data-seconds="120"></div>
+<div class="timer" data-seconds="180"></div>
 
-手元の `posts` に足してから `showPosts` を呼べば、その1件が一覧に出ます。
+`posts` に追加してから `showPosts` を呼ぶと、その1件が一覧に表示されます。
 
-**書く場所**: `source.onmessage` の行を置き換え
-
-```javascript
-@@source.onmessage = (e) => {@@
-@@  posts.push(JSON.parse(e.data));   // 届いた文字列をオブジェクトに戻して足す@@
+```javascript {data-file=public/script.js}
+%%source.onmessage = showPosts;%%
+@@function receivePost(e) {@@
+@@  posts.push(JSON.parse(e.data));@@   // 届いた文字列をオブジェクトに戻して追加する
 @@  showPosts();@@
-@@};@@
+@@}@@
+@@source.onmessage = receivePost;@@
 ```
 
-**成功**: 投稿しても `posts` の GET が増えず、一覧にはその投稿が出る
+**成功**: Network タブの `Filter` 欄を `posts` にして投稿すると、`posts` の GET は増えず、一覧にはその投稿が出る
 
 ---
 
-<!-- _class: record compact -->
+## 3-2. 自分の投稿を一覧に足すのも `receivePost`
 
-## 3-2. サーバーに取りにいくのは最初の1回だけ
+<div class="columns" style="align-items: center">
+<div>
 
-<div class="timer" data-seconds="120"></div>
+<div class="seq">
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
+      <div class="seq-fn" data-label="addPost">
+        <div class="seq-group">
+          <div class="seq-row right"><div class="seq-msg">POST /posts</div></div>
+          <div class="seq-row left"><div class="seq-msg">保存した投稿（使わない）</div></div>
+        </div>
+      </div>
+      <div class="seq-fn" data-label="receivePost">
+        <div class="seq-group">
+          <div class="seq-row left"><div class="seq-msg">data: 自分の投稿</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="seq-tail"></div>
+  </div>
+</div>
 
-`fetch` は `loadPosts` に1つだけ残りました。自分の投稿もサーバーから SSE で届いて戻ってくるので、`addPost` から呼び直す必要はありません。`showPosts` はもう取りにいかない関数なので、更新ボタンを押しても並べ直すだけです。
+</div>
+<div>
 
-**書く場所 1**: `addPost` の中、`text-input` を空にした行の下
+サーバーは、保存した投稿を `/events` につないでいる全員に送ります。投稿した本人も含まれます。
 
-```javascript
+自分の投稿も `receivePost` が `posts` に追加し、一覧に出します。
+</div>
+</div>
+
+---
+
+<!-- _class: record -->
+
+## 3-2. `addPost` から `showPosts` を消す
+
+<div class="timer" data-seconds="60"></div>
+
+`addPost` の最後で呼んでいる `showPosts` は、`posts` が投稿の前と変わらないので、同じ一覧を並べ直すだけです。
+投稿した1件は `receivePost` が一覧に出すので、この `showPosts` は消します。
+
+```javascript {data-file=public/script.js}
   document.getElementById('text-input').value = '';   // ここから下
 %%  showPosts();%%
 }
 ```
 
-**書く場所 2**: `reload-btn` にイベントを登録している行
-
-```javascript
-%%document.getElementById('reload-btn').addEventListener('click', showPosts);%%
-@@document.getElementById('reload-btn').remove();@@
-```
-
-**成功**: 投稿しても一覧が二重に増えず、更新ボタンが画面から消える
+**成功**: 投稿すると、いままでどおり一覧にその投稿が出る
 
 ---
 
-## 3章の動作チェック
+## 3章のふりかえり
 
-### 4つとも当てはまれば 3章は完了
+### やったこと
 
-1. ページを開いたとき、`posts` の GET が1本だけある
-2. そのあとは何件投稿されても、`posts` の GET が増えない
-3. EventStream タブの行は、投稿のたびに増える
-4. 一覧にも、届いた投稿が出る
+- 取得する `loadPosts` と、表示する `showPosts` を分けた
+- 届いた1件を `JSON.parse` でオブジェクトに戻し、`posts` に追加して並べ直すようにした
+- `GET /posts` を送るのは、ページを開いたときの1回だけになった
 
-### 3は増えるのに4が変わらないなら
-
-届いてはいるので、受け取ったあとの処理でつまずいています。Console タブの赤い文字を見てください。
+早く終わった人は → [3章の応用課題](#adv-ch3) {.jump #ch3-end}
 
 ---
 
@@ -851,22 +1338,182 @@ EventStream タブの中の行が増えます。通信そのものは、1本を�
 
 ## 4-0. `server.js` の中身
 
-`server.js` には、3つのことが書いてあります。
+`server.js` には、1〜3章で使っていた2つのリクエストの処理がすでに書いてあります。共有サーバーでも、同じ処理が動いています。
 
 | 書いてあるもの | 役割 |
 |---|---|
 | `GET /posts` | 投稿を全部返す |
-| `POST /posts` | 投稿を1件受け取って、`posts` に足す |
-| それ以外 | `public/` の中のファイルを返す |
+| `POST /posts` | 投稿を1件受け取って、配列 `posts` に追加する |
 
-右側のプレビューに見えているページも、この3つめから届いています。
-投稿は `posts` という配列に入っているだけなので、サーバーを再起動すると消えます。
+この章では、SSE で投稿を配信する `GET /events` を追加します。
 
 ---
 
-<!-- _class: compact -->
+<!-- _class: record -->
 
-## 4-1. SSE ではデータを1件ずつ区切って送る
+## 4-1. 接続先を自分のサーバーに変える
+
+<div class="timer" data-seconds="120"></div>
+
+共有サーバーの URL が入っている `API` を書き換えます。
+
+```javascript {data-file=public/script.js}
+%%const API = 'https://example.deno.net';%%   // 共有サーバーの URL が入っている
+@@const API = location.origin;@@
+```
+
+| 書き方 | 意味 |
+|---|---|
+| `location.origin` | いま開いているページを配信しているサーバーの URL |
+
+**成功**: 再読み込みすると一覧が空になり、Network タブの `events` の行が 404 になる。`/events` はまだないので、エラーになれば成功
+
+![w:820](imgs/network-events-404.png)
+
+---
+
+## 4-2. SSE のレスポンスを返す手順
+
+<div class="columns" style="align-items: center">
+<div>
+
+<div class="seq no-num">
+  <div class="seq-title">GET /events のレスポンス</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
+      <div class="seq-row left"><div class="seq-msg">① ヘッダー</div></div>
+      <div class="seq-row left"><div class="seq-msg">② data: たろうの投稿</div></div>
+      <div class="seq-row left"><div class="seq-msg">② data: はなこの投稿</div></div>
+    </div>
+    <div class="seq-repeat">終了せずに送り続ける</div>
+  </div>
+</div>
+
+</div>
+<div>
+
+① SSE 用のヘッダーを先に送る
+
+② データを1件ずつ区切って送る
+
+</div>
+</div>
+
+---
+
+## 4-2. 手順1: SSE 用のヘッダーを設定する
+
+レスポンスの先頭には、中身の種類などを書いた **HTTP ヘッダー** が付きます。
+
+| 書き方 | 意味 |
+|---|---|
+| `res.setHeader(<名前>, <値>)` | レスポンスのヘッダーを1つ設定する |
+
+```javascript
+// EventSource は、text/event-stream でないと受け付けない
+res.setHeader('Content-Type', 'text/event-stream');
+// 念のため、キャッシュを使い回さないよう伝える
+res.setHeader('Cache-Control', 'no-cache');
+```
+
+---
+
+## 4-2. 手順1: ヘッダーだけ先に送る
+
+<div class="columns">
+<div>
+
+<div class="seq no-num">
+  <div class="seq-title"><code>res.flushHeaders()</code> なし</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
+    </div>
+    <div class="seq-repeat">最初の投稿まで何も届かない</div>
+    <div class="seq-group">
+      <div class="seq-row left"><div class="seq-msg">ヘッダー + data</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+<div>
+
+<div class="seq no-num">
+  <div class="seq-title"><code>res.flushHeaders()</code> あり</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events</div></div>
+      <div class="seq-row left"><div class="seq-msg">ヘッダー</div></div>
+    </div>
+    <div class="seq-repeat">最初の投稿を待つ</div>
+    <div class="seq-group">
+      <div class="seq-row left"><div class="seq-msg">data</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+ブラウザはヘッダーを受け取るまで、接続できたかどうかが分かりません。
+そこで、`setHeader` のあとに `res.flushHeaders()` を呼んで、ヘッダーだけ先に送ります。
+
+---
+
+<!-- _class: record -->
+
+## 4-2. `GET /events` を追加する
+
+<div class="timer" data-seconds="360"></div>
+
+```javascript {data-file=server.js}
+const posts = [];                    // すでにある行
+@@let connection = null;@@             // 現在の接続。新しい接続が来ると上書きされる
+```
+
+```javascript {data-file=server.js}
+  // ▼ 4章: ここに GET /events を追加する
+@@  if (req.method === 'GET' && url.pathname === '______') {@@  // すぐ上の GET /posts と同じ形
+@@    res.setHeader('Content-Type', '______');@@
+@@    res.setHeader('Cache-Control', 'no-cache');@@
+@@    res.______();@@                    // ヘッダーだけ先に送る
+@@    connection = res;@@                // res.end() は呼ばず、終了しないまま保持する
+@@    console.log('接続を受け付けた');@@
+@@    return;@@
+@@  }@@
+```
+
+**成功**: 再読み込みすると、Network タブの `events` の行の Status が 404 から 200 に変わる。まだ何も送っていないので、Time は Pending のまま
+
+![w:820](imgs/network-events-200.png)
+
+---
+
+## 4-2. 答え
+
+```javascript {data-file=server.js}
+  // ▼ 4章: ここに GET /events を追加する
+  if (req.method === 'GET' && url.pathname === '@@/events@@') {
+    res.setHeader('Content-Type', '@@text/event-stream@@');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.@@flushHeaders@@();
+    connection = res;
+    console.log('接続を受け付けた');
+    return;
+  }
+```
+
+- `Content-Type` は、手順1 の `text/event-stream`
+- ヘッダーだけ先に送るのは、手順1 の `res.flushHeaders()`
+
+---
+
+## 4-3. 手順2: データを1件ずつ区切って送る
 
 ```
 data: {"name":"たろう","text":"やっほー"}
@@ -878,132 +1525,54 @@ data: {"name":"たろう","text":"やっほー"}
 | `data: 中身` | イベント1件の中身 |
 | 空行 | ここまでで1件、という区切り |
 
-データを1件書いたら空行を1つ入れて区切ります。
-つまり、`data:` の行末の改行と空行で、改行が `\n\n` と2つ並びます。
-空行を忘れると、ブラウザはデータがまだ続くと見なして区切りを待ち続け、その投稿は表示されません。
+`data:` の行末の改行と空行で、改行が `\n\n` と2つ並びます。
+空行がないと、ブラウザはそのイベントの受信が終わったと判定しないので、`onmessage` の関数が実行されません。
 
 ---
 
 <!-- _class: record compact -->
 
-## 4-1. `GET /events` を足す
+## 4-3. 投稿が来たらその接続に書き込む
 
-<div class="timer" data-seconds="360"></div>
+<div class="timer" data-seconds="180"></div>
 
-**書く場所 1**: 投稿の置き場を作っている行の下
+保存したあと、保持しておいた接続に投稿を1件送ります。
 
-```javascript
-const posts = [];                    // すでにある行
-
-@@let connection = null;             // いまつながっている接続。あとから来たほうで上書きされる@@
-```
-
-**書く場所 2**: `▼ 4章: ここに GET /events を足す` の行の下
-
-```javascript
-@@  if (req.method === 'GET' && url.pathname === '/events') {@@
-@@    res.writeHead(200, {@@
-@@      'Content-Type': 'text/event-stream',@@
-@@      'Cache-Control': 'no-cache',@@
-@@      'Connection': 'keep-alive',@@
-@@    });@@
-@@    connection = res;@@
-@@    return;@@
-@@  }@@
-```
-
-ここでは `res.end()` を呼びません。閉じないまま `connection` に覚えておきます。
-
----
-
-<!-- _class: record compact -->
-
-## 4-2. 投稿が来たらその接続に書き込む
-
-<div class="timer" data-seconds="240"></div>
-
-保存したあと、保持しておいた接続に1件ぶん書き足します。
-
-**書く場所**: `server.js` の `▼ 4章: つながっているブラウザに届ける` の行の下
-
-```javascript
-    if (posts.length > MAX_POSTS) posts.shift();        // すでにある行
-
-@@    if (connection) {@@
-@@      connection.write(`data: ${JSON.stringify(post)}\n\n`);@@
+```javascript {data-file=server.js}
+    // ▼ 4章: 接続しているブラウザに投稿を送る
+@@    const data = JSON.stringify(post);@@                  // 投稿を JSON の文字列にする
+@@    if (connection) {@@                                   // 接続がなければ null のまま
+@@      connection.write(`data: ${data}\n\n`);@@            // 手順2 の形式で送る
 @@    }@@
 ```
 
-`JSON.stringify` で投稿をJSON → 文字列に変換してから、先頭に` data: ` 、末尾に `\n\n` を挿入します。
+| 書き方 | 意味 |
+|---|---|
+| `JSON.stringify(<値>)` | <値>を JSON の文字列にする。ブラウザ側の `JSON.parse` で元に戻る |
+| `res.write(<文字列>)` | レスポンスを終了せずに、<文字列>を送る |
+| `\n` | 文字列の中で、改行1文字を表す |
 
-誰もつないでいなければ `connection` は `null` のままなので、`if` で確かめてから書きます。
+末尾の `\n\n` の1つ目で `data:` の行が終わり、2つ目で空行になります。
 
----
-
-<!-- _class: record -->
-
-## 4-3. つなぎ先を自分のサーバーに向ける
-
-<div class="timer" data-seconds="120"></div>
-
-共有サーバーの URL が入っている `API` を書き換えます。
-
-**書く場所**: `public/script.js` の `API` の行
-
-```javascript
-@@const API = location.origin;@@
-```
-
-**`location.origin`** = いま開いているページを配っているサーバーの URL
-
-プレビューのページは自分の `server.js` から届いているので、URL を書き写さずにこれで足ります。
+**成功**: 投稿すると、一覧に出る
 
 ---
 
-## 4章の動作チェック
+## 4章のふりかえり
 
-### タブを2枚開いて確かめる
+![bg right:40% fit](imgs/stackblitz-terminal.png)
 
-1. プレビュー右上の「新しいタブで開く」を押す。もう1枚、同じ URL で開く
-2. あとから開いたほうで Network タブを開き、`events` の行を選んで **EventStream** タブを見る
-3. 先に開いたタブで投稿する → EventStream タブに行が1つ増え、一覧にも出る
-4. あとから開いたタブで投稿する → 先に開いたタブには、何も出ない
+### やったこと
 
-### 4番は不具合ではない
+- `GET /events` で SSE 用のヘッダーを先に送り、レスポンスを終了せずに持っておくようにした
+- 投稿を受け取ったら、`data: 中身` と空行の形で接続に送るようにした
+- ターミナルには、接続を受け付けるたびに `接続を受け付けた` が出る (右の赤枠)
 
-`connection` には1本しか保持できず、あとからつないだ接続が前の接続を上書きしています。
+### 残っている課題
 
----
+持っておける接続は1本だけです。
 
-<!-- _class: record compact -->
-
-## 4-4. 接続状態を画面に出す
-
-<div class="timer" data-seconds="240"></div>
-
-ブラウザとサーバーがいまつながっているかどうかを、画面で見えるようにします。
-
-**書く場所**: `public/script.js` のいちばん下
-
-```javascript
-};                                   // すでにある行。source.onmessage の終わり
-
-@@const status = document.getElementById('status');@@
-
-@@source.addEventListener('open', () => {@@
-@@  status.textContent = 'つながっています';@@
-@@  status.className = 'status online';@@
-@@});@@
-
-@@source.addEventListener('error', () => {@@
-@@  status.textContent = '切れています';@@
-@@  status.className = 'status offline';@@
-@@});@@
-```
-
-ファイルを保存するたびにサーバーは再起動し、そのたびに接続は切れてつなぎ直されます。
-
-**成功**: 保存するたびに一瞬「切れています」に変わり、つなぎ直ったら「つながっています」に戻る
+早く終わった人は → [4章の応用課題](#adv-ch4) {.jump #ch4-end}
 
 ---
 
@@ -1015,122 +1584,169 @@ const posts = [];                    // すでにある行
 
 この章で編集するファイル: `server.js`
 
-接続している全員にメッセージを配信できるようにします。
+接続している全員に投稿を配信できるようにします。
 
 ---
 
-<!-- _class: record compact -->
+## 5-0. 複数の接続に対応していないのを確かめる
+
+![bg right:40% fit](imgs/two-tabs.png)
+
+1. プレビュー右上の「新しいタブで開く」を2回押す
+2. それぞれのタブで投稿する
+3. 投稿が出るのは、あとから開いたタブだけ
+
+ターミナルには、タブを開くたびに `接続を受け付けた` が出ます。
+受け取った接続のうち、`connection` に残るのは最後の1本だけです。
+
+この章で、開いているすべてのタブに投稿が届くように直します。
+
+---
+
+<!-- _class: record -->
 
 ## 5-1. 接続の置き場を配列にする
 
 <div class="timer" data-seconds="240"></div>
 
-2箇所とも、1本ぶんの書き方を配列の書き方に入れ替えます。赤い行を消して、黄色い行を書きます。
-
-**書く場所 1**: 接続の置き場を作っている2行
-
-```javascript
-%%// いまつながっている接続。あとから来たほうで上書きされる。%%
-%%let connection = null;%%
-@@// いまつながっている接続。つながった順に並ぶ。@@
+```javascript {data-file=server.js}
+%%let connection = null;             // 現在の接続。新しい接続が来ると上書きされる%%
+@@// 現在の接続の一覧。接続した順に並ぶ。@@
 @@const connections = [];@@
 ```
 
-**書く場所 2**: `GET /events` の中で接続を保持している行
-
-```javascript
+```javascript {data-file=server.js}
 %%    connection = res;%%
+%%    console.log('接続を受け付けた');%%
 @@    connections.push(res);@@
 @@    console.log(`接続数: ${connections.length}`);@@
 ```
 
-`console.log` の出力は、StackBlitz の下側のターミナルに出ます。
+<img src="imgs/stackblitz-terminal-strip.png" style="float: right; width: 45%;">
+
+| 書き方 | 意味 |
+|---|---|
+| `<配列>.length` | <配列>の要素の数 |
+
+**成功**: `server.js` を保存すると、ターミナルに `接続数: ` が出る
 
 ---
 
 <!-- _class: record -->
 
-## 5-2. つないでいる全員に投稿を書き込む
+## 5-2. 接続している全員に投稿を書き込む
 
-<div class="timer" data-seconds="240"></div>
+<div class="timer" data-seconds="180"></div>
 
 1本に書いていたところを、配列ぶん繰り返します。
 
-**書く場所**: 投稿を受け取ったところ。4章で書いた `if (connection)` の行
-
-```javascript
+```javascript {data-file=server.js}
+    const data = JSON.stringify(post);                  // 変わらない行
 %%    if (connection) {%%
-@@    for (const connection of connections) {@@
-      connection.write(`data: ${JSON.stringify(post)}\n\n`);  // 変わらない行
+@@    for (let i = 0; i < connections.length; i++) {@@
+@@      const connection = connections[i];@@
+      connection.write(`data: ${data}\n\n`);              // 変わらない行
     }
 ```
 
-入れ替えるのは1行だけです。`write` の行も閉じ括弧も、そのままにします。
+`write` の行も閉じ括弧も、そのままにします。
 
-**成功**: タブを3枚開くと、どのタブで投稿しても残り2枚に出る
-
----
-
-## 5章の動作チェック
-
-### タブを3枚開いて確かめる
-
-1. ターミナルの「接続数」が 3 になっている
-2. どのタブで投稿しても、残り2枚に出る
-3. 4章では何も出なかった「先に開いたタブ」にも出る
-
-### タブを1枚閉じる
-
-ターミナルの接続数を見ます。3 のままです。
+**成功**: 5-0 で開いた2枚のタブのどちらで投稿しても、両方のタブに出る
 
 ---
 
-## 5-3. 閉じた接続が配列に残り続ける
+## 5-3. 切れた接続が配列に残り続ける
 
-タブを閉じたり、ページを開き直すと、古い接続がサーバーの配列から消えずに残ってしまい、閉じた接続に向かって `write()` を続けることになります。
-接続が少なければそこまで問題ありませんが、残った接続の数が多くなるとサーバーに負荷をかけてしまいます。
-SSE の接続が切れると、サーバーではそれを知らせるイベントが発火します。これを受け取って、配列から抜きます。
+タブを閉じたり再読み込みしたりすると、そのタブの接続は切れます。
+いまの `server.js` は、切れた接続を `connections` から消していないので、タブを1枚閉じてもターミナルの接続数は減りません。
 
-**`req.on('close', 関数)`** = この接続が切れたときに、関数を1回呼ぶ
+| 操作 | `connections` の中身 |
+|---|---|
+| タブ A・B・C を開く | `[A, B, C]` |
+| B を閉じる | `[A, B, C]` |
+| A を再読み込みする | `[A, B, C, A2]` |
+
+切れた B と A も配列に残り、投稿のたびに `write()` されます。
+開き直すたびに配列が長くなり、サーバーの負荷になります。
+
+---
+
+## 5-3. 切れた接続を `close` イベントで抜く
+
+| 書き方 | 意味 |
+|---|---|
+| `req.on('close', <関数>)` | この接続が切れたときに、<関数>を1回呼ぶ |
+
+接続が切れると、サーバー側の `req` で `close` イベントが発生します。
+登録した関数の中で、切れた接続を `connections` から抜きます。
+
+| 操作 | `connections` の中身 |
+|---|---|
+| タブ A・B・C を開く | `[A, B, C]` |
+| B を閉じる | `[A, C]` |
+| A を再読み込みする | `[C, A2]` |
 
 ---
 
 <!-- _class: record -->
 
-## 5-3. 閉じた接続を消す
+## 5-3. 切れた接続を消す
 
 <div class="timer" data-seconds="240"></div>
 
-接続が切れたら、配列から抜きます
-
-**書く場所**: 接続を配列に足している行の下
-
-```javascript
-@@    req.on('close', () => {@@
+```javascript {data-file=server.js}
+    console.log(`接続数: ${connections.length}`);   // すでにある行
+@@    function removeConnection() {@@
 @@      connections.splice(connections.indexOf(res), 1);@@
 @@      console.log(`接続数: ${connections.length}`);@@
-@@    });@@
+@@    }@@
+@@    req.on(______);@@                  // 接続が切れたら removeConnection を呼ぶ
 ```
+
+| 書き方 | 意味 |
+|---|---|
+| `<配列>.indexOf(<値>)` | <値>が<配列>の何番目にあるかを返す。先頭は `0` |
+| `<配列>.splice(<位置>, <個数>)` | <配列>の<位置>から、<個数>ぶんの要素を抜く |
 
 **成功**: タブを閉じると、ターミナルの接続数が1減る
 
-`indexOf` で並びの何番目かを探して、`splice` でそこから1つ抜いています。
+---
+
+## 5-3. 答え
+
+```javascript {data-file=server.js}
+    console.log(`接続数: ${connections.length}`);   // すでにある行
+    function removeConnection() {
+      connections.splice(connections.indexOf(res), 1);
+      console.log(`接続数: ${connections.length}`);
+    }
+    req.on(@@'close', removeConnection@@);
+```
+
+- 1つ目はイベントの名前 `'close'`、2つ目は切れたときに呼ぶ関数 `removeConnection`
+- 関数は `()` を付けずに渡す
 
 ---
 
-## つながりが切れたら
+## 5章のふりかえり
 
-![bg right:40% fit](imgs/network-reconnect.png)
+### やったこと
 
-自分のサーバーなので、止めて確かめられます。
+- 接続を配列 `connections` に持ち、投稿を全員に書き込むようにした
+- 接続が切れたら、`close` イベントで `connections` から抜くようにした
+- ターミナルの接続数が、開いているページの数と同じになる (StackBlitz のプレビューも1つと数える)
 
-1. `Filter` 欄を `events` に変える
-2. ターミナルで `Ctrl + C` を押して止める
-3. `npm start` で起動し直す
+早く終わった人は → [5章の応用課題](#adv-ch5) {.jump #ch5-end}
 
-つなぎ直しに失敗した赤い行が数秒おきに積まれ、起動し直すと次の試行でつながります。再接続はブラウザが自動で行います。
+---
 
-ただし、切れている間の投稿は届きません。埋めるには `Last-Event-ID` を使います。
+<!-- _class: lead -->
+
+# 完成しました！
+
+## 投稿がリアルタイムに届く掲示板ができました
+
+![w:900](imgs/three-tabs.gif)
 
 ---
 
@@ -1140,21 +1756,162 @@ SSE の接続が切れると、サーバーではそれを知らせるイベン�
 
 <div class="timer" data-seconds="60"></div>
 
-良ければ、最後に接続先を共用サーバーに戻してチャットを流して終わりにしましょう。
+最後に接続先を共有サーバーに戻して、全員で投稿してみましょう。
 
-**書く場所**: `public/script.js` の `API` の行を上書き
-
-```javascript
+```javascript {data-file=public/script.js}
+%%const API = location.origin;%%
 @@const API = 'https://example.deno.net';@@
 ```
 
-当日の URL を入れ直します。
+共有サーバーの URL を入れ直します。
 
-**成功**: ページを再読み込みすると他の人のメッセージが表示される
+**成功**: ページを再読み込みすると他の人の投稿が表示される
 
 ---
 
-## ポーリング / SSE / WebSocket のどれを選ぶか
+<!-- _class: lead -->
+
+# ふりかえり
+
+---
+
+## SSE の仕組み
+
+<div class="columns" style="align-items: center">
+<div>
+
+<div class="seq no-num">
+  <div class="seq-title">GET /events のレスポンス</div>
+  <div class="seq-head"><span>ブラウザ</span><span>サーバー</span></div>
+  <div class="seq-body">
+    <div class="seq-group">
+      <div class="seq-row right"><div class="seq-msg">GET /events（最初の1回）</div></div>
+      <div class="seq-row left"><div class="seq-msg">ヘッダー</div></div>
+      <div class="seq-row left"><div class="seq-msg">data: たろうの投稿</div></div>
+      <div class="seq-row left"><div class="seq-msg">data: はなこの投稿</div></div>
+    </div>
+    <div class="seq-repeat">終了せずに送り続ける</div>
+  </div>
+</div>
+
+</div>
+<div>
+
+SSE とは、1回のリクエストに対して、サーバーがレスポンスを **終了せずに送り続ける** 仕組みです。
+サーバーは1件ごとに `data: 中身` の行と空行を送ります。
+
+ポーリングと比べた利点は2つです。
+
+- 投稿された時点で届く
+- 新着を確かめる通信がいらない
+
+</div>
+</div>
+
+---
+
+## 掲示板全体の通信の流れ
+
+<svg class="hub" width="1100" height="430" viewBox="0 0 1100 430">
+  <g id="lanes">
+    <rect class="conn" x="250" y="212" width="370" height="188"/>
+    <rect class="conn" x="620" y="212" width="370" height="218"/>
+    <text class="sub" x="435" y="250">開いたままの接続</text>
+    <line class="lifeline" x1="250" y1="44" x2="250" y2="400"/>
+    <line class="lifeline" x1="620" y1="44" x2="620" y2="430"/>
+    <line class="lifeline" x1="990" y1="44" x2="990" y2="430"/>
+    <rect class="box" x="150" y="0" width="200" height="44" rx="6"/>
+    <text class="name" x="250" y="22">Aさんのブラウザ</text>
+    <rect class="box" x="520" y="0" width="200" height="44" rx="6"/>
+    <text class="name" x="620" y="22">サーバー</text>
+    <rect class="box" x="890" y="0" width="200" height="44" rx="6"/>
+    <text class="name" x="990" y="22">Bさんのブラウザ</text>
+  </g>
+  <g id="open">
+    <text class="sub" x="50" y="80">3章</text>
+    <line class="line" x1="250" y1="80" x2="595" y2="80"/>
+    <polygon class="head" points="592,69 612,80 592,91"/>
+    <text class="mono" x="435" y="62">GET /posts</text>
+    <line class="line" x1="990" y1="80" x2="645" y2="80"/>
+    <polygon class="head" points="648,69 628,80 648,91"/>
+    <text class="mono" x="805" y="62">GET /posts</text>
+    <line class="line" x1="610" y1="124" x2="267" y2="124"/>
+    <polygon class="head" points="270,113 250,124 270,135"/>
+    <text x="435" y="106">投稿一覧</text>
+    <line class="line" x1="630" y1="124" x2="973" y2="124"/>
+    <polygon class="head" points="970,113 990,124 970,135"/>
+    <text x="805" y="106">投稿一覧</text>
+  </g>
+  <g id="connect">
+    <text class="sub" x="50" y="168">2章</text>
+    <line class="line" x1="250" y1="168" x2="595" y2="168"/>
+    <polygon class="head" points="592,157 612,168 592,179"/>
+    <text class="mono" x="435" y="150">GET /events</text>
+    <line class="line" x1="990" y1="168" x2="645" y2="168"/>
+    <polygon class="head" points="648,157 628,168 648,179"/>
+    <text class="mono" x="805" y="150">GET /events</text>
+    <text class="sub" x="50" y="212">4章</text>
+    <line class="line" x1="610" y1="212" x2="267" y2="212"/>
+    <polygon class="head" points="270,201 250,212 270,223"/>
+    <text x="435" y="194">ヘッダー</text>
+    <line class="line" x1="630" y1="212" x2="973" y2="212"/>
+    <polygon class="head" points="970,201 990,212 970,223"/>
+    <text x="805" y="194">ヘッダー</text>
+  </g>
+  <g id="post">
+    <line class="line" x1="990" y1="262" x2="645" y2="262"/>
+    <polygon class="head" points="648,251 628,262 648,273"/>
+    <text class="mono" x="805" y="244">POST /posts</text>
+    <text class="sub" x="50" y="306">4・5章</text>
+    <line class="line" x1="610" y1="306" x2="267" y2="306"/>
+    <polygon class="head" points="270,295 250,306 270,317"/>
+    <text x="435" y="288">data: Bさんの投稿</text>
+    <line class="line" x1="630" y1="306" x2="973" y2="306"/>
+    <polygon class="head" points="970,295 990,306 970,317"/>
+    <text x="805" y="288">data: Bさんの投稿</text>
+    <text class="sub" x="50" y="352">3章</text>
+    <rect class="box" x="160" y="334" width="180" height="36" rx="4"/>
+    <text x="250" y="352">一覧に1件足す</text>
+    <rect class="box" x="900" y="334" width="180" height="36" rx="4"/>
+    <text x="990" y="352">一覧に1件足す</text>
+  </g>
+  <g id="close">
+    <text class="sub" x="50" y="400">5章</text>
+    <rect class="box" x="160" y="382" width="180" height="36" rx="4"/>
+    <text x="250" y="400">タブを閉じる</text>
+    <rect class="box" x="530" y="382" width="180" height="36" rx="4"/>
+    <text x="620" y="400">接続を外す</text>
+  </g>
+</svg>
+
+---
+
+## ブラウザとサーバーの役割分担
+
+<div class="columns">
+<div>
+
+### ブラウザ (`script.js`)
+
+- ページを開いたときに、投稿一覧を1回だけ取る
+- `/events` に接続したままにする
+- `/events` で届いた投稿を、投稿一覧に足す
+
+</div>
+<div>
+
+### サーバー (`server.js`)
+
+- `/events` のレスポンスを終了せずに、`connections` に入れておく
+- 投稿を受け取ったら、`connections` の接続すべてにその投稿を送る
+- 接続が切れたら、その接続を `connections` から取り除く
+
+</div>
+</div>
+
+---
+
+## ほかのやり方: WebSocket
 
 今回は、ポーリング・SSE を実装しましたが、他にも有名なものに `WebSocket` があります。
 
@@ -1169,16 +1926,79 @@ SSE の接続が切れると、サーバーではそれを知らせるイベン�
 
 ---
 
-## 今日やったこと
+<!-- _class: lead -->
 
-| やったこと | 使ったもの |
-|---|---|
-| 決まった間隔で読み直す | `setInterval` |
-| サーバーからの通知を受け取る | `EventSource` |
-| 届いた1件だけを足す | 手元の配列 |
-| 通信を1本ずつ見る | Network タブ / EventStream タブ |
-| 終わらないレスポンスを返す | `text/event-stream` / `res.write` |
-| つないでいる全員に配る | 接続の配列 / `req.on('close')` |
+# おつかれさまでした！
+
+<!-- BLOCK: なにかしらの画像 -->
+
+---
+
+<!-- _class: extra -->
+
+## 付録: 関数に `()` を付けて渡すとどうなるか
+
+```javascript
+source.onmessage = handleMessage;    // 関数そのものを代入する
+source.onmessage = handleMessage();  // この行でいったん実行し、戻り値を代入する
+```
+
+`()` を付けると、その行で関数が実行され、その戻り値が代入されます。
+`handleMessage` は何も返さないので、`onmessage` には `undefined` が入り、データを受信しても何も実行されません。
+
+---
+
+<!-- _class: extra -->
+
+## 付録: `Content-Type` が違うとどうなるか
+
+`Content-Type` が `text/event-stream` 以外だと、ブラウザはヘッダーを受け取った時点で接続をやめます。
+
+| | `text/event-stream` | それ以外 (例: `text/html`) |
+|---|---|---|
+| `open` イベント | 発生する | 発生しない |
+| `error` イベント | 接続が切れたとき | ヘッダーを受け取ってすぐ1回 |
+| 切れたあと | 数秒後に自動で再接続する | 再接続しない |
+
+Console には次のエラーが出ます (実際は1行)。
+
+```
+EventSource's response has a MIME type ("text/html")
+that is not "text/event-stream". Aborting the connection.
+```
+
+---
+
+<!-- _class: extra -->
+
+## 付録: 接続が切れるとどうなるか
+
+![bg right:40% fit](imgs/network-reconnect.png)
+
+ブラウザが数秒おきに自動で再接続します。ただし、切れている間の投稿は届きません。
+
+接続先を自分のサーバーにして確かめてみましょう。
+
+1. Network タブの `Filter` 欄を `events` に変える
+2. ターミナルで `Ctrl + C` を押して止める
+3. `npm start` で起動し直す
+
+止めている間は再接続に失敗した赤い行が数秒おきに増え、起動し直すと次の再接続でつながります。
+
+---
+
+<!-- _class: extra -->
+
+## 付録: 切れている間の投稿を届けるには
+
+投稿を送るとき、`data:` の前に `id:` の行を付けておきます。
+
+```
+id: 3
+data: {"name":"たろう","text":"やっほー"}
+```
+
+ブラウザは最後に受け取った `id` を覚えていて、再接続のときに `Last-Event-ID` ヘッダーで送ってきます。サーバーはそれより後の投稿を送り直せば、切れている間の分を埋められます。
 
 ---
 
@@ -1194,15 +2014,306 @@ SSE の接続が切れると、サーバーではそれを知らせるイベン�
 data: {"name":"たろう","text":"やっほー"}
 ```
 
-つなぎっぱなしの接続が切れないよう、一定間隔で `:` の行だけを送って生存確認に使う、といった用途があります。
+接続が切れないように、一定間隔で `:` の行だけを送る **ハートビート** に使います。 {#comment-line}
 
 ---
 
-<!-- _class: lead -->
+<!-- _class: lead break -->
 
-# おつかれさまでした！
+# 応用課題
 
-<!-- BLOCK: なにかしらの画像 -->
+章が早く終わった人向けの課題です。終わったら左上のリンクで、来た章に戻ります。 {#advanced}
+
+---
+
+<!-- _class: extra -->
+
+## 2章の応用課題: 見ていない間に届いた件数をタブに出す
+
+[← 2章のふりかえりに戻る](#ch2-end) {.jump #adv-ch2}
+
+別のタブを見ている間に届いた投稿の数を、`(3) みんなの掲示板` のようにタブのタイトルに出します。掲示板のタブに戻ったら元のタイトルに戻します。
+
+- タイトルは `document.title` で読み書きできる
+- いま見られていないかは `document.hidden` で分かる
+- 見られる状態に戻ったことは `visibilitychange` イベントで分かる
+- 3章で `onmessage` を置き換えるので、`source.addEventListener('message', 関数)` で書くと消えずに残る
+
+---
+
+<!-- _class: extra compact -->
+
+## 2章の応用課題の答え
+
+[← 2章のふりかえりに戻る](#ch2-end) {.jump}
+
+```javascript {data-file=public/script.js}
+source.onmessage = showPosts;   // すでにある行
+@@const title = document.title;@@
+@@let unread = 0;@@
+@@function countUnread() {@@
+@@  if (!document.hidden) return;@@
+@@  unread = unread + 1;@@
+@@  document.title = `(${unread}) ${title}`;@@
+@@}@@
+@@function resetTitle() {@@
+@@  if (document.hidden) return;@@
+@@  unread = 0;@@
+@@  document.title = title;@@
+@@}@@
+@@source.addEventListener('message', countUnread);@@
+@@document.addEventListener('visibilitychange', resetTitle);@@
+```
+
+- 元のタイトルを `title` に取っておき、戻すときに使う
+- `visibilitychange` は隠れたときにも発生するので、見えているときだけ戻す
+
+---
+
+<!-- _class: extra -->
+
+## 3章の応用課題1: 再接続したときに、切断中の投稿を取得する
+
+[← 3章のふりかえりに戻る](#ch3-end) {.jump #adv-ch3}
+
+接続が切れている間の投稿は、再接続しても届きません。接続するたびに `/posts` を取得し直し、`posts` にない投稿だけを追加します。
+
+- 接続したことは `source.addEventListener('open', 関数)` で分かる
+- 投稿には `id` があるので、`posts` にあるかどうかを `posts.some(...)` で確かめられる
+- 最初に接続したときも `open` は発生するので、最後の行の `loadPosts();` は消す。残すと取得が2つ同時に走り、同じ投稿が2件ずつ入ることがある
+
+---
+
+<!-- _class: extra -->
+
+## 3章の応用課題1の答え: `posts` にない投稿だけを追加する
+
+[← 3章のふりかえりに戻る](#ch3-end) {.jump}
+
+```javascript {data-file=public/script.js}
+@@function hasPost(id) {@@
+@@  function isSame(post) {@@
+@@    return post.id === id;@@
+@@  }@@
+@@  return posts.some(isSame);@@
+@@}@@
+
+async function loadPosts() {
+  const res = await fetch(`${API}/posts`);
+  const loaded = await res.json();
+
+  for (let i = 0; i < loaded.length; i++) {
+    @@if (!hasPost(loaded[i].id))@@ posts.push(loaded[i]);
+  }
+```
+
+- `some` は、`isSame` が `true` を返す要素が1つでもあれば `true` を返す
+
+---
+
+<!-- _class: extra -->
+
+## 3章の応用課題1の答え: 接続するたびに投稿を取得する
+
+[← 3章のふりかえりに戻る](#ch3-end) {.jump}
+
+```javascript {data-file=public/script.js}
+%%loadPosts();%%
+
+const source = new EventSource(`${API}/events`);   // すでにある行
+```
+
+```javascript {data-file=public/script.js}
+source.onmessage = receivePost;   // すでにある行
+@@source.addEventListener('open', loadPosts);@@
+```
+
+- ページを開いて最初に接続したときも `open` が発生するので、最初の取得もここで済む
+- `loadPosts();` の行を残すと取得が2つ同時に走り、同じ投稿が2件ずつ入ることがある
+
+---
+
+<!-- _class: extra -->
+
+## 3章の応用課題2: 投稿に失敗したことを伝える
+
+[← 3章のふりかえりに戻る](#ch3-end) {.jump}
+
+メッセージを空で投稿すると、共有サーバーは 400 と `{"message": "..."}` を返します。失敗したら `alert` で知らせ、入力欄は空にしないようにします。
+
+- 成否は `fetch` の戻り値の `res.ok` で分かる
+
+---
+
+<!-- _class: extra -->
+
+## 3章の応用課題2の答え
+
+[← 3章のふりかえりに戻る](#ch3-end) {.jump}
+
+```javascript {data-file=public/script.js}
+  @@const res = @@await fetch(`${API}/posts`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: name, text: text }),
+  });
+
+@@  if (!res.ok) {@@
+@@    const { message } = await res.json();@@
+@@    alert(message);@@
+@@    return;@@
+@@  }@@
+
+  document.getElementById('text-input').value = '';
+```
+
+- 失敗したら `return` で抜けるので、入力欄を空にする行まで進まない
+- `const { message }` は、受け取ったオブジェクトから `message` を取り出す
+
+---
+
+<!-- _class: extra -->
+
+## 4章の応用課題: 接続状態を画面に出す
+
+[← 4章のふりかえりに戻る](#ch4-end) {.jump #adv-ch4}
+
+「みんなの投稿」の横に、SSE の接続がつながっているか切れているかを出します。`server.js` を保存するとサーバーが再起動するので、一瞬「切れています」になり、「つながっています」に戻れば完成です。
+
+- 表示する場所は `index.html` に `<span id="status">` として用意してある
+- `class` を `status online` にすると緑、`status offline` にすると赤になる
+- 接続したことは `source.addEventListener('open', 関数)` で、切れたことは `source.addEventListener('error', 関数)` で分かる
+
+---
+
+<!-- _class: extra -->
+
+## 4章の応用課題の答え
+
+[← 4章のふりかえりに戻る](#ch4-end) {.jump}
+
+```javascript {data-file=public/script.js}
+source.onmessage = receivePost;   // すでにある行
+@@const status = document.getElementById('status');@@
+@@function showOnline() {@@
+@@  status.textContent = 'つながっています';@@
+@@  status.className = 'status online';@@
+@@}@@
+@@function showOffline() {@@
+@@  status.textContent = '切れています';@@
+@@  status.className = 'status offline';@@
+@@}@@
+@@source.addEventListener('open', showOnline);@@
+@@source.addEventListener('error', showOffline);@@
+```
+
+- 切れたあとはブラウザが自動で再接続するので、つながり直すと `open` がまた発生する
+
+---
+
+<!-- _class: extra -->
+
+## 5章の応用課題: `server.js` に機能を追加する
+
+[← 5章のふりかえりに戻る](#ch5-end) {.jump #adv-ch5}
+
+上から順に難しくなります。
+
+1. ハートビートを送る: 15秒ごとに、接続している全員へコメント行 `: ping\n\n` を書く。データが流れない時間が続くと、プロキシなどが接続を切ることがある ([付録: SSE のコメント行](#comment-line))
+2. 空の投稿を受け付けない: `text` が空なら保存せず、ステータス `400` と `{"message": "..."}` を返す。3章の「投稿に失敗したことを伝える」を済ませていれば、ブラウザにエラーが表示される
+3. 接続数を全員に送る: 接続したときと切れたときに `event: count\ndata: 3\n\n` を全員に書く。ブラウザ側は `source.addEventListener('count', 関数)` で受け取り、画面に出す
+
+---
+
+<!-- _class: extra -->
+
+## 5章の応用課題の答え1: ハートビートを送る
+
+[← 5章のふりかえりに戻る](#ch5-end) {.jump}
+
+```javascript {data-file=server.js}
+const connections = [];   // すでにある行
+@@function sendPing() {@@
+@@  for (let i = 0; i < connections.length; i++) {@@
+@@    connections[i].write(': ping\n\n');@@
+@@  }@@
+@@}@@
+@@setInterval(sendPing, 15000);@@
+```
+
+- コメント行なので、ブラウザの `onmessage` は呼ばれない
+
+---
+
+<!-- _class: extra -->
+
+## 5章の応用課題の答え2: 空の投稿を受け付けない
+
+[← 5章のふりかえりに戻る](#ch5-end) {.jump}
+
+```javascript {data-file=server.js}
+    const post = await readPost(req);   // すでにある行
+@@    if (post.text === '') {@@
+@@      res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });@@
+@@      res.end(JSON.stringify({ message: 'text が空です' }));@@
+@@      return;@@
+@@    }@@
+    posts.push(post);
+```
+
+- `readPost` は `text` がないときも `''` にするので、`''` と比べれば足りる
+- `sendJson` はステータスが `200` で決まっているので、`res.writeHead` で直接書く
+
+---
+
+<!-- _class: extra -->
+
+## 5章の応用課題の答え3: 接続数を全員に送る
+
+[← 5章のふりかえりに戻る](#ch5-end) {.jump}
+
+```javascript {data-file=server.js}
+const connections = [];   // すでにある行
+@@function sendCount() {@@
+@@  for (let i = 0; i < connections.length; i++) {@@
+@@    connections[i].write(`event: count\ndata: ${connections.length}\n\n`);@@
+@@  }@@
+@@}@@
+```
+
+```javascript {data-file=server.js}
+    console.log(`接続数: ${connections.length}`);   // すでにある行
+@@    sendCount();@@
+
+    function removeConnection() {
+      connections.splice(connections.indexOf(res), 1);
+      console.log(`接続数: ${connections.length}`);
+@@      sendCount();@@
+    }
+```
+
+---
+
+<!-- _class: extra -->
+
+## 5章の応用課題の答え3: 接続数を画面に出す
+
+[← 5章のふりかえりに戻る](#ch5-end) {.jump}
+
+```html {data-file=public/index.html}
+        <h2>みんなの投稿</h2>   <!-- すでにある行 -->
+@@        <span id="count"></span>@@
+```
+
+```javascript {data-file=public/script.js}
+source.onmessage = receivePost;   // すでにある行
+@@function showCount(e) {@@
+@@  document.getElementById('count').textContent = `${e.data}人が接続中`;@@
+@@}@@
+@@source.addEventListener('count', showCount);@@
+```
+
+- `event:` の行を付けたデータは `onmessage` には届かず、同じ名前で登録した関数だけが呼ばれる
 
 <script>
 document.querySelectorAll('.timer[data-seconds]').forEach(el => {

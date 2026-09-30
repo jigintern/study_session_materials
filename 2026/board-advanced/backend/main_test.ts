@@ -1,5 +1,6 @@
 import { assertEquals, assertMatch } from "@std/assert";
 import {
+  DEFAULT_ROOM,
   lastPostId,
   listConnections,
   MAX_POSTS_PER_ROOM,
@@ -203,7 +204,7 @@ Deno.test("JSON として読めないボディは 400", async () => {
 });
 
 Deno.test("エラーは message を持つ JSON を返す", async () => {
-  const res = await callRoute("GET", "/posts");
+  const res = await callRoute("GET", "/posts?room=a b");
   assertEquals(res.status, 400);
 
   const body = await res.json();
@@ -211,8 +212,21 @@ Deno.test("エラーは message を持つ JSON を返す", async () => {
   assertEquals(body.message.length > 0, true);
 });
 
-Deno.test("room が未指定または形式不正なら 400", async () => {
-  assertEquals((await callRoute("GET", "/posts")).status, 400);
+Deno.test("room を省くと DEFAULT_ROOM に入る", async () => {
+  const res = await callRoute("POST", "/posts", {
+    name: "ユーザーA",
+    text: "本文",
+  });
+  assertEquals(res.status, 201);
+  const created = await res.json() as Post;
+
+  const ids = (await list(DEFAULT_ROOM)).map((p) => p.id);
+  assertEquals(ids.includes(created.id), true);
+  const omitted = await (await callRoute("GET", "/posts")).json() as Post[];
+  assertEquals(omitted.map((p) => p.id), ids);
+});
+
+Deno.test("room の形式が不正なら 400", async () => {
   assertEquals((await callRoute("GET", "/posts?room=a b")).status, 400);
   assertEquals((await callRoute("GET", "/posts?room=")).status, 400);
 });

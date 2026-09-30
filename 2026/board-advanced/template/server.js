@@ -3,6 +3,7 @@
 // public/ の中身をブラウザに配信する + 投稿を保存・取得する
 
 import { createServer } from 'node:http';
+import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 
@@ -21,7 +22,7 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // ▼ 4章: ここに GET /events を足す
+  // ▼ 4章: ここに GET /events を追加する
 
   // 投稿を 1 件受け取る
   if (req.method === 'POST' && url.pathname === '/posts') {
@@ -29,7 +30,7 @@ const server = createServer(async (req, res) => {
     posts.push(post);
     if (posts.length > MAX_POSTS) posts.shift();
 
-    // ▼ 4章: つながっているブラウザに届ける
+    // ▼ 4章: 接続しているブラウザに投稿を送る
 
     sendJson(res, post);
     return;
@@ -40,7 +41,7 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(PORT);
-console.log(`http://localhost:${PORT} で待っています`);
+console.log(`サーバーを起動しました: http://localhost:${PORT}`);
 
 // 送られてきた JSON を投稿の形に整える
 function readPost(req) {
@@ -52,6 +53,7 @@ function readPost(req) {
     req.on('end', () => {
       const body = JSON.parse(raw);
       resolve({
+        id: randomUUID(),
         name: String(body.name || '名無し').slice(0, 20),
         text: String(body.text || '').slice(0, 200),
         createdAt: new Date().toISOString(),

@@ -1,17 +1,17 @@
 // Chapter 1 の終わりの public/script.js
 // 10 秒ごとに読み込み直している状態。更新ボタンはそのまま残している。
 
-const API = 'https://example.deno.net'; // 当日の URL に差し替える
-const ROOM = '0000'; // 開催回ごとに差し替える
+const API = 'https://example.deno.net';
 
 async function showPosts() {
-  const res = await fetch(`${API}/posts?room=${ROOM}`);
+  const res = await fetch(`${API}/posts`);
   const posts = await res.json();
 
   const list = document.getElementById('posts');
   list.textContent = '';
 
-  for (const post of posts) {
+  for (let i = 0; i < posts.length; i++) {
+    const post = posts[i];
     const item = document.createElement('li');
     const time = new Date(post.createdAt).toLocaleTimeString();
     item.textContent = `${post.name}: ${post.text} (${time})`;
@@ -23,7 +23,7 @@ async function addPost() {
   const name = document.getElementById('name-input').value;
   const text = document.getElementById('text-input').value;
 
-  await fetch(`${API}/posts?room=${ROOM}`, {
+  await fetch(`${API}/posts`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name: name, text: text }),
