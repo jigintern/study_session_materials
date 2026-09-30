@@ -468,13 +468,14 @@ style: |
 手を動かしてもらうスライドには、右上に 記述 のバッジが出ます。
 
 黄色い行だけを書き、赤く取り消された行は消します。
-`______` は空欄です。前の説明のスライドを見て、自分で埋めます。
+`______` は空欄で、前の説明のスライドを見て自分で埋めます。`// …` は省いた行です。
 
 ```javascript {data-file=public/script.js}
-const posts = [];                // 色なし: すでにある行。この下に書く
+const posts = [];                // 色なし: すでにある行 (書く場所の目印)
 @@let connection = null;@@           // 黄色: 書いてもらう行
 @@const max = ______;@@              // 空欄: 自分で埋める
 %%setInterval(showPosts, 10000);%%   // 赤: 消してもらう行
+showPosts();                     // 色なし: 目印が書く行の下に来ることもある
 ```
 
 早く終わった人は、章の最後のスライドの左上にあるリンクから応用課題に進んでください。
@@ -1167,6 +1168,7 @@ source.@@onmessage@@ = showPosts;
 <div class="timer" data-seconds="300"></div>
 
 ```javascript {data-file=public/script.js}
+// ▼ 3章: ここに posts と loadPosts を追加する
 @@const posts = [];@@                      // ブラウザ側で持つ投稿。画面と同じ並び
 
 @@async function loadPosts() {@@           // 開いたときに1回だけ呼ぶ
@@ -1240,6 +1242,7 @@ const source = new EventSource(`${API}/events`);   // すでにある行
 `posts` に追加してから `showPosts` を呼ぶと、その1件が一覧に表示されます。
 
 ```javascript {data-file=public/script.js}
+const source = new EventSource(`${API}/events`);   // すでにある行
 %%source.onmessage = showPosts;%%
 @@function receivePost(e) {@@
 @@  posts.push(JSON.parse(e.data));@@   // 届いた文字列をオブジェクトに戻して追加する
@@ -1299,7 +1302,9 @@ const source = new EventSource(`${API}/events`);   // すでにある行
 投稿した1件は `receivePost` が一覧に出すので、この `showPosts` は消します。
 
 ```javascript {data-file=public/script.js}
-  document.getElementById('text-input').value = '';   // ここから下
+async function addPost() {
+  // …
+  document.getElementById('text-input').value = '';
 %%  showPosts();%%
 }
 ```
@@ -1621,6 +1626,8 @@ data: {"name":"たろう","text":"やっほー"}
 ```
 
 ```javascript {data-file=server.js}
+  if (req.method === 'GET' && url.pathname === '/events') {
+    // …
 %%    connection = res;%%
 %%    console.log('接続を受け付けた');%%
 @@    connections.push(res);@@
@@ -1700,7 +1707,10 @@ data: {"name":"たろう","text":"やっほー"}
 <div class="timer" data-seconds="240"></div>
 
 ```javascript {data-file=server.js}
-    console.log(`接続数: ${connections.length}`);   // すでにある行
+  if (req.method === 'GET' && url.pathname === '/events') {
+    // …
+    connections.push(res);
+    console.log(`接続数: ${connections.length}`);
 @@    function removeConnection() {@@
 @@      connections.splice(connections.indexOf(res), 1);@@
 @@      console.log(`接続数: ${connections.length}`);@@
@@ -1720,7 +1730,8 @@ data: {"name":"たろう","text":"やっほー"}
 ## 5-3. 答え
 
 ```javascript {data-file=server.js}
-    console.log(`接続数: ${connections.length}`);   // すでにある行
+    connections.push(res);
+    console.log(`接続数: ${connections.length}`);
     function removeConnection() {
       connections.splice(connections.indexOf(res), 1);
       console.log(`接続数: ${connections.length}`);
