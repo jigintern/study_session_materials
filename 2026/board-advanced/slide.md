@@ -24,8 +24,7 @@ style: |
     margin-bottom: 1.5em;
   }
   section.record::before,
-  section.extra::before,
-  section.tips::before {
+  section.extra::before {
     content: "記述";
     position: absolute;
     border: 3px solid var(--primary);
@@ -42,11 +41,6 @@ style: |
     content: "応用";
     border-color: #6b4fa0;
     color: #6b4fa0;
-  }
-  section.tips::before {
-    content: "Tips";
-    border-color: #888;
-    color: #888;
   }
   .seq {
     max-width: 760px;
@@ -661,19 +655,26 @@ showPosts();                         // すでにある行
 
 ---
 
-<!-- _class: tips -->
-
 ## 開発者ツールの開き方
 
-StackBlitz では、**右側のプレビューの上で** 右クリックします。エディタの上では、開発者ツールのメニューが出ません。`F12` キーでも開けます。
+StackBlitz では、**右側のプレビューの上で** 右クリックします。エディタの上では、開発者ツールのメニューが出ません。
 
-| | Chrome | Edge | Firefox |
-|---|---|---|---|
-| 右クリックのメニュー | 検証 | 開発者ツールで調査する | 調査 |
-| 英語表示のとき | Inspect | Inspect | Inspect |
+| ブラウザ | 右クリックのメニュー |
+|---|---|
+| Chrome | 検証 (Inspect) |
+| Edge | 開発者ツールで調査する (Inspect) |
+| Firefox | 調査 (Inspect) |
 
-通信を見るタブは、どれも **Network** (日本語表示では「ネットワーク」) です。
-このスライドは、英語表示の Chrome の画面で説明します。
+Windows は `F12`、Mac は `Cmd + Option + I` でも開けます。
+
+---
+
+## 開発者ツールが開けたかを確かめる
+
+開発者ツールの上の端に、下の画像のようなタブが並んでいれば開けています。
+通信は **Network** (ネットワーク) タブで見ます。
+
+![w:900](imgs/devtools-tabs.png)
 
 ---
 
