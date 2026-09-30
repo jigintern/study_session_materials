@@ -36,17 +36,11 @@ async function addPost() {
   const name = document.getElementById('name-input').value;
   const text = document.getElementById('text-input').value;
 
-  const res = await fetch(`${API}/posts`, {
+  await fetch(`${API}/posts`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name: name, text: text }),
   });
-
-  if (!res.ok) {
-    const { message } = await res.json();
-    alert(message);
-    return;
-  }
 
   document.getElementById('text-input').value = '';
 }
