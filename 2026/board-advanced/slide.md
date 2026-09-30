@@ -1161,7 +1161,7 @@ source.@@onmessage@@ = showPosts;
 
 ---
 
-<!-- _class: record -->
+<!-- _class: record compact -->
 
 ## 3-2. 投稿を取ってくる `loadPosts` を作る
 
@@ -1183,8 +1183,9 @@ async function showPosts() {            // すでにある行
 ```
 
 ```javascript {data-file=public/script.js}
-%%showPosts();%%                        // ファイルの最後の行
+%%showPosts();%%
 @@loadPosts();@@
+const source = new EventSource(`${API}/events`);   // すでにある行
 ```
 
 **成功**: 画面はいままでどおり動く
