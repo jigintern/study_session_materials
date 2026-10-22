@@ -10,6 +10,9 @@
 
 ### 2026年作成
 
+* [ミニX をつくろう](./2026/mini-x/README.md)
+  * X 風のタイムラインアプリを作りながら、HTML の部品づくりからサーバーとのやりとりまでを学ぶ 2 日間のハンズオンです
+  * [スライド](https://jigintern.github.io/study_session_materials/mini-x-2026/slide.html)
 * [みんなで書き込める掲示板を作ってみよう！](./2026/board/README.md)
   * JavaScript の基本を学びながら、サーバーに投稿が保存されて他の人からも見える掲示板アプリを作ります
   * [スライド](https://jigintern.github.io/study_session_materials/board-2026/slide.html)
