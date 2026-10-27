@@ -569,9 +569,10 @@ const ANSWER_PATCHES = {
 Object.assign(STAGE_CHECKS, ANSWER_CHECKS);
 const ANSWER_DIRS = { b6: 'typescript' };
 
-async function buildAnswerDir(workDir, id, apiUrl) {
+// 検査は verify-<段階名> の部屋にポストするので、部屋は dirName ではなく id から決める
+async function buildAnswerDir(workDir, id, apiUrl, dirName = id) {
   const source = ANSWER_DIRS[id] ?? 'advanced';
-  const dir = await buildStageDir(join(workDir, id), source, {}, apiUrl, `verify-${id}`);
+  const dir = await buildStageDir(join(workDir, dirName), source, {}, apiUrl, `verify-${id}`);
   for (const [from, to] of ANSWER_PATCHES[id] ?? []) {
     const script = await readFile(join(dir, 'script.js'), 'utf8');
     assert(script.includes(from), `${source}/script.js に ${from} がある`);
@@ -857,6 +858,30 @@ async function main() {
       const dir = await buildAnswerDir(workDir, id, apiUrl);
       await runStage({ bun, browser, apiUrl, stage: id, dir });
       console.log(`ok ${id}`);
+    }
+
+    // 講師がインターネット上に立てる backend/（Deno）が、completed/server.js と同じ API を返すことを確かめる
+    current = 'deno';
+    const deno = findCommand('deno');
+    if (deno) {
+      const denoServer = await startProcess(deno, ['run', '--allow-net', '--allow-env', 'main.ts'], join(ROOT, 'backend'), SERVER_STARTED, { ...process.env, KV_PATH: ':memory:', PORT: '0' });
+      const denoUrl = denoServer.url;
+      current = 'deno-server';
+      await checkServer(denoUrl);
+      console.log('ok deno-server');
+      current = 'deno-events';
+      await checkEvents(denoUrl);
+      console.log('ok deno-events');
+      current = 'deno-completed';
+      const completedDir = await buildStageDir(join(workDir, current), 'completed', {}, denoUrl, 'verify-completed');
+      await runStage({ bun, browser, apiUrl: denoUrl, stage: 'completed', dir: completedDir });
+      console.log('ok deno-completed');
+      current = 'deno-b9';
+      await runStage({ bun, browser, apiUrl: denoUrl, stage: 'b9', dir: await buildAnswerDir(workDir, 'b9', denoUrl, current) });
+      console.log('ok deno-b9');
+      stopProcess(denoServer.child);
+    } else {
+      console.log('skip deno (Deno が見つかりません)');
     }
 
     current = 'events-idle';
