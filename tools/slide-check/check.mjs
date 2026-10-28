@@ -1,21 +1,24 @@
 // スライドのはみ出しと小さすぎる文字を検査する。
-// 使い方: node tools/slide-check/check.mjs [--warn] <slide.md>...
+// 使い方: node tools/slide-check/check.mjs [--warn] [--shots <dir>] <slide.md>...
 // 規則の全文は docs/slide-guidelines.md にある。
 import { execFileSync } from 'node:child_process';
-import { appendFileSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { appendFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { parseArgs } from 'node:util';
 import { chromium } from 'playwright';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const MARP = join(ROOT, 'node_modules/.bin/marp');
 
-const args = process.argv.slice(2);
-const warn = args.includes('--warn');
-const slides = args.filter((a) => a !== '--warn');
+const { values, positionals: slides } = parseArgs({
+  allowPositionals: true,
+  options: { warn: { type: 'boolean', default: false }, shots: { type: 'string' } },
+});
+const { warn, shots } = values;
 if (slides.length === 0) {
-  console.error('usage: check.mjs [--warn] <slide.md>...');
+  console.error('usage: check.mjs [--warn] [--shots <dir>] <slide.md>...');
   process.exit(2);
 }
 
@@ -112,6 +115,17 @@ function build(slide, outDir) {
 
 const fmt = (n) => String(Math.round(n * 100) / 100);
 
+// ページが減ったときに前回の画像が残らないよう、書き出す先は毎回作り直す
+async function shoot(dir) {
+  rmSync(dir, { recursive: true, force: true });
+  mkdirSync(dir, { recursive: true });
+  const svgs = page.locator('svg[data-marpit-svg]');
+  const n = await svgs.count();
+  for (let i = 0; i < n; i++) {
+    await svgs.nth(i).screenshot({ path: join(dir, `p${String(i + 1).padStart(3, '0')}.png`) });
+  }
+}
+
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
 // スライドごとに種別ごとの違反件数を持つ
@@ -132,6 +146,7 @@ try {
         console.log(`${name}:p${v.page} ${v.kind} ${fmt(v.value)}px ${v.text}`);
         tally[v.kind] += 1;
       }
+      if (shots) await shoot(join(resolve(shots), dirname(name)));
     } catch (e) {
       // 変換や読み込みに失敗しても残りのスライドは測る。失敗は違反と同じ扱いで出す
       console.log(`${name}:build-failed ${String(e.message).split('\n')[0]}`);
