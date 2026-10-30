@@ -542,48 +542,128 @@ bun run index.html
 
 <!-- _class: record -->
 
-## 0-1. ヘッダーと投稿欄を書く
+## 0-1. 見出しを書く
 
 **書く場所**：`index.html` の `<main>` の中
 
 ```html
-<header class="header">
-  <h1>ホーム</h1>
-</header>
+<h1>ホーム</h1>
+```
 
+**成功**：大きく太い「ホーム」の字が出る
+
+---
+
+<!-- _class: record -->
+
+## 0-2. class を付けて見た目を変える
+
+**書き換える**：`<h1>` を `<header class="header">` で包む
+
+```html
+@@<header class="header">@@
+  <h1>ホーム</h1>
+@@</header>@@
+```
+
+**成功**：字が小さくなり、下に区切りの線が出る<br>`styles.css` にある `header` の見た目が当たった
+
+---
+
+<!-- _class: record -->
+
+## 0-3. 投稿欄にアイコンを出す
+
+**書く場所**：`</header>` の下
+
+```html
+<div class="compose">
+  <img class="avatar" src="icon.svg" alt="">
+</div>
+```
+
+**成功**：見出しの下に、丸いアイコンが出る
+
+---
+
+<!-- _class: record -->
+
+## 0-4. 本文の欄とボタンを足す
+
+**書く場所**：アイコンの下
+
+```html
+<div class="compose">
+  <img class="avatar" src="icon.svg" alt="">
+  @@<div class="compose-body">@@
+    @@<textarea id="text-input" placeholder="いまどうしてる？"></textarea>@@
+    @@<button id="post-btn">ポストする</button>@@
+  @@</div>@@
+</div>
+```
+
+**成功**：「いまどうしてる？」の欄と、薄い青のボタンが出る
+
+---
+
+<!-- _class: record -->
+
+## 0-5. 名前の欄を足す
+
+**書く場所**：`<textarea>` の上
+
+```html
 <div class="compose">
   <img class="avatar" src="icon.svg" alt="">
   <div class="compose-body">
-    <input id="name-input" type="text" placeholder="名前">
+    @@<input id="name-input" type="text" placeholder="名前">@@
     <textarea id="text-input" placeholder="いまどうしてる？"></textarea>
     <button id="post-btn">ポストする</button>
   </div>
 </div>
 ```
 
-**成功**：保存した瞬間に、青いボタンの投稿欄が出る
+**成功**：本文の欄の上に、「名前」の欄が出る
 
 ---
 
 <!-- _class: record -->
 
-## 0-2. タイムラインと投稿カードを書く
+## 0-6. タイムラインに投稿カードを置く
 
-**書く場所**：0-1 で書いたものの下
+**書く場所**：投稿欄の最後の `</div>` の下
 
 ```html
 <ul id="timeline">
   <li class="post">
     <img class="avatar" src="icon.svg" alt="">
-    <div class="post-body">
-      <span class="name">たろう</span>
-      <p class="text">はじめまして！</p>
-    </div>
   </li>
 </ul>
 ```
 
-**成功**：投稿欄の下に、ポストが 1 件出る
+**成功**：投稿欄の下に、アイコンだけのカードが出る
+
+---
+
+<!-- _class: record -->
+
+## 0-7. カードに名前と本文を入れる
+
+**書く場所**：カードのアイコンの下
+
+```html
+<ul id="timeline">
+  <li class="post">
+    <img class="avatar" src="icon.svg" alt="">
+    @@<div class="post-body">@@
+      @@<span class="name">たろう</span>@@
+      @@<p class="text">はじめまして！</p>@@
+    @@</div>@@
+  </li>
+</ul>
+```
+
+**成功**：アイコンの右に、名前と本文が出る
 
 ---
 
@@ -607,7 +687,7 @@ bun run index.html
 
 <!-- _class: record -->
 
-## 0-3. 投稿カードを template に移す
+## 0-8. 投稿カードを template に移す
 
 **書き換える**：`<li>` を `<ul>` の外に出して `<template>` で包む<br>名前と本文は空にする
 
