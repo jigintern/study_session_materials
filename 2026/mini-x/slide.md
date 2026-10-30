@@ -488,9 +488,9 @@ bun run index.html
 
 ---
 
-## HTML は「タグ」で部品を作る
+## HTML は「要素」で部品を作る
 
-### `<タグ名>` で始めて `</タグ名>` で閉じる
+### 要素は、中身を `<タグ名>` と `</タグ名>` で挟んで書く
 
 ```html
 <h1>ホーム</h1>
@@ -500,8 +500,8 @@ bun run index.html
 
 | 書き方 | 意味 |
 |---|---|
-| `id="..."` | 部品の名札。ページの中で **1 つだけ**<br>JavaScript が探すときに使う |
-| `class="..."` | 見た目の種類。**何個でも** 付けられる<br>CSS はこの名前で色や形を決める |
+| `id="..."` | 部品の名札。ページの中で **1 つだけ**<br>主に JavaScript が探すときに使う |
+| `class="..."` | 見た目の種類。**何個でも** 付けられる<br>CSS は主にこの名前で色や形を決める |
 
 資料どおりに `class` を付けると、<br>用意してある CSS が当たって X の見た目になります。
 
@@ -962,7 +962,7 @@ document.getElementById('reload-btn').addEventListener('click', showPosts);
 
 ## 送るときは、頼み方を少し足す
 
-### 取るときは「ください」、送るときは「保存して」
+### 取るときは「データをください」、送るときは POST
 
 ```javascript
 await fetch(API + '/posts?room=' + ROOM, {
@@ -974,7 +974,7 @@ await fetch(API + '/posts?room=' + ROOM, {
 
 | 書くもの | 意味 |
 |---|---|
-| `method: 'POST'` | 「保存して」という頼み方 |
+| `method: 'POST'` | データを送って、サーバーに何かしてもらう頼み方 |
 | `headers` | 送る中身が JSON だと伝える |
 | `body` | 送る中身。`JSON.stringify` で JSON の文字にする |
 
