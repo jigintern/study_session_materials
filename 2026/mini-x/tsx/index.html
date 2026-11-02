@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ミニX</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="layout">
+      <nav class="sidebar-left">
+        <div class="wordmark">ミニX</div>
+        <a class="nav-item nav-home">ホーム</a>
+        <a class="nav-item nav-search">話題を検索</a>
+        <a class="nav-item nav-notifications">通知</a>
+        <a class="nav-item nav-messages">メッセージ</a>
+        <a class="nav-item nav-profile">プロフィール</a>
+        <button class="nav-post-btn">ポストする</button>
+        <div class="nav-account">
+          <img class="avatar" src="icon.svg" alt="">
+          <span>あなた</span>
+        </div>
+      </nav>
+
+      <main id="root"></main>
+
+      <aside class="sidebar-right">
+        <div class="search-box">検索</div>
+        <section class="trends">
+          <h2>いまどうしてる？</h2>
+          <div class="trend">
+            <span class="trend-meta">日本のトレンド</span>
+            <span class="trend-name">#ミニX</span>
+            <span class="trend-meta">1,234件のポスト</span>
+          </div>
+          <div class="trend">
+            <span class="trend-meta">学校・トレンド</span>
+            <span class="trend-name">#高専</span>
+            <span class="trend-meta">567件のポスト</span>
+          </div>
+          <div class="trend">
+            <span class="trend-meta">テクノロジー・トレンド</span>
+            <span class="trend-name">#JavaScript</span>
+            <span class="trend-meta">8,901件のポスト</span>
+          </div>
+          <div class="trend">
+            <span class="trend-meta">テクノロジー・トレンド</span>
+            <span class="trend-name">#fetch</span>
+            <span class="trend-meta">89件のポスト</span>
+          </div>
+          <div class="trend-more">さらに表示</div>
+        </section>
+      </aside>
+    </div>
+
+    <script type="module" src="main.tsx"></script>
+  </body>
+</html>
