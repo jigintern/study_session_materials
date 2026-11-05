@@ -1,0 +1,459 @@
+:root {
+  --accent: #1d9bf0;
+  --like: #f91880;
+  --bg: #ffffff;
+  --bg-sub: #f7f9f9;
+  --text: #0f1419;
+  --text-sub: #536471;
+  --border: #eff3f4;
+
+  --hover: color-mix(in srgb, var(--text) 8%, transparent);
+  --icon-home: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2.6 2.5 9.9V21h7v-6.5h5V21h7V9.9z'/></svg>");
+  --icon-search: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'><circle cx='10.5' cy='10.5' r='6.5'/><path d='m15.5 15.5 5 5'/></svg>");
+  --icon-bell: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'><path d='M5.5 17v-6a6.5 6.5 0 0 1 13 0v6l1.5 1.5H4zM9.5 21h5'/></svg>");
+  --icon-mail: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'><rect x='2.5' y='4.5' width='19' height='15' rx='2.5'/><path d='m3 6 9 6.5L21 6'/></svg>");
+  --icon-person: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'><circle cx='12' cy='8' r='4'/><path d='M4 21a8 8 0 0 1 16 0z' stroke-linejoin='round'/></svg>");
+  --icon-reply: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'><path d='M10 3.5h4a7 7 0 0 1 0 14h-1.5L7 21v-3.9A7 7 0 0 1 10 3.5z'/></svg>");
+  --icon-repost: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M5 4 2 7l3 3M2 7h13a3 3 0 0 1 3 3v3M19 20l3-3-3-3M22 17H9a3 3 0 0 1-3-3v-3'/></svg>");
+  --icon-views: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'><path d='M4 20v-7M9.3 20V4M14.6 20v-10M20 20v-5'/></svg>");
+  --icon-share: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M12 3v12M7 8l5-5 5 5M4 14v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5'/></svg>");
+  --icon-heart: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'><path d='M12 20.5S3 15.2 3 9a4.5 4.5 0 0 1 9-1 4.5 4.5 0 0 1 9 1c0 6.2-9 11.5-9 11.5z'/></svg>");
+  --icon-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='3'/><circle cx='9' cy='9' r='1.8'/><path d='m3.5 18 5.5-5.5 4 4 3-3 4.5 4.5'/></svg>");
+  --icon-emoji: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'><circle cx='12' cy='12' r='9'/><path d='M8 14.5a5 5 0 0 0 8 0M9 9.5v.5M15 9.5v.5'/></svg>");
+  --icon-pin: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8'><path d='M12 21s-7-6.3-7-11.5a7 7 0 0 1 14 0C19 14.7 12 21 12 21z'/><circle cx='12' cy='9.5' r='2.5'/></svg>");
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Hiragino Sans", "Noto Sans JP", "Segoe UI", Meiryo, sans-serif;
+  font-size: 15px;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.layout {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.sidebar-left {
+  flex: 0 0 275px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 12px;
+}
+
+main {
+  flex: 0 1 600px;
+  min-width: 0;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+.sidebar-right {
+  flex: 0 0 350px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  margin-left: 30px;
+  padding-top: 6px;
+}
+
+@media (max-width: 1100px) {
+  .sidebar-right {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .sidebar-left {
+    display: none;
+  }
+
+  main {
+    flex-basis: 100%;
+    border: none;
+  }
+}
+
+.avatar {
+  display: block;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.wordmark {
+  padding: 12px;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px;
+  border-radius: 9999px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.nav-item:hover {
+  background: var(--hover);
+}
+
+.nav-item::before {
+  content: "";
+  width: 26px;
+  height: 26px;
+  background: currentColor;
+  mask: var(--icon) center / contain no-repeat;
+}
+
+.nav-home {
+  font-weight: 700;
+  --icon: var(--icon-home);
+}
+
+.nav-search {
+  --icon: var(--icon-search);
+}
+
+.nav-notifications {
+  --icon: var(--icon-bell);
+}
+
+.nav-messages {
+  --icon: var(--icon-mail);
+}
+
+.nav-profile {
+  --icon: var(--icon-person);
+}
+
+.nav-post-btn {
+  width: 90%;
+  height: 52px;
+  margin-top: 16px;
+  border: none;
+  border-radius: 9999px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.nav-account {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: auto 0 12px;
+  padding: 12px;
+  border-radius: 9999px;
+  font-weight: 700;
+}
+
+.nav-account:hover {
+  background: var(--hover);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  background: var(--bg-sub);
+  color: var(--text-sub);
+}
+
+.search-box::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background: currentColor;
+  mask: var(--icon-search) center / contain no-repeat;
+}
+
+.trends {
+  margin-top: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.trends h2 {
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.trend {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 16px;
+}
+
+.trend:hover,
+.trend-more:hover {
+  background: var(--hover);
+}
+
+.trend-meta {
+  color: var(--text-sub);
+  font-size: 13px;
+}
+
+.trend-name {
+  font-weight: 700;
+}
+
+.trend-more {
+  padding: 16px;
+  color: var(--accent);
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 53px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+#reload-btn {
+  height: 32px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+#reload-btn:hover {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.compose {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.compose-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+#name-input {
+  align-self: flex-start;
+  width: 12em;
+  height: 26px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  outline: none;
+  background: transparent;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+#name-input::placeholder {
+  color: var(--text-sub);
+  font-weight: 400;
+}
+
+#name-input:focus {
+  border-color: var(--accent);
+}
+
+#text-input {
+  min-height: 56px;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  outline: none;
+  resize: none;
+  field-sizing: content;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+#text-input::placeholder {
+  color: var(--text-sub);
+}
+
+.compose-body::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 128px;
+  height: 36px;
+  background: var(--accent);
+  mask:
+    var(--icon-image) 0 center / 20px no-repeat,
+    var(--icon-emoji) 36px center / 20px no-repeat,
+    var(--icon-pin) 72px center / 20px no-repeat;
+  pointer-events: none;
+}
+
+#post-btn {
+  align-self: flex-end;
+  height: 36px;
+  margin-top: 12px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 9999px;
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.compose-body:has(#text-input:placeholder-shown) #post-btn {
+  opacity: 0.5;
+}
+
+#timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.post {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.post:has(.like-btn) {
+  padding-bottom: 4px;
+}
+
+.post:hover {
+  background: color-mix(in srgb, var(--text) 3%, transparent);
+}
+
+.post-body {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-weight: 700;
+}
+
+.text {
+  margin: 2px 0 0;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.post-body:has(.like-btn)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 36px;
+  background: var(--text-sub);
+  mask:
+    var(--icon-reply) 0 center / 18px no-repeat,
+    var(--icon-repost) 24% center / 18px no-repeat,
+    var(--icon-views) 72% center / 18px no-repeat,
+    var(--icon-share) right 8px center / 18px no-repeat;
+  pointer-events: none;
+}
+
+.like-btn {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 36px;
+  margin-left: 48%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-sub);
+  font-size: 13px;
+}
+
+.like-btn::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background: currentColor;
+  mask: var(--icon-heart) center / contain no-repeat;
+}
+
+.like-btn::after {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 1px;
+  z-index: -1;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+}
+
+.like-btn:hover {
+  color: var(--like);
+}
+
+.like-btn:hover::after {
+  background: color-mix(in srgb, var(--like) 10%, transparent);
+}

@@ -21,6 +21,8 @@ X 風のタイムラインアプリ「ミニX」を作ります。
 手元資料の「準備」にあるリンクから [mini-x.zip](https://github.com/jigintern/study_session_materials/raw/main/2026/mini-x/mini-x.zip) をダウンロードし、解凍します。
 解凍してできた `mini-x` フォルダで `bun run index.html` を実行し、表示された URL を Chrome で開きます。
 
+2 日目から参加する人は、代わりに [mini-x-day1.zip](https://github.com/jigintern/study_session_materials/raw/main/2026/mini-x/mini-x-day1.zip) をダウンロードしてください。1 日目（ミッション 1）が終わった状態から始められます。
+
 zip の中には VS Code の設定も入っています。VS Code から離れると自動で保存され、保存したときにコードの字下げも自動で整います。
 
 ## 本編
@@ -28,6 +30,7 @@ zip の中には VS Code の設定も入っています。VS Code から離れ�
 - [手元資料（DOCS.md）](./DOCS.md)：手元で見ながら進める資料。手順と動作チェックがすべて載っている
 - [スライド（slide.md）](./slide.md)：前に映す資料。概論と各ミッションの要点
 - [テンプレート（template/）](./template/)：`mini-x.zip` の中身と同じもの
+- [1 日目の終わり（day1/）](./day1/)：`mini-x-day1.zip` の中身と同じもの。手元資料のミッション 1「ここまでのコード」を入れた状態
 - [完成形（completed/）](./completed/)：ミッション 4 まで書き終えた状態。ポストといいねを保存するサーバー（`server.js`）もここにある
 - [応用の答え（advanced/）](./advanced/)：完成形に、応用ミッションの A1〜A6、B1〜B4、B7〜B9 の答えを全部入れたもの
 - [TypeScript 版（typescript/）](./typescript/)：応用 B6 の答え。完成形を TypeScript にしたもの
