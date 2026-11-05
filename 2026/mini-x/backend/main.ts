@@ -20,6 +20,17 @@ const SAMPLE_POSTS = [
  */
 const HEARTBEAT_INTERVAL_MS = 15_000;
 
+/**
+ * 書き込みを伴う POST を、送信元の IP ごとに毎秒この回数までに抑える。
+ * 教室は NAT で全員が同じ IP になりがちなので、1 人分ではなく教室全体の分として決める。
+ */
+const POST_RATE_PER_SEC = 10;
+const POST_BURST = 20;
+/** IP の数え分けをすり抜けられても、書き込みがこの回数を超えないようにする */
+const TOTAL_POST_RATE_PER_SEC = 20;
+const TOTAL_POST_BURST = 40;
+const MAX_TRACKED_SOURCES = 10_000;
+
 export type Post = {
   id: string;
   name: string;
@@ -203,6 +214,78 @@ async function likePost(room: string, id: string): Promise<Response> {
   }
 }
 
+// KV で数えると、抑えたい書き込みそのものが増えるのでメモリで数える。
+// isolate ごとの数なので、isolate が複数立つと実際の上限はその倍数になる
+type Bucket = { tokens: number; at: number };
+const buckets = new Map<string, Bucket>();
+const totalBucket: Bucket = { tokens: TOTAL_POST_BURST, at: Date.now() };
+
+function refill(bucket: Bucket, now: number, rate: number, burst: number) {
+  bucket.tokens = Math.min(
+    burst,
+    bucket.tokens + (now - bucket.at) / 1000 * rate,
+  );
+  bucket.at = now;
+}
+
+/**
+ * IPv6 は 1 台に /64 がまるごと割り当てられることが多く、アドレスを変えながら
+ * 送れば 1 件ずつ数えても制限にならないので、先頭 64 ビットでまとめる。
+ */
+function sourceKey(ip: string): string {
+  const addr = ip.split("%")[0];
+  if (!addr.includes(":")) return addr;
+  const mappedV4 = addr.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/i);
+  if (mappedV4) return mappedV4[1];
+  const [head, tail] = addr.split("::");
+  const headGroups = head ? head.split(":") : [];
+  const tailGroups = tail ? tail.split(":") : [];
+  const groups = tail === undefined ? headGroups : [
+    ...headGroups,
+    ...Array(8 - headGroups.length - tailGroups.length).fill("0"),
+    ...tailGroups,
+  ];
+  return groups.slice(0, 4).join(":") + "::/64";
+}
+
+/** 満タンまで回復した送信元は、消しても次に来たとき同じ状態から数え直すだけなので消してよい */
+function evictRefilled(now: number) {
+  const refillMs = POST_BURST / POST_RATE_PER_SEC * 1000;
+  for (const [key, bucket] of buckets) {
+    if (now - bucket.at >= refillMs) buckets.delete(key);
+  }
+}
+
+function takePostToken(ip: string | undefined): boolean {
+  const now = Date.now();
+  refill(totalBucket, now, TOTAL_POST_RATE_PER_SEC, TOTAL_POST_BURST);
+  if (totalBucket.tokens < 1) return false;
+  if (ip === undefined) {
+    totalBucket.tokens -= 1;
+    return true;
+  }
+
+  const key = sourceKey(ip);
+  if (!buckets.has(key) && buckets.size >= MAX_TRACKED_SOURCES) {
+    evictRefilled(now);
+    if (buckets.size >= MAX_TRACKED_SOURCES) return false;
+  }
+  const bucket = buckets.get(key) ?? { tokens: POST_BURST, at: now };
+  refill(bucket, now, POST_RATE_PER_SEC, POST_BURST);
+  buckets.set(key, bucket);
+  if (bucket.tokens < 1) return false;
+  bucket.tokens -= 1;
+  totalBucket.tokens -= 1;
+  return true;
+}
+
+function tooManyRequests(): Response {
+  return errorResponse(
+    429,
+    "送る回数が多すぎます。少し待ってから送ってください",
+  );
+}
+
 const encoder = new TextEncoder();
 
 /**
@@ -292,7 +375,10 @@ function likeTarget(pathname: string): string | null {
  * /posts/events だけ OPTIONS を受けないのも同じで、EventSource は
  * プリフライトを送らないので困らない。
  */
-async function handle(request: Request): Promise<Response> {
+async function handle(
+  request: Request,
+  ip: string | undefined,
+): Promise<Response> {
   const url = new URL(request.url);
   const { pathname } = url;
   const method = request.method;
@@ -305,9 +391,9 @@ async function handle(request: Request): Promise<Response> {
       return methodNotAllowed("GET, POST");
     }
     if (roomError) return errorResponse(400, roomError);
-    return method === "GET"
-      ? await listPosts(room!)
-      : await createPost(room!, request);
+    if (method === "GET") return await listPosts(room!);
+    if (!takePostToken(ip)) return tooManyRequests();
+    return await createPost(room!, request);
   }
 
   if (pathname === "/posts/events") {
@@ -321,6 +407,7 @@ async function handle(request: Request): Promise<Response> {
     if (method === "OPTIONS") return preflight();
     if (method !== "POST") return methodNotAllowed("POST");
     if (roomError) return errorResponse(400, roomError);
+    if (!takePostToken(ip)) return tooManyRequests();
     return await likePost(room!, id);
   }
 
@@ -330,9 +417,13 @@ async function handle(request: Request): Promise<Response> {
   );
 }
 
-export async function route(request: Request): Promise<Response> {
+export async function route(
+  request: Request,
+  info?: Deno.ServeHandlerInfo,
+): Promise<Response> {
+  const ip = (info?.remoteAddr as Deno.NetAddr | undefined)?.hostname;
   try {
-    return await handle(request);
+    return await handle(request, ip);
   } catch (cause) {
     // KV の障害などで例外が出ても CORS ヘッダー付きで返す。
     // 素通しすると受講者のブラウザには「CORS でブロックされた」としか出ず、
