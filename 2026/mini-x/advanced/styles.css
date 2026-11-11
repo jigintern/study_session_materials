@@ -430,7 +430,7 @@ main {
     var(--icon-reply) 0 center / 18px no-repeat,
     var(--icon-repost) 24% center / 18px no-repeat,
     var(--icon-views) 72% center / 18px no-repeat,
-    var(--icon-share) right 8px center / 18px no-repeat;
+    var(--icon-share) right 8px top 50% / 18px no-repeat;
   pointer-events: none;
 }
 
