@@ -2,16 +2,10 @@ const API = 'http://localhost:8000';
 const ROOM = 'sample';
 
 // ここから下に書いていきます
-const posts = [
-  { name: 'たろう', text: 'はじめまして！' },
-  { name: 'はなこ', text: 'こんにちは〜' },
-  { name: 'じろう', text: 'ミニX できた 🎉' },
-  { name: 'さぶろう', text: '自分で足した 4 件目' },
-];
+async function showPosts() {
+  const res = await fetch(API + '/posts?room=' + ROOM);
+  const posts = await res.json();
 
-console.log(posts);
-
-function showPosts() {
   const timeline = document.getElementById('timeline');
   const template = document.getElementById('post-template');
   timeline.textContent = '';
@@ -23,5 +17,7 @@ function showPosts() {
     timeline.appendChild(card);
   }
 }
+
+document.getElementById('reload-btn').addEventListener('click', showPosts);
 
 showPosts();
