@@ -25,13 +25,15 @@ function assert(ok, message) {
   if (!ok) throw new Failure(message);
 }
 
-function findBun() {
+function findCommand(name) {
   const candidates = [
-    ...(process.env.PATH ?? '').split(delimiter).filter(Boolean).map((dir) => join(dir, 'bun')),
-    join(homedir(), '.bun', 'bin', 'bun'),
+    ...(process.env.PATH ?? '').split(delimiter).filter(Boolean).map((dir) => join(dir, name)),
+    join(homedir(), `.${name}`, 'bin', name),
   ];
   return candidates.find((path) => existsSync(path));
 }
+
+const findBun = () => findCommand('bun');
 
 const children = [];
 
@@ -567,6 +569,18 @@ const ANSWER_PATCHES = {
 Object.assign(STAGE_CHECKS, ANSWER_CHECKS);
 const ANSWER_DIRS = { b6: 'typescript' };
 
+// 検査は verify-<段階名> の部屋にポストするので、部屋は dirName ではなく id から決める
+async function buildAnswerDir(workDir, id, apiUrl, dirName = id) {
+  const source = ANSWER_DIRS[id] ?? 'advanced';
+  const dir = await buildStageDir(join(workDir, dirName), source, {}, apiUrl, `verify-${id}`);
+  for (const [from, to] of ANSWER_PATCHES[id] ?? []) {
+    const script = await readFile(join(dir, 'script.js'), 'utf8');
+    assert(script.includes(from), `${source}/script.js に ${from} がある`);
+    await writeFile(join(dir, 'script.js'), script.replace(from, to));
+  }
+  return dir;
+}
+
 async function withStagePage({ bun, browser, apiUrl, stage, dir, serve = DEV_SERVER }, viewport, run) {
   const devServer = await startProcess(bun, serve.args, dir, serve.pattern, serve.env);
   const context = await browser.newContext({ viewport });
@@ -839,17 +853,35 @@ async function main() {
     assert(tsxErrors === '', `tsx/ に型エラーがある: ${tsxErrors}`);
     console.log('ok tsx-types');
 
-    for (const [id, checks] of Object.entries(ANSWER_CHECKS)) {
+    for (const id of Object.keys(ANSWER_CHECKS)) {
       current = id;
-      const source = ANSWER_DIRS[id] ?? 'advanced';
-      const dir = await buildStageDir(join(workDir, id), source, {}, apiUrl, `verify-${id}`);
-      for (const [from, to] of ANSWER_PATCHES[id] ?? []) {
-        const script = await readFile(join(dir, 'script.js'), 'utf8');
-        assert(script.includes(from), `${source}/script.js に ${from} がある`);
-        await writeFile(join(dir, 'script.js'), script.replace(from, to));
-      }
+      const dir = await buildAnswerDir(workDir, id, apiUrl);
       await runStage({ bun, browser, apiUrl, stage: id, dir });
       console.log(`ok ${id}`);
+    }
+
+    // 講師がインターネット上に立てる backend/（Deno）が、completed/server.js と同じ API を返すことを確かめる
+    current = 'deno';
+    const deno = findCommand('deno');
+    if (deno) {
+      const denoServer = await startProcess(deno, ['run', '--allow-net', '--allow-env', 'main.ts'], join(ROOT, 'backend'), SERVER_STARTED, { ...process.env, KV_PATH: ':memory:', PORT: '0' });
+      const denoUrl = denoServer.url;
+      current = 'deno-server';
+      await checkServer(denoUrl);
+      console.log('ok deno-server');
+      current = 'deno-events';
+      await checkEvents(denoUrl);
+      console.log('ok deno-events');
+      current = 'deno-completed';
+      const completedDir = await buildStageDir(join(workDir, current), 'completed', {}, denoUrl, 'verify-completed');
+      await runStage({ bun, browser, apiUrl: denoUrl, stage: 'completed', dir: completedDir });
+      console.log('ok deno-completed');
+      current = 'deno-b9';
+      await runStage({ bun, browser, apiUrl: denoUrl, stage: 'b9', dir: await buildAnswerDir(workDir, 'b9', denoUrl, current) });
+      console.log('ok deno-b9');
+      stopProcess(denoServer.child);
+    } else {
+      console.log('skip deno (Deno が見つかりません)');
     }
 
     current = 'events-idle';
