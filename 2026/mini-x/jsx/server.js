@@ -1,5 +1,5 @@
 // ミニX のサーバー。部屋ごとにポストを覚えておき、一覧を返したり、ポストやいいねを保存したりする
-// 起動方法：このファイルのあるフォルダで bun run server.js を実行し、http://localhost:8000/ を開く
+// 起動方法：このファイルのあるフォルダで bun --hot server.js を実行し、http://localhost:8000/ を開く
 
 // 同じフォルダの index.html を読み込み、/ を開いたときの画面として配る
 import index from './index.html';
@@ -26,8 +26,16 @@ const CORS_HEADERS = {
 
 // rooms は部屋の名前ごとのポストの配列。listeners は部屋ごとの、SSE の知らせを待っている接続
 // GET のたびに並べ替えずに済むよう、各部屋の配列は新しい順に持つ
-const rooms = new Map();
-const listeners = new Map();
+// bun --hot は保存のたびにこのファイルを読み込み直す。const rooms = new Map() と書くと、そのたびにポストが消え、
+// 開いている画面にも知らせが届かなくなる。読み込み直しても残る globalThis に置き、2 回目からは前のものを使う
+if (!globalThis.rooms) {
+  globalThis.rooms = new Map();
+}
+if (!globalThis.listeners) {
+  globalThis.listeners = new Map();
+}
+const rooms = globalThis.rooms;
+const listeners = globalThis.listeners;
 
 // ポスト 1 件分のオブジェクトを作る。id には、ほかと重ならない文字を自動で付ける
 function newPost(name, text, createdAt) {
