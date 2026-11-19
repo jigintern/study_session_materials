@@ -35,6 +35,7 @@ zip の中には VS Code の設定も入っています。VS Code から離れ�
 - [応用の答え（advanced/）](./advanced/)：完成形に、応用ミッションの A1〜A6、B1〜B4、B7〜B9 の答えを全部入れたもの
 - [TypeScript 版（typescript/）](./typescript/)：応用 B6 の答え。完成形を TypeScript にしたもの
 - [React 版（jsx/、tsx/）](./jsx/)：応用 B10、B11 の答え。完成形を React で書き直したもの（[tsx/](./tsx/) は TypeScript 版）
+- [講師用サーバー（backend/）](./backend/)：講師がインターネット上に立てるサーバー。completed/server.js と同じ API を Deno Deploy で動かす
 
 ## 困ったときは
 
