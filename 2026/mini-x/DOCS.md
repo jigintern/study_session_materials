@@ -1480,7 +1480,7 @@ setInterval(showPosts, 10000);
 5. ターミナルで次を実行する
 
    ```bash
-   bun run server.js
+   bun --hot server.js
    ```
 
 6. 表示された `http://localhost:8000/` を Chrome で開く。ミニX の画面が出て、ポストすると自分のサーバーに保存される

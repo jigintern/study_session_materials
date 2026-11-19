@@ -593,7 +593,7 @@ async function runOwnServer(options, source, stage) {
   const ownPort = await freePort();
   const ownUrl = `http://localhost:${ownPort}`;
   const dir = await buildStageDir(join(options.workDir, stage), source, {}, ownUrl, `verify-${stage}`);
-  const serve = { args: ['run', 'server.js'], pattern: SERVER_STARTED, env: { ...process.env, PORT: String(ownPort) } };
+  const serve = { args: ['--hot', 'server.js'], pattern: SERVER_STARTED, env: { ...process.env, PORT: String(ownPort) } };
   await runStage({ ...options, apiUrl: ownUrl, stage, dir, serve });
 }
 
@@ -749,7 +749,7 @@ async function main() {
   const workDir = await mkdtemp(join(tmpdir(), 'mini-x-verify-'));
   let browser;
   try {
-    const apiServer = await startProcess(bun, ['run', 'server.js'], join(ROOT, 'completed'), SERVER_STARTED, { ...process.env, PORT: '0' });
+    const apiServer = await startProcess(bun, ['--hot', 'server.js'], join(ROOT, 'completed'), SERVER_STARTED, { ...process.env, PORT: '0' });
     const apiUrl = apiServer.url;
 
     current = 'server';
